@@ -20,6 +20,11 @@
 	<Target Name="BuildUI" AfterTargets="AfterBuild">
 		<Exec Command="npm run build" WorkingDirectory="$(ProjectDir)/UI" />
 	</Target>
+	
+	<ItemGroup>
+	  <Compile Remove="Domain\Utilities\ServiceBuildingPrefabCategoryProcessor.cs" />
+	  <Compile Remove="Systems\PrefabIndexingSystem.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Game">
@@ -42,6 +47,9 @@
 		</Reference>
 		<Reference Include="Colossal.Localization">
 			<Private>false</Private>
+		</Reference>
+		<Reference Include="Unity.InputSystem">
+		  <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Unity.InputSystem.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.CoreModule">
 			<Private>false</Private>
@@ -75,6 +83,8 @@
 	<ItemGroup>
 		<None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
+		<None Include="Domain\Utilities\ServiceBuildingPrefabCategoryProcessor.cs" />
+		<None Include="Systems\PrefabIndexingSystem.cs" />
 	</ItemGroup>
 
 </Project>

@@ -58,7 +58,7 @@ export function changePrefab(prefab: string) {
 
 
 // These establishes the binding with C# side.
-export const ShowFindItPanels$ =        bindValue<string> (mod.id, 'ShowFindItPanels');
+export const ShowFindItPanel$ =        bindValue<boolean> (mod.id, 'ShowFindItPanel');
 
 // defines trigger event names.
 export const eventName = "PrefabChange";
@@ -70,7 +70,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
     const {children, ...otherProps} = props || {};
 
     // These get the value of the bindings. Or they will when we have bindings.
-    const ShowFindItPanels = false; // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
+    const ShowFindItPanel = useValue(ShowFindItPanel$);  // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
 
     // translation handling. Translates using locale keys that are defined in C# or fallback string here.
     const { translate } = useLocalization();
@@ -85,7 +85,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
     
     
     // Do not put any Hooks (i.e. UseXXXX) after this point.
-    if (!ShowFindItPanels) {
+    if (!ShowFindItPanel) {
       return (
         <Component {...otherProps}>
                 {children}
