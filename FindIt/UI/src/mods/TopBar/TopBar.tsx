@@ -70,7 +70,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
     const {children, ...otherProps} = props || {};
 
     // These get the value of the bindings. Or they will when we have bindings.
-    const ShowFindItPanels = true; // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
+    const ShowFindItPanels = false; // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
 
     // translation handling. Translates using locale keys that are defined in C# or fallback string here.
     const { translate } = useLocalization();

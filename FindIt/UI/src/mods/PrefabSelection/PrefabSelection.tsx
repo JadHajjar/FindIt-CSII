@@ -36,7 +36,7 @@ export const PrefabSelectionComponent : ModuleRegistryExtend = (Component) =>
     const {children, ...otherProps} = props || {};
     
     // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
-    var ShowFindItPanels:boolean = true;        // To be replaced with UseValue(ShowFindItPanels$); and can be const. 
+    var ShowFindItPanels:boolean = false;        // To be replaced with UseValue(ShowFindItPanels$); and can be const. 
     var ActivePrefabName = streamPrefab;  // To be replaced with UseValue(ActivePrefabName$); and can be const.
 
     // translation handling. Translates using locale keys that are defined in C# or fallback string here.
