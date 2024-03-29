@@ -21,8 +21,6 @@ namespace FindIt
 		{
 			Log.Info(nameof(OnLoad));
 
-			Log.Info(File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "documents", "pdx_account.txt")));
-
 			if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
 				Log.Info($"Current mod asset at {asset.path}");
 
@@ -33,6 +31,8 @@ namespace FindIt
 			//AssetDatabase.global.LoadSettings(nameof(FindIt), m_Setting, new Setting(this));
 
 			updateSystem.UpdateAfter<PrefabIndexingSystem>(SystemUpdatePhase.PrefabReferences);
+			updateSystem.UpdateAt<FindItPanelUISystem>(SystemUpdatePhase.UIUpdate);
+			updateSystem.UpdateAt<PrefabSearchUISystem>(SystemUpdatePhase.UIUpdate);
 		}
 
 		public void OnDispose()
