@@ -120,7 +120,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
                   styles.clearIcon
                 }
                 variant="icon"
-                onSelect={() => {}}
+                onSelect={() => {setQuery("")}}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
               >
                 <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
@@ -172,7 +172,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
                 styles.closeIcon
               }
               variant="icon"
-              onSelect={() => {}}
+              onSelect={() => {trigger(mod.id, "FintItIconToggled");}}
               focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
             >
               <img src="coui://uil/Standard/XClose.svg"></img>
