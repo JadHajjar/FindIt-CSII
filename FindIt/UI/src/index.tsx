@@ -10,14 +10,14 @@ const register: ModRegistrar = (moduleRegistry) => {
   VanillaComponentResolver.setRegistry(moduleRegistry);
 
   // This repalaces the asset grid.
-  moduleRegistry.override(
+  moduleRegistry.extend(
     "game-ui/game/components/asset-menu/asset-grid/asset-grid.tsx",
     "AssetGrid",
     PrefabSelectionComponent
   );
 
   // This repalaces the asset category top bar
-  moduleRegistry.override(
+  moduleRegistry.extend(
     "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.tsx",
     "AssetCategoryTabBar",
     TopBarComponent
