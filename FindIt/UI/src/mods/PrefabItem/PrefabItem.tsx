@@ -1,7 +1,6 @@
-import { bindValue, trigger, useValue } from "cs2/api";
-import { tool } from "cs2/bindings";
+import { trigger } from "cs2/api";
 import styles from "./prefabItem.module.scss";
-import { Button, Panel, Portal, Scrollable } from "cs2/ui";
+import { Button } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
 import { useLocalization } from "cs2/l10n";
