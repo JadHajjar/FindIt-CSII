@@ -1,0 +1,41 @@
+.gridItem {
+  margin: 4rem !important;
+  width: 105rem !important;
+  height: 80rem !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.gridThumbnail {
+  width: 50rem !important;
+  height: 50rem !important;
+}
+
+.gridItemText {
+  width: 95rem;
+  font-size: 10rem;
+  overflow: auto;
+}
+
+.favoriteIcon {
+  display: none;
+  background: none;
+  width: 1.75em;
+  height: 1.75em;
+  z-index: 99;
+  position: absolute;
+  top: 0.125em;
+  right: 0.125em;
+}
+
+.favoriteIcon img {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.gridItem:hover .favoriteIcon {
+  display: flex;
+}

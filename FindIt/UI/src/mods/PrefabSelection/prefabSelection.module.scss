@@ -1,0 +1,33 @@
+.scrollableContainer {
+  height: 220rem;
+}
+
+.panelSection {
+  width: 100%;
+  padding: 5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.row {
+  padding: 10rem 20rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.gridItem {
+  margin: 5rem;
+  width: 125rem !important;
+  height: 110rem !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

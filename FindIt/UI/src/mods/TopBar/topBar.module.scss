@@ -1,0 +1,95 @@
+.topBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.topBarSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10rem 10rem 5rem 10rem;
+}
+
+.searchArea {
+  position: relative;
+}
+
+.searchIcon {
+  height: 1.5em;
+  width: 1.5em;
+  margin-right: 0.5em;
+}
+
+.closeIcon {
+  height: 2.5em;
+  width: 2.5em;
+  padding: 0.5rem;
+  background: none;
+}
+
+.closeIcon img {
+  height: 1.5em;
+  width: 1.5em;
+}
+
+.clearIcon {
+  height: 1.9em;
+  width: 1.9em;
+  padding: 0.5rem;
+  background: none;
+  position: absolute;
+  top: 50%;
+  right: 0.2em;
+  transform: translate(0, -50%);
+}
+
+.clearIcon img {
+  height: 1.5em;
+  width: 1.5em;
+}
+
+.textBox {
+  width: 250rem;
+  padding: 0.25em 0.5em;
+  line-height: 1.25em;
+  font-size: 1.15em;
+  border-width: 2.5rem;
+  border-radius: 5rem;
+}
+
+.categorySection {
+  margin: 0 1em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.categorySection button {
+  width: 2.5em;
+  height: 2.5em;
+  margin-right: 0.25em;
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.categorySection button.hasAction {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.categorySection button.hasAction:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.tabButton {
+  width: 3.5em;
+  height: 1.75em;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.tabButton img {
+  width: 1.25em !important;
+  height: 1.25em !important;
+}
