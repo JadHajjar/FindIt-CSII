@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindIt", "FindIt\FindIt.csproj", "{E2FE2F12-82D0-47B3-9CC0-01310BB22BC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindIt", "FindIt\FindIt.csproj", "{E2FE2F12-82D0-47B3-9CC0-01310BB22BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
