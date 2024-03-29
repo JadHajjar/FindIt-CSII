@@ -1,4 +1,5 @@
 .findItToolbarIcon {
+    pointer-events: auto;
 	width: 46rem;
 	height: 46rem;
     position: absolute;
@@ -6,3 +7,4 @@
     bottom: 65rem;
     z-index: 999;
 }
+    
