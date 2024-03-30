@@ -21,7 +21,8 @@ namespace FindIt.Domain.Utilities
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] {
+			return new[]
+			{
 				new EntityQueryDesc
 				{
 					All = new ComponentType[1] { ComponentType.ReadOnly<BuildingData>() },
@@ -54,13 +55,13 @@ namespace FindIt.Domain.Utilities
 			switch (zoneData.m_AreaType)
 			{
 				case Game.Zones.AreaType.Residential:
-					prefabIndex.SubCategory = Enums.PrefabSubCategory.BuildingsResidential;
+					prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Residential;
 					break;
 				case Game.Zones.AreaType.Commercial:
-					prefabIndex.SubCategory = Enums.PrefabSubCategory.BuildingsCommercial;
+					prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Commercial;
 					break;
 				case Game.Zones.AreaType.Industrial:
-					prefabIndex.SubCategory = zoneData.m_ZoneFlags == ZoneFlags.Office ? Enums.PrefabSubCategory.BuildingsOffice : Enums.PrefabSubCategory.BuildingsIndustrial;
+					prefabIndex.SubCategory = zoneData.m_ZoneFlags == ZoneFlags.Office ? Enums.PrefabSubCategory.Buildings_Office : Enums.PrefabSubCategory.Buildings_Industrial;
 					break;
 				default:
 					return false;

@@ -21,7 +21,8 @@ namespace FindIt.Domain.Utilities
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] {
+			return new[]
+			{
 				new EntityQueryDesc
 				{
 					All = new[]
@@ -64,7 +65,7 @@ namespace FindIt.Domain.Utilities
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Buildings,
-				SubCategory = Enums.PrefabSubCategory.BuildingsServices
+				SubCategory = Enums.PrefabSubCategory.Buildings_Services
 			};
 
 			return true;

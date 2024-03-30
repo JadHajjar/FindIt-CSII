@@ -8,15 +8,17 @@ namespace FindIt.Domain.Enums
 {
 	public enum PrefabCategory
 	{
-		[CategoryIcon("coui://uil/Colored/StarFilled.svg")]
+		[CategoryIcon("Media/Tools/Snap Options/All.svg")]
+		Any = -1,
+		[CategoryIcon("coui://uil/Colored/StarFilledSmall.svg")]
 		Favorite = 0,
-		[CategoryIcon("Media/Game/Icons/ZoneSignature.svg")]
+		[CategoryIcon("coui://uil/Colored/BuildingZoneSignature.svg")]
 		Buildings = 100,
-		[CategoryIcon("Media/Game/Icons/Roads.svg")]
+		[CategoryIcon("coui://uil/Colored/Road.svg")]
 		Networks = 200,
-		[CategoryIcon("Media/Game/Icons/Forest.svg")]
+		[CategoryIcon("coui://uil/Colored/TreeVanilla.svg")]
 		Trees = 300,
-		[CategoryIcon("Media/Game/Resources/Furniture.svg")]
+		[CategoryIcon("coui://uil/Colored/BenchAndLampProps.svg")]
 		Props = 400
 	}
 }

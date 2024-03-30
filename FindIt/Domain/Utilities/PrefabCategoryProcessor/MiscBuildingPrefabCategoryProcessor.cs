@@ -8,50 +8,34 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public class ServiceBuildingPrefabCategoryProcessor : IPrefabCategoryProcessor
+	public class MiscBuildingPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
 
 		public EntityQuery Query { get; set; }
 
-		public ServiceBuildingPrefabCategoryProcessor(EntityManager entityManager)
+		public MiscBuildingPrefabCategoryProcessor(EntityManager entityManager)
 		{
 			_entityManager = entityManager;
 		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] {
+			return new[]
+			{
 				new EntityQueryDesc
 				{
 					All = new[]
 					{
 						ComponentType.ReadOnly<BuildingData>(),
-						ComponentType.ReadOnly<ServiceObjectData>()
 					},
 					None = new[] 
 					{
-						ComponentType.ReadOnly<TrafficSpawnerData>(),
+						ComponentType.ReadOnly<ServiceObjectData>(),
 						ComponentType.ReadOnly<SpawnableBuildingData>(),
-						ComponentType.ReadOnly<PlaceholderBuildingData>()
-					}
-				},
-				new EntityQueryDesc
-				{
-					All = new[]
-					{
-						ComponentType.ReadOnly<ServiceUpgradeBuilding>()
-					},
-					Any = new[]
-					{
-						ComponentType.ReadOnly<BuildingData>(),
-						ComponentType.ReadOnly<BuildingExtensionData>()
-					},
-					None = new[]
-					{
-						ComponentType.ReadOnly<TrafficSpawnerData>(),
-						ComponentType.ReadOnly<SpawnableBuildingData>(),
-						ComponentType.ReadOnly<PlaceholderBuildingData>() 
+						ComponentType.ReadOnly<SignatureBuildingData>(),
+						ComponentType.ReadOnly<ServiceUpgradeBuilding>(),
+						ComponentType.ReadOnly<ExtractorFacilityData>()
 					}
 				}
 			};
@@ -64,7 +48,7 @@ namespace FindIt.Domain.Utilities
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Buildings,
-				SubCategory = Enums.PrefabSubCategory.BuildingsServices
+				SubCategory = Enums.PrefabSubCategory.Buildings_Miscellaneous
 			};
 
 			return true;

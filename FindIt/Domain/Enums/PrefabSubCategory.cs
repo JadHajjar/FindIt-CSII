@@ -8,29 +8,44 @@ namespace FindIt.Domain.Enums
 {
 	public enum PrefabSubCategory
 	{
-		//"Media/Tools/Snap Options/All.svg"
+		[CategoryIcon("Media/Tools/Snap Options/All.svg")]
+		Any = -1,
+
+		[Obsolete("Use PrefabCategory", true)]
 		Favorite = 0,
 
+		[Obsolete("Use PrefabCategory", true)]
 		Buildings = 100,
 		[CategoryIcon("Media/Game/Icons/ZoneResidential.svg")]
-		BuildingsResidential,
+		Buildings_Residential,
 		[CategoryIcon("Media/Game/Icons/ZoneResidentialMixed.svg")]
-		BuildingsMixed,
+		Buildings_Mixed,
 		[CategoryIcon("Media/Game/Icons/ZoneCommercial.svg")]
-		BuildingsCommercial,
+		Buildings_Commercial,
 		[CategoryIcon("Media/Game/Icons/ZoneIndustrial.svg")]
-		BuildingsIndustrial,
+		Buildings_Industrial,
 		[CategoryIcon("Media/Game/Icons/ZoneOffice.svg")]
-		BuildingsOffice,
+		Buildings_Office,
 		[CategoryIcon("Media/Game/Icons/ZoneExtractors.svg")]
-		BuildingsSpecialized,
+		Buildings_Specialized,
 		[CategoryIcon("Media/Game/Icons/ZoneExtractors.svg")]
-		BuildingsServices,
+		Buildings_Services,
+		[CategoryIcon("Media/Game/Icons/ZoneExtractors.svg")]
+		Buildings_Miscellaneous,
 
+		[Obsolete("Use PrefabCategory", true)]
 		Networks = 200,
+		[CategoryIcon("coui://uil/Colored/Road.svg")]
+		Networks_Roads,
 
+		[Obsolete("Use PrefabCategory", true)]
 		Trees = 300,
+		[CategoryIcon("coui://uil/Colored/TreeVanilla.svg")]
+		Trees_Trees,
+		[CategoryIcon("Media/Game/Icons/Vegetation.svg")]
+		Trees_Shrubs,
 
+		[Obsolete("Use PrefabCategory", true)]
 		Props = 400
 	}
 }

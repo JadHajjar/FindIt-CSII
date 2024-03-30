@@ -1,6 +1,7 @@
 ﻿using Colossal.Logging;
 
 using FindIt.Domain;
+using FindIt.Domain.Enums;
 using FindIt.Domain.Interfaces;
 using FindIt.Domain.Utilities;
 
@@ -12,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 
 using Unity.Collections;
 using Unity.Entities;
@@ -23,10 +23,7 @@ namespace FindIt.Systems
 	{
 		private PrefabSystem _prefabSystem;
 		private ImageSystem _imageSystem;
-		private FieldInfo _prefabFieldInfo;
-		private IPrefabCategoryProcessor[] _prefabCategoryProcessors;
-
-		public List<PrefabIndex> Prefabs { get; private set; }
+		private readonly List<IPrefabCategoryProcessor> _prefabCategoryProcessors = new();
 
 		protected override void OnCreate()
 		{
@@ -34,16 +31,13 @@ namespace FindIt.Systems
 
 			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>()!;
 			_imageSystem = World.GetOrCreateSystemManaged<ImageSystem>()!;
-			_prefabFieldInfo = typeof(PrefabSystem).GetField("m_Prefabs", BindingFlags.Instance | BindingFlags.NonPublic);
-			_prefabCategoryProcessors = new IPrefabCategoryProcessor[]
-			{
-				new ServiceBuildingPrefabCategoryProcessor(EntityManager),
-				new ZonedBuildingPrefabCategoryProcessor(EntityManager)
-			};
 
-			for (var i = 0; i < _prefabCategoryProcessors.Length; i++)
+			foreach (var type in typeof(PrefabIndexingSystem).Assembly.GetTypes())
 			{
-				_prefabCategoryProcessors[i].Query = GetEntityQuery(_prefabCategoryProcessors[i].GetEntityQuery());
+				if (typeof(IPrefabCategoryProcessor).IsAssignableFrom(type) && !type.IsAbstract)
+				{
+					_prefabCategoryProcessors.Add((IPrefabCategoryProcessor)Activator.CreateInstance(type, EntityManager));
+				}
 			}
 		}
 
@@ -51,9 +45,11 @@ namespace FindIt.Systems
 		{
 			var stopWatch = Stopwatch.StartNew();
 
-			Prefabs = new();
+			FindItUtil.CategorizedPrefabs.Clear();
 
-			for (var ind = 0; ind < _prefabCategoryProcessors.Length; ind++)
+			AddAllCategories();
+
+			for (var ind = 0; ind < _prefabCategoryProcessors.Count; ind++)
 			{
 				var processor = _prefabCategoryProcessors[ind];
 
@@ -61,7 +57,7 @@ namespace FindIt.Systems
 
 				try
 				{
-					var entities = processor.Query.ToEntityArray(Allocator.Temp);
+					var entities = GetEntityQuery(_prefabCategoryProcessors[ind].GetEntityQuery()).ToEntityArray(Allocator.Temp);
 
 					Mod.Log.Info($"\tTotal Entities Count: {entities.Length}");
 
@@ -98,19 +94,43 @@ namespace FindIt.Systems
 			stopWatch.Stop();
 
 			Mod.Log.Info($"Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds}s");
-			Mod.Log.Info($"Indexed Prefabs Count: {Prefabs.Count}");
+			Mod.Log.Info($"Indexed Prefabs Count: {FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Count}");
 
-			foreach (var grp in Prefabs.GroupBy(x => x.Category))
+			//foreach (var grp in Prefabs.GroupBy(x => x.Category))
+			//{
+			//	Mod.Log.Debug(grp.Key);
+
+			//	foreach (var sgrp in grp.GroupBy(x => x.SubCategory))
+			//	{
+			//		Mod.Log.Debug("\t" + sgrp.Key);
+
+			//		foreach (var item in sgrp)
+			//		{
+			//			Mod.Log.Debug("\t\t" + item.Name);
+			//		}
+			//	}
+			//}
+		}
+
+		private void AddAllCategories()
+		{
+			foreach (PrefabCategory category in Enum.GetValues(typeof(PrefabCategory)))
 			{
-				Mod.Log.Debug(grp.Key);
-
-				foreach (var sgrp in grp.GroupBy(x => x.SubCategory))
+				FindItUtil.CategorizedPrefabs[category] = new()
 				{
-					Mod.Log.Debug("\t"+sgrp.Key);
+					{ PrefabSubCategory.Any, new() }
+				};
 
-					foreach (var item in sgrp)
+				if (category == PrefabCategory.Any)
+				{
+					continue;
+				}
+
+				foreach (PrefabSubCategory subCategory in Enum.GetValues(typeof(PrefabSubCategory)))
+				{
+					if ((int)subCategory > (int)category && (int)subCategory < (int)category + 100)
 					{
-						Mod.Log.Debug("\t\t" + item.Name);
+						FindItUtil.CategorizedPrefabs[category][subCategory] = new();
 					}
 				}
 			}
@@ -119,10 +139,25 @@ namespace FindIt.Systems
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
 		{
 			prefabIndex.Id = entity.Index;
-			prefabIndex.Name = prefab.name;
+			prefabIndex.Name = prefab.name.FormatWords();
 			prefabIndex.Thumbnail = _imageSystem.GetThumbnail(entity);
+			prefabIndex.Favorited = FindItUtil.IsFavorited(prefab);
 
-			Prefabs.Add(prefabIndex);
+			FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
+			FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
+			FindItUtil.CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
+
+			if (prefabIndex.Favorited)
+			{
+				FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
+
+				if (!FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite].ContainsKey(prefabIndex.SubCategory))
+				{
+					FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory] = new();
+				}
+
+				FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
+			}
 		}
 	}
 }

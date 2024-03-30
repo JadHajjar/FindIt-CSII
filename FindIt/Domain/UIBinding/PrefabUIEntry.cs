@@ -16,10 +16,28 @@ namespace FindIt.Domain.UIBinding
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Thumbnail { get; set; }
+		public bool Favorited { get; set; }
 
-		public void Write(IJsonWriter writer)
+		public PrefabUIEntry(PrefabIndexBase prefab)
+        {
+            Id = prefab.Id;
+			Name = prefab.Name;
+			Thumbnail = prefab.Thumbnail;
+			Favorited = prefab.Favorited;
+		}
+
+        public void Write(IJsonWriter writer)
 		{
-			throw new NotImplementedException();
+			writer.TypeBegin(GetType().FullName);
+			writer.PropertyName("id");
+			writer.Write(Id);
+			writer.PropertyName("name");
+			writer.Write(Name);
+			writer.PropertyName("thumbnail");
+			writer.Write(Thumbnail);
+			writer.PropertyName("favorited");
+			writer.Write(Favorited);
+			writer.TypeEnd();
 		}
 	}
 }

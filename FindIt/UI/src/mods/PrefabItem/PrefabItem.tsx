@@ -4,37 +4,32 @@ import { Button } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
 import { useLocalization } from "cs2/l10n";
-import { Entity, prefab } from "cs2/bindings";
-import { entityEquals } from "cs2/utils";
+import { useState } from "react";
 
-// This functions trigger an event on C# side and C# designates the method to implement.
-export function changePrefab(prefabEntity : Entity) {
-  trigger(mod.id, "PrefabChange", prefabEntity);
+export interface PrefabButtonProps {
+  id: number;
+  src: string;
+  text: string;
+  favorited: boolean;
+  selected?: boolean;
 }
 
 // These establishes the binding with C# side.
-export const ActivePrefabEntity$ =        bindValue<Entity> (mod.id, 'ActivePrefabEntity');
 
-export const PrefabItemComponent = (prefabEntity : Entity) => {
+export const PrefabItemComponent = (props: PrefabButtonProps) => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
-  const prefabDetails = prefab.prefabDetails$.getValue(prefabEntity);
-  const ActivePrefabEntity = useValue(ActivePrefabEntity$); 
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
 
-  // These back up ideas aren't working yet. 
-  var titleId = prefabDetails?.titleId;
-  if (titleId == undefined) {
-    titleId = "No Id found";
-  }
-  var label : string | undefined | null = translate(titleId, prefabDetails?.name);
+  const [favorited, setFavorited] = useState(props.favorited);
 
-  if (label == "" || label == null) {
-    label = prefabDetails?.name;
+  function SetCurrentPrefab(id: number) {
+    trigger(mod.id, "SetCurrentPrefab", id);
   }
-  var iconPath = prefabDetails?.icon;
-  if (iconPath == "") {
-    iconPath = "coui://uil/Standard/Magnifier.svg";
+
+  function ToggleFavorited(id: number) {
+    setFavorited(!favorited);
+    trigger(mod.id, "ToggleFavorited", id);
   }
 
   return (
@@ -44,13 +39,13 @@ export const PrefabItemComponent = (prefabEntity : Entity) => {
         " " +
         styles.gridItem
       }
-      selected={entityEquals(prefabEntity, ActivePrefabEntity)}
+      selected={props.selected}
       variant="icon"
-      onSelect={() => changePrefab(prefabEntity)}
+      onSelect={() => SetCurrentPrefab(props.id)}
       focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
     >
       <img
-        src={iconPath}
+        src={props.src}
         className={
           VanillaComponentResolver.instance.assetGridTheme.thumbnail +
           " " +
@@ -59,20 +54,27 @@ export const PrefabItemComponent = (prefabEntity : Entity) => {
       ></img>
 
       <div className={styles.gridItemText}>
-        <p>{label}</p>
+        <p>{props.text}</p>
       </div>
 
       <Button
         className={
           VanillaComponentResolver.instance.assetGridTheme.item +
           " " +
-          styles.favoriteIcon
+          styles.favoriteIcon +
+          (favorited ? " " + styles.favorited : "")
         }
         variant="icon"
-        onSelect={() => {}}
+        onSelect={() => ToggleFavorited(props.id)}
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
       >
-        <img src="coui://uil/Colored/StarOutline.svg"></img>
+        <img
+          src={
+            favorited
+              ? "coui://uil/Colored/StarFilled.svg"
+              : "coui://uil/Colored/StarOutline.svg"
+          }
+        ></img>
       </Button>
     </Button>
   );
