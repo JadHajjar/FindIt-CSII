@@ -1,5 +1,5 @@
 import { bindValue, trigger, useValue } from "cs2/api";
-import { Theme } from "cs2/bindings";
+import { Theme, prefabProperties } from "cs2/bindings";
 import mod from "../../../mod.json";
 import { Button, Panel, Portal, Scrollable } from "cs2/ui";
 import { useLocalization } from "cs2/l10n";
@@ -50,6 +50,11 @@ export const FocusDisabled$: FocusKey = getModule(
   "FOCUS_DISABLED"
 );
 
+export const AssetCategoryTabTheme : Theme | any = getModule(
+  "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.module.scss",
+  "classes"
+)
+
 // This functions trigger an event on C# side and C# designates the method to implement.
 export function changePrefab(prefab: string) {
   trigger(mod.id, eventName, prefab);
@@ -58,7 +63,7 @@ export function changePrefab(prefab: string) {
 
 
 // These establishes the binding with C# side.
-export const ShowFindItPanels$ =        bindValue<string> (mod.id, 'ShowFindItPanels');
+export const ShowFindItPanel$ =        bindValue<boolean> (mod.id, 'ShowFindItPanel');
 
 // defines trigger event names.
 export const eventName = "PrefabChange";
@@ -70,7 +75,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
     const {children, ...otherProps} = props || {};
 
     // These get the value of the bindings. Or they will when we have bindings.
-    const ShowFindItPanels = false; // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
+    const ShowFindItPanel = useValue(ShowFindItPanel$);  // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
 
     // translation handling. Translates using locale keys that are defined in C# or fallback string here.
     const { translate } = useLocalization();
@@ -82,10 +87,10 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
         setQuery(value.target.value);
       }
     }
-    
+     
     
     // Do not put any Hooks (i.e. UseXXXX) after this point.
-    if (!ShowFindItPanels) {
+    if (!ShowFindItPanel) {
       return (
         <Component {...otherProps}>
                 {children}
@@ -120,7 +125,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
                   styles.clearIcon
                 }
                 variant="icon"
-                onSelect={() => {}}
+                onSelect={() => {setQuery("")}}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
               >
                 <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
@@ -172,7 +177,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
                 styles.closeIcon
               }
               variant="icon"
-              onSelect={() => {}}
+              onSelect={() => {trigger(mod.id, "FindItIconToggled");}}
               focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
             >
               <img src="coui://uil/Standard/XClose.svg"></img>
@@ -180,8 +185,8 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
           </div>
         </div>
 
-        <div className="asset-category-tab-bar_IGA">
-          <div className="items_gPf">
+        <div className={AssetCategoryTabTheme.assetCategoryTabBar}>
+          <div className={AssetCategoryTabTheme.items}>
             <Button
               className={
                 VanillaComponentResolver.instance.assetGridTheme.item +
