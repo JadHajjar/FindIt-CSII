@@ -22,6 +22,22 @@
   margin-right: 0.5em;
 }
 
+.loadingIcon {
+  height: 1.5em;
+  width: 1.5em;
+  margin-right: 0.5em;
+  animation: rotation 0.5s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
 .closeIcon {
   height: 2.5em;
   width: 2.5em;
@@ -72,6 +88,11 @@
   height: 2.5em;
   margin-right: 0.25em;
   background-color: rgba(0, 0, 0, 0.35);
+}
+
+.categorySection img {
+  width: 1.75em;
+  height: 1.75em;
 }
 
 .categorySection button.hasAction {

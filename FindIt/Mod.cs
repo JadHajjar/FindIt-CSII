@@ -1,6 +1,7 @@
 ﻿using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 
+using FindIt.Domain.Utilities;
 using FindIt.Systems;
 
 using Game;
@@ -14,7 +15,10 @@ namespace FindIt
 {
 	public class Mod : IMod
 	{
+		public const string Id = "FindIt";
+
 		public static ILog Log = LogManager.GetLogger(nameof(FindIt)).SetShowsErrorsInUI(false);
+
 		//private Setting m_Setting;
 
 		public void OnLoad(UpdateSystem updateSystem)
@@ -23,6 +27,8 @@ namespace FindIt
 
 			if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
 				Log.Info($"Current mod asset at {asset.path}");
+
+			FindItUtil.LoadCustomPrefabData();
 
 			//m_Setting = new Setting(this);
 			//m_Setting.RegisterInOptionsUI();

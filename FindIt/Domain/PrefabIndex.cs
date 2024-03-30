@@ -10,18 +10,13 @@ using System.Threading.Tasks;
 
 namespace FindIt.Domain
 {
-	public class PrefabIndex
+	public class PrefabIndex : PrefabIndexBase
 	{
-		public PrefabBase Prefab { get; }
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public PrefabCategory Category { get; set; }
-        public PrefabSubCategory SubCategory { get; set; }
-        public string Thumbnail { get; set; }
+		public PrefabCategory Category { get; set; }
+		public PrefabSubCategory SubCategory { get; set; }
 
-        public PrefabIndex(PrefabBase prefabBase)
+		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{
-			Prefab = prefabBase;
 		}
 	}
 }

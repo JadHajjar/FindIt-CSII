@@ -1,7 +1,7 @@
 .gridItem {
   margin: 4rem !important;
   width: 105rem !important;
-  height: 80rem !important;
+  height: 85rem !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,14 +10,19 @@
 }
 
 .gridThumbnail {
-  width: 50rem !important;
-  height: 50rem !important;
+  width: 45rem !important;
+  height: 45rem !important;
 }
 
 .gridItemText {
   width: 95rem;
   font-size: 10rem;
   white-space: normal;
+  overflow: hidden;
+}
+
+.gridItemText p {
+  text-align: center;
 }
 
 .favoriteIcon {
@@ -29,6 +34,10 @@
   position: absolute;
   top: 0.125em;
   right: 0.125em;
+}
+
+.favoriteIcon.favorited {
+  display: flex;
 }
 
 .favoriteIcon img {

@@ -7,6 +7,8 @@ import { ModuleRegistryExtend, getModule } from "cs2/modding";
 import { FocusKey } from "cs2/bindings";
 import styles from "./topBar.module.scss";
 import { useState } from "react";
+import { PrefabCategory } from "../../domain/category";
+import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
 
 export enum TextInputType {
@@ -50,32 +52,43 @@ export const FocusDisabled$: FocusKey = getModule(
   "FOCUS_DISABLED"
 );
 
-export const AssetCategoryTabTheme : Theme | any = getModule(
+export const AssetCategoryTabTheme: Theme | any = getModule(
   "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.module.scss",
   "classes"
-)
-
-// This functions trigger an event on C# side and C# designates the method to implement.
-export function changePrefab(prefab: string) {
-  trigger(mod.id, eventName, prefab);
-}
-
-
+);
 
 // These establishes the binding with C# side.
-export const ShowFindItPanel$ =        bindValue<boolean> (mod.id, 'ShowFindItPanel');
+export const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
+export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+export const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
+export const CurrentSubCategory$ = bindValue<number>(
+  mod.id,
+  "CurrentSubCategory"
+);
+export const CategoryList$ = bindValue<PrefabCategory[]>(
+  mod.id,
+  "CategoryList"
+);
+export const SubCategoryList$ = bindValue<PrefabSubCategory[]>(
+  mod.id,
+  "SubCategoryList"
+);
 
 // defines trigger event names.
 export const eventName = "PrefabChange";
 
-export const TopBarComponent : ModuleRegistryExtend = (Component) => {
+export const TopBarComponent: ModuleRegistryExtend = (Component) => {
   // I believe you should not put anything here.
-  return (props) => 
-  {
-    const {children, ...otherProps} = props || {};
+  return (props) => {
+    const { children, ...otherProps } = props || {};
 
     // These get the value of the bindings. Or they will when we have bindings.
-    const ShowFindItPanel = useValue(ShowFindItPanel$);  // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
+    const ShowFindItPanel = useValue(ShowFindItPanel$); // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
+    const CurrentCategory = useValue(CurrentCategory$);
+    const CurrentSubCategory = useValue(CurrentSubCategory$);
+    const CategoryList = useValue(CategoryList$);
+    const SubCategoryList = useValue(SubCategoryList$);
+    const IsSearchLoading = useValue(IsSearchLoading$);
 
     // translation handling. Translates using locale keys that are defined in C# or fallback string here.
     const { translate } = useLocalization();
@@ -84,28 +97,44 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
 
     function handleInputChange(value: Event) {
       if (value?.target instanceof HTMLTextAreaElement) {
-        setQuery(value.target.value);
+        setSearchText(value.target.value);
       }
     }
-     
-    
+
+    function setSearchText(value: string) {
+      setQuery(value);
+      trigger(mod.id, "SearchChanged", value);
+    }
+
+    function setCurrentCategory(id: number) {
+      trigger(mod.id, "SetCurrentCategory", id);
+    }
+
+    function setCurrentSubCategory(id: number) {
+      trigger(mod.id, "SetCurrentSubCategory", id);
+    }
+
     // Do not put any Hooks (i.e. UseXXXX) after this point.
     if (!ShowFindItPanel) {
-      return (
-        <Component {...otherProps}>
-                {children}
-        </Component>
-      );
+      return <Component {...otherProps}>{children}</Component>;
     }
-    
+
     return (
       <>
         <div className={styles.topBar}>
           <div className={styles.topBarSection}>
-            <img
-              src="coui://uil/Standard/Magnifier.svg"
-              className={styles.searchIcon}
-            ></img>
+            {IsSearchLoading && (
+              <img
+                src="coui://uil/Standard/HalfCircleProgress.svg"
+                className={styles.loadingIcon}
+              ></img>
+            )}
+            {!IsSearchLoading && (
+              <img
+                src="coui://uil/Standard/Magnifier.svg"
+                className={styles.searchIcon}
+              ></img>
+            )}
             <div className={styles.searchArea}>
               <TextInput
                 multiline={1}
@@ -118,56 +147,38 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
                 placeholder="Search..."
               ></TextInput>
 
-              <Button
-                className={
-                  VanillaComponentResolver.instance.assetGridTheme.item +
-                  " " +
-                  styles.clearIcon
-                }
-                variant="icon"
-                onSelect={() => {setQuery("")}}
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-              >
-                <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
-              </Button>
+              {searchQuery.trim() !== "" && (
+                <Button
+                  className={
+                    VanillaComponentResolver.instance.assetGridTheme.item +
+                    " " +
+                    styles.clearIcon
+                  }
+                  variant="icon"
+                  onSelect={() => {
+                    setSearchText("");
+                  }}
+                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                >
+                  <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
+                </Button>
+              )}
             </div>
           </div>
 
           <div className={styles.topBarSection}>
             <div className={styles.categorySection}>
-              <VanillaComponentResolver.instance.ToolButton
-                selected={true}
-                onSelect={() => {}}
-                src="coui://uil/Colored/TreeVanilla.svg"
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                className={
-                  VanillaComponentResolver.instance.toolButtonTheme.button
-                }
-              ></VanillaComponentResolver.instance.ToolButton>
-
-              <VanillaComponentResolver.instance.ToolButton
-                selected={false}
-                onSelect={() => {}}
-                src="Media/Game/Icons/Roads.svg"
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                className={
-                  VanillaComponentResolver.instance.toolButtonTheme.button +
-                  " " +
-                  styles.hasAction
-                }
-              ></VanillaComponentResolver.instance.ToolButton>
-
-              <VanillaComponentResolver.instance.ToolButton
-                selected={false}
-                onSelect={() => {}}
-                src="Media/Game/Icons/ZoneSignature.svg"
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                className={
-                  VanillaComponentResolver.instance.toolButtonTheme.button +
-                  " " +
-                  styles.hasAction
-                }
-              ></VanillaComponentResolver.instance.ToolButton>
+              {CategoryList.map((element) => (
+                <VanillaComponentResolver.instance.ToolButton
+                  selected={element.id == CurrentCategory}
+                  onSelect={() => setCurrentCategory(element.id)}
+                  src={element.icon}
+                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                  className={
+                    VanillaComponentResolver.instance.toolButtonTheme.button
+                  }
+                ></VanillaComponentResolver.instance.ToolButton>
+              ))}
             </div>
 
             <Button
@@ -177,7 +188,7 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
                 styles.closeIcon
               }
               variant="icon"
-              onSelect={() => {trigger(mod.id, "FindItIconToggled");}}
+              onSelect={() => trigger(mod.id, "FindItIconToggled")}
               focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
             >
               <img src="coui://uil/Standard/XClose.svg"></img>
@@ -187,49 +198,31 @@ export const TopBarComponent : ModuleRegistryExtend = (Component) => {
 
         <div className={AssetCategoryTabTheme.assetCategoryTabBar}>
           <div className={AssetCategoryTabTheme.items}>
-            <Button
-              className={
-                VanillaComponentResolver.instance.assetGridTheme.item +
-                " " +
-                styles.tabButton
-              }
-              selected={true}
-              variant="icon"
-              onSelect={() => {}}
-              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            >
-              <img
-                src="coui://uil/Colored/TreeVanilla.svg"
+            {SubCategoryList.map((element) => (
+              <Button
                 className={
-                  VanillaComponentResolver.instance.assetGridTheme.thumbnail +
+                  VanillaComponentResolver.instance.assetGridTheme.item +
                   " " +
-                  styles.gridThumbnail
+                  styles.tabButton
                 }
-              ></img>
-            </Button>
-            <Button
-              className={
-                VanillaComponentResolver.instance.assetGridTheme.item +
-                " " +
-                styles.tabButton
-              }
-              selected={false}
-              variant="icon"
-              onSelect={() => {}}
-              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            >
-              <img
-                src="Media/Game/Icons/Vegetation.svg"
-                className={
-                  VanillaComponentResolver.instance.assetGridTheme.thumbnail +
-                  " " +
-                  styles.gridThumbnail
-                }
-              ></img>
-            </Button>
+                selected={element.id == CurrentSubCategory}
+                variant="icon"
+                onSelect={() => setCurrentSubCategory(element.id)}
+                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+              >
+                <img
+                  src={element.icon}
+                  className={
+                    VanillaComponentResolver.instance.assetGridTheme.thumbnail +
+                    " " +
+                    styles.gridThumbnail
+                  }
+                ></img>
+              </Button>
+            ))}
           </div>
         </div>
       </>
     );
-  }
+  };
 };
