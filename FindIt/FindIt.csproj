@@ -20,11 +20,6 @@
 	<Target Name="BuildUI" AfterTargets="AfterBuild">
 		<Exec Command="npm run build" WorkingDirectory="$(ProjectDir)/UI" />
 	</Target>
-	
-	<ItemGroup>
-	  <Compile Remove="Domain\Utilities\ServiceBuildingPrefabCategoryProcessor.cs" />
-	  <Compile Remove="Systems\PrefabIndexingSystem.cs" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Game">
@@ -83,8 +78,6 @@
 	<ItemGroup>
 		<None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
-		<None Include="Domain\Utilities\ServiceBuildingPrefabCategoryProcessor.cs" />
-		<None Include="Systems\PrefabIndexingSystem.cs" />
 	</ItemGroup>
 
 </Project>

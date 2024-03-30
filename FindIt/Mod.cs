@@ -30,7 +30,7 @@ namespace FindIt
 
 			//AssetDatabase.global.LoadSettings(nameof(FindIt), m_Setting, new Setting(this));
 
-			// updateSystem.UpdateAfter<PrefabIndexingSystem>(SystemUpdatePhase.PrefabReferences);
+			updateSystem.UpdateAfter<PrefabIndexingSystem>(SystemUpdatePhase.PrefabReferences);
 			updateSystem.UpdateAt<FindItPanelUISystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<PrefabSearchUISystem>(SystemUpdatePhase.UIUpdate);
 		}

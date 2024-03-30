@@ -28,12 +28,11 @@ namespace FindIt.Systems
 
             // These establish the bindings with UI code.
             AddBinding(_ShowFindItPanel = new ValueBinding<bool>(ModId, "ShowFindItPanel", false));
-
-            // These establish the bindings with UI code.
             AddBinding(_ActivePrefabEntity = new ValueBinding<Entity>(ModId, "ActivePrefabEntity", Entity.Null));
-
+            
             // These establish listeners to trigger events from UI.
             AddBinding(new TriggerBinding(ModId, "FindItIconToggled", FindItIconToggled));
+            AddBinding(new TriggerBinding<Entity>(ModId, "PrefabChange", TryActivatePrefabTool));
 
             // This setup a keybinding for activating FindItPanel.
             InputAction hotKey = new(ModId);
@@ -56,6 +55,18 @@ namespace FindIt.Systems
             FindItIconToggled();
 
             // We may need to implement a check for active prefab to filter for zoning prefabs, maybe bulldozer prefabs, or others that do not make sense for FindIt.
+        }
+
+        /// <summary>
+        /// If prefab entity is valid activate prefab tool for that prefab base.
+        /// </summary>
+        /// <param name="e">Entity from UI.</param>
+        private void TryActivatePrefabTool(Entity e)
+        {
+            if (_PrefabSystem.TryGetPrefab(e, out PrefabBase prefabBase))
+            {
+                _ToolSystem.ActivatePrefabTool(prefabBase);
+            }
         }
 
         /// <summary>
