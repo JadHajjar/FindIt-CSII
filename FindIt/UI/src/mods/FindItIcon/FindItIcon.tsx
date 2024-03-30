@@ -1,6 +1,6 @@
 import iconStyles from "./findItIcon.module.scss";
 import { useValue, trigger, bindValue } from "cs2/api";
-import { game, PrefabRequirement, Theme } from "cs2/bindings";
+import { game, Theme } from "cs2/bindings";
 import { getModule } from "cs2/modding";
 import { Button } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
@@ -18,12 +18,11 @@ export const ToolBarButtonTheme: Theme | any = getModule(
   ); 
 
 export function handleClick() {
-    trigger(mod.id, "FintItIconToggled");
+    trigger(mod.id, "FindItIconToggled");
 }
 
 export const FindItIconComponent = () => {
-    const activeGamePanel = useValue(game.activeGamePanel$);
-    const isPhotoMode : boolean = activeGamePanel?.__Type == game.GamePanelType.PhotoMode;
+    const isPhotoMode = useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
 
     // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
     const ShowFindItPanel = useValue(ShowFindItPanel$); 

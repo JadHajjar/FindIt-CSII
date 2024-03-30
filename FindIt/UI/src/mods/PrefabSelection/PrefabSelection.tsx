@@ -1,5 +1,5 @@
 import { bindValue, trigger, useValue } from "cs2/api";
-import { tool } from "cs2/bindings";
+import { prefab, Entity, toolbar$1  } from "cs2/bindings";
 import styles from "./prefabSelection.module.scss";
 import { Button, Panel, Portal, Scrollable } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
@@ -18,7 +18,7 @@ export function changePrefab(prefab: string) {
 }
 
 // These establishes the binding with C# side.
-export const ActivePrefabName$ =        bindValue<string> (mod.id, 'ActivePrefabName');
+export const ActivePrefabEntity$ =        bindValue<Entity> (mod.id, 'ActivePrefabEntity');
 export const ShowFindItPanel$ =        bindValue<boolean> (mod.id, 'ShowFindItPanel');
 
 // defines trigger event names.
@@ -37,7 +37,15 @@ export const PrefabSelectionComponent : ModuleRegistryExtend = (Component) =>
     
     // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
     const ShowFindItPanel = useValue(ShowFindItPanel$); 
-    var ActivePrefabName = streamPrefab;  // To be replaced with sseValue(ActivePrefabName$); and can be const.
+    const ActivePrefabEntity = useValue(ActivePrefabEntity$); 
+    const prefabEntity : Entity = { index: 12561, version: 1};
+    const prefabDetails = prefab.prefabDetails$.getValue(prefabEntity);
+    console.log(prefabDetails?.name);
+    console.log(prefabDetails?.titleId);
+    console.log(prefabDetails?.descriptionId);
+    console.log(prefabDetails?.icon);
+    console.log("test");
+
 
     // translation handling. Translates using locale keys that are defined in C# or fallback string here.
     const { translate } = useLocalization();
@@ -54,15 +62,15 @@ export const PrefabSelectionComponent : ModuleRegistryExtend = (Component) =>
     {
       buttons.push(
         <PrefabItemComponent
-          src={StreamSrc}
-          text="test"
+          src={prefabDetails?.icon}
+          text={prefabDetails?.name}
           selected={true}
         ></PrefabItemComponent>
       );
       buttons.push(
         <PrefabItemComponent
-          src={RiverSrc}
-          text="longer informational text"
+          src={prefab.prefabDetails$.getValue(ActivePrefabEntity)?.icon}
+          text={prefab.prefabDetails$.getValue(ActivePrefabEntity)?.name}
         ></PrefabItemComponent>
       );
       buttons.push(

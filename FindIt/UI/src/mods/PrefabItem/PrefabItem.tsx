@@ -4,6 +4,7 @@ import { Button } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
 import { useLocalization } from "cs2/l10n";
+import { Entity } from "cs2/bindings";
 
 // This functions trigger an event on C# side and C# designates the method to implement.
 export function changePrefab(prefab: string) {
@@ -21,9 +22,10 @@ export const riverPrefab = "WaterSource River";
 export const seaPrefab = "WaterSource Sea";
 
 export interface IconButtonProps {
-  src: string;
-  text: string;
+  src: string | undefined;
+  text: string | undefined;
   selected?: boolean;
+  prefabEntity? : Entity; // This is new.
 }
 
 export const PrefabItemComponent = (props: IconButtonProps) => {
