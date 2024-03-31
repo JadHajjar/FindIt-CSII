@@ -51,17 +51,30 @@ namespace FindIt.Domain.Utilities
 			};
 
 			var zoneData = _entityManager.GetComponentData<ZoneData>(zonePrefab);
+			var ambienceData = _entityManager.GetComponentData<GroupAmbienceData>(zonePrefab);
 
 			switch (zoneData.m_AreaType)
 			{
 				case Game.Zones.AreaType.Residential:
-					prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Residential;
+					prefabIndex.SubCategory = ambienceData.m_AmbienceType == Game.Simulation.GroupAmbienceType.ResidentialMixed ? Enums.PrefabSubCategory.Buildings_Mixed : Enums.PrefabSubCategory.Buildings_Residential;
 					break;
 				case Game.Zones.AreaType.Commercial:
 					prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Commercial;
 					break;
 				case Game.Zones.AreaType.Industrial:
-					prefabIndex.SubCategory = zoneData.m_ZoneFlags == ZoneFlags.Office ? Enums.PrefabSubCategory.Buildings_Office : Enums.PrefabSubCategory.Buildings_Industrial;
+					if (zoneData.m_ZoneFlags == ZoneFlags.Office)
+					{
+						prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Office;
+					}
+					else if (ambienceData.m_AmbienceType == Game.Simulation.GroupAmbienceType.Industrial)
+					{
+						prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Industrial;
+					}
+					else
+					{
+						prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Specialized;
+					}
+
 					break;
 				default:
 					return false;

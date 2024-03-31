@@ -5,14 +5,11 @@ import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaC
 import mod from "../../../mod.json";
 import { useLocalization } from "cs2/l10n";
 import { useState } from "react";
+import { PrefabEntry } from "domain/prefabEntry";
 
 export interface PrefabButtonProps {
-  id: number;
-  src: string;
-  text: string;
-  favorited: boolean;
-  selected?: boolean;
-  onFavoriteClicked: () => void;
+  prefab: PrefabEntry;
+  selected: boolean;
 }
 
 // These establishes the binding with C# side.
@@ -30,9 +27,8 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
 
   function ToggleFavorited(id: number) {
     trigger(mod.id, "ToggleFavorited", id);
-    props.favorited = !props.favorited;
+    props.prefab.favorited = !props.prefab.favorited;
     setFavorited(!favoriteFlip);
-    props.onFavoriteClicked();
   }
 
   return (
@@ -44,12 +40,15 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
       }
       selected={props.selected}
       variant="icon"
-      onSelect={() => SetCurrentPrefab(props.id)}
+      onSelect={() => SetCurrentPrefab(props.prefab.id)}
       focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
     >
       <img
-        src={props.src}
-        alt="coui://uil/Colored/BenchAndLampProps.svg"
+        src={props.prefab.thumbnail}
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null; // prevents looping
+          currentTarget.src = props.prefab.fallbackThumbnail;
+        }}
         className={
           VanillaComponentResolver.instance.assetGridTheme.thumbnail +
           " " +
@@ -58,7 +57,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
       ></img>
 
       <div className={styles.gridItemText}>
-        <p>{props.text}</p>
+        <p>{props.prefab.name}</p>
       </div>
 
       <Button
@@ -66,20 +65,25 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           VanillaComponentResolver.instance.assetGridTheme.item +
           " " +
           styles.favoriteIcon +
-          (props.favorited ? " " + styles.favorited : "")
+          (props.prefab.favorited ? " " + styles.favorited : "")
         }
         variant="icon"
-        onSelect={() => ToggleFavorited(props.id)}
+        onSelect={() => ToggleFavorited(props.prefab.id)}
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
       >
         <img
           src={
-            props.favorited
+            props.prefab.favorited
               ? "coui://uil/Colored/StarFilled.svg"
               : "coui://uil/Colored/StarOutline.svg"
           }
         ></img>
       </Button>
+
+      <img
+        src={props.prefab.dlcThumbnail}
+        className={styles.dlcThumbnail}
+      ></img>
     </Button>
   );
 };

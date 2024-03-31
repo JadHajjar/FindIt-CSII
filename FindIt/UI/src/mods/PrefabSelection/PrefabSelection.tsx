@@ -12,37 +12,32 @@ export const PrefabList$ = bindValue<PrefabEntry[]>(mod.id, "PrefabList");
 export const ActivePrefabId$ = bindValue<number>(mod.id, "ActivePrefabId");
 
 export const PrefabSelectionComponent = () => {
+  // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
+  const ShowFindItPanel = useValue(ShowFindItPanel$);
+  const PrefabList = useValue(PrefabList$);
+  const ActivePrefabId = useValue(ActivePrefabId$);
 
-    // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
-    const ShowFindItPanel = useValue(ShowFindItPanel$);
-    const PrefabList = useValue(PrefabList$);
-    const ActivePrefabId = useValue(ActivePrefabId$);
+  // Do not put any Hooks (i.e. UseXXXX) after this point.
+  if (!ShowFindItPanel) {
+    return null;
+  }
 
-    // Do not put any Hooks (i.e. UseXXXX) after this point.
-    if (!ShowFindItPanel) {
-      return null;
-    }
-
-    return (
-      <>
-        <Scrollable
-          vertical={true}
-          trackVisibility="always"
-          className={styles.scrollableContainer}
-        >
-          <div className={styles.panelSection}>
-            {PrefabList.map((prefab) => (
-              <PrefabItemComponent
-                id={prefab.id}
-                src={prefab.thumbnail}
-                text={prefab.name}
-                favorited={prefab.favorited}
-                selected={prefab.id == ActivePrefabId}
-                onFavoriteClicked={() => (prefab.favorited = !prefab.favorited)}
-              ></PrefabItemComponent>
-            ))}
-          </div>
-        </Scrollable>
-      </>
-    );
+  return (
+    <>
+      <Scrollable
+        vertical={true}
+        trackVisibility="always"
+        className={styles.scrollableContainer}
+      >
+        <div className={styles.panelSection}>
+          {PrefabList.map((prefab) => (
+            <PrefabItemComponent
+              prefab={prefab}
+              selected={prefab.id == ActivePrefabId}
+            ></PrefabItemComponent>
+          ))}
+        </div>
+      </Scrollable>
+    </>
+  );
 };

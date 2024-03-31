@@ -1,4 +1,6 @@
 ﻿using Colossal.Logging;
+using Colossal.PSI.Common;
+using Colossal.Serialization.Entities;
 
 using FindIt.Domain;
 using FindIt.Domain.Enums;
@@ -9,10 +11,12 @@ using Game;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI;
+using Game.UI.InGame;
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 using Unity.Collections;
@@ -24,14 +28,23 @@ namespace FindIt.Systems
 	{
 		private PrefabSystem _prefabSystem;
 		private ImageSystem _imageSystem;
+		private PrefabUISystem _prefabUISystem;
+		private HashSet<string> _blackList;
+
 		private readonly List<IPrefabCategoryProcessor> _prefabCategoryProcessors = new();
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
 
-			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>()!;
-			_imageSystem = World.GetOrCreateSystemManaged<ImageSystem>()!;
+			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
+			_imageSystem = World.GetOrCreateSystemManaged<ImageSystem>();
+			_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
+
+			using var stream = typeof(Mod).Assembly.GetManifestResourceStream("FindIt.Resources.Blacklist.txt");
+			using var reader = new StreamReader(stream);
+
+			_blackList = new HashSet<string>(reader.ReadToEnd().Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries));
 
 			foreach (var type in typeof(PrefabIndexingSystem).Assembly.GetTypes())
 			{
@@ -42,6 +55,13 @@ namespace FindIt.Systems
 			}
 		}
 
+		protected override void OnGamePreload(Purpose purpose, GameMode mode)
+		{
+			base.OnGamePreload(purpose, mode);
+
+			Enabled = true;
+		}
+
 		protected override void OnUpdate()
 		{
 			var stopWatch = Stopwatch.StartNew();
@@ -49,6 +69,9 @@ namespace FindIt.Systems
 			FindItUtil.CategorizedPrefabs.Clear();
 
 			AddAllCategories();
+
+			var tm_ExcludeCategories = new HashSet<string>();
+			var tm_IncludeCategories = new HashSet<string>();
 
 			for (var ind = 0; ind < _prefabCategoryProcessors.Count; ind++)
 			{
@@ -68,13 +91,19 @@ namespace FindIt.Systems
 
 						if (_prefabSystem.TryGetPrefab<PrefabBase>(entity, out var prefab) && prefab?.name is not null)
 						{
-							Mod.Log.Debug($"\tProcessing: {prefab.name}");
-#if DEBUG
+							if (_blackList.Contains(prefab.name))
+							{
+								continue;
+							}
+
 							if (Mod.Log.isLevelEnabled(Level.Debug))
 							{
-								Mod.Log.Debug($"\t\t> {prefab.GetType().Name} - {string.Join(", ", EntityManager.GetComponentTypes(entity).Select(x => x.GetManagedType().Name))}");
-							}
+								Mod.Log.Debug($"\tProcessing: {prefab.name}");
+#if DEBUG
+								Mod.Log.Debug($"\t\t> {prefab.GetType().Name} - {string.Join(", ", EntityManager.GetComponentTypes(entity).Select(x => x.GetManagedType()?.Name ?? string.Empty))}");
 #endif
+							}
+
 							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
 							{
 								AddPrefab(prefab, entity, prefabIndex);
@@ -97,20 +126,7 @@ namespace FindIt.Systems
 			Mod.Log.Info($"Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds}s");
 			Mod.Log.Info($"Indexed Prefabs Count: {FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Count}");
 
-			//foreach (var grp in Prefabs.GroupBy(x => x.Category))
-			//{
-			//	Mod.Log.Debug(grp.Key);
-
-			//	foreach (var sgrp in grp.GroupBy(x => x.SubCategory))
-			//	{
-			//		Mod.Log.Debug("\t" + sgrp.Key);
-
-			//		foreach (var item in sgrp)
-			//		{
-			//			Mod.Log.Debug("\t\t" + item.Name);
-			//		}
-			//	}
-			//}
+			Enabled = false;
 		}
 
 		private void AddAllCategories()
@@ -140,16 +156,15 @@ namespace FindIt.Systems
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
 		{
 			prefabIndex.Id = entity.Index;
-			prefabIndex.Name =  prefab.name;//.Replace('_', ' ').FormatWords();
-			prefabIndex.Thumbnail = _imageSystem.GetThumbnail(entity);
+			prefabIndex.Name = GetAssetName(prefab);
+			prefabIndex.Thumbnail ??= _imageSystem.GetThumbnail(entity);
 			prefabIndex.Favorited = FindItUtil.IsFavorited(prefab);
+			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 
-			Mod.Log.Debug(prefabIndex.Thumbnail);
-
-			//if (string.IsNullOrEmpty(prefabIndex.Thumbnail) || prefabIndex.Thumbnail.StartsWith("thumbnail://") || prefabIndex.Thumbnail == _imageSystem.placeholderIcon)
-			//{
-			//	prefabIndex.Thumbnail = CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
-			//}
+			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites) && contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
+			{
+				prefabIndex.DlcThumbnail = $"Media/DLC/{PlatformManager.instance.GetDlcName(dlcRequirements.m_Dlc)}.svg";
+			}
 
 			FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
@@ -166,6 +181,18 @@ namespace FindIt.Systems
 
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 			}
+		}
+
+		private string GetAssetName(PrefabBase prefab)
+		{
+			_prefabUISystem.GetTitleAndDescription(prefab, out var titleId, out var _);
+
+			if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
+			{
+				return name;
+			}
+
+			return prefab.name.Replace('_', ' ').FormatWords();
 		}
 	}
 }

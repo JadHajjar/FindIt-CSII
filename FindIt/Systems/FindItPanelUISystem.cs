@@ -56,15 +56,21 @@ namespace FindIt.Systems
 			AddBinding(_ActivePrefabId = new ValueBinding<int>(Mod.Id, "ActivePrefabId", 0));
 
 			// These establish listeners to trigger events from UI.
-			AddBinding(new TriggerBinding(Mod.Id, "FindItIconToggled", FindItIconToggled));
+			AddBinding(new TriggerBinding(Mod.Id, "FindItCloseToggled", () => ToggleFindItPanel(false)));
+			AddBinding(new TriggerBinding(Mod.Id, "FindItIconToggled", () => ToggleFindItPanel(!_ShowFindItPanel.value)));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "SetCurrentPrefab", TryActivatePrefabTool));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "ToggleFavorited", ToggleFavorited));
 
 			// This setup a keybinding for activating FindItPanel.
-			InputAction hotKey = new(Mod.Id);
-			hotKey.AddCompositeBinding("ButtonWithOneModifier").With("Modifier", "<Keyboard>/ctrl").With("Button", "<Keyboard>/f");
-			hotKey.performed += OnKeyPressed;
-			hotKey.Enable();
+			InputAction hotKeyCtrlF = new(Mod.Id);
+			hotKeyCtrlF.AddCompositeBinding("ButtonWithOneModifier").With("Modifier", "<Keyboard>/ctrl").With("Button", "<Keyboard>/f");
+			hotKeyCtrlF.performed += OnCtrlFKeyPressed;
+			hotKeyCtrlF.Enable();
+
+			//InputAction hotKeyEscape = new(Mod.Id);
+			//hotKeyEscape.AddBinding("Button", "<Keyboard>/esc");
+			//hotKeyEscape.performed += OnEscapeKeyPressed;
+			//hotKeyEscape.Enable();
 		}
 
 		private void SetCurrentCategory(int category)
@@ -98,23 +104,41 @@ namespace FindIt.Systems
 		/// <summary>
 		/// This event toggles the ShowFindItPanel binding.
 		/// </summary>
-		private void FindItIconToggled()
+		private void ToggleFindItPanel(bool visible)
 		{
-			if (!_ShowFindItPanel.value)
+			if (_ShowFindItPanel.value == visible)
+			{
+				return;
+			}
+
+			if (visible)
 			{
 				_PrefabSearchUISystem.UpdateCategoriesList();
 			}
+			else
+			{
+				_ToolSystem.ActivatePrefabTool(null);
+				_ToolSystem.activeTool.TrySetPrefab(null);
+			}
 
-			_ShowFindItPanel.Update(!_ShowFindItPanel.value);
+			FindItUtil.IsActive = visible;
+			_ShowFindItPanel.Update(visible);
 		}
 
 		/// <summary>
 		/// This handles the keybinding pressed event.
 		/// </summary>
 		/// <param name="context">Not used yet.</param>
-		private void OnKeyPressed(InputAction.CallbackContext context)
+		private void OnCtrlFKeyPressed(InputAction.CallbackContext context)
 		{
-			FindItIconToggled();
+			ToggleFindItPanel(true);
+
+			// We may need to implement a check for active prefab to filter for zoning prefabs, maybe bulldozer prefabs, or others that do not make sense for FindIt.
+		}
+
+		private void OnEscapeKeyPressed(InputAction.CallbackContext context)
+		{
+			ToggleFindItPanel(false);
 
 			// We may need to implement a check for active prefab to filter for zoning prefabs, maybe bulldozer prefabs, or others that do not make sense for FindIt.
 		}

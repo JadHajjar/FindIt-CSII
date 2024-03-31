@@ -1,5 +1,4 @@
-﻿using Colossal.IO.AssetDatabase;
-using Colossal.Logging;
+﻿using Colossal.Logging;
 
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
@@ -7,9 +6,6 @@ using FindIt.Systems;
 using Game;
 using Game.Modding;
 using Game.SceneFlow;
-
-using System;
-using System.IO;
 
 namespace FindIt
 {
@@ -26,7 +22,9 @@ namespace FindIt
 			Log.Info(nameof(OnLoad));
 
 			if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
+			{
 				Log.Info($"Current mod asset at {asset.path}");
+			}
 
 			FindItUtil.LoadCustomPrefabData();
 

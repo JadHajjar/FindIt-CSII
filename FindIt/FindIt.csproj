@@ -20,6 +20,14 @@
 	<Target Name="BuildUI" AfterTargets="AfterBuild">
 		<Exec Command="npm run build" WorkingDirectory="$(ProjectDir)/UI" />
 	</Target>
+	
+	<ItemGroup>
+	  <None Remove="Resources\Blacklist.txt" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Blacklist.txt" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Game">
