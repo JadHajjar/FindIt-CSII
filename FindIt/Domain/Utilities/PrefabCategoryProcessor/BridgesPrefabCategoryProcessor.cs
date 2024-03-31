@@ -6,26 +6,26 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public class TreePrefabCategoryProcessor : IPrefabCategoryProcessor
+	public class BridgesPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
 
 		public EntityQuery Query { get; set; }
 
-		public TreePrefabCategoryProcessor(EntityManager entityManager)
+		public BridgesPrefabCategoryProcessor(EntityManager entityManager)
 		{
 			_entityManager = entityManager;
 		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] 
+			return new[]
 			{
 				new EntityQueryDesc
 				{
 					All = new[]
 					{
-						ComponentType.ReadOnly<TreeData>(),
+						ComponentType.ReadOnly<BridgeData>(),
 					},
 				},
 			};
@@ -33,16 +33,16 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			//if (prefab is StaticObjectPrefab)
-			//{
-			//	prefabIndex = null;
-			//	return false;
-			//}
+			if (prefab is StaticObjectPrefab)
+			{
+				prefabIndex = null; 
+				return false;
+			}
 
 			prefabIndex = new PrefabIndex(prefab)
 			{
-				Category = Enums.PrefabCategory.Trees,
-				SubCategory = Enums.PrefabSubCategory.Trees_Trees
+				Category = Enums.PrefabCategory.Networks,
+				SubCategory = Enums.PrefabSubCategory.Networks_Bridges
 			};
 
 			return true;

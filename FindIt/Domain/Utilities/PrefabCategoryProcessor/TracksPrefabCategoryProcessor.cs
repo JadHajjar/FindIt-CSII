@@ -6,26 +6,26 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public class TreePrefabCategoryProcessor : IPrefabCategoryProcessor
+	public class TracksPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
 
 		public EntityQuery Query { get; set; }
 
-		public TreePrefabCategoryProcessor(EntityManager entityManager)
+		public TracksPrefabCategoryProcessor(EntityManager entityManager)
 		{
 			_entityManager = entityManager;
 		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] 
+			return new[]
 			{
 				new EntityQueryDesc
 				{
 					All = new[]
 					{
-						ComponentType.ReadOnly<TreeData>(),
+						ComponentType.ReadOnly<TrackData>(),
 					},
 				},
 			};
@@ -33,17 +33,18 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			//if (prefab is StaticObjectPrefab)
-			//{
-			//	prefabIndex = null;
-			//	return false;
-			//}
-
-			prefabIndex = new PrefabIndex(prefab)
+			if (prefab is not TrackPrefab)
 			{
-				Category = Enums.PrefabCategory.Trees,
-				SubCategory = Enums.PrefabSubCategory.Trees_Trees
+				prefabIndex = null;
+				return false;
+			}
+				prefabIndex = new PrefabIndex(prefab)
+			{
+				Category = Enums.PrefabCategory.Networks,
+				SubCategory = Enums.PrefabSubCategory.Networks_Tracks
 			};
+
+
 
 			return true;
 		}

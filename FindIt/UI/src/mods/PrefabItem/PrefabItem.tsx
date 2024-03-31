@@ -12,6 +12,7 @@ export interface PrefabButtonProps {
   text: string;
   favorited: boolean;
   selected?: boolean;
+  onFavoriteClicked: () => void;
 }
 
 // These establishes the binding with C# side.
@@ -21,15 +22,17 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
 
-  const [favorited, setFavorited] = useState(props.favorited);
+  const [favoriteFlip, setFavorited] = useState(false);
 
   function SetCurrentPrefab(id: number) {
     trigger(mod.id, "SetCurrentPrefab", id);
   }
 
   function ToggleFavorited(id: number) {
-    setFavorited(!favorited);
     trigger(mod.id, "ToggleFavorited", id);
+    props.favorited = !props.favorited;
+    setFavorited(!favoriteFlip);
+    props.onFavoriteClicked();
   }
 
   return (
@@ -46,6 +49,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
     >
       <img
         src={props.src}
+        alt="coui://uil/Colored/BenchAndLampProps.svg"
         className={
           VanillaComponentResolver.instance.assetGridTheme.thumbnail +
           " " +
@@ -62,7 +66,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           VanillaComponentResolver.instance.assetGridTheme.item +
           " " +
           styles.favoriteIcon +
-          (favorited ? " " + styles.favorited : "")
+          (props.favorited ? " " + styles.favorited : "")
         }
         variant="icon"
         onSelect={() => ToggleFavorited(props.id)}
@@ -70,7 +74,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
       >
         <img
           src={
-            favorited
+            props.favorited
               ? "coui://uil/Colored/StarFilled.svg"
               : "coui://uil/Colored/StarOutline.svg"
           }

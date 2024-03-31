@@ -1,4 +1,4 @@
-import { bindValue, useValue } from "cs2/api";
+import { bindValue, useValue, trigger } from "cs2/api";
 import { Entity } from "cs2/bindings";
 import styles from "./prefabSelection.module.scss";
 import { Scrollable } from "cs2/ui";
@@ -39,6 +39,7 @@ export const PrefabSelectionComponent = () => {
                 text={prefab.name}
                 favorited={prefab.favorited}
                 selected={prefab.id == ActivePrefabId}
+                onFavoriteClicked={() => (prefab.favorited = !prefab.favorited)}
               ></PrefabItemComponent>
             ))}
           </div>

@@ -7,6 +7,7 @@ using FindIt.Domain.Utilities;
 
 using Game;
 using Game.Prefabs;
+using Game.SceneFlow;
 using Game.UI;
 
 using System;
@@ -68,12 +69,12 @@ namespace FindIt.Systems
 						if (_prefabSystem.TryGetPrefab<PrefabBase>(entity, out var prefab) && prefab?.name is not null)
 						{
 							Mod.Log.Debug($"\tProcessing: {prefab.name}");
-
-							if (Mod.Log.isLevelEnabled(Level.Verbose))
+#if DEBUG
+							if (Mod.Log.isLevelEnabled(Level.Debug))
 							{
-								Mod.Log.Verbose($"\t\t> {string.Join(", ", EntityManager.GetComponentTypes(entity).Select(x => x.GetManagedType().Name))}");
+								Mod.Log.Debug($"\t\t> {prefab.GetType().Name} - {string.Join(", ", EntityManager.GetComponentTypes(entity).Select(x => x.GetManagedType().Name))}");
 							}
-
+#endif
 							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
 							{
 								AddPrefab(prefab, entity, prefabIndex);
@@ -139,9 +140,16 @@ namespace FindIt.Systems
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
 		{
 			prefabIndex.Id = entity.Index;
-			prefabIndex.Name = prefab.name.FormatWords();
+			prefabIndex.Name =  prefab.name;//.Replace('_', ' ').FormatWords();
 			prefabIndex.Thumbnail = _imageSystem.GetThumbnail(entity);
 			prefabIndex.Favorited = FindItUtil.IsFavorited(prefab);
+
+			Mod.Log.Debug(prefabIndex.Thumbnail);
+
+			//if (string.IsNullOrEmpty(prefabIndex.Thumbnail) || prefabIndex.Thumbnail.StartsWith("thumbnail://") || prefabIndex.Thumbnail == _imageSystem.placeholderIcon)
+			//{
+			//	prefabIndex.Thumbnail = CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
+			//}
 
 			FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
