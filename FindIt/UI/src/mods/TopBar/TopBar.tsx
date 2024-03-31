@@ -118,7 +118,6 @@ export const TopBarComponent = () => {
 
     return (
       <>
-        <div className={AssetCategoryTabTheme.assetCategoryTabBar}>
           <div className={styles.topBar}>
             <div className={styles.topBarSection}>
               {IsSearchLoading && (
@@ -224,7 +223,6 @@ export const TopBarComponent = () => {
               ))}
             </div>
           </div>
-        </div>
       </>
     );
 };
