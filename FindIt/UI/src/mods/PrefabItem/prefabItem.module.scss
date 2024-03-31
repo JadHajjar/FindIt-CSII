@@ -17,8 +17,9 @@
 .gridItemText {
   width: 95rem;
   font-size: 10rem;
+  max-height: 4em;
   white-space: normal;
-  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gridItemText p {
@@ -33,7 +34,7 @@
   z-index: 99;
   position: absolute;
   top: 0.125em;
-  right: 0.125em;
+  left: 0.125em;
 }
 
 .favoriteIcon.favorited {
@@ -47,4 +48,12 @@
 
 .gridItem:hover .favoriteIcon {
   display: flex;
+}
+
+.dlcThumbnail {
+  width: 1.15em;
+  height: 1.15em;
+  position: absolute;
+  top: 0.375em;
+  right: 0.375em;
 }

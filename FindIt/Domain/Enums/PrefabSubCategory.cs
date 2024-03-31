@@ -9,13 +9,13 @@ namespace FindIt.Domain.Enums
 	public enum PrefabSubCategory
 	{
 		[CategoryIcon("Media/Tools/Snap Options/All.svg")]
-		Any = -1,
+		Any = PrefabCategory.Any,
+
+		[CategoryIcon("coui://uil/Colored/StarFilledSmall.svg")]
+		Favorite = PrefabCategory.Favorite,
 
 		[Obsolete("Use PrefabCategory", true)]
-		Favorite = 0,
-
-		[Obsolete("Use PrefabCategory", true)]
-		Buildings = 100,
+		Buildings = PrefabCategory.Buildings,
 		[CategoryIcon("Media/Game/Icons/ZoneResidential.svg")]
 		Buildings_Residential,
 		[CategoryIcon("Media/Game/Icons/ZoneResidentialMixed.svg")]
@@ -34,7 +34,7 @@ namespace FindIt.Domain.Enums
 		Buildings_Miscellaneous,
 
 		[Obsolete("Use PrefabCategory", true)]
-		Networks = 200,
+		Networks = PrefabCategory.Networks,
 		[CategoryIcon("coui://uil/Colored/Road.svg")]
 		Networks_Roads,
 		[CategoryIcon("Media/Game/Icons/Highways.svg")]
@@ -47,19 +47,42 @@ namespace FindIt.Domain.Enums
 		Networks_Intersections,
 
 		[Obsolete("Use PrefabCategory", true)]
-		Trees = 300,
+		Trees = PrefabCategory.Trees,
 		[CategoryIcon("coui://uil/Colored/TreeVanilla.svg")]
 		Trees_Trees,
 		[CategoryIcon("Media/Game/Icons/Vegetation.svg")]
 		Trees_Shrubs,
+		[CategoryIcon("Media/Game/Resources/Stone.svg")]
+		Trees_Props,
 
 		[Obsolete("Use PrefabCategory", true)]
-		Props = 400,
+		Props = PrefabCategory.Props,
 		[CategoryIcon("coui://uil/Colored/BenchAndLampProps.svg")]
-		Props_Generic,
+		Props_Misc,
+		[CategoryIcon("Media/Game/Icons/LotTool.svg")]
+		Props_Surfaces,
+		[CategoryIcon("Media/Game/Icons/ZoneResidential.svg")]
+		Props_Residential,
+		[CategoryIcon("Media/Game/Icons/ZoneCommercial.svg")]
+		Props_Commercial,
+		[CategoryIcon("Media/Game/Icons/ZoneIndustrial.svg")]
+		Props_Industrial,
+		[CategoryIcon("Media/Game/Icons/Police.svg")]
+		Props_Service,
+		[CategoryIcon("coui://uil/Colored/Fence.svg")]
+		Props_Fences,
+		[CategoryIcon("Media/Game/Icons/ParksAndRecreation.svg")]
+		Props_Park,
 		[CategoryIcon("coui://uil/Colored/LampProp.svg")]
 		Props_Lights,
 		[CategoryIcon("coui://uil/Colored/Billboard.svg")]
-		Props_Branding
+		Props_Branding,
+		[CategoryIcon("Media/game/Icons/Lighting.svg")]
+		Props_Road,
+
+		[Obsolete("Use PrefabCategory", true)]
+		Vehicles = PrefabCategory.Vehicles,
+		[CategoryIcon("Media/Game/Icons/ZoneResidential.svg")]
+		Vehicles_Residential,
 	}
 }

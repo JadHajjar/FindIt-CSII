@@ -9,59 +9,70 @@ import { Portal } from "cs2/ui";
 import styles from "./mainContainer.module.scss";
 
 // These contain the coui paths to Unified Icon Library svg assets
-export const findItIconSrc =                         "coui://uil/Standard/Magnifier.svg";
+export const findItIconSrc = "coui://uil/Standard/Magnifier.svg";
 
 // This functions trigger an event on C# side and C# designates the method to implement.
-export const ShowFindItPanel$ =        bindValue<boolean> (mod.id, 'ShowFindItPanel');
+export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 
 export const GameMainScreneTheme: Theme | any = getModule(
-    "game-ui/game/components/game-main-screen.module.scss",
-    "classes"
-  ); 
+  "game-ui/game/components/game-main-screen.module.scss",
+  "classes"
+);
 
 export const PanelTheme: Theme | any = getModule(
-    "game-ui/common/panel/panel.module.scss",
-    "classes"
-)
+  "game-ui/common/panel/panel.module.scss",
+  "classes"
+);
 
 export const AssetMenuTheme: Theme | any = getModule(
-    "game-ui/game/components/asset-menu/asset-menu.module.scss",
-    "classes"
-)
+  "game-ui/game/components/asset-menu/asset-menu.module.scss",
+  "classes"
+);
 
 export const DefaultMainTheme: Theme | any = getModule(
-    "game-ui/common/panel/themes/default.module.scss",
-    "classes"
-)
-  
+  "game-ui/common/panel/themes/default.module.scss",
+  "classes"
+);
+
 export const FindItMainContainerComponent = () => {
-    const isPhotoMode = useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
+  const isPhotoMode =
+    useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
 
-    // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
-    const ShowFindItPanel = useValue(ShowFindItPanel$); 
+  // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
+  const ShowFindItPanel = useValue(ShowFindItPanel$);
 
-
-    if (!isPhotoMode && ShowFindItPanel) {
-        return (
-            <Portal>
-                <div className={styles.findItMainContainer}>
-                    <div className={GameMainScreneTheme.toolLayout}>
-                        <div className={GameMainScreneTheme.toolMainColumn}>
-                            <div className={GameMainScreneTheme.toolPanel}>
-                                <div className={DefaultMainTheme.header}>
-                                    <TopBarComponent></TopBarComponent>
-                                </div>
-                                <div className={DefaultMainTheme.content + " " + PanelTheme.panel + " " + AssetMenuTheme.assetPanel}>
-                                    <PrefabSelectionComponent></PrefabSelectionComponent>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  if (!isPhotoMode && ShowFindItPanel) {
+    return (
+      <Portal>
+        <div className={styles.findItMainContainer}>
+          <div className={GameMainScreneTheme.toolLayout}>
+            <div className={GameMainScreneTheme.toolMainColumn}>
+              <div
+                className={
+                  GameMainScreneTheme.toolPanel + " " + styles.panelSize
+                }
+              >
+                <div className={DefaultMainTheme.header}>
+                  <TopBarComponent></TopBarComponent>
                 </div>
-            </Portal> 
-        );
-    }
-        
-    return null;
-    
-}
+                <div
+                  className={
+                    DefaultMainTheme.content +
+                    " " +
+                    PanelTheme.panel +
+                    " " +
+                    AssetMenuTheme.assetPanel
+                  }
+                >
+                  <PrefabSelectionComponent></PrefabSelectionComponent>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Portal>
+    );
+  }
+
+  return null;
+};

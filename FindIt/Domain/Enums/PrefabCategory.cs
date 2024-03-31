@@ -19,6 +19,8 @@ namespace FindIt.Domain.Enums
 		[CategoryIcon("coui://uil/Colored/TreeVanilla.svg")]
 		Trees = 300,
 		[CategoryIcon("coui://uil/Colored/BenchAndLampProps.svg")]
-		Props = 400
+		Props = 400,
+		[CategoryIcon("coui://uil/Colored/BenchAndLampProps.svg")]
+		Vehicles = 500
 	}
 }
