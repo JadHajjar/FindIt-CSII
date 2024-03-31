@@ -12,10 +12,7 @@ export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 export const PrefabList$ = bindValue<PrefabEntry[]>(mod.id, "PrefabList");
 export const ActivePrefabId$ = bindValue<number>(mod.id, "ActivePrefabId");
 
-export const PrefabSelectionComponent: ModuleRegistryExtend = (Component) => {
-  // I believe you should not put anything here.
-  return (props) => {
-    const { children, ...otherProps } = props || {};
+export const PrefabSelectionComponent = () => {
 
     // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
     const ShowFindItPanel = useValue(ShowFindItPanel$);
@@ -24,7 +21,7 @@ export const PrefabSelectionComponent: ModuleRegistryExtend = (Component) => {
 
     // Do not put any Hooks (i.e. UseXXXX) after this point.
     if (!ShowFindItPanel) {
-      return <Component {...otherProps}>{children}</Component>;
+      return null;
     }
 
     return (
@@ -49,5 +46,4 @@ export const PrefabSelectionComponent: ModuleRegistryExtend = (Component) => {
         </Scrollable>
       </>
     );
-  };
 };
