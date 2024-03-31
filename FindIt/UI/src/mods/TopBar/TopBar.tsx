@@ -77,7 +77,10 @@ export const SubCategoryList$ = bindValue<PrefabSubCategory[]>(
 // defines trigger event names.
 export const eventName = "PrefabChange";
 
-export const TopBarComponent = () => {
+export const TopBarComponent: ModuleRegistryExtend = (Component) => {
+  // I believe you should not put anything here.
+  return (props) => {
+    const { children, ...otherProps } = props || {};
 
     // These get the value of the bindings. Or they will when we have bindings.
     const ShowFindItPanel = useValue(ShowFindItPanel$); // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
@@ -113,7 +116,7 @@ export const TopBarComponent = () => {
 
     // Do not put any Hooks (i.e. UseXXXX) after this point.
     if (!ShowFindItPanel) {
-      return <></>
+      return <Component {...otherProps}>{children}</Component>;
     }
 
     return (
@@ -221,4 +224,5 @@ export const TopBarComponent = () => {
         </div>
       </>
     );
+  };
 };
