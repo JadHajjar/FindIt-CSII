@@ -118,109 +118,111 @@ export const TopBarComponent = () => {
 
     return (
       <>
-        <div className={styles.topBar}>
-          <div className={styles.topBarSection}>
-            {IsSearchLoading && (
-              <img
-                src="coui://uil/Standard/HalfCircleProgress.svg"
-                className={styles.loadingIcon}
-              ></img>
-            )}
-            {!IsSearchLoading && (
-              <img
-                src="coui://uil/Standard/Magnifier.svg"
-                className={styles.searchIcon}
-              ></img>
-            )}
-            <div className={styles.searchArea}>
-              <TextInput
-                multiline={1}
-                value={searchQuery}
-                disabled={false}
-                type={TextInputType.Text}
-                className={TextInputTheme.input + " " + styles.textBox}
-                focusKey={FocusDisabled$}
-                onChange={handleInputChange}
-                placeholder="Search..."
-              ></TextInput>
-
-              {searchQuery.trim() !== "" && (
-                <Button
-                  className={
-                    VanillaComponentResolver.instance.assetGridTheme.item +
-                    " " +
-                    styles.clearIcon
-                  }
-                  variant="icon"
-                  onSelect={() => {
-                    setSearchText("");
-                  }}
-                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                >
-                  <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
-                </Button>
-              )}
-            </div>
-          </div>
-
-          <div className={styles.topBarSection}>
-            <div className={styles.categorySection}>
-              {CategoryList.map((element) => (
-                <VanillaComponentResolver.instance.ToolButton
-                  selected={element.id == CurrentCategory}
-                  onSelect={() => setCurrentCategory(element.id)}
-                  src={element.icon}
-                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                  className={
-                    VanillaComponentResolver.instance.toolButtonTheme.button
-                  }
-                ></VanillaComponentResolver.instance.ToolButton>
-              ))}
-            </div>
-
-            <Button
-              className={
-                VanillaComponentResolver.instance.assetGridTheme.item +
-                " " +
-                styles.closeIcon
-              }
-              variant="icon"
-              onSelect={() => trigger(mod.id, "FindItIconToggled")}
-              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            >
-              <img src="coui://uil/Standard/XClose.svg"></img>
-            </Button>
-          </div>
-        </div>
-
         <div className={AssetCategoryTabTheme.assetCategoryTabBar}>
-          <div
-            className={
-              AssetCategoryTabTheme.items + " " + styles.subCategoryContainer
-            }
-          >
-            {SubCategoryList.map((element) => (
+          <div className={styles.topBar}>
+            <div className={styles.topBarSection}>
+              {IsSearchLoading && (
+                <img
+                  src="coui://uil/Standard/HalfCircleProgress.svg"
+                  className={styles.loadingIcon}
+                ></img>
+              )}
+              {!IsSearchLoading && (
+                <img
+                  src="coui://uil/Standard/Magnifier.svg"
+                  className={styles.searchIcon}
+                ></img>
+              )}
+              <div className={styles.searchArea}>
+                <TextInput
+                  multiline={1}
+                  value={searchQuery}
+                  disabled={false}
+                  type={TextInputType.Text}
+                  className={TextInputTheme.input + " " + styles.textBox}
+                  focusKey={FocusDisabled$}
+                  onChange={handleInputChange}
+                  placeholder="Search..."
+                ></TextInput>
+
+                {searchQuery.trim() !== "" && (
+                  <Button
+                    className={
+                      VanillaComponentResolver.instance.assetGridTheme.item +
+                      " " +
+                      styles.clearIcon
+                    }
+                    variant="icon"
+                    onSelect={() => {
+                      setSearchText("");
+                    }}
+                    focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                  >
+                    <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.topBarSection}>
+              <div className={styles.categorySection}>
+                {CategoryList.map((element) => (
+                  <VanillaComponentResolver.instance.ToolButton
+                    selected={element.id == CurrentCategory}
+                    onSelect={() => setCurrentCategory(element.id)}
+                    src={element.icon}
+                    focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                    className={
+                      VanillaComponentResolver.instance.toolButtonTheme.button
+                    }
+                  ></VanillaComponentResolver.instance.ToolButton>
+                ))}
+              </div>
+
               <Button
                 className={
                   VanillaComponentResolver.instance.assetGridTheme.item +
                   " " +
-                  styles.tabButton
+                  styles.closeIcon
                 }
-                selected={element.id == CurrentSubCategory}
                 variant="icon"
-                onSelect={() => setCurrentSubCategory(element.id)}
+                onSelect={() => trigger(mod.id, "FindItIconToggled")}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
               >
-                <img
-                  src={element.icon}
-                  className={
-                    VanillaComponentResolver.instance.assetGridTheme.thumbnail +
-                    " " +
-                    styles.gridThumbnail
-                  }
-                ></img>
+                <img src="coui://uil/Standard/XClose.svg"></img>
               </Button>
-            ))}
+            </div>
+          </div>
+
+          <div className={AssetCategoryTabTheme.assetCategoryTabBar}>
+            <div
+              className={
+                AssetCategoryTabTheme.items + " " + styles.subCategoryContainer
+              }
+            >
+              {SubCategoryList.map((element) => (
+                <Button
+                  className={
+                    VanillaComponentResolver.instance.assetGridTheme.item +
+                    " " +
+                    styles.tabButton
+                  }
+                  selected={element.id == CurrentSubCategory}
+                  variant="icon"
+                  onSelect={() => setCurrentSubCategory(element.id)}
+                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                >
+                  <img
+                    src={element.icon}
+                    className={
+                      VanillaComponentResolver.instance.assetGridTheme.thumbnail +
+                      " " +
+                      styles.gridThumbnail
+                    }
+                  ></img>
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </>

@@ -5,7 +5,6 @@ import { Scrollable } from "cs2/ui";
 import mod from "../../../mod.json";
 import { PrefabEntry } from "../../domain/prefabEntry";
 import { PrefabItemComponent } from "../PrefabItem/PrefabItem";
-import { ModuleRegistryExtend } from "cs2/modding";
 
 // These establishes the binding with C# side.
 export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
