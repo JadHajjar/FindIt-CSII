@@ -37,6 +37,14 @@ namespace FindIt.Domain.Enums
 		Networks = 200,
 		[CategoryIcon("coui://uil/Colored/Road.svg")]
 		Networks_Roads,
+		[CategoryIcon("Media/Game/Icons/Highways.svg")]
+		Networks_Highways,
+		[CategoryIcon("Media/Game/Icons/TwoWayTrainTrack.svg")]
+		Networks_Tracks,
+		[CategoryIcon("Media/Game/Icons/CableStayed.svg")]
+		Networks_Bridges,
+		[CategoryIcon("Media/Game/Icons/Intersections.svg")]
+		Networks_Intersections,
 
 		[Obsolete("Use PrefabCategory", true)]
 		Trees = 300,
@@ -46,6 +54,12 @@ namespace FindIt.Domain.Enums
 		Trees_Shrubs,
 
 		[Obsolete("Use PrefabCategory", true)]
-		Props = 400
+		Props = 400,
+		[CategoryIcon("coui://uil/Colored/BenchAndLampProps.svg")]
+		Props_Generic,
+		[CategoryIcon("coui://uil/Colored/LampProp.svg")]
+		Props_Lights,
+		[CategoryIcon("coui://uil/Colored/Billboard.svg")]
+		Props_Branding
 	}
 }

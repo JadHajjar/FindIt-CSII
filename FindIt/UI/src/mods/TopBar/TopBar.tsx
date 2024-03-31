@@ -197,7 +197,11 @@ export const TopBarComponent: ModuleRegistryExtend = (Component) => {
         </div>
 
         <div className={AssetCategoryTabTheme.assetCategoryTabBar}>
-          <div className={AssetCategoryTabTheme.items}>
+          <div
+            className={
+              AssetCategoryTabTheme.items + " " + styles.subCategoryContainer
+            }
+          >
             {SubCategoryList.map((element) => (
               <Button
                 className={

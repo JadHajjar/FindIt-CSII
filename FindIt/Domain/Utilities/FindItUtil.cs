@@ -35,7 +35,7 @@ namespace FindIt.Domain.Utilities
 		{
 			if (string.IsNullOrWhiteSpace(CurrentSearch))
 			{
-				return _cachedSearch = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].Values.ToList();
+				return _cachedSearch = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].Values.OrderBy(x => x.Name).ToList();
 			}
 
 			return _cachedSearch;
@@ -108,7 +108,7 @@ namespace FindIt.Domain.Utilities
 				CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory] = new Dictionary<int, PrefabIndex>();
 			}
 
-			CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any].Remove(prefabIndex.Id);
+			CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 			CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 		}
 
@@ -143,7 +143,7 @@ namespace FindIt.Domain.Utilities
 				return;
 			}
 
-			_cachedSearch = prefabList;
+			_cachedSearch = prefabList.OrderBy(x => x.Name).ToList();
 		}
 
 		public static void SaveCustomPrefabData()
