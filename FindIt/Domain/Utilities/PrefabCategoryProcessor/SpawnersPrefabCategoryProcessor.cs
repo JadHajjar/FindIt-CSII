@@ -6,30 +6,26 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public class ShrubPrefabCategoryProcessor : IPrefabCategoryProcessor
+	public class SpawnersPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
 
 		public EntityQuery Query { get; set; }
 
-		public ShrubPrefabCategoryProcessor(EntityManager entityManager)
+		public SpawnersPrefabCategoryProcessor(EntityManager entityManager)
 		{
 			_entityManager = entityManager;
 		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] 
+			return new[]
 			{
 				new EntityQueryDesc
 				{
 					All = new[]
 					{
-						ComponentType.ReadOnly<PlantData>(),
-					},
-					None = new[]
-					{
-						ComponentType.ReadOnly<TreeData>(),
+						ComponentType.ReadOnly<CreatureSpawnData>(),
 					},
 				},
 			};
@@ -37,16 +33,10 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			if (prefab.name.Contains("ADDAD_") || prefab.name.Contains("Billboard"))
-			{
-				prefabIndex = null;
-				return false;
-			}
-
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Trees,
-				SubCategory = Enums.PrefabSubCategory.Trees_Shrubs
+				SubCategory = Enums.PrefabSubCategory.Trees_Spawners
 			};
 
 			return true;

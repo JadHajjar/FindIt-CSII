@@ -10,6 +10,7 @@ import { PrefabEntry } from "domain/prefabEntry";
 export interface PrefabButtonProps {
   prefab: PrefabEntry;
   selected: boolean;
+  showCategory: boolean;
 }
 
 // These establishes the binding with C# side.
@@ -80,10 +81,21 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         ></img>
       </Button>
 
-      <img
-        src={props.prefab.dlcThumbnail}
-        className={styles.dlcThumbnail}
-      ></img>
+      <div className={styles.rightSideContainer}>
+        {props.prefab.dlcThumbnail && (
+          <img
+            src={props.prefab.dlcThumbnail}
+            className={styles.dlcThumbnail}
+          ></img>
+        )}
+
+        {props.showCategory && (
+          <img
+            src={props.prefab.categoryThumbnail}
+            className={styles.categoryThumbnail}
+          ></img>
+        )}
+      </div>
     </Button>
   );
 };

@@ -28,9 +28,9 @@ namespace FindIt.Domain.Enums
 		Buildings_Office,
 		[CategoryIcon("Media/Game/Icons/ZoneExtractors.svg")]
 		Buildings_Specialized,
-		[CategoryIcon("Media/Game/Icons/ZoneExtractors.svg")]
+		[CategoryIcon("Media/Game/Icons/Police.svg")]
 		Buildings_Services,
-		[CategoryIcon("Media/Game/Icons/ZoneExtractors.svg")]
+		[CategoryIcon("coui://uil/Colored/HouseAlternative.svg")]
 		Buildings_Miscellaneous,
 
 		[Obsolete("Use PrefabCategory", true)]
@@ -50,14 +50,16 @@ namespace FindIt.Domain.Enums
 		Trees = PrefabCategory.Trees,
 		[CategoryIcon("coui://uil/Colored/TreeVanilla.svg")]
 		Trees_Trees,
-		[CategoryIcon("Media/Game/Icons/Vegetation.svg")]
+		[CategoryIcon("coui://uil/Colored/Bush.svg")]
 		Trees_Shrubs,
 		[CategoryIcon("Media/Game/Resources/Stone.svg")]
 		Trees_Props,
+		[CategoryIcon("coui://uil/Colored/Chicken.svg")]
+		Trees_Spawners,
 
 		[Obsolete("Use PrefabCategory", true)]
 		Props = PrefabCategory.Props,
-		[CategoryIcon("coui://uil/Colored/BenchAndLampProps.svg")]
+		[CategoryIcon("coui://uil/Colored/Furniture.svg")]
 		Props_Misc,
 		[CategoryIcon("Media/Game/Icons/LotTool.svg")]
 		Props_Surfaces,
@@ -82,7 +84,23 @@ namespace FindIt.Domain.Enums
 
 		[Obsolete("Use PrefabCategory", true)]
 		Vehicles = PrefabCategory.Vehicles,
-		[CategoryIcon("Media/Game/Icons/ZoneResidential.svg")]
+		[CategoryIcon("coui://uil/Colored/GenericVehicle.svg")]
 		Vehicles_Residential,
+		[CategoryIcon("coui://uil/Colored/Motorbike.svg")]
+		Vehicles_Bikes,
+		[CategoryIcon("coui://uil/Colored/DeliveryVan.svg")]
+		Vehicles_Industrial,
+		[CategoryIcon("Media/Game/Icons/Police.svg")]
+		Vehicles_Services,
+		[CategoryIcon("Media/Game/Icons/Bus.svg")]
+		Vehicles_Bus,
+		[CategoryIcon("Media/Game/Icons/Train.svg")]
+		Vehicles_Train,
+		[CategoryIcon("Media/Game/Icons/Ship.svg")]
+		Vehicles_Ship,
+		[CategoryIcon("Media/Game/Icons/Airplane.svg")]
+		Vehicles_Plane,
+		[CategoryIcon("coui://uil/Colored/GenericVehicles.svg")]
+		Vehicles_Misc,
 	}
 }

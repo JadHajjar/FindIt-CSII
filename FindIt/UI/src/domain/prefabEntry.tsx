@@ -4,5 +4,6 @@ export interface PrefabEntry {
   thumbnail: string;
   fallbackThumbnail: string;
   dlcThumbnail: string;
+  categoryThumbnail: string;
   favorited: boolean;
 }

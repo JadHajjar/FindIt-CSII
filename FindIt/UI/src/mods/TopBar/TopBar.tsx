@@ -61,6 +61,7 @@ export const AssetCategoryTabTheme: Theme | any = getModule(
 export const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
 export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 export const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
+export const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 export const CurrentSubCategory$ = bindValue<number>(
   mod.id,
   "CurrentSubCategory"
@@ -85,11 +86,12 @@ export const TopBarComponent = () => {
   const CategoryList = useValue(CategoryList$);
   const SubCategoryList = useValue(SubCategoryList$);
   const IsSearchLoading = useValue(IsSearchLoading$);
+  const CurrentSearch = useValue(CurrentSearch$);
 
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
 
-  const [searchQuery, setQuery] = useState("");
+  const [searchQuery, setQuery] = useState(CurrentSearch);
 
   function handleInputChange(value: Event) {
     if (value?.target instanceof HTMLTextAreaElement) {

@@ -10,6 +10,7 @@ namespace FindIt.Domain
 		public string Thumbnail { get; set; }
 		public string FallbackThumbnail { get; set; }
 		public string DlcThumbnail { get; set; }
+		public string CategoryThumbnail { get; set; }
 		public bool Favorited { get; set; }
 
 		public PrefabIndexBase(PrefabBase prefabBase)

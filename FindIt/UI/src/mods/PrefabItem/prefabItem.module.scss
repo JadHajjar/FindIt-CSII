@@ -1,7 +1,7 @@
 .gridItem {
   margin: 4rem !important;
   width: 105rem !important;
-  height: 85rem !important;
+  height: 90rem !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,10 +16,10 @@
 
 .gridItemText {
   width: 95rem;
-  font-size: 10rem;
+  font-size: 12rem;
   max-height: 4em;
   white-space: normal;
-  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .gridItemText p {
@@ -50,10 +50,22 @@
   display: flex;
 }
 
-.dlcThumbnail {
-  width: 1.15em;
-  height: 1.15em;
+.rightSideContainer {
   position: absolute;
   top: 0.375em;
   right: 0.375em;
+  display: flex;
+  flex-direction: column;
+}
+
+.dlcThumbnail {
+  width: 1.15em;
+  height: 1.15em;
+  margin-bottom: 0.375em;
+}
+
+.categoryThumbnail {
+  width: 1.15em;
+  height: 1.15em;
+  margin-bottom: 0.375em;
 }

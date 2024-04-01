@@ -19,7 +19,7 @@ namespace FindIt.Domain.Utilities
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] 
+			return new[]
 			{
 				new EntityQueryDesc
 				{
@@ -33,11 +33,11 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			//if (prefab is StaticObjectPrefab)
-			//{
-			//	prefabIndex = null;
-			//	return false;
-			//}
+			if (prefab.name.Contains("ADDAD_") || prefab.name.Contains("Billboard"))
+			{
+				prefabIndex = null;
+				return false;
+			}
 
 			prefabIndex = new PrefabIndex(prefab)
 			{

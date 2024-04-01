@@ -37,6 +37,12 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
+			if (prefab.name.Contains("ADDAD_") || prefab is not BuildingPrefab)
+			{
+				prefabIndex = null;
+				return false;
+			}
+
 			var zonePrefab = GetZonePrefab(entity);
 
 			if (zonePrefab == Entity.Null)

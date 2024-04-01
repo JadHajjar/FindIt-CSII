@@ -31,6 +31,7 @@ namespace FindIt.Domain.Utilities
 				PrefabCategory.Buildings,
 				PrefabCategory.Trees,
 				PrefabCategory.Props,
+				PrefabCategory.Vehicles,
 				PrefabCategory.Favorite,
 			};
 		}
@@ -138,7 +139,9 @@ namespace FindIt.Domain.Utilities
 					return;
 				}
 
-				if (CurrentSearch.SearchCheck(prefabList[index].Name) || prefabList[index].Prefab.name.IndexOf(CurrentSearch, System.StringComparison.InvariantCultureIgnoreCase) >= 0)
+				if (CurrentSearch.SearchCheck(prefabList[index].Name) 
+					|| prefabList[index].Prefab.name.IndexOf(CurrentSearch, System.StringComparison.InvariantCultureIgnoreCase) >= 0
+					|| prefabList[index].SubCategory.ToString().IndexOf(CurrentSearch, System.StringComparison.InvariantCultureIgnoreCase) >= 0)
 				{
 					index++;
 					continue;

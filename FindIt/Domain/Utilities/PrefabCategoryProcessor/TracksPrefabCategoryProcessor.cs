@@ -38,13 +38,12 @@ namespace FindIt.Domain.Utilities
 				prefabIndex = null;
 				return false;
 			}
-				prefabIndex = new PrefabIndex(prefab)
+
+			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Networks,
 				SubCategory = Enums.PrefabSubCategory.Networks_Tracks
 			};
-
-
 
 			return true;
 		}

@@ -1,5 +1,4 @@
-﻿using Colossal.IO.AssetDatabase;
-using Colossal.UI.Binding;
+﻿using Colossal.UI.Binding;
 
 using FindIt.Domain.Enums;
 using FindIt.Domain.Utilities;
@@ -7,10 +6,6 @@ using FindIt.Domain.Utilities;
 using Game.Prefabs;
 using Game.Tools;
 using Game.UI;
-
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Unity.Entities;
 
@@ -20,8 +15,6 @@ namespace FindIt.Systems
 {
 	internal partial class FindItPanelUISystem : UISystemBase
 	{
-		//private const string Mod.Id = "FindIt";
-
 		private ValueBinding<bool> _ShowFindItPanel;
 		private ValueBinding<int> _ActivePrefabId;
 		private ValueBinding<int> _CurrentCategoryBinding;
@@ -31,6 +24,8 @@ namespace FindIt.Systems
 		private PrefabSystem _PrefabSystem;
 		private PrefabIndexingSystem _PrefabIndexingSystem;
 		private PrefabSearchUISystem _PrefabSearchUISystem;
+		private DefaultToolSystem _DefaultToolSystem;
+		private bool settingPrefab;
 
 		protected override void OnCreate()
 		{
@@ -40,6 +35,7 @@ namespace FindIt.Systems
 			_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			_PrefabIndexingSystem = World.GetOrCreateSystemManaged<PrefabIndexingSystem>();
 			_PrefabSearchUISystem = World.GetOrCreateSystemManaged<PrefabSearchUISystem>();
+			_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
 
 			// ToolSystem toolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<ToolSystem>(); // I don't know why vanilla game did this.
 			_ToolSystem.EventPrefabChanged += OnPrefabChanged;
@@ -66,11 +62,6 @@ namespace FindIt.Systems
 			hotKeyCtrlF.AddCompositeBinding("ButtonWithOneModifier").With("Modifier", "<Keyboard>/ctrl").With("Button", "<Keyboard>/f");
 			hotKeyCtrlF.performed += OnCtrlFKeyPressed;
 			hotKeyCtrlF.Enable();
-
-			//InputAction hotKeyEscape = new(Mod.Id);
-			//hotKeyEscape.AddBinding("Button", "<Keyboard>/esc");
-			//hotKeyEscape.performed += OnEscapeKeyPressed;
-			//hotKeyEscape.Enable();
 		}
 
 		private void SetCurrentCategory(int category)
@@ -113,13 +104,15 @@ namespace FindIt.Systems
 
 			if (visible)
 			{
-				_PrefabSearchUISystem.UpdateCategoriesList();
+				var prefab = _PrefabSearchUISystem.UpdateCategoriesList();
+
+				TryActivatePrefabTool(prefab.Id);
 			}
-			else
-			{
-				_ToolSystem.ActivatePrefabTool(null);
-				_ToolSystem.activeTool.TrySetPrefab(null);
-			}
+			//else
+			//{
+			//	_ToolSystem.ActivatePrefabTool(null);
+			//	_ToolSystem.activeTool.TrySetPrefab(null);
+			//}
 
 			FindItUtil.IsActive = visible;
 			_ShowFindItPanel.Update(visible);
@@ -136,12 +129,6 @@ namespace FindIt.Systems
 			// We may need to implement a check for active prefab to filter for zoning prefabs, maybe bulldozer prefabs, or others that do not make sense for FindIt.
 		}
 
-		private void OnEscapeKeyPressed(InputAction.CallbackContext context)
-		{
-			ToggleFindItPanel(false);
-
-			// We may need to implement a check for active prefab to filter for zoning prefabs, maybe bulldozer prefabs, or others that do not make sense for FindIt.
-		}
 
 		/// <summary>
 		/// If prefab entity is valid activate prefab tool for that prefab base.
@@ -151,7 +138,10 @@ namespace FindIt.Systems
 		{
 			if (FindItUtil.GetPrefabBase(id) is PrefabBase prefabBase)
 			{
+				settingPrefab = true;
 				_ToolSystem.ActivatePrefabTool(prefabBase);
+				_ActivePrefabId.Update(id);
+				settingPrefab = false;
 			}
 		}
 
@@ -161,6 +151,12 @@ namespace FindIt.Systems
 		/// <param name="prefab"></param>
 		private void OnPrefabChanged(PrefabBase prefab)
 		{
+			if (!settingPrefab)
+			{
+				ToggleFindItPanel(false);
+				return;
+			}
+
 			if (prefab == null)
 			{
 				return;
@@ -169,7 +165,7 @@ namespace FindIt.Systems
 			if (_PrefabSystem.TryGetEntity(prefab, out var entity))
 			{
 				_ActivePrefabId.Update(entity.Index);
-			};
+			}
 		}
 
 		/// <summary>
@@ -178,17 +174,10 @@ namespace FindIt.Systems
 		/// <param name="tool"></param>
 		private void OnToolChanged(ToolBaseSystem tool)
 		{
-			if (_ToolSystem.activePrefab == null)
+			if (!settingPrefab && tool == _DefaultToolSystem)
 			{
-				return;
+				ToggleFindItPanel(false);
 			}
-
-			if (_PrefabSystem.TryGetEntity(_ToolSystem.activePrefab, out var entity))
-			{
-				_ActivePrefabId.Update(entity.Index);
-			};
-
-			Mod.Log.Debug($"{nameof(FindItPanelUISystem)}.{nameof(OnToolChanged)} ActivePrefab is {_ToolSystem.activePrefab.name}.");
 		}
 	}
 }

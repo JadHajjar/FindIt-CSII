@@ -43,7 +43,11 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			//var isExtension = _entityManager.HasComponent<BuildingExtensionData>(entity);
+			if (prefab is not BuildingPrefab || _entityManager.HasComponent<BuildingPropertyData>(entity))
+			{
+				prefabIndex = null;
+				return false;
+			}
 			
 			prefabIndex = new PrefabIndex(prefab)
 			{

@@ -54,7 +54,7 @@ namespace FindIt.Domain.Utilities
 				return true;
 			}
 			
-			if (_entityManager.HasComponent<BrandObjectData>(entity))
+			if (_entityManager.HasComponent<BrandObjectData>(entity) || prefab.name.Contains("ADDAD"))
 			{
 				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Branding;
 				return true;

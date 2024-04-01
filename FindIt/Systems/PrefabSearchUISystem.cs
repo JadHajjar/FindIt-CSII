@@ -18,6 +18,7 @@ namespace FindIt.Systems
 		private CancellationTokenSource tokenSource;
 
 		private ValueBinding<bool> _IsSearchLoading;
+		private ValueBinding<string> _CurrentSearch;
 		private ValueBinding<CategoryUIEntry[]> _CategoryBinding;
 		private ValueBinding<SubCategoryUIEntry[]> _SubCategoryBinding;
 		private ValueBinding<PrefabUIEntry[]> _PrefabListBinding;
@@ -31,15 +32,21 @@ namespace FindIt.Systems
 			AddBinding(_CategoryBinding = new ValueBinding<CategoryUIEntry[]>(Mod.Id, "CategoryList", new CategoryUIEntry[] { new(PrefabCategory.Any) }, new ArrayWriter<CategoryUIEntry>(new ValueWriter<CategoryUIEntry>())));
 			AddBinding(_SubCategoryBinding = new ValueBinding<SubCategoryUIEntry[]>(Mod.Id, "SubCategoryList", new SubCategoryUIEntry[] { new(PrefabSubCategory.Any) }, new ArrayWriter<SubCategoryUIEntry>(new ValueWriter<SubCategoryUIEntry>())));
 			AddBinding(_PrefabListBinding = new ValueBinding<PrefabUIEntry[]>(Mod.Id, "PrefabList", new PrefabUIEntry[0], new ArrayWriter<PrefabUIEntry>(new ValueWriter<PrefabUIEntry>())));
+			AddBinding(_CurrentSearch = new ValueBinding<string>(Mod.Id, "CurrentSearch", ""));
 
 			AddBinding(new TriggerBinding<string>(Mod.Id, "SearchChanged", SearchChanged));
 		}
 
-		internal void UpdateCategoriesList()
+		internal PrefabUIEntry UpdateCategoriesList()
 		{
 			_CategoryBinding.Update(FindItUtil.GetCategories().Select(x => new CategoryUIEntry(x)).ToArray());
 			_SubCategoryBinding.Update(FindItUtil.GetSubCategories().Select(x => new SubCategoryUIEntry(x)).ToArray());
-			_PrefabListBinding.Update(FindItUtil.GetFilteredPrefabs().Take(500).Select(x => new PrefabUIEntry(x)).ToArray());
+
+			var prefabs = FindItUtil.GetFilteredPrefabs().Take(500).Select(x => new PrefabUIEntry(x)).ToArray();
+			
+			_PrefabListBinding.Update(prefabs);
+
+			return prefabs.FirstOrDefault();
 		}
 
 		public void SearchChanged(string text)
@@ -47,6 +54,7 @@ namespace FindIt.Systems
 			FindItUtil.CurrentSearch = text;
 
 			_IsSearchLoading.Update(true);
+			_CurrentSearch.Update(text);
 
 			Task.Run(DelayedSearch);
 		}

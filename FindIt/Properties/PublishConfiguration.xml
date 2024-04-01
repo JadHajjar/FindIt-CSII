@@ -1,21 +1,50 @@
 ﻿<Publish>
-	<!--Id must be set in order to update existed mod. it is not required for publishing mod for the first time-->
 	<ModId Value="" />
-	<!--Name of the mod to display to players-->
-	<DisplayName Value="test" />
-	<!--Short description of the mod-->
-	<ShortDescription Value="This is a short description" />
-	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
-	<!--LongDescription Value="This is a long description" /-->
+	<DisplayName Value="Find It [Beta]" />
+	<ShortDescription Value="Find It is a mod that lets you quickly browse and search for all of the assets inside of the game." />
 	<LongDescription>
-This is a long description
+# Find It [Beta] for Cities: Skylines II
+Quickly browse and search through all of the assets inside of the game.
+Use **Ctrl+F** to quickly open the Find It panel, or click on the magnifier icon in your toolbar.
+
+Huge thanks to **YenYang** for their help on the UI, and thank you to Chameleon and Algernon for their contribution.
+
+## Features
+* Uses similar categories lookup methods as the base game. As well as the vanilla UI components.
+* Quick and intelligent search methods.
+* Find It panel stays open while placing assets, no jumping between different tabs.
+* Tool options like Tree Controller and Line Tool are fully supported and can be used while the panel is open.
+* Thumbnails for all assets, no more guessing what something is.
+* Favorite your most used assets.
+
+## Planned Features
+* Mutli-tab support, to have multiple instances open at the same time
+* Custom tagging, add your own tags to assets. Will also come with cross compatibility with Skyve.
+* Advanced filtering options
+* Customizable panel size.
+* Asset information when hovering over an item.
+
+## Notes
+Find It should automatically support any mods that add or alter the vanilla assets.
+For example: Extra Landscaping Tool and Extra Networks and Areas
+
+This is currently in public Beta, but it should be stable to use.
+
+If you're having any issues, please report them on my discord as it's easier to help you that way.
 	</LongDescription>
-	<!--Thumbnail-->
+	
 	<Thumbnail Value="Properties/Thumbnail.png" />
-	<!--Screenshot, can be set multiple times-->
-	<!--Tag, can be set multiple times-->
-	<ModVersion Value="1.0" />
-	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.0.*" />
-	<!--Dependency for the mod, can be set multiple times-->
+	<Screenshot Value="Properties/Screenshot_01.png" />
+	<Screenshot Value="Properties/Screenshot_02.png" />
+	<Screenshot Value="Properties/Screenshot_03.png" />
+	<Screenshot Value="Properties/Screenshot_04.png" />
+	
+	<Tag Value="Code Mod" />
+	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
+	
+	<ModVersion Value="0.9.0" />
+	<GameVersion Value="1.1.*" />
+	
+	<ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
+	<ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
 </Publish>

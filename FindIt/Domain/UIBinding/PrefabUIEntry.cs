@@ -18,6 +18,7 @@ namespace FindIt.Domain.UIBinding
 		public string Thumbnail { get; set; }
 		public string FallbackThumbnail { get; set; }
 		public string DlcThumbnail { get; set; }
+		public string CategoryThumbnail { get; set; }
 		public bool Favorited { get; set; }
 
 		public PrefabUIEntry(PrefabIndexBase prefab)
@@ -27,6 +28,7 @@ namespace FindIt.Domain.UIBinding
 			Thumbnail = prefab.Thumbnail;
 			FallbackThumbnail = prefab.FallbackThumbnail;
 			DlcThumbnail = prefab.DlcThumbnail;
+			CategoryThumbnail = prefab.CategoryThumbnail;
 			Favorited = prefab.Favorited;
 		}
 
@@ -43,6 +45,8 @@ namespace FindIt.Domain.UIBinding
 			writer.Write(FallbackThumbnail);
 			writer.PropertyName("dlcThumbnail");
 			writer.Write(DlcThumbnail);
+			writer.PropertyName("categoryThumbnail");
+			writer.Write(CategoryThumbnail);
 			writer.PropertyName("favorited");
 			writer.Write(Favorited);
 			writer.TypeEnd();

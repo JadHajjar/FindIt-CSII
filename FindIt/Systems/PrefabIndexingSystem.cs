@@ -121,6 +121,24 @@ namespace FindIt.Systems
 				}
 			}
 
+			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].GroupBy(x => x.Name))
+			{
+				var count = grp.Count();
+
+				if (count == 1)
+				{
+					continue;
+				}
+
+				var format = new string('0', count.ToString().Length);
+				var index = 1;
+
+				foreach (var prefab in grp)
+				{
+					prefab.Name = $"{prefab.Name} {index++.ToString(format)}";
+				}
+			}
+
 			stopWatch.Stop();
 
 			Mod.Log.Info($"Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds}s");
@@ -160,6 +178,7 @@ namespace FindIt.Systems
 			prefabIndex.Thumbnail ??= _imageSystem.GetThumbnail(entity);
 			prefabIndex.Favorited = FindItUtil.IsFavorited(prefab);
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
+			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.Category).Icon;
 
 			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites) && contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
 			{
