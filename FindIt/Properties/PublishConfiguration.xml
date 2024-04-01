@@ -1,13 +1,18 @@
 ﻿<Publish>
-	<ModId Value="" />
+	<ModId Value="77240" />
 	<DisplayName Value="Find It [Beta]" />
 	<ShortDescription Value="Find It is a mod that lets you quickly browse and search for all of the assets inside of the game." />
 	<LongDescription>
 # Find It [Beta] for Cities: Skylines II
 Quickly browse and search through all of the assets inside of the game.
 Use **Ctrl+F** to quickly open the Find It panel, or click on the magnifier icon in your toolbar.
+Use **Ctrl+P** to enable the Picker tool, or click on the picker icon in your toolbar.
 
-Huge thanks to **YenYang** for their help on the UI, and thank you to Chameleon and Algernon for their contribution.
+Huge thanks to **YenYang** for their help on the UI.
+
+Special thanks to **Algernon** for their contribution and allowing me to take on this project
+
+And thank you to **Chameleon** for providing the Icons.
 
 ## Features
 * Uses similar categories lookup methods as the base game. As well as the vanilla UI components.
@@ -16,6 +21,7 @@ Huge thanks to **YenYang** for their help on the UI, and thank you to Chameleon 
 * Tool options like Tree Controller and Line Tool are fully supported and can be used while the panel is open.
 * Thumbnails for all assets, no more guessing what something is.
 * Favorite your most used assets.
+* Integrated Picker
 
 ## Planned Features
 * Mutli-tab support, to have multiple instances open at the same time
@@ -42,9 +48,16 @@ If you're having any issues, please report them on my discord as it's easier to 
 	<Tag Value="Code Mod" />
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
 	
-	<ModVersion Value="0.9.0" />
+	<ModVersion Value="0.9.1" />
 	<GameVersion Value="1.1.*" />
+	
+	<Dependency Id="74417" DisplayName="Unified Icon Library" />
 	
 	<ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
 	<ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
+	
+	<ChangeLog>
+		# v0.9.1
+		* Added Picker Tool
+	</ChangeLog>
 </Publish>

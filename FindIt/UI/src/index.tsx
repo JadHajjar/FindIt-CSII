@@ -5,9 +5,10 @@ import { TopBarComponent } from "mods/TopBar/TopBar";
 
 import mod from "../mod.json";
 import { FindItIconComponent } from "mods/FindItIcon/FindItIcon";
+import { PickerIconComponent } from "mods/PickerIcon/PickerIcon";
 import { RemoveVanillaTopBarComponent } from "mods/RemoveVanillaTopBar/RemoveVanillaTopBar";
 import { RemoveVanillaAssetGridComponent } from "mods/RemoveVanillaAssetGrid/RemoveVanillaAssetGrid";
-import { FindItMainContainerComponent, } from "mods/MainContainer/MainContainer";
+import { FindItMainContainerComponent } from "mods/MainContainer/MainContainer";
 
 const register: ModRegistrar = (moduleRegistry) => {
   // The vanilla component resolver is a singleton that helps extrant and maintain components from game that were not specifically exposed.
@@ -28,17 +29,14 @@ const register: ModRegistrar = (moduleRegistry) => {
   );
 
   // This appends an absolute position button for Find It. Shoul disappear with photo mode.
-  moduleRegistry.append(
-    'Game', 
-    FindItIconComponent
-  );
+  moduleRegistry.append("Game", FindItIconComponent);
+
+  // This appends an absolute position button for Find It. Shoul disappear with photo mode.
+  moduleRegistry.append("Game", PickerIconComponent);
 
   // This wraps prefab selection and top bar components.
-  moduleRegistry.append(
-    'Game', 
-    FindItMainContainerComponent
-  );
-  
+  moduleRegistry.append("Game", FindItMainContainerComponent);
+
   // This is just to verify using UI console that all the component registriations was completed.
   console.log(mod.id + " UI module registrations completed.");
 };

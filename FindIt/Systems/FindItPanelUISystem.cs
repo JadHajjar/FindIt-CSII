@@ -1,4 +1,5 @@
-﻿using Colossal.UI.Binding;
+﻿using Colossal.IO.AssetDatabase;
+using Colossal.UI.Binding;
 
 using FindIt.Domain.Enums;
 using FindIt.Domain.Utilities;
@@ -6,6 +7,8 @@ using FindIt.Domain.Utilities;
 using Game.Prefabs;
 using Game.Tools;
 using Game.UI;
+
+using System;
 
 using Unity.Entities;
 
@@ -53,15 +56,26 @@ namespace FindIt.Systems
 
 			// These establish listeners to trigger events from UI.
 			AddBinding(new TriggerBinding(Mod.Id, "FindItCloseToggled", () => ToggleFindItPanel(false)));
-			AddBinding(new TriggerBinding(Mod.Id, "FindItIconToggled", () => ToggleFindItPanel(!_ShowFindItPanel.value)));
+			AddBinding(new TriggerBinding(Mod.Id, "FindItIconToggled", FindItIconClicked));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "SetCurrentPrefab", TryActivatePrefabTool));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "ToggleFavorited", ToggleFavorited));
 
 			// This setup a keybinding for activating FindItPanel.
-			InputAction hotKeyCtrlF = new(Mod.Id);
+			InputAction hotKeyCtrlF = new($"{Mod.Id}/CtrlF");
 			hotKeyCtrlF.AddCompositeBinding("ButtonWithOneModifier").With("Modifier", "<Keyboard>/ctrl").With("Button", "<Keyboard>/f");
 			hotKeyCtrlF.performed += OnCtrlFKeyPressed;
 			hotKeyCtrlF.Enable();
+		}
+
+		private void FindItIconClicked()
+		{
+			if (_ShowFindItPanel.value)
+			{
+				_ToolSystem.activeTool = _DefaultToolSystem;
+				_ToolSystem.ActivatePrefabTool(null);
+			}
+			else
+			ToggleFindItPanel(!_ShowFindItPanel.value);
 		}
 
 		private void SetCurrentCategory(int category)
@@ -95,7 +109,7 @@ namespace FindIt.Systems
 		/// <summary>
 		/// This event toggles the ShowFindItPanel binding.
 		/// </summary>
-		private void ToggleFindItPanel(bool visible)
+		internal void ToggleFindItPanel(bool visible, bool activatePrefab = true)
 		{
 			if (_ShowFindItPanel.value == visible)
 			{
@@ -106,13 +120,11 @@ namespace FindIt.Systems
 			{
 				var prefab = _PrefabSearchUISystem.UpdateCategoriesList();
 
-				TryActivatePrefabTool(prefab.Id);
+				if (activatePrefab)
+				{
+					TryActivatePrefabTool(prefab.Id);
+				}
 			}
-			//else
-			//{
-			//	_ToolSystem.ActivatePrefabTool(null);
-			//	_ToolSystem.activeTool.TrySetPrefab(null);
-			//}
 
 			FindItUtil.IsActive = visible;
 			_ShowFindItPanel.Update(visible);
@@ -134,7 +146,7 @@ namespace FindIt.Systems
 		/// If prefab entity is valid activate prefab tool for that prefab base.
 		/// </summary>
 		/// <param name="e">Entity from UI.</param>
-		private void TryActivatePrefabTool(int id)
+		internal void TryActivatePrefabTool(int id)
 		{
 			if (FindItUtil.GetPrefabBase(id) is PrefabBase prefabBase)
 			{

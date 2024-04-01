@@ -139,7 +139,7 @@ namespace FindIt.Domain.Utilities
 					return;
 				}
 
-				if (CurrentSearch.SearchCheck(prefabList[index].Name) 
+				if (CurrentSearch.SearchCheck(prefabList[index].Name)
 					|| prefabList[index].Prefab.name.IndexOf(CurrentSearch, System.StringComparison.InvariantCultureIgnoreCase) >= 0
 					|| prefabList[index].SubCategory.ToString().IndexOf(CurrentSearch, System.StringComparison.InvariantCultureIgnoreCase) >= 0)
 				{
@@ -173,6 +173,22 @@ namespace FindIt.Domain.Utilities
 			{
 				customPrefabsData = JSON.MakeInto<Dictionary<string, CustomPrefabData>>(JSON.Load(File.ReadAllText(path))) ?? new();
 			}
+		}
+
+		public static bool Pick(PrefabBase prefab, out int id)
+		{
+			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => prefab.name == x.Prefab.name);
+
+			if (prefabIndex is null)
+			{
+				id = 0;
+				return false;
+			}
+
+			CurrentCategory = prefabIndex.Category;
+			CurrentSubCategory = prefabIndex.SubCategory;
+			id = prefabIndex.Id;
+			return true;
 		}
 	}
 }

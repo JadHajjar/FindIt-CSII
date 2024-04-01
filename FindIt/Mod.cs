@@ -37,6 +37,8 @@ namespace FindIt
 			updateSystem.UpdateAfter<PrefabIndexingSystem>(SystemUpdatePhase.PrefabReferences);
 			updateSystem.UpdateAt<FindItPanelUISystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<PrefabSearchUISystem>(SystemUpdatePhase.UIUpdate);
+			updateSystem.UpdateAt<PickerToolSystem>(SystemUpdatePhase.ToolUpdate);
+			updateSystem.UpdateAt<PickerUISystem>(SystemUpdatePhase.UIUpdate);
 		}
 
 		public void OnDispose()
