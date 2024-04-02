@@ -40,8 +40,7 @@ export const PickerIconComponent = () => {
           variant="icon"
           focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
           selected={PickerEnabled}
-          onSelect={handleClick}
-        ></Button>
+          onSelect={handleClick}></Button>
       </>
     );
   }

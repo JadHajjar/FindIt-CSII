@@ -1,5 +1,4 @@
-import iconStyles from "./findItIcon.module.scss";
-import { useValue, trigger, bindValue } from "cs2/api";
+import { useValue, bindValue } from "cs2/api";
 import { game, Theme } from "cs2/bindings";
 import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
@@ -50,8 +49,7 @@ export const FindItMainContainerComponent = () => {
               <div
                 className={
                   GameMainScreneTheme.toolPanel + " " + styles.panelSize
-                }
-              >
+                }>
                 <div className={DefaultMainTheme.header}>
                   <TopBarComponent></TopBarComponent>
                 </div>
@@ -62,8 +60,7 @@ export const FindItMainContainerComponent = () => {
                     PanelTheme.panel +
                     " " +
                     AssetMenuTheme.assetPanel
-                  }
-                >
+                  }>
                   <PrefabSelectionComponent></PrefabSelectionComponent>
                 </div>
               </div>

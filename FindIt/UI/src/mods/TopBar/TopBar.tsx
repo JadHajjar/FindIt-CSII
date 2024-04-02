@@ -1,25 +1,21 @@
 import { bindValue, trigger, useValue } from "cs2/api";
-import { Theme, prefabProperties } from "cs2/bindings";
+import { Theme } from "cs2/bindings";
 import mod from "../../../mod.json";
-import { Button, Panel, Portal, Scrollable } from "cs2/ui";
+import { Button } from "cs2/ui";
 import { useLocalization } from "cs2/l10n";
-import { ModuleRegistryExtend, getModule } from "cs2/modding";
+import { getModule } from "cs2/modding";
 import { FocusKey } from "cs2/bindings";
 import styles from "./topBar.module.scss";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PrefabCategory } from "../../domain/category";
 import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
 
-export enum TextInputType {
-  Text = "text",
-  Password = "password",
-}
-
-export type PropsTextInput = {
+// In order to use forwardRef, don't wrap a layer of
+interface PropsTextInput {
   focusKey?: FocusKey;
   debugName?: string;
-  type?: TextInputType | string;
+  type?: "text" | "password";
   value?: string;
   selectAllOnFocus?: boolean;
   placeholder?: string;
@@ -28,55 +24,48 @@ export type PropsTextInput = {
   disabled?: boolean;
   className?: string;
   multiline: number;
+  ref?: any;
   onFocus?: (value: Event) => void;
   onBlur?: (value: Event) => void;
   onKeyDown?: (value: Event) => void;
   onChange?: (value: Event) => void;
   onMouseUp?: (value: Event) => void;
-};
-
-export function TextInput(props: PropsTextInput): JSX.Element {
-  return getModule(
-    "game-ui/common/input/text/text-input.tsx",
-    "TextInput"
-  ).render(props);
 }
 
-export const TextInputTheme: Theme | any = getModule(
+const TextInput = getModule(
+  "game-ui/common/input/text/text-input.tsx",
+  "TextInput"
+);
+
+const TextInputTheme: Theme | any = getModule(
   "game-ui/editor/widgets/item/editor-item.module.scss",
   "classes"
 );
 
-export const FocusDisabled$: FocusKey = getModule(
+const FocusDisabled$: FocusKey = getModule(
   "game-ui/common/focus/focus-key.ts",
   "FOCUS_DISABLED"
 );
 
-export const AssetCategoryTabTheme: Theme | any = getModule(
+const AssetCategoryTabTheme: Theme | any = getModule(
   "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.module.scss",
   "classes"
 );
 
 // These establishes the binding with C# side.
-export const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
-export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
-export const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
-export const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
-export const CurrentSubCategory$ = bindValue<number>(
-  mod.id,
-  "CurrentSubCategory"
-);
-export const CategoryList$ = bindValue<PrefabCategory[]>(
-  mod.id,
-  "CategoryList"
-);
-export const SubCategoryList$ = bindValue<PrefabSubCategory[]>(
+const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
+const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
+const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
+const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
+const CategoryList$ = bindValue<PrefabCategory[]>(mod.id, "CategoryList");
+const SubCategoryList$ = bindValue<PrefabSubCategory[]>(
   mod.id,
   "SubCategoryList"
 );
 
 // defines trigger event names.
-export const eventName = "PrefabChange";
+// const eventName = "PrefabChange";
 
 export const TopBarComponent = () => {
   // These get the value of the bindings. Or they will when we have bindings.
@@ -87,30 +76,39 @@ export const TopBarComponent = () => {
   const SubCategoryList = useValue(SubCategoryList$);
   const IsSearchLoading = useValue(IsSearchLoading$);
   const CurrentSearch = useValue(CurrentSearch$);
-
+  const searchRef = useRef(null);
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
 
   const [searchQuery, setQuery] = useState(CurrentSearch);
 
-  function handleInputChange(value: Event) {
+  const handleInputChange = (value: Event) => {
     if (value?.target instanceof HTMLTextAreaElement) {
       setSearchText(value.target.value);
     }
-  }
+  };
 
-  function setSearchText(value: string) {
+  const setSearchText = (value: string) => {
     setQuery(value);
     trigger(mod.id, "SearchChanged", value);
-  }
+  };
 
-  function setCurrentCategory(id: number) {
+  const setCurrentCategory = (id: number) => {
     trigger(mod.id, "SetCurrentCategory", id);
-  }
+  };
 
-  function setCurrentSubCategory(id: number) {
+  const setCurrentSubCategory = (id: number) => {
     trigger(mod.id, "SetCurrentSubCategory", id);
-  }
+  };
+
+  const setFocus = () => {
+    if (searchRef === null || searchRef.current === null) return;
+    (searchRef.current as HTMLAreaElement).focus();
+  };
+
+  useEffect(() => {
+    setFocus();
+  }, []);
 
   // Do not put any Hooks (i.e. UseXXXX) after this point.
   if (!ShowFindItPanel) {
@@ -124,26 +122,27 @@ export const TopBarComponent = () => {
           {IsSearchLoading && (
             <img
               src="coui://uil/Standard/HalfCircleProgress.svg"
-              className={styles.loadingIcon}
-            ></img>
+              className={styles.loadingIcon}></img>
           )}
           {!IsSearchLoading && (
             <img
               src="coui://uil/Standard/Magnifier.svg"
-              className={styles.searchIcon}
-            ></img>
+              className={styles.searchIcon}></img>
           )}
           <div className={styles.searchArea}>
             <TextInput
+              ref={searchRef}
               multiline={1}
               value={searchQuery}
               disabled={false}
-              type={TextInputType.Text}
+              type={"text"}
               className={TextInputTheme.input + " " + styles.textBox}
               focusKey={FocusDisabled$}
               onChange={handleInputChange}
-              placeholder="Search..."
-            ></TextInput>
+              placeholder={translate(
+                "Editor.SEARCH_PLACEHOLDER",
+                "Search..."
+              )}></TextInput>
 
             {searchQuery.trim() !== "" && (
               <Button
@@ -156,8 +155,7 @@ export const TopBarComponent = () => {
                 onSelect={() => {
                   setSearchText("");
                 }}
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-              >
+                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}>
                 <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
               </Button>
             )}
@@ -169,13 +167,15 @@ export const TopBarComponent = () => {
             {CategoryList.map((element) => (
               <VanillaComponentResolver.instance.ToolButton
                 selected={element.id == CurrentCategory}
-                onSelect={() => setCurrentCategory(element.id)}
+                onSelect={() => {
+                  setCurrentCategory(element.id);
+                  setFocus();
+                }}
                 src={element.icon}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
                 className={
                   VanillaComponentResolver.instance.toolButtonTheme.button
-                }
-              ></VanillaComponentResolver.instance.ToolButton>
+                }></VanillaComponentResolver.instance.ToolButton>
             ))}
           </div>
 
@@ -187,8 +187,7 @@ export const TopBarComponent = () => {
             }
             variant="icon"
             onSelect={() => trigger(mod.id, "FindItCloseToggled")}
-            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-          >
+            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}>
             <img src="coui://uil/Standard/XClose.svg"></img>
           </Button>
         </div>
@@ -198,8 +197,7 @@ export const TopBarComponent = () => {
         <div
           className={
             AssetCategoryTabTheme.items + " " + styles.subCategoryContainer
-          }
-        >
+          }>
           {SubCategoryList.map((element) => (
             <Button
               className={
@@ -210,16 +208,14 @@ export const TopBarComponent = () => {
               selected={element.id == CurrentSubCategory}
               variant="icon"
               onSelect={() => setCurrentSubCategory(element.id)}
-              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            >
+              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}>
               <img
                 src={element.icon}
                 className={
                   VanillaComponentResolver.instance.assetGridTheme.thumbnail +
                   " " +
                   styles.gridThumbnail
-                }
-              ></img>
+                }></img>
             </Button>
           ))}
         </div>
