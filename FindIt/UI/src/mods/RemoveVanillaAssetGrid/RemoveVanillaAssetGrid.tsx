@@ -5,7 +5,9 @@ import { ModuleRegistryExtend } from "cs2/modding";
 // These establishes the binding with C# side.
 export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 
-export const RemoveVanillaAssetGridComponent: ModuleRegistryExtend = (Component) => {
+export const RemoveVanillaAssetGridComponent: ModuleRegistryExtend = (
+  Component
+) => {
   // I believe you should not put anything here.
   return (props) => {
     const { children, ...otherProps } = props || {};
@@ -18,9 +20,6 @@ export const RemoveVanillaAssetGridComponent: ModuleRegistryExtend = (Component)
       return <Component {...otherProps}>{children}</Component>;
     }
 
-    return (
-      <>
-      </>
-    );
+    return <></>;
   };
 };

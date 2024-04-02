@@ -1,5 +1,4 @@
-import { bindValue, useValue, trigger } from "cs2/api";
-import { Entity } from "cs2/bindings";
+import { bindValue, useValue } from "cs2/api";
 import styles from "./prefabSelection.module.scss";
 import { Scrollable } from "cs2/ui";
 import mod from "../../../mod.json";
@@ -29,15 +28,13 @@ export const PrefabSelectionComponent = () => {
       <Scrollable
         vertical={true}
         trackVisibility="scrollable"
-        className={styles.scrollableContainer}
-      >
+        className={styles.scrollableContainer}>
         <div className={styles.panelSection}>
           {PrefabList.map((prefab) => (
             <PrefabItemComponent
               prefab={prefab}
               selected={prefab.id == ActivePrefabId}
-              showCategory={CurrentCategory === -1}
-            ></PrefabItemComponent>
+              showCategory={CurrentCategory === -1}></PrefabItemComponent>
           ))}
         </div>
       </Scrollable>
