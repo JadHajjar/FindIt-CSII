@@ -39,12 +39,6 @@ namespace FindIt
 		//public bool ButtonWithConfirmation { set { Mod.Log.Info("ButtonWithConfirmation clicked"); } }
 
 		[SettingsUISection(kSection, kToggleGroup)]
-		public bool AutoFocusOnOpen { get; set; }
-
-		[SettingsUISection(kSection, kToggleGroup)]
-		public bool AutoFocusOnCategory { get; set; }
-
-		[SettingsUISection(kSection, kToggleGroup)]
 		public bool OpenPanelOnPicker { get; set; } = true;
 
 		//[SettingsUISlider(min = 0, max = 100, step = 1, scalarMultiplier = 1, unit = Unit.kDataMegabytes)]
@@ -104,7 +98,7 @@ namespace FindIt
 				{ _setting.GetOptionTabLocaleID(FindItSetting.kSection), "General Settings" },
 
 				//{ _setting.GetOptionGroupLocaleID(FindItSetting.kButtonGroup), "Buttons" },
-				{ _setting.GetOptionGroupLocaleID(FindItSetting.kToggleGroup), "Focus" },
+				{ _setting.GetOptionGroupLocaleID(FindItSetting.kToggleGroup), "Behavior" },
 				//{ _setting.GetOptionGroupLocaleID(FindItSetting.kSliderGroup), "Sliders" },
 				//{ _setting.GetOptionGroupLocaleID(FindItSetting.kDropdownGroup), "Dropdowns" },
 
@@ -115,11 +109,11 @@ namespace FindIt
 				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.ButtonWithConfirmation)), $"Button can show confirmation message. Use [{nameof(SettingsUIConfirmationAttribute)}]" },
 				//{ _setting.GetOptionWarningLocaleID(nameof(FindItSetting.ButtonWithConfirmation)), "is it confirmation text which you want to show here?" },
 
-				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.AutoFocusOnOpen)), "Auto-focus the search bar on open" },
-				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.AutoFocusOnOpen)), $"Automatically focuses the search bar when opening the Find It panel." },
+				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.AutoFocusOnOpen)), "Auto-focus the search bar on open" },
+				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.AutoFocusOnOpen)), $"Automatically focuses the search bar when opening the Find It panel." },
 
-				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), "Auto-focus the search bar when changing categories" },
-				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), $"Automatically focuses the search bar when you open a different category." },
+				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), "Auto-focus the search bar when changing categories" },
+				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), $"Automatically focuses the search bar when you open a different category." },
 
 				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), "Open Find It's panel after picking an object" },
 				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), $"Choose between opening the Find It panel after selecting an object with Picker, or the vanilla panel if available." },

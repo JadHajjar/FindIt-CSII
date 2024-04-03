@@ -1,5 +1,4 @@
-﻿using Colossal.IO.AssetDatabase;
-using Colossal.UI.Binding;
+﻿using Colossal.UI.Binding;
 
 using FindIt.Domain.Enums;
 using FindIt.Domain.Utilities;
@@ -7,8 +6,6 @@ using FindIt.Domain.Utilities;
 using Game.Prefabs;
 using Game.Tools;
 using Game.UI;
-
-using System;
 
 using Unity.Entities;
 
@@ -78,7 +75,9 @@ namespace FindIt.Systems
 				_ToolSystem.ActivatePrefabTool(null);
 			}
 			else
-			ToggleFindItPanel(!_ShowFindItPanel.value);
+			{
+				ToggleFindItPanel(!_ShowFindItPanel.value);
+			}
 		}
 
 		private void SetCurrentCategory(int category)
@@ -95,7 +94,6 @@ namespace FindIt.Systems
 			FindItUtil.CurrentSubCategory = (PrefabSubCategory)category;
 
 			_CurrentSubCategoryBinding.Update((int)FindItUtil.CurrentSubCategory);
-			_FocusSearchBar.Update(Mod.Settings.AutoFocusOnCategory);
 
 			_PrefabSearchUISystem.UpdateCategoriesList();
 
@@ -128,8 +126,6 @@ namespace FindIt.Systems
 				{
 					TryActivatePrefabTool(prefab.Id);
 				}
-
-				_FocusSearchBar.Update(Mod.Settings.AutoFocusOnOpen);
 			}
 
 			FindItUtil.IsActive = visible;
@@ -143,12 +139,13 @@ namespace FindIt.Systems
 		private void OnCtrlFKeyPressed(InputAction.CallbackContext context)
 		{
 			if (_ShowFindItPanel.value)
+			{
 				_FocusSearchBar.Update(true);
+			}
 			else
+			{
 				ToggleFindItPanel(true);
-
-
-			// We may need to implement a check for active prefab to filter for zoning prefabs, maybe bulldozer prefabs, or others that do not make sense for FindIt.
+			}
 		}
 
 
