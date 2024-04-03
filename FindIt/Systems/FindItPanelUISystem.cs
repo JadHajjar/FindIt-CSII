@@ -18,6 +18,7 @@ namespace FindIt.Systems
 {
 	internal partial class FindItPanelUISystem : UISystemBase
 	{
+		private ValueBinding<bool> _FocusSearchBar;
 		private ValueBinding<bool> _ShowFindItPanel;
 		private ValueBinding<int> _ActivePrefabId;
 		private ValueBinding<int> _CurrentCategoryBinding;
@@ -51,6 +52,7 @@ namespace FindIt.Systems
 			AddBinding(new TriggerBinding<int>(Mod.Id, "SetCurrentSubCategory", SetCurrentSubCategory));
 
 			// These establish the bindings with UI code.
+			AddBinding(_FocusSearchBar = new ValueBinding<bool>(Mod.Id, "FocusSearchBar", false));
 			AddBinding(_ShowFindItPanel = new ValueBinding<bool>(Mod.Id, "ShowFindItPanel", false));
 			AddBinding(_ActivePrefabId = new ValueBinding<int>(Mod.Id, "ActivePrefabId", 0));
 
@@ -59,6 +61,7 @@ namespace FindIt.Systems
 			AddBinding(new TriggerBinding(Mod.Id, "FindItIconToggled", FindItIconClicked));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "SetCurrentPrefab", TryActivatePrefabTool));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "ToggleFavorited", ToggleFavorited));
+			AddBinding(new TriggerBinding(Mod.Id, "OnSearchFocused", () => _FocusSearchBar.Update(false)));
 
 			// This setup a keybinding for activating FindItPanel.
 			InputAction hotKeyCtrlF = new($"{Mod.Id}/CtrlF");
@@ -92,6 +95,7 @@ namespace FindIt.Systems
 			FindItUtil.CurrentSubCategory = (PrefabSubCategory)category;
 
 			_CurrentSubCategoryBinding.Update((int)FindItUtil.CurrentSubCategory);
+			_FocusSearchBar.Update(Mod.Settings.AutoFocusOnCategory);
 
 			_PrefabSearchUISystem.UpdateCategoriesList();
 
@@ -124,6 +128,8 @@ namespace FindIt.Systems
 				{
 					TryActivatePrefabTool(prefab.Id);
 				}
+
+				_FocusSearchBar.Update(Mod.Settings.AutoFocusOnOpen);
 			}
 
 			FindItUtil.IsActive = visible;
@@ -136,7 +142,11 @@ namespace FindIt.Systems
 		/// <param name="context">Not used yet.</param>
 		private void OnCtrlFKeyPressed(InputAction.CallbackContext context)
 		{
-			ToggleFindItPanel(true);
+			if (_ShowFindItPanel.value)
+				_FocusSearchBar.Update(true);
+			else
+				ToggleFindItPanel(true);
+
 
 			// We may need to implement a check for active prefab to filter for zoning prefabs, maybe bulldozer prefabs, or others that do not make sense for FindIt.
 		}

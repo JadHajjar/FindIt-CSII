@@ -42,7 +42,7 @@ namespace FindIt.Systems
 			_CategoryBinding.Update(FindItUtil.GetCategories().Select(x => new CategoryUIEntry(x)).ToArray());
 			_SubCategoryBinding.Update(FindItUtil.GetSubCategories().Select(x => new SubCategoryUIEntry(x)).ToArray());
 
-			var prefabs = FindItUtil.GetFilteredPrefabs().Take(500).Select(x => new PrefabUIEntry(x)).ToArray();
+			var prefabs = FindItUtil.GetFilteredPrefabs().Take(16).Select(x => new PrefabUIEntry(x)).ToArray();
 			
 			_PrefabListBinding.Update(prefabs);
 
@@ -95,7 +95,7 @@ namespace FindIt.Systems
 				filterCompleted = false;
 
 				_IsSearchLoading.Update(false);
-				_PrefabListBinding.Update(FindItUtil.GetFilteredPrefabs().Take(500).Select(x => new PrefabUIEntry(x)).ToArray());
+				_PrefabListBinding.Update(FindItUtil.GetFilteredPrefabs().Take(16).Select(x => new PrefabUIEntry(x)).ToArray());
 			}
 
 			base.OnUpdate();

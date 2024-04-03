@@ -1,4 +1,5 @@
-﻿using Colossal.Logging;
+﻿using Colossal.IO.AssetDatabase;
+using Colossal.Logging;
 
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
@@ -13,26 +14,23 @@ namespace FindIt
 	{
 		public const string Id = "FindIt";
 
-		public static ILog Log = LogManager.GetLogger(nameof(FindIt)).SetShowsErrorsInUI(false);
-
-		//private Setting m_Setting;
+		public static ILog Log { get; } = LogManager.GetLogger(nameof(FindIt)).SetShowsErrorsInUI(false);
+		public static FindItSetting Settings { get; private set; }
 
 		public void OnLoad(UpdateSystem updateSystem)
 		{
 			Log.Info(nameof(OnLoad));
 
-			if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
+			Settings = new FindItSetting(this);
+			Settings.RegisterInOptionsUI();
+			GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Settings));
+
+			AssetDatabase.global.LoadSettings(nameof(FindIt), Settings, new FindItSetting(this)
 			{
-				Log.Info($"Current mod asset at {asset.path}");
-			}
+				DefaultBlock = true
+			});
 
 			FindItUtil.LoadCustomPrefabData();
-
-			//m_Setting = new Setting(this);
-			//m_Setting.RegisterInOptionsUI();
-			//GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
-
-			//AssetDatabase.global.LoadSettings(nameof(FindIt), m_Setting, new Setting(this));
 
 			updateSystem.UpdateAfter<PrefabIndexingSystem>(SystemUpdatePhase.PrefabReferences);
 			updateSystem.UpdateAt<FindItPanelUISystem>(SystemUpdatePhase.UIUpdate);
@@ -44,11 +42,11 @@ namespace FindIt
 		public void OnDispose()
 		{
 			Log.Info(nameof(OnDispose));
-			//if (m_Setting != null)
-			//{
-			//	m_Setting.UnregisterInOptionsUI();
-			//	m_Setting = null;
-			//}
+			if (Settings != null)
+			{
+				Settings.UnregisterInOptionsUI();
+				Settings = null;
+			}
 		}
 	}
 }

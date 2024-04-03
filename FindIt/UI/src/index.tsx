@@ -4,8 +4,7 @@ import { PrefabSelectionComponent } from "mods/PrefabSelection/PrefabSelection";
 import { TopBarComponent } from "mods/TopBar/TopBar";
 
 import mod from "../mod.json";
-import { FindItIconComponent } from "mods/FindItIcon/FindItIcon";
-import { PickerIconComponent } from "mods/PickerIcon/PickerIcon";
+import { ToolbarIconComponent } from "mods/ToolbarIcon/ToolbarIcon";
 import { RemoveVanillaTopBarComponent } from "mods/RemoveVanillaTopBar/RemoveVanillaTopBar";
 import { RemoveVanillaAssetGridComponent } from "mods/RemoveVanillaAssetGrid/RemoveVanillaAssetGrid";
 import { FindItMainContainerComponent } from "mods/MainContainer/MainContainer";
@@ -28,11 +27,12 @@ const register: ModRegistrar = (moduleRegistry) => {
     RemoveVanillaTopBarComponent
   );
 
-  // This appends an absolute position button for Find It. Shoul disappear with photo mode.
-  moduleRegistry.append("Game", FindItIconComponent);
-
-  // This appends an absolute position button for Find It. Shoul disappear with photo mode.
-  moduleRegistry.append("Game", PickerIconComponent);
+  // This adds the fint it and picker icons to the toolbar
+  moduleRegistry.extend(
+    "game-ui/game/components/toolbar/top/toggles.tsx",
+    "PhotoModeToggle",
+    ToolbarIconComponent
+  );
 
   // This wraps prefab selection and top bar components.
   moduleRegistry.append("Game", FindItMainContainerComponent);

@@ -42,7 +42,8 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
       selected={props.selected}
       variant="icon"
       onSelect={() => SetCurrentPrefab(props.prefab.id)}
-      focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}>
+      focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+    >
       <img
         src={props.prefab.thumbnail}
         onError={({ currentTarget }) => {
@@ -53,7 +54,8 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           VanillaComponentResolver.instance.assetGridTheme.thumbnail +
           " " +
           styles.gridThumbnail
-        }></img>
+        }
+      ></img>
 
       <div className={styles.gridItemText}>
         <p>{props.prefab.name}</p>
@@ -68,26 +70,30 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         }
         variant="icon"
         onSelect={() => ToggleFavorited(props.prefab.id)}
-        focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}>
+        focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+      >
         <img
           src={
             props.prefab.favorited
               ? "coui://uil/Colored/StarFilled.svg"
               : "coui://uil/Colored/StarOutline.svg"
-          }></img>
+          }
+        ></img>
       </Button>
 
       <div className={styles.rightSideContainer}>
-        {props.prefab.dlcThumbnail && (
-          <img
-            src={props.prefab.dlcThumbnail}
-            className={styles.dlcThumbnail}></img>
-        )}
-
         {props.showCategory && (
           <img
             src={props.prefab.categoryThumbnail}
-            className={styles.categoryThumbnail}></img>
+            className={styles.categoryThumbnail}
+          ></img>
+        )}
+
+        {props.prefab.dlcThumbnail && (
+          <img
+            src={props.prefab.dlcThumbnail}
+            className={styles.dlcThumbnail}
+          ></img>
         )}
       </div>
     </Button>

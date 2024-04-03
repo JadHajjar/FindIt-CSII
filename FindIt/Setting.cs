@@ -13,7 +13,7 @@ namespace FindIt
 	[FileLocation(nameof(FindIt))]
 	[SettingsUIGroupOrder(kButtonGroup, kToggleGroup, kSliderGroup, kDropdownGroup)]
 	[SettingsUIShowGroupName(kButtonGroup, kToggleGroup, kSliderGroup, kDropdownGroup)]
-	public class Setting : ModSetting
+	public class FindItSetting : ModSetting
 	{
 		public const string kSection = "Main";
 
@@ -22,103 +22,120 @@ namespace FindIt
 		public const string kSliderGroup = "Slider";
 		public const string kDropdownGroup = "Dropdown";
 
-		public Setting(IMod mod) : base(mod)
+		public FindItSetting(IMod mod) : base(mod)
 		{
 
 		}
 
-		[SettingsUISection(kSection, kButtonGroup)]
-		public bool Button { set { Mod.Log.Info("Button clicked"); } }
+		[SettingsUIHidden]
+		public bool DefaultBlock { get; set; }
 
-		[SettingsUIButton]
-		[SettingsUIConfirmation]
-		[SettingsUISection(kSection, kButtonGroup)]
-		public bool ButtonWithConfirmation { set { Mod.Log.Info("ButtonWithConfirmation clicked"); } }
+		//[SettingsUISection(kSection, kButtonGroup)]
+		//public bool Button { set { Mod.Log.Info("Button clicked"); } }
+
+		//[SettingsUIButton]
+		//[SettingsUIConfirmation]
+		//[SettingsUISection(kSection, kButtonGroup)]
+		//public bool ButtonWithConfirmation { set { Mod.Log.Info("ButtonWithConfirmation clicked"); } }
 
 		[SettingsUISection(kSection, kToggleGroup)]
-		public bool Toggle { get; set; }
+		public bool AutoFocusOnOpen { get; set; }
 
-		[SettingsUISlider(min = 0, max = 100, step = 1, scalarMultiplier = 1, unit = Unit.kDataMegabytes)]
-		[SettingsUISection(kSection, kSliderGroup)]
-		public int IntSlider { get; set; }
+		[SettingsUISection(kSection, kToggleGroup)]
+		public bool AutoFocusOnCategory { get; set; }
 
-		[SettingsUIDropdown(typeof(Setting), nameof(GetIntDropdownItems))]
-		[SettingsUISection(kSection, kDropdownGroup)]
-		public int IntDropdown { get; set; }
+		[SettingsUISection(kSection, kToggleGroup)]
+		public bool OpenPanelOnPicker { get; set; } = true;
 
-		[SettingsUISection(kSection, kDropdownGroup)]
-		public SomeEnum EnumDropdown { get; set; } = SomeEnum.Value1;
+		//[SettingsUISlider(min = 0, max = 100, step = 1, scalarMultiplier = 1, unit = Unit.kDataMegabytes)]
+		//[SettingsUISection(kSection, kSliderGroup)]
+		//public int IntSlider { get; set; }
 
-		public DropdownItem<int>[] GetIntDropdownItems()
-		{
-			var items = new List<DropdownItem<int>>();
+		//[SettingsUIDropdown(typeof(Setting), nameof(GetIntDropdownItems))]
+		//[SettingsUISection(kSection, kDropdownGroup)]
+		//public int IntDropdown { get; set; }
 
-			for (var i = 0; i < 3; i += 1)
-			{
-				items.Add(new DropdownItem<int>()
-				{
-					value = i,
-					displayName = i.ToString(),
-				});
-			}
+		//[SettingsUISection(kSection, kDropdownGroup)]
+		//public SomeEnum EnumDropdown { get; set; } = SomeEnum.Value1;
 
-			return items.ToArray();
-		}
+		//public DropdownItem<int>[] GetIntDropdownItems()
+		//{
+		//	var items = new List<DropdownItem<int>>();
+
+		//	for (var i = 0; i < 3; i += 1)
+		//	{
+		//		items.Add(new DropdownItem<int>()
+		//		{
+		//			value = i,
+		//			displayName = i.ToString(),
+		//		});
+		//	}
+
+		//	return items.ToArray();
+		//}
 
 		public override void SetDefaults()
 		{
-			throw new System.NotImplementedException();
+
 		}
 
-		public enum SomeEnum
-		{
-			Value1,
-			Value2,
-			Value3,
-		}
+		//public enum SomeEnum
+		//{
+		//	Value1,
+		//	Value2,
+		//	Value3,
+		//}
 	}
 
 	public class LocaleEN : IDictionarySource
 	{
-		private readonly Setting m_Setting;
-		public LocaleEN(Setting setting)
+		private readonly FindItSetting _setting;
+
+		public LocaleEN(FindItSetting setting)
 		{
-			m_Setting = setting;
+			_setting = setting;
 		}
+
 		public IEnumerable<KeyValuePair<string, string>> ReadEntries(IList<IDictionaryEntryError> errors, Dictionary<string, int> indexCounts)
 		{
 			return new Dictionary<string, string>
 			{
-				{ m_Setting.GetSettingsLocaleID(), "Mod settings sample" },
-				{ m_Setting.GetOptionTabLocaleID(Setting.kSection), "Main" },
+				{ _setting.GetSettingsLocaleID(), "Find It" },
+				{ _setting.GetOptionTabLocaleID(FindItSetting.kSection), "General Settings" },
 
-				{ m_Setting.GetOptionGroupLocaleID(Setting.kButtonGroup), "Buttons" },
-				{ m_Setting.GetOptionGroupLocaleID(Setting.kToggleGroup), "Toggle" },
-				{ m_Setting.GetOptionGroupLocaleID(Setting.kSliderGroup), "Sliders" },
-				{ m_Setting.GetOptionGroupLocaleID(Setting.kDropdownGroup), "Dropdowns" },
+				//{ _setting.GetOptionGroupLocaleID(FindItSetting.kButtonGroup), "Buttons" },
+				{ _setting.GetOptionGroupLocaleID(FindItSetting.kToggleGroup), "Focus" },
+				//{ _setting.GetOptionGroupLocaleID(FindItSetting.kSliderGroup), "Sliders" },
+				//{ _setting.GetOptionGroupLocaleID(FindItSetting.kDropdownGroup), "Dropdowns" },
 
-				{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.Button)), "Button" },
-				{ m_Setting.GetOptionDescLocaleID(nameof(Setting.Button)), $"Simple single button. It should be bool property with only setter or use [{nameof(SettingsUIButtonAttribute)}] to make button from bool property with setter and getter" },
+				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.Button)), "Button" },
+				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.Button)), $"Simple single button. It should be bool property with only setter or use [{nameof(SettingsUIButtonAttribute)}] to make button from bool property with setter and getter" },
 
-				{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.ButtonWithConfirmation)), "Button with confirmation" },
-				{ m_Setting.GetOptionDescLocaleID(nameof(Setting.ButtonWithConfirmation)), $"Button can show confirmation message. Use [{nameof(SettingsUIConfirmationAttribute)}]" },
-				{ m_Setting.GetOptionWarningLocaleID(nameof(Setting.ButtonWithConfirmation)), "is it confirmation text which you want to show here?" },
+				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.ButtonWithConfirmation)), "Button with confirmation" },
+				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.ButtonWithConfirmation)), $"Button can show confirmation message. Use [{nameof(SettingsUIConfirmationAttribute)}]" },
+				//{ _setting.GetOptionWarningLocaleID(nameof(FindItSetting.ButtonWithConfirmation)), "is it confirmation text which you want to show here?" },
 
-				{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.Toggle)), "Toggle" },
-				{ m_Setting.GetOptionDescLocaleID(nameof(Setting.Toggle)), $"Use bool property with setter and getter to get toggable option" },
+				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.AutoFocusOnOpen)), "Auto-focus the search bar on open" },
+				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.AutoFocusOnOpen)), $"Automatically focuses the search bar when opening the Find It panel." },
 
-				{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.IntSlider)), "Int slider" },
-				{ m_Setting.GetOptionDescLocaleID(nameof(Setting.IntSlider)), $"Use int property with getter and setter and [{nameof(SettingsUISliderAttribute)}] to get int slider" },
+				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), "Auto-focus the search bar when changing categories" },
+				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), $"Automatically focuses the search bar when you open a different category." },
 
-				{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.IntDropdown)), "Int dropdown" },
-				{ m_Setting.GetOptionDescLocaleID(nameof(Setting.IntDropdown)), $"Use int property with getter and setter and [{nameof(SettingsUIDropdownAttribute)}(typeof(SomeType), nameof(SomeMethod))] to get int dropdown: Method must be static or instance of your setting class with 0 parameters and returns {typeof(DropdownItem<int>).Name}" },
+				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), "Open Find It's panel after picking an object" },
+				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), $"Choose between opening the Find It panel after selecting an object with Picker, or the vanilla panel if available." },
 
-				{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.EnumDropdown)), "Simple enum dropdown" },
-				{ m_Setting.GetOptionDescLocaleID(nameof(Setting.EnumDropdown)), $"Use any enum property with getter and setter to get enum dropdown" },
+				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.IntSlider)), "Int slider" },
+				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.IntSlider)), $"Use int property with getter and setter and [{nameof(SettingsUISliderAttribute)}] to get int slider" },
 
-				{ m_Setting.GetEnumValueLocaleID(Setting.SomeEnum.Value1), "Value 1" },
-				{ m_Setting.GetEnumValueLocaleID(Setting.SomeEnum.Value2), "Value 2" },
-				{ m_Setting.GetEnumValueLocaleID(Setting.SomeEnum.Value3), "Value 3" },
+				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.IntDropdown)), "Int dropdown" },
+				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.IntDropdown)), $"Use int property with getter and setter and [{nameof(SettingsUIDropdownAttribute)}(typeof(SomeType), nameof(SomeMethod))] to get int dropdown: Method must be static or instance of your FindItSetting class with 0 parameters and returns {typeof(DropdownItem<int>).Name}" },
+
+				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.EnumDropdown)), "Simple enum dropdown" },
+				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.EnumDropdown)), $"Use any enum property with getter and setter to get enum dropdown" },
+
+				//{ _setting.GetEnumValueLocaleID(FindItSetting.SomeEnum.Value1), "Value 1" },
+				//{ _setting.GetEnumValueLocaleID(FindItSetting.SomeEnum.Value2), "Value 2" },
+				//{ _setting.GetEnumValueLocaleID(FindItSetting.SomeEnum.Value3), "Value 3" },
 			};
 		}
 

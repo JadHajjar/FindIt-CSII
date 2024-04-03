@@ -6,16 +6,11 @@ using Game.Common;
 using Game.Input;
 using Game.Net;
 using Game.Prefabs;
-using Game.Rendering;
 using Game.Tools;
 
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-
-using UnityEngine.Windows;
-using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace FindIt.Systems
 {
@@ -48,7 +43,6 @@ namespace FindIt.Systems
 			m_ToolRaycastSystem.typeMask = TypeMask.StaticObjects | TypeMask.Net | TypeMask.MovingObjects;
 			m_ToolRaycastSystem.raycastFlags = RaycastFlags.Placeholders | RaycastFlags.SubElements | RaycastFlags.Decals | RaycastFlags.Markers;
 			m_ToolRaycastSystem.collisionMask = CollisionMask.Overground | CollisionMask.OnGround | CollisionMask.Underground;
-
 		}
 
 		protected override void OnStartRunning()
@@ -70,16 +64,23 @@ namespace FindIt.Systems
 					&& EntityManager.TryGetComponent<PrefabRef>(entity, out var prefabRef)
 					&& _prefabSystem.TryGetPrefab<PrefabBase>(prefabRef, out var prefab))
 				{
-					if (FindItUtil.Pick(prefab, out var id))
+					if (Mod.Settings.OpenPanelOnPicker)
 					{
-						_findItPanelUISystem.TryActivatePrefabTool(id);
+						if (FindItUtil.Pick(prefab, out var id))
+						{
+							_findItPanelUISystem.TryActivatePrefabTool(id);
+						}
+						else
+						{
+							m_ToolSystem.ActivatePrefabTool(prefab);
+						}
+
+						_findItPanelUISystem.ToggleFindItPanel(true, false);
 					}
 					else
 					{
 						m_ToolSystem.ActivatePrefabTool(prefab);
 					}
-
-					_findItPanelUISystem.ToggleFindItPanel(true, false);
 
 					picked = true;
 				}
