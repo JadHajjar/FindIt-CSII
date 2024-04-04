@@ -95,6 +95,7 @@ namespace FindIt.Systems
 
 			_CurrentSubCategoryBinding.Update((int)FindItUtil.CurrentSubCategory);
 
+			_PrefabSearchUISystem.SetScroll(0);
 			_PrefabSearchUISystem.UpdateCategoriesList();
 
 			if (!string.IsNullOrWhiteSpace(FindItUtil.CurrentSearch))

@@ -41,7 +41,7 @@ namespace FindIt.Domain.Utilities
 			return CategorizedPrefabs[CurrentCategory].Keys.OrderBy(x => (int)x);
 		}
 
-		public static IEnumerable<PrefabIndexBase> GetFilteredPrefabs()
+		public static List<PrefabIndex> GetFilteredPrefabs()
 		{
 			if (string.IsNullOrWhiteSpace(CurrentSearch))
 			{

@@ -172,10 +172,7 @@ export const TopBarComponent = () => {
             {CategoryList.map((element) => (
               <VanillaComponentResolver.instance.ToolButton
                 selected={element.id == CurrentCategory}
-                onSelect={() => {
-                  setCurrentCategory(element.id);
-                  setFocus();
-                }}
+                onSelect={() => setCurrentCategory(element.id)}
                 src={element.icon}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
                 className={

@@ -1,9 +1,11 @@
 .scrollableContainer {
   height: 205rem;
+  overflow: hidden;
+  display: flex;
 }
 
 .panelSection {
-  width: 100%;
+  width: 915rem;
   padding: 5rem;
   display: flex;
   flex-direction: row;
@@ -30,4 +32,42 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.scrollContainer {
+  background-color: rgba(var(--scrollbarColor), 0.15);
+  position: relative;
+  height: 185rem;
+  width: 12rem;
+  margin: 10rem 0;
+  border-radius: 3rem;
+}
+
+.scrollContainer:hover,
+.scrollContainer:active {
+  background-color: rgba(var(--scrollbarColor), 0.25);
+}
+
+.scrollBar {
+  background-color: rgba(var(--scrollbarColor), 0.6);
+  width: 100%;
+  position: absolute;
+  left: 0;
+  border-radius: 3rem;
+}
+
+.scrollBar:hover {
+  background-color: rgba(var(--scrollbarColor), 0.85);
+}
+
+.scrollBar:active {
+  background-color: var(--focusedColor);
+}
+
+.scrollBlocker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }

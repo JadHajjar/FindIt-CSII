@@ -41,9 +41,9 @@ namespace FindIt
 		[SettingsUISection(kSection, kToggleGroup)]
 		public bool OpenPanelOnPicker { get; set; } = true;
 
-		//[SettingsUISlider(min = 0, max = 100, step = 1, scalarMultiplier = 1, unit = Unit.kDataMegabytes)]
-		//[SettingsUISection(kSection, kSliderGroup)]
-		//public int IntSlider { get; set; }
+		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, scalarMultiplier = 1f, unit = Unit.kFloatSingleFraction)]
+		[SettingsUISection(kSection, kToggleGroup)]
+		public float ScrollSpeed { get; set; } = 0.6f;
 
 		//[SettingsUIDropdown(typeof(Setting), nameof(GetIntDropdownItems))]
 		//[SettingsUISection(kSection, kDropdownGroup)]
@@ -114,9 +114,12 @@ namespace FindIt
 
 				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), "Auto-focus the search bar when changing categories" },
 				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.AutoFocusOnCategory)), $"Automatically focuses the search bar when you open a different category." },
-
+				
 				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), "Open Find It's panel after picking an object" },
 				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), $"Choose between opening the Find It panel after selecting an object with Picker, or the vanilla panel if available." },
+
+				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.ScrollSpeed)), "Scroll Speed" },
+				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.ScrollSpeed)), $"Represents a multiplier of the size of one row of items." },
 
 				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.IntSlider)), "Int slider" },
 				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.IntSlider)), $"Use int property with getter and setter and [{nameof(SettingsUISliderAttribute)}] to get int slider" },
