@@ -8,14 +8,7 @@ namespace FindIt.Domain.Utilities
 {
 	public class TracksPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
-		private readonly EntityManager _entityManager;
-
 		public EntityQuery Query { get; set; }
-
-		public TracksPrefabCategoryProcessor(EntityManager entityManager)
-		{
-			_entityManager = entityManager;
-		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{

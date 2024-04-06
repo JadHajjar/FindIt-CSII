@@ -3,6 +3,7 @@
 using FindIt.Domain.Interfaces;
 
 using Game.Prefabs;
+using Game.UI;
 
 using Unity.Entities;
 
@@ -11,12 +12,14 @@ namespace FindIt.Domain.Utilities
 	public class ZonedBuildingPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
+		private readonly ImageSystem _imageSystem;
 
 		public EntityQuery Query { get; set; }
 
-		public ZonedBuildingPrefabCategoryProcessor(EntityManager entityManager)
+		public ZonedBuildingPrefabCategoryProcessor(EntityManager entityManager, ImageSystem imageSystem)
 		{
 			_entityManager = entityManager;
+			_imageSystem = imageSystem;
 		}
 
 		public EntityQueryDesc[] GetEntityQuery()
@@ -54,6 +57,7 @@ namespace FindIt.Domain.Utilities
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Buildings,
+				FallbackThumbnail = _imageSystem.GetIconOrGroupIcon(zonePrefab)
 			};
 
 			var zoneData = _entityManager.GetComponentData<ZoneData>(zonePrefab);

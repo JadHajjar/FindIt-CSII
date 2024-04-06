@@ -6,20 +6,13 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public class SmallRoadsPrefabCategoryProcessor : IPrefabCategoryProcessor
+	public class RoadsPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
-		private readonly EntityManager _entityManager;
-
 		public EntityQuery Query { get; set; }
-
-		public SmallRoadsPrefabCategoryProcessor(EntityManager entityManager)
-		{
-			_entityManager = entityManager;
-		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] 
+			return new[]
 			{
 				new EntityQueryDesc
 				{
@@ -54,7 +47,9 @@ namespace FindIt.Domain.Utilities
 				prefabIndex.SubCategory = Enums.PrefabSubCategory.Networks_Highways;
 			}
 			else
-			prefabIndex.SubCategory = Enums.PrefabSubCategory.Networks_Roads;
+			{
+				prefabIndex.SubCategory = Enums.PrefabSubCategory.Networks_Roads;
+			}
 
 			return true;
 		}

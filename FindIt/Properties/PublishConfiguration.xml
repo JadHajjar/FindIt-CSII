@@ -12,7 +12,7 @@ Huge thanks to **YenYang** for their help on the UI.
 
 Special thanks to **Algernon** for their contribution and allowing me to take on this project
 
-And thank you to **Chameleon** for providing the Icons.
+Thank you to **Chameleon** for providing the Icons.
 
 And thank you to **Baka-gourd** (NullPinter) for their help with focus.
 
@@ -29,7 +29,6 @@ And thank you to **Baka-gourd** (NullPinter) for their help with focus.
 * Mutli-tab support, to have multiple instances open at the same time
 * Custom tagging, add your own tags to assets. Will also come with cross compatibility with Skyve.
 * Advanced filtering options
-* Customizable panel size.
 * Asset information when hovering over an item.
 
 ## Notes
@@ -50,7 +49,7 @@ If you're having any issues, please report them on my discord as it's easier to 
 	<Tag Value="Code Mod" />
 	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
 	
-	<ModVersion Value="0.9.1" />
+	<ModVersion Value="0.9.3" />
 	<GameVersion Value="1.1.*" />
 	
 	<Dependency Id="74417" DisplayName="Unified Icon Library" />
@@ -59,7 +58,13 @@ If you're having any issues, please report them on my discord as it's easier to 
 	<ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
 	
 	<ChangeLog>
-# v0.9.
-* Added Picker Tool
+# v0.9.3
+* Picking an asset now opens its category and scrolls it into view.
+* Added specific zone icons for zonable buildings.
+* Added the ability to customize the amount of columns and rows displayed in the Options.
+ * Toggle to come in another version.
+* Added rudementary support for custom asset icons, more icons to come in the future.
+* Added paths and invisable paths sub-category to the Roads category.
+* Cleaned up the miscellaneous props category, removed duplicate brand signs.
 	</ChangeLog>
 </Publish>

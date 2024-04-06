@@ -7,6 +7,9 @@ using Game.Prefabs;
 using Game.Tools;
 using Game.UI;
 
+using System;
+using System.IO;
+
 using Unity.Entities;
 
 using UnityEngine.InputSystem;
@@ -16,14 +19,16 @@ namespace FindIt.Systems
 	internal partial class FindItPanelUISystem : UISystemBase
 	{
 		private ValueBinding<bool> _FocusSearchBar;
+		private ValueBinding<bool> _ClearSearchBar;
 		private ValueBinding<bool> _ShowFindItPanel;
 		private ValueBinding<int> _ActivePrefabId;
 		private ValueBinding<int> _CurrentCategoryBinding;
 		private ValueBinding<int> _CurrentSubCategoryBinding;
+		private ValueBinding<float> _RowCount;
+		private ValueBinding<float> _ColumnCount;
 
 		private ToolSystem _ToolSystem;
 		private PrefabSystem _PrefabSystem;
-		private PrefabIndexingSystem _PrefabIndexingSystem;
 		private PrefabSearchUISystem _PrefabSearchUISystem;
 		private DefaultToolSystem _DefaultToolSystem;
 		private bool settingPrefab;
@@ -34,7 +39,6 @@ namespace FindIt.Systems
 
 			_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
 			_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
-			_PrefabIndexingSystem = World.GetOrCreateSystemManaged<PrefabIndexingSystem>();
 			_PrefabSearchUISystem = World.GetOrCreateSystemManaged<PrefabSearchUISystem>();
 			_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
 
@@ -50,8 +54,11 @@ namespace FindIt.Systems
 
 			// These establish the bindings with UI code.
 			AddBinding(_FocusSearchBar = new ValueBinding<bool>(Mod.Id, "FocusSearchBar", false));
+			AddBinding(_ClearSearchBar = new ValueBinding<bool>(Mod.Id, "ClearSearchBar", false));
 			AddBinding(_ShowFindItPanel = new ValueBinding<bool>(Mod.Id, "ShowFindItPanel", false));
 			AddBinding(_ActivePrefabId = new ValueBinding<int>(Mod.Id, "ActivePrefabId", 0));
+			AddBinding(_RowCount = new ValueBinding<float>(Mod.Id, "RowCount", 2f));
+			AddBinding(_ColumnCount = new ValueBinding<float>(Mod.Id, "ColumnCount", 8f));
 
 			// These establish listeners to trigger events from UI.
 			AddBinding(new TriggerBinding(Mod.Id, "FindItCloseToggled", () => ToggleFindItPanel(false)));
@@ -59,6 +66,7 @@ namespace FindIt.Systems
 			AddBinding(new TriggerBinding<int>(Mod.Id, "SetCurrentPrefab", TryActivatePrefabTool));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "ToggleFavorited", ToggleFavorited));
 			AddBinding(new TriggerBinding(Mod.Id, "OnSearchFocused", () => _FocusSearchBar.Update(false)));
+			AddBinding(new TriggerBinding(Mod.Id, "OnSearchCleared", () => _ClearSearchBar.Update(false)));
 
 			// This setup a keybinding for activating FindItPanel.
 			InputAction hotKeyCtrlF = new($"{Mod.Id}/CtrlF");
@@ -100,7 +108,7 @@ namespace FindIt.Systems
 
 			if (!string.IsNullOrWhiteSpace(FindItUtil.CurrentSearch))
 			{
-				_PrefabSearchUISystem.SearchChanged(FindItUtil.CurrentSearch);
+				_PrefabSearchUISystem.SearchChanged(FindItUtil.CurrentSearch, true);
 			}
 		}
 
@@ -121,6 +129,9 @@ namespace FindIt.Systems
 
 			if (visible)
 			{
+				_RowCount.Update(Mod.Settings.RowCount);
+				_ColumnCount.Update(Mod.Settings.ColumnCount);
+
 				var prefab = _PrefabSearchUISystem.UpdateCategoriesList();
 
 				if (activatePrefab)
@@ -171,6 +182,13 @@ namespace FindIt.Systems
 		/// <param name="prefab"></param>
 		private void OnPrefabChanged(PrefabBase prefab)
 		{
+#if DEBUG
+			if (prefab?.name is not null)
+			{
+				File.WriteAllText(Path.Combine(FolderUtil.ContentFolder, "Prefab.txt"), prefab.name);
+			}
+#endif
+
 			if (!settingPrefab)
 			{
 				ToggleFindItPanel(false);
@@ -198,6 +216,18 @@ namespace FindIt.Systems
 			{
 				ToggleFindItPanel(false);
 			}
+		}
+
+		internal void ClearSearch()
+		{
+			_ClearSearchBar.Update(true);
+			_PrefabSearchUISystem.ClearSearch();
+		}
+
+		internal void RefreshCategoryAndSubCategory()
+		{
+			_CurrentCategoryBinding.Update((int)FindItUtil.CurrentCategory);
+			_CurrentSubCategoryBinding.Update((int)FindItUtil.CurrentSubCategory);
 		}
 	}
 }

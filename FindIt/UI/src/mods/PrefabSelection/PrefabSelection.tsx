@@ -12,6 +12,8 @@ export const ActivePrefabId$ = bindValue<number>(mod.id, "ActivePrefabId");
 export const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
 export const ScrollIndex$ = bindValue<number>(mod.id, "ScrollIndex");
 export const MaxScrollIndex$ = bindValue<number>(mod.id, "MaxScrollIndex");
+export const RowCount$ = bindValue<number>(mod.id, "RowCount");
+export const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
 
 export const PrefabSelectionComponent = () => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
@@ -21,6 +23,8 @@ export const PrefabSelectionComponent = () => {
   const CurrentCategory = useValue(CurrentCategory$);
   const ScrollIndex = useValue(ScrollIndex$);
   const MaxScrollIndex = useValue(MaxScrollIndex$);
+  const RowCount = useValue(RowCount$);
+  const ColumnCount = useValue(ColumnCount$);
   const scrollBarRef = useRef(null);
   const thumbRef = useRef(null);
 
@@ -30,6 +34,9 @@ export const PrefabSelectionComponent = () => {
   if (!ShowFindItPanel) {
     return null;
   }
+
+  const panelHeight = RowCount * 98 + 10;
+  const panelWidth = ColumnCount * 113 + 10;
 
   function OnWheel(obj: any) {
     trigger(mod.id, "OnScroll", obj.deltaY);
@@ -46,7 +53,6 @@ export const PrefabSelectionComponent = () => {
 
   function handleMouseDown(event: any) {
     setIsDragging(true);
-    console.log(event.clientY);
     setInitialDivPos(
       event.clientY - (thumbRef.current as any).getBoundingClientRect().y
     );
@@ -58,7 +64,7 @@ export const PrefabSelectionComponent = () => {
     const thumbRect = (scrollBarRef.current as any).getBoundingClientRect();
 
     const diffY = event.clientY - thumbRect.y - initialDivPos;
-    const scrollPerc = diffY / (thumbRect.height - 30);
+    const scrollPerc = diffY / Number(thumbRect.height - 30);
     const index = scrollPerc * MaxScrollIndex;
 
     trigger(mod.id, "SetScrollIndex", index);
@@ -77,10 +83,17 @@ export const PrefabSelectionComponent = () => {
           className={styles.scrollBlocker}
         ></div>
       )}
-      <div onWheel={OnWheel} className={styles.scrollableContainer}>
+      <div
+        onWheel={OnWheel}
+        className={styles.scrollableContainer}
+        style={{ height: panelHeight }}
+      >
         <div
           className={styles.panelSection}
-          style={{ margin: `${(ScrollIndex % 1) * -120}rem 0 0 0` }}
+          style={{
+            margin: `${(ScrollIndex % 1) * -98}rem 0 0 0`,
+            width: panelWidth + "rem",
+          }}
         >
           {PrefabList.map((prefab) => (
             <PrefabItemComponent
@@ -93,6 +106,7 @@ export const PrefabSelectionComponent = () => {
         {MaxScrollIndex > 0 && (
           <div
             className={styles.scrollContainer}
+            style={{ height: panelHeight - 20 }}
             ref={scrollBarRef}
             onClick={handleScrollContainerClick}
           >
@@ -103,7 +117,9 @@ export const PrefabSelectionComponent = () => {
               className={styles.scrollBar}
               ref={thumbRef}
               style={{
-                top: (ScrollIndex / MaxScrollIndex) * (185 - 30) + "rem",
+                top:
+                  (ScrollIndex / MaxScrollIndex) * (panelHeight - 20 - 30) +
+                  "rem",
                 height: "30rem",
               }}
             ></div>

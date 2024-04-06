@@ -8,14 +8,7 @@ namespace FindIt.Domain.Utilities
 {
 	public class IntersectionsPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
-		private readonly EntityManager _entityManager;
-
 		public EntityQuery Query { get; set; }
-
-		public IntersectionsPrefabCategoryProcessor(EntityManager entityManager)
-		{
-			_entityManager = entityManager;
-		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{

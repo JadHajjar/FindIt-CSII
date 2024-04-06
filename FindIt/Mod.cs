@@ -8,6 +8,8 @@ using Game;
 using Game.Modding;
 using Game.SceneFlow;
 
+using System.IO;
+
 namespace FindIt
 {
 	public class Mod : IMod
@@ -30,6 +32,11 @@ namespace FindIt
 				DefaultBlock = true
 			});
 
+			if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
+			{
+				PrefabIconUtil.Initialize(Path.GetDirectoryName(asset.path));
+			}
+
 			FindItUtil.LoadCustomPrefabData();
 
 			updateSystem.UpdateAfter<PrefabIndexingSystem>(SystemUpdatePhase.PrefabReferences);
@@ -42,6 +49,9 @@ namespace FindIt
 		public void OnDispose()
 		{
 			Log.Info(nameof(OnDispose));
+
+			PrefabIconUtil.OnDispose();
+
 			if (Settings != null)
 			{
 				Settings.UnregisterInOptionsUI();

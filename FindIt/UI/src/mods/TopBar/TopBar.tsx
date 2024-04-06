@@ -54,6 +54,7 @@ const AssetCategoryTabTheme: Theme | any = getModule(
 
 // These establishes the binding with C# side.
 const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
+const ClearSearchBar$ = bindValue<boolean>(mod.id, "ClearSearchBar");
 const FocusSearchBar$ = bindValue<boolean>(mod.id, "FocusSearchBar");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
@@ -65,9 +66,6 @@ const SubCategoryList$ = bindValue<PrefabSubCategory[]>(
   "SubCategoryList"
 );
 
-// defines trigger event names.
-// const eventName = "PrefabChange";
-
 export const TopBarComponent = () => {
   // These get the value of the bindings. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$); // To be replaced with UseValue(ShowFindItPanels$); Without C# side game ui will crash.
@@ -77,12 +75,11 @@ export const TopBarComponent = () => {
   const SubCategoryList = useValue(SubCategoryList$);
   const IsSearchLoading = useValue(IsSearchLoading$);
   const CurrentSearch = useValue(CurrentSearch$);
+  const ClearSearchBar = useValue(ClearSearchBar$);
   const FocusSearchBar = useValue(FocusSearchBar$);
   const searchRef = useRef(null);
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
-
-  const [searchQuery, setQuery] = useState(CurrentSearch);
 
   const handleInputChange = (value: Event) => {
     if (value?.target instanceof HTMLTextAreaElement) {
@@ -91,7 +88,6 @@ export const TopBarComponent = () => {
   };
 
   const setSearchText = (value: string) => {
-    setQuery(value);
     trigger(mod.id, "SearchChanged", value);
   };
 
@@ -112,6 +108,11 @@ export const TopBarComponent = () => {
   if (FocusSearchBar) {
     trigger(mod.id, "OnSearchFocused");
     setFocus();
+  }
+
+  if (ClearSearchBar) {
+    trigger(mod.id, "OnSearchCleared");
+    setSearchText("");
   }
 
   // Do not put any Hooks (i.e. UseXXXX) after this point.
@@ -139,7 +140,7 @@ export const TopBarComponent = () => {
             <TextInput
               ref={searchRef}
               multiline={1}
-              value={searchQuery}
+              value={CurrentSearch}
               disabled={false}
               type={"text"}
               className={TextInputTheme.input + " " + styles.textBox}
@@ -148,7 +149,7 @@ export const TopBarComponent = () => {
               placeholder={translate("Editor.SEARCH_PLACEHOLDER", "Search...")}
             ></TextInput>
 
-            {searchQuery.trim() !== "" && (
+            {CurrentSearch.trim() !== "" && (
               <Button
                 className={
                   VanillaComponentResolver.instance.assetGridTheme.item +

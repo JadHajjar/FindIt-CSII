@@ -28,6 +28,7 @@ namespace FindIt.Domain.Utilities
 					All = new[]
 					{
 						ComponentType.ReadOnly<StaticObjectData>(),
+						ComponentType.ReadOnly<PlaceableObjectData>(),
 					},
 					None = new[]
 					{
@@ -53,7 +54,7 @@ namespace FindIt.Domain.Utilities
 				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Lights;
 				return true;
 			}
-			
+
 			if (_entityManager.HasComponent<BrandObjectData>(entity) || prefab.name.Contains("ADDAD"))
 			{
 				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Branding;
@@ -118,6 +119,11 @@ namespace FindIt.Domain.Utilities
 						prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Lights;
 						return true;
 				}
+			}
+
+			if (!_entityManager.HasComponent<SpawnableObjectData>(entity))
+			{
+				return false;
 			}
 
 			prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Misc;

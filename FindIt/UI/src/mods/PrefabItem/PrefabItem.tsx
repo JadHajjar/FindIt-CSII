@@ -53,7 +53,12 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         className={
           VanillaComponentResolver.instance.assetGridTheme.thumbnail +
           " " +
-          styles.gridThumbnail
+          styles.gridThumbnail +
+          " " +
+          (props.prefab.thumbnail.endsWith(".jpeg") ||
+          props.prefab.thumbnail.endsWith(".jpg")
+            ? styles.jpgThumb
+            : null)
         }
       ></img>
 

@@ -1,43 +1,21 @@
 .scrollableContainer {
-  height: 205rem;
   overflow: hidden;
   display: flex;
 }
 
 .panelSection {
-  width: 915rem;
   padding: 5rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-}
-
-.row {
-  padding: 10rem 20rem;
-}
-
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.gridItem {
-  margin: 5rem;
-  width: 125rem !important;
-  height: 110rem !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  align-content: flex-start;
 }
 
 .scrollContainer {
   background-color: rgba(var(--scrollbarColor), 0.15);
   position: relative;
-  height: 185rem;
   width: 12rem;
   margin: 10rem 0;
   border-radius: 3rem;

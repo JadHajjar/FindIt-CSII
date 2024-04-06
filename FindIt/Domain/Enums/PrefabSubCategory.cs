@@ -45,6 +45,8 @@ namespace FindIt.Domain.Enums
 		Networks_Bridges,
 		[CategoryIcon("Media/Game/Icons/Intersections.svg")]
 		Networks_Intersections,
+		[CategoryIcon("Media/Game/Icons/Pathways.svg")]
+		Networks_Paths,
 
 		[Obsolete("Use PrefabCategory", true)]
 		Trees = PrefabCategory.Trees,

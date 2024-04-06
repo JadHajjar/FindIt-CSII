@@ -8,14 +8,7 @@ namespace FindIt.Domain.Utilities
 {
 	public class TreePrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
-		private readonly EntityManager _entityManager;
-
 		public EntityQuery Query { get; set; }
-
-		public TreePrefabCategoryProcessor(EntityManager entityManager)
-		{
-			_entityManager = entityManager;
-		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
@@ -33,7 +26,7 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			if (prefab.name.Contains("ADDAD_") || prefab.name.Contains("Billboard"))
+			if (prefab.name.Contains("ADDAD_") || prefab.name.Contains("Billboard") || prefab.name is "GasStationPylon01 - AnnusInteriorDesign" or "GasStationPylon02 - AnnusInteriorDesign" or "GasStationPylon02 - BellAndCog" or "GasStationPylon03 - BellAndCog" or "PosterHuge01 - BellAndCog" or "PosterHuge02 - BellAndCog")
 			{
 				prefabIndex = null;
 				return false;

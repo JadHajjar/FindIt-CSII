@@ -24,7 +24,11 @@ namespace FindIt.Domain
 		public PrefabIndex this[int index]
 		{
 			get => _dictionary[index];
-			set => _dictionary[index] = value;
+			set
+			{
+				_dictionary[index] = value;
+				_orderedList = null;
+			}
 		}
 
 		public bool TryGetValue(int id, out PrefabIndex prefabIndex)

@@ -50,7 +50,27 @@ namespace FindIt.Systems
 			{
 				if (typeof(IPrefabCategoryProcessor).IsAssignableFrom(type) && !type.IsAbstract)
 				{
-					_prefabCategoryProcessors.Add((IPrefabCategoryProcessor)Activator.CreateInstance(type, EntityManager));
+					var constructor = type.GetConstructors()[0];
+					var parameters = constructor.GetParameters();
+					var objectParams = new object[parameters.Length];
+
+					for (var i = 0; i < parameters.Length; i++)
+					{
+						if (parameters[i].ParameterType == typeof(EntityManager))
+						{
+							objectParams[i] = EntityManager;
+						}
+						else if (parameters[i].ParameterType == typeof(PrefabSystem))
+						{
+							objectParams[i] = _prefabSystem;
+						}
+						else if (parameters[i].ParameterType == typeof(ImageSystem))
+						{
+							objectParams[i] = _imageSystem;
+						}
+					}
+
+					_prefabCategoryProcessors.Add((IPrefabCategoryProcessor)Activator.CreateInstance(type, objectParams));
 				}
 			}
 		}
@@ -173,6 +193,11 @@ namespace FindIt.Systems
 
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
 		{
+			if (PrefabIconUtil.TryGetCustomThumbnail(prefab.name, out var prefabThumbnail))
+			{
+				prefabIndex.Thumbnail = prefabThumbnail;
+			}
+
 			prefabIndex.Id = entity.Index;
 			prefabIndex.Name = GetAssetName(prefab);
 			prefabIndex.Thumbnail ??= _imageSystem.GetThumbnail(entity);

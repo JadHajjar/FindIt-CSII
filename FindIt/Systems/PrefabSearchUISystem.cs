@@ -8,9 +8,12 @@ using Game.UI;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FindIt.Systems
 {
@@ -28,8 +31,6 @@ namespace FindIt.Systems
 
 		private bool filterCompleted;
 		private double scrollIndex;
-		private readonly double columns = 8;
-		private readonly double displayedRows = 2;
 
 		protected override void OnCreate()
 		{
@@ -43,12 +44,12 @@ namespace FindIt.Systems
 			AddBinding(_PrefabListBinding = new ValueBinding<PrefabUIEntry[]>(Mod.Id, "PrefabList", new PrefabUIEntry[0], new ArrayWriter<PrefabUIEntry>(new ValueWriter<PrefabUIEntry>())));
 			AddBinding(_CurrentSearch = new ValueBinding<string>(Mod.Id, "CurrentSearch", ""));
 
-			AddBinding(new TriggerBinding<string>(Mod.Id, "SearchChanged", SearchChanged));
+			AddBinding(new TriggerBinding<string>(Mod.Id, "SearchChanged", t => SearchChanged(t)));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "OnScroll", OnScroll));
-			AddBinding(new TriggerBinding<int>(Mod.Id, "SetScrollIndex", SetScrollIndex));
+			AddBinding(new TriggerBinding<double>(Mod.Id, "SetScrollIndex", SetScrollIndex));
 		}
 
-		private void SetScrollIndex(int index)
+		private void SetScrollIndex(double index)
 		{
 			SetScroll(index);
 
@@ -57,7 +58,7 @@ namespace FindIt.Systems
 
 		private void OnScroll(int direction)
 		{
-			scrollIndex += Mod.Settings.ScrollSpeed * (direction > 0 ? 1 : -1);
+			scrollIndex += Mod.Settings.ScrollSpeed * (direction > 0 ? 2 : -2) / Mod.Settings.RowCount;
 
 			_PrefabListBinding.Update(GetDisplayedPrefabs());
 		}
@@ -66,16 +67,18 @@ namespace FindIt.Systems
 		{
 			var list = FindItUtil.GetFilteredPrefabs();
 
+			var columns = (float)Mod.Settings.ColumnCount;
+			var displayedRows = Mod.Settings.RowCount;
 			var rows = Math.Ceiling(list.Count / columns);
 
-			scrollIndex = Math.Min(Math.Max(scrollIndex, 0), rows - displayedRows);
+			scrollIndex = Math.Max(Math.Min(scrollIndex, rows - displayedRows), 0);
 
 			_ScrollIndex.Update(scrollIndex);
 			_MaxScrollIndex.Update(rows - displayedRows);
 
 			var uiEntries = new List<PrefabUIEntry>();
 			var startIndex = (int)(Math.Floor(scrollIndex) * columns);
-			var maxIndex = startIndex + (int)(columns * (1 + displayedRows));
+			var maxIndex = startIndex + (int)(columns * (2 + displayedRows));
 
 			for (var i = startIndex; i < maxIndex && i < list.Count; i++)
 			{
@@ -102,14 +105,37 @@ namespace FindIt.Systems
 			scrollIndex = index;
 		}
 
-		public void SearchChanged(string text)
+		internal void ScrollTo(int id)
 		{
+			var list = FindItUtil.GetFilteredPrefabs();
+			var index = list.FindIndex(x => x.Id == id);
+
+			if (index > -1)
+			{
+				scrollIndex = Math.Floor(index / (double)Mod.Settings.ColumnCount);
+			}
+		}
+
+		public void SearchChanged(string text, bool force = false)
+		{
+			if (!force&&_CurrentSearch.value == text && FindItUtil.CurrentSearch == text)
+				return;
+
 			FindItUtil.CurrentSearch = text;
 
 			_IsSearchLoading.Update(true);
 			_CurrentSearch.Update(text);
 
 			Task.Run(DelayedSearch);
+		}
+
+		internal void ClearSearch()
+		{
+			FindItUtil.CurrentSearch = string.Empty;
+			filterCompleted = false;
+			_IsSearchLoading.Update(false);
+			_CurrentSearch.Update(string.Empty);
+			tokenSource?.Cancel();
 		}
 
 		private async Task DelayedSearch()
@@ -146,6 +172,7 @@ namespace FindIt.Systems
 			if (filterCompleted)
 			{
 				filterCompleted = false;
+				scrollIndex = 0;
 
 				_IsSearchLoading.Update(false);
 				_PrefabListBinding.Update(GetDisplayedPrefabs());

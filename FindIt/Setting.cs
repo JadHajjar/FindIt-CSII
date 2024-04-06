@@ -41,9 +41,20 @@ namespace FindIt
 		[SettingsUISection(kSection, kToggleGroup)]
 		public bool OpenPanelOnPicker { get; set; } = true;
 
+		[SettingsUISection(kSection, kToggleGroup)]
+		public bool SelectPrefabOnOpen { get; set; } = true;
+
 		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, scalarMultiplier = 1f, unit = Unit.kFloatSingleFraction)]
 		[SettingsUISection(kSection, kToggleGroup)]
 		public float ScrollSpeed { get; set; } = 0.6f;
+
+		[SettingsUISlider(min = 1f, max = 6f, step = 0.25f, scalarMultiplier = 1f, unit = Unit.kFloatTwoFractions)]
+		[SettingsUISection(kSection, kToggleGroup)]
+		public float RowCount { get; set; } = 2f;
+
+		[SettingsUISlider(min = 4f, max = 20f, step = 1f, scalarMultiplier = 1f)]
+		[SettingsUISection(kSection, kToggleGroup)]
+		public int ColumnCount { get; set; } = 8;
 
 		//[SettingsUIDropdown(typeof(Setting), nameof(GetIntDropdownItems))]
 		//[SettingsUISection(kSection, kDropdownGroup)]
@@ -118,8 +129,17 @@ namespace FindIt
 				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), "Open Find It's panel after picking an object" },
 				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.OpenPanelOnPicker)), $"Choose between opening the Find It panel after selecting an object with Picker, or the vanilla panel if available." },
 
+				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.SelectPrefabOnOpen)), "Select the first asset when opening Find It" },
+				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.SelectPrefabOnOpen)), $"Choose between opening the Find It panel after selecting an object with Picker, or the vanilla panel if available." },
+
 				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.ScrollSpeed)), "Scroll Speed" },
 				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.ScrollSpeed)), $"Represents a multiplier of the size of one row of items." },
+
+				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.RowCount)), "Row Count" },
+				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.RowCount)), $"Customize how many rows are displayed in the Find It panel." },
+
+				{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.ColumnCount)), "Column Count" },
+				{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.ColumnCount)), $"Customize how many columns are displayed in the Find It panel." },
 
 				//{ _setting.GetOptionLabelLocaleID(nameof(FindItSetting.IntSlider)), "Int slider" },
 				//{ _setting.GetOptionDescLocaleID(nameof(FindItSetting.IntSlider)), $"Use int property with getter and setter and [{nameof(SettingsUISliderAttribute)}] to get int slider" },
