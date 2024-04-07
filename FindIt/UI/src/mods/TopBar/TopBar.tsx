@@ -1,7 +1,7 @@
 import { bindValue, trigger, useValue } from "cs2/api";
 import { Theme } from "cs2/bindings";
 import mod from "../../../mod.json";
-import { Button } from "cs2/ui";
+import { Button, Tooltip } from "cs2/ui";
 import { useLocalization } from "cs2/l10n";
 import { getModule } from "cs2/modding";
 import { FocusKey } from "cs2/bindings";
@@ -57,6 +57,7 @@ const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
 const ClearSearchBar$ = bindValue<boolean>(mod.id, "ClearSearchBar");
 const FocusSearchBar$ = bindValue<boolean>(mod.id, "FocusSearchBar");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+const ShowSortingPanel$ = bindValue<boolean>(mod.id, "ShowSortingPanel");
 const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
 const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
@@ -77,6 +78,7 @@ export const TopBarComponent = () => {
   const CurrentSearch = useValue(CurrentSearch$);
   const ClearSearchBar = useValue(ClearSearchBar$);
   const FocusSearchBar = useValue(FocusSearchBar$);
+  const ShowSortingPanel = useValue(ShowSortingPanel$);
   const searchRef = useRef(null);
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
@@ -166,12 +168,28 @@ export const TopBarComponent = () => {
               </Button>
             )}
           </div>
+
+          {!ShowSortingPanel && (
+            <Button
+              className={
+                VanillaComponentResolver.instance.assetGridTheme.item +
+                " " +
+                styles.sortIcon
+              }
+              variant="icon"
+              onSelect={() => trigger(mod.id, "ToggleSortingPanel")}
+              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+            >
+              <img src="coui://uil/Standard/XClose.svg"></img>
+            </Button>
+          )}
         </div>
 
         <div className={styles.topBarSection}>
           <div className={styles.categorySection}>
             {CategoryList.map((element) => (
               <VanillaComponentResolver.instance.ToolButton
+                tooltip={element.toolTip}
                 selected={element.id == CurrentCategory}
                 onSelect={() => setCurrentCategory(element.id)}
                 src={element.icon}
@@ -183,18 +201,25 @@ export const TopBarComponent = () => {
             ))}
           </div>
 
-          <Button
-            className={
-              VanillaComponentResolver.instance.assetGridTheme.item +
-              " " +
-              styles.closeIcon
-            }
-            variant="icon"
-            onSelect={() => trigger(mod.id, "FindItCloseToggled")}
-            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+          <Tooltip
+            tooltip={translate(
+              "Tooltip.LABEL[FindIt.ClosePanel]",
+              "Close Panel"
+            )}
           >
-            <img src="coui://uil/Standard/XClose.svg"></img>
-          </Button>
+            <Button
+              className={
+                VanillaComponentResolver.instance.assetGridTheme.item +
+                " " +
+                styles.closeIcon
+              }
+              variant="icon"
+              onSelect={() => trigger(mod.id, "FindItCloseToggled")}
+              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+            >
+              <img src="coui://uil/Standard/XClose.svg"></img>
+            </Button>
+          </Tooltip>
         </div>
       </div>
 
@@ -205,26 +230,28 @@ export const TopBarComponent = () => {
           }
         >
           {SubCategoryList.map((element) => (
-            <Button
-              className={
-                VanillaComponentResolver.instance.assetGridTheme.item +
-                " " +
-                styles.tabButton
-              }
-              selected={element.id == CurrentSubCategory}
-              variant="icon"
-              onSelect={() => setCurrentSubCategory(element.id)}
-              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            >
-              <img
-                src={element.icon}
+            <Tooltip tooltip={element.toolTip}>
+              <Button
                 className={
-                  VanillaComponentResolver.instance.assetGridTheme.thumbnail +
+                  VanillaComponentResolver.instance.assetGridTheme.item +
                   " " +
-                  styles.gridThumbnail
+                  styles.tabButton
                 }
-              ></img>
-            </Button>
+                selected={element.id == CurrentSubCategory}
+                variant="icon"
+                onSelect={() => setCurrentSubCategory(element.id)}
+                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+              >
+                <img
+                  src={element.icon}
+                  className={
+                    VanillaComponentResolver.instance.assetGridTheme.thumbnail +
+                    " " +
+                    styles.gridThumbnail
+                  }
+                ></img>
+              </Button>
+            </Tooltip>
           ))}
         </div>
       </div>

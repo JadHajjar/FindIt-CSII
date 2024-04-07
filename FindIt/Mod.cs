@@ -8,6 +8,8 @@ using Game;
 using Game.Modding;
 using Game.SceneFlow;
 
+using Skyve.Mod.CS2.Shared;
+
 using System.IO;
 
 namespace FindIt
@@ -17,17 +19,21 @@ namespace FindIt
 		public const string Id = "FindIt";
 
 		public static ILog Log { get; } = LogManager.GetLogger(nameof(FindIt)).SetShowsErrorsInUI(false);
-		public static FindItSetting Settings { get; private set; }
+		public static FindItSettings Settings { get; private set; }
 
 		public void OnLoad(UpdateSystem updateSystem)
 		{
 			Log.Info(nameof(OnLoad));
 
-			Settings = new FindItSetting(this);
+			Settings = new FindItSettings(this);
 			Settings.RegisterInOptionsUI();
-			GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Settings));
 
-			AssetDatabase.global.LoadSettings(nameof(FindIt), Settings, new FindItSetting(this)
+			foreach (var item in new LocaleHelper("FindIt.Locale.json").GetAvailableLanguages())
+			{
+				GameManager.instance.localizationManager.AddSource(item.LocaleId, item);
+			}
+
+			AssetDatabase.global.LoadSettings(nameof(FindIt), Settings, new FindItSettings(this)
 			{
 				DefaultBlock = true
 			});

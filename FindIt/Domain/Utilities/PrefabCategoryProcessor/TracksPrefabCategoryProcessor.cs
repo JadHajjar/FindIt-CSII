@@ -8,8 +8,6 @@ namespace FindIt.Domain.Utilities
 {
 	public class TracksPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
-		public EntityQuery Query { get; set; }
-
 		public EntityQueryDesc[] GetEntityQuery()
 		{
 			return new[]

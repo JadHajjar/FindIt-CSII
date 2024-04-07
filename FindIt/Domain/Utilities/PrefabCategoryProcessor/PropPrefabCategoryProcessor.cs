@@ -2,6 +2,7 @@
 
 using Game.Prefabs;
 
+using System;
 using System.Linq;
 
 using Unity.Entities;
@@ -11,8 +12,6 @@ namespace FindIt.Domain.Utilities
 	public class PropPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
-
-		public EntityQuery Query { get; set; }
 
 		public PropPrefabCategoryProcessor(EntityManager entityManager)
 		{
@@ -55,7 +54,7 @@ namespace FindIt.Domain.Utilities
 				return true;
 			}
 
-			if (_entityManager.HasComponent<BrandObjectData>(entity) || prefab.name.Contains("ADDAD"))
+			if (_entityManager.IsBrandEntity(entity) || prefab.name.Contains("ADDAD"))
 			{
 				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Branding;
 				return true;
@@ -75,7 +74,7 @@ namespace FindIt.Domain.Utilities
 					case "Props/Nature Decorations/Boulders":
 					case "Props/Nature Decorations":
 						prefabIndex.Category = Enums.PrefabCategory.Trees;
-						prefabIndex.SubCategory = Enums.PrefabSubCategory.Trees_Props;
+						prefabIndex.SubCategory = Enums.PrefabSubCategory.Trees_Rocks;
 						return true;
 
 					case "Props/Decorations/Industrial Manufacturing":
@@ -119,6 +118,18 @@ namespace FindIt.Domain.Utilities
 						prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Lights;
 						return true;
 				}
+			}
+
+			if (prefab.name.IndexOf("decal", StringComparison.InvariantCultureIgnoreCase) >= 0)
+			{
+				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Decals;
+				return true;
+			}
+
+			if (prefab.name.StartsWith("NotreDame"))
+			{
+				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Misc;
+				return true;
 			}
 
 			if (!_entityManager.HasComponent<SpawnableObjectData>(entity))

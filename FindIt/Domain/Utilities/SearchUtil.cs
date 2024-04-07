@@ -1,13 +1,42 @@
-﻿using System;
+﻿using Colossal.Entities;
+
+using Game.Prefabs;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Unity.Entities;
+
 namespace FindIt.Domain.Utilities
 {
 	internal static class SearchUtil
 	{
+		public static bool IsBrandEntity(this EntityManager entityManager, Entity entity)
+		{
+			if (entityManager.HasComponent<BrandObjectData>(entity))
+			{
+				return true;
+			}
+
+			if (!entityManager.TryGetBuffer<ObjectRequirementElement>(entity, true, out var requirementBuffer))
+			{
+				return false;
+			}
+
+			for (var i = 0; i < requirementBuffer.Length; i++)
+			{
+				if (entityManager.HasComponent<BrandData>(requirementBuffer[i].m_Requirement))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public static bool SearchCheck(this string searchTerm, string termToBeSearched, bool caseCheck = false)
 		{
 			if (string.IsNullOrWhiteSpace(searchTerm) && string.IsNullOrWhiteSpace(termToBeSearched))

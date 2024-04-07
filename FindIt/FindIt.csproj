@@ -5,7 +5,7 @@
 		<LangVersion>9</LangVersion>
 		<TargetFramework>net472</TargetFramework>
 		<Configurations>Debug;Release</Configurations>
-		<Version>0.9.3</Version>
+		<Version>0.9.4</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<Company>T. D. W.</Company>
@@ -36,10 +36,22 @@
 	</Target>
 
 	<ItemGroup>
-		<None Remove="Resources\Blacklist.txt" />
+		<EmbeddedResource Include="Locale.json" />
+		<EmbeddedResource Include="Locale\*.json" />
+		<None Remove="Locale.json" />
+		<None Remove="Locale\*.json" />
 		<EmbeddedResource Include="Resources\Blacklist.txt" />
-		<Folder Include="Resources\Thumbnails\" />
 	</ItemGroup>
+
+	<Target Name="UpdatePublishConfiguration" BeforeTargets="Publish">
+		<PropertyGroup>
+			<PdxPublishConfiguration>$([System.IO.Path]::GetFullPath('..\PdxPublishConfiguration\PdxPublishConfiguration.exe'))</PdxPublishConfiguration>
+			<ChangelogJsonFile>"$([System.IO.Path]::GetFullPath('..\FindIt\Changelog.json'))"</ChangelogJsonFile>
+			<PublishConfigurationFile>"$([System.IO.Path]::GetFullPath('..\FindIt\$(PublishConfigurationPath)'))"</PublishConfigurationFile>
+		</PropertyGroup>
+
+		<Exec Command="$(PdxPublishConfiguration) $(PublishConfigurationFile) $(Version) $(Configuration) $(ChangelogJsonFile) $(ModPublisherCommand)" />
+	</Target>
 
 	<ItemGroup>
 		<Reference Include="Game">

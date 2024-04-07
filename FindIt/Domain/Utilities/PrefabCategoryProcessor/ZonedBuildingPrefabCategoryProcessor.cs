@@ -14,8 +14,6 @@ namespace FindIt.Domain.Utilities
 		private readonly EntityManager _entityManager;
 		private readonly ImageSystem _imageSystem;
 
-		public EntityQuery Query { get; set; }
-
 		public ZonedBuildingPrefabCategoryProcessor(EntityManager entityManager, ImageSystem imageSystem)
 		{
 			_entityManager = entityManager;
@@ -28,8 +26,11 @@ namespace FindIt.Domain.Utilities
 			{
 				new EntityQueryDesc
 				{
-					All = new ComponentType[1] { ComponentType.ReadOnly<BuildingData>() },
-					Any = new ComponentType[2]
+					All = new[]
+					{	
+						ComponentType.ReadOnly<BuildingData>()
+					},
+					Any = new[]
 					{
 						ComponentType.ReadOnly<SpawnableBuildingData>(),
 						ComponentType.ReadOnly<PlaceholderBuildingData>()

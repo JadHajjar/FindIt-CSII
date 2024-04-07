@@ -8,12 +8,9 @@ using Game.UI;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FindIt.Systems
 {
@@ -118,10 +115,14 @@ namespace FindIt.Systems
 
 		public void SearchChanged(string text, bool force = false)
 		{
-			if (!force&&_CurrentSearch.value == text && FindItUtil.CurrentSearch == text)
-				return;
+			text = text.Replace("\r", "").Replace("\n", "");
 
-			FindItUtil.CurrentSearch = text;
+			if (!force && _CurrentSearch.value == text && FindItUtil.CurrentSearch == text)
+			{
+				return;
+			}
+
+			FindItUtil.CurrentSearch = text.Trim();
 
 			_IsSearchLoading.Update(true);
 			_CurrentSearch.Update(text);

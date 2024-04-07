@@ -1,6 +1,6 @@
 import { trigger } from "cs2/api";
 import styles from "./prefabItem.module.scss";
-import { Button } from "cs2/ui";
+import { Button, Tooltip } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
 import { useLocalization } from "cs2/l10n";
@@ -66,25 +66,39 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         <p>{props.prefab.name}</p>
       </div>
 
-      <Button
-        className={
-          VanillaComponentResolver.instance.assetGridTheme.item +
-          " " +
-          styles.favoriteIcon +
-          (props.prefab.favorited ? " " + styles.favorited : "")
+      <Tooltip
+        tooltip={
+          props.prefab.favorited
+            ? translate(
+                "Tooltip.LABEL[FindIt.RemoveFavorite]",
+                "Remove from favorites"
+              )
+            : translate(
+                "Tooltip.LABEL[FindIt.AddFavorite]",
+                "Favorite this asset"
+              )
         }
-        variant="icon"
-        onSelect={() => ToggleFavorited(props.prefab.id)}
-        focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
       >
-        <img
-          src={
-            props.prefab.favorited
-              ? "coui://uil/Colored/StarFilled.svg"
-              : "coui://uil/Colored/StarOutline.svg"
+        <Button
+          className={
+            VanillaComponentResolver.instance.assetGridTheme.item +
+            " " +
+            styles.favoriteIcon +
+            (props.prefab.favorited ? " " + styles.favorited : "")
           }
-        ></img>
-      </Button>
+          variant="icon"
+          onSelect={() => ToggleFavorited(props.prefab.id)}
+          focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+        >
+          <img
+            src={
+              props.prefab.favorited
+                ? "coui://uil/Colored/StarFilled.svg"
+                : "coui://uil/Colored/StarOutline.svg"
+            }
+          ></img>
+        </Button>
+      </Tooltip>
 
       <div className={styles.rightSideContainer}>
         {props.showCategory && (

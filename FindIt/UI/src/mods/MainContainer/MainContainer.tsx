@@ -4,33 +4,34 @@ import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
 import { TopBarComponent } from "mods/TopBar/TopBar";
 import { PrefabSelectionComponent } from "mods/PrefabSelection/PrefabSelection";
+import { SortingPanel } from "../SortingPanel/SortingPanel";
 import { Portal } from "cs2/ui";
 import styles from "./mainContainer.module.scss";
 
 // These contain the coui paths to Unified Icon Library svg assets
-export const findItIconSrc = "coui://uil/Standard/Magnifier.svg";
+const findItIconSrc = "coui://uil/Standard/Magnifier.svg";
 
-export const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
+const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
 
 // This functions trigger an event on C# side and C# designates the method to implement.
-export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 
-export const GameMainScreneTheme: Theme | any = getModule(
+const GameMainScreneTheme: Theme | any = getModule(
   "game-ui/game/components/game-main-screen.module.scss",
   "classes"
 );
 
-export const PanelTheme: Theme | any = getModule(
+const PanelTheme: Theme | any = getModule(
   "game-ui/common/panel/panel.module.scss",
   "classes"
 );
 
-export const AssetMenuTheme: Theme | any = getModule(
+const AssetMenuTheme: Theme | any = getModule(
   "game-ui/game/components/asset-menu/asset-menu.module.scss",
   "classes"
 );
 
-export const DefaultMainTheme: Theme | any = getModule(
+const DefaultMainTheme: Theme | any = getModule(
   "game-ui/common/panel/themes/default.module.scss",
   "classes"
 );
@@ -39,22 +40,26 @@ export const FindItMainContainerComponent = () => {
   const isPhotoMode =
     useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
 
+  // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
+  const ShowFindItPanel = useValue(ShowFindItPanel$);
   const ColumnCount = useValue(ColumnCount$);
   const panelWidth = ColumnCount * 113 + 10 + 20;
 
-  // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
-  const ShowFindItPanel = useValue(ShowFindItPanel$);
+  if (isPhotoMode || !ShowFindItPanel) return null;
 
-  if (!isPhotoMode && ShowFindItPanel) {
-    return (
-      <Portal>
-        <div className={styles.findItMainContainer}>
-          <div className={GameMainScreneTheme.toolLayout}>
-            <div className={GameMainScreneTheme.toolMainColumn}>
-              <div
-                className={GameMainScreneTheme.toolPanel}
-                style={{ width: panelWidth + "rem" }}
-              >
+  return (
+    <Portal>
+      <div className={styles.findItMainContainer}>
+        <div className={GameMainScreneTheme.toolLayout}>
+          <div
+            className={GameMainScreneTheme.toolMainColumn}
+            style={{ position: "relative" }}
+          >
+            <div
+              className={GameMainScreneTheme.toolPanel}
+              style={{ width: panelWidth + "rem" }}
+            >
+              <div>
                 <div className={DefaultMainTheme.header}>
                   <TopBarComponent></TopBarComponent>
                 </div>
@@ -73,9 +78,7 @@ export const FindItMainContainerComponent = () => {
             </div>
           </div>
         </div>
-      </Portal>
-    );
-  }
-
-  return null;
+      </div>
+    </Portal>
+  );
 };

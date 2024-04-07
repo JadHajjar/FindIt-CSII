@@ -1,6 +1,4 @@
-﻿using Colossal.Entities;
-
-using FindIt.Domain.Interfaces;
+﻿using FindIt.Domain.Interfaces;
 
 using Game.Prefabs;
 
@@ -11,8 +9,6 @@ namespace FindIt.Domain.Utilities
 	public class MiscBuildingPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
-
-		public EntityQuery Query { get; set; }
 
 		public MiscBuildingPrefabCategoryProcessor(EntityManager entityManager)
 		{
@@ -29,15 +25,14 @@ namespace FindIt.Domain.Utilities
 					{
 						ComponentType.ReadOnly<BuildingData>(),
 					},
-					None = new[] 
+					None = new[]
 					{
 						ComponentType.ReadOnly<ServiceObjectData>(),
 						ComponentType.ReadOnly<SpawnableBuildingData>(),
 						ComponentType.ReadOnly<SignatureBuildingData>(),
 						ComponentType.ReadOnly<ServiceUpgradeBuilding>(),
-						ComponentType.ReadOnly<ExtractorFacilityData>()
 					}
-				}
+				},
 			};
 		}
 
@@ -48,12 +43,17 @@ namespace FindIt.Domain.Utilities
 				prefabIndex = null;
 				return false;
 			}
-			
+
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Buildings,
 				SubCategory = Enums.PrefabSubCategory.Buildings_Miscellaneous
 			};
+
+			if (_entityManager.HasComponent<ExtractorFacilityData>(entity))
+			{
+				prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Specialized;
+			}
 
 			return true;
 		}

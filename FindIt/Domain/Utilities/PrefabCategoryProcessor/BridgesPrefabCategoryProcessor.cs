@@ -8,8 +8,6 @@ namespace FindIt.Domain.Utilities
 {
 	public class BridgesPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
-		public EntityQuery Query { get; set; }
-
 		public EntityQueryDesc[] GetEntityQuery()
 		{
 			return new[]
@@ -28,7 +26,7 @@ namespace FindIt.Domain.Utilities
 		{
 			if (prefab is StaticObjectPrefab)
 			{
-				prefabIndex = null; 
+				prefabIndex = null;
 				return false;
 			}
 

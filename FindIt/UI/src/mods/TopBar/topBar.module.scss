@@ -14,18 +14,17 @@
 
 .searchArea {
   position: relative;
+  margin: 0 0.5em;
 }
 
 .searchIcon {
   height: 1.5em;
   width: 1.5em;
-  margin-right: 0.5em;
 }
 
 .loadingIcon {
   height: 1.5em;
   width: 1.5em;
-  margin-right: 0.5em;
   animation: rotation 0.5s infinite linear;
 }
 
@@ -38,6 +37,7 @@
   }
 }
 
+.sortIcon,
 .closeIcon {
   height: 2.5em;
   width: 2.5em;
@@ -45,6 +45,7 @@
   background: none;
 }
 
+.sortIcon img,
 .closeIcon img {
   height: 1.5em;
   width: 1.5em;

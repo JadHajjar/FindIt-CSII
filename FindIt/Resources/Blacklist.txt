@@ -1,1 +1,67 @@
 Agriculture Extractor Placeholder
+CoalTruck01
+EU_DeliveryVan01
+EU_TruckTractor01
+MotorbikeDelivery01
+NA_DeliveryVan01
+NA_TruckTractor01
+OilTruck01
+LogPileLarge01
+LogPileLarge02
+LogPileLarge03
+LogPileMedium01
+LogPileMedium02
+LogPileMedium03
+LogPileSmall01
+LogPileSmall02
+LogPileSmall03
+PileCoalLarge01
+PileCoalMassive01
+PileCoalMedium01
+PileCoalSmall01
+PileCropLarge01
+PileCropMassive01
+PileCropMedium01
+PileCropSmall01
+PileGarbageLarge01
+PileGarbageMassive01
+PileGarbageMedium01
+PileGarbageSmall01
+PileOreLarge01
+PileOreMassive01
+PileOreMedium01
+PileOreSmall01
+PileSandLarge01
+PileSandMassive01
+PileSandMedium01
+PileSandSmall01
+PileStoneLarge01
+PileStoneMassive01
+PileStoneMedium01
+PileStoneSmall01
+Agriculture Lot
+Agriculture Lot - Field
+Extractor Lot
+Forestry Lot
+HedgeHigh Placeholder
+HedgeHigh01
+HedgeHigh02
+HedgeLow Placeholder
+HedgeLow01
+HedgeLow02
+Landfill Site Lot
+Oil Lot
+Oil Lot - Navigation
+Ore Lot
+Ore Lot - Navigation
+PileLargeRandom01
+PileMassiveRandom01
+PileMediumRandom01
+Trashbag01
+Trashbag02
+Trashbag03
+Trashbag04
+TrashbagRandom01
+Oneway Tram Track - Inside
+Water Tile
+Road Tree Placeholder

@@ -8,21 +8,28 @@ namespace FindIt.Domain.Utilities
 {
 	public class ShrubPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
-		public EntityQuery Query { get; set; }
+		private readonly EntityManager _entityManager;
+
+		public ShrubPrefabCategoryProcessor(EntityManager entityManager)
+		{
+			_entityManager = entityManager;
+		}
 
 		public EntityQueryDesc[] GetEntityQuery()
 		{
-			return new[] 
+			return new[]
 			{
 				new EntityQueryDesc
 				{
 					All = new[]
 					{
 						ComponentType.ReadOnly<PlantData>(),
+						ComponentType.ReadOnly<LoadedIndex>(),
 					},
 					None = new[]
 					{
 						ComponentType.ReadOnly<TreeData>(),
+						ComponentType.ReadOnly<NetLaneData>(),
 					},
 				},
 			};
@@ -30,17 +37,21 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			if (prefab.name.Contains("ADDAD_") || prefab.name.Contains("Billboard"))
-			{
-				prefabIndex = null;
-				return false;
-			}
-
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Trees,
 				SubCategory = Enums.PrefabSubCategory.Trees_Shrubs
 			};
+
+			if (prefab.name is "TreeCityRandom01" or "TreeWildRandom01")
+			{
+				prefabIndex.SubCategory = Enums.PrefabSubCategory.Trees_Trees;
+			}
+
+			if (!_entityManager.HasComponent<Effect>(entity))
+			{
+				prefabIndex.SubCategory = Enums.PrefabSubCategory.Trees_Props;
+			}
 
 			return true;
 		}

@@ -1,0 +1,18 @@
+[
+  {
+    "Stable": false,
+    "Beta": true,
+    "Version": "0.9.4",
+    "Date": "2024-04-07",
+    "ChangeGroups": [
+      {
+        "Name": "Asset Changes",
+        "Changes": [
+          "Added missing props, including decals, road signs, pillars, stops, and a few more.",
+          "Removed dangerous assets that cause crashes or that do not work.",
+          "Cleaned up some asset sub-categories."
+        ]
+      }
+    ]
+  }
+]

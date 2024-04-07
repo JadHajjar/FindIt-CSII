@@ -12,8 +12,6 @@ namespace FindIt.Domain.Utilities
 	{
 		private readonly EntityManager _entityManager;
 
-		public EntityQuery Query { get; set; }
-
 		public ServiceBuildingPrefabCategoryProcessor(EntityManager entityManager)
 		{
 			_entityManager = entityManager;

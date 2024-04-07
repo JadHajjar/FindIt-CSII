@@ -101,7 +101,17 @@ namespace FindIt.Systems
 
 				try
 				{
-					var entities = GetEntityQuery(_prefabCategoryProcessors[ind].GetEntityQuery()).ToEntityArray(Allocator.Temp);
+					var queries = _prefabCategoryProcessors[ind].GetEntityQuery();
+
+					if (Mod.Settings.HideRandomAssets)
+					{
+						for (var i = 0; i < queries.Length; i++)
+						{
+							queries[i].None = queries[i].None.Concat(new[] { ComponentType.ReadOnly<PlaceholderObjectData>() }).ToArray();
+						}
+					}
+
+					var entities = GetEntityQuery(queries).ToEntityArray(Allocator.Temp);
 
 					Mod.Log.Info($"\tTotal Entities Count: {entities.Length}");
 

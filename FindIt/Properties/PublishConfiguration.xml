@@ -1,8 +1,9 @@
-﻿<Publish>
-	<ModId Value="77240" />
-	<DisplayName Value="Find It [Beta]" />
-	<ShortDescription Value="Find It is a mod that lets you quickly browse and search for all of the assets inside of the game." />
-	<LongDescription>
+<?xml version="1.0" encoding="utf-8"?>
+<Publish>
+  <ModId Value="77240" />
+  <DisplayName Value="Find It [Beta]" />
+  <ShortDescription Value="Find It is a mod that lets you quickly browse and search for all of the assets inside of the game." />
+  <LongDescription>
 # Find It [Beta] for Cities: Skylines II
 Quickly browse and search through all of the assets inside of the game.
 Use **Ctrl+F** to quickly open the Find It panel, or click on the magnifier icon in your toolbar.
@@ -38,33 +39,23 @@ For example: Extra Landscaping Tool and Extra Networks and Areas
 This is currently in public Beta, but it should be stable to use.
 
 If you're having any issues, please report them on my discord as it's easier to help you that way.
-	</LongDescription>
-	
-	<Thumbnail Value="Properties/Thumbnail.png" />
-	<Screenshot Value="Properties/Screenshot_01.png" />
-	<Screenshot Value="Properties/Screenshot_02.png" />
-	<Screenshot Value="Properties/Screenshot_03.png" />
-	<Screenshot Value="Properties/Screenshot_04.png" />
-	
-	<Tag Value="Code Mod" />
-	<ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-	
-	<ModVersion Value="0.9.3" />
-	<GameVersion Value="1.1.*" />
-	
-	<Dependency Id="74417" DisplayName="Unified Icon Library" />
-	
-	<ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
-	<ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
-	
-	<ChangeLog>
-# v0.9.3
-* Picking an asset now opens its category and scrolls it into view.
-* Added specific zone icons for zonable buildings.
-* Added the ability to customize the amount of columns and rows displayed in the Options.
- * Toggle to come in another version.
-* Added rudementary support for custom asset icons, more icons to come in the future.
-* Added paths and invisable paths sub-category to the Roads category.
-* Cleaned up the miscellaneous props category, removed duplicate brand signs.
-	</ChangeLog>
+</LongDescription>
+  <Thumbnail Value="Properties/Thumbnail.png" />
+  <Screenshot Value="Properties/Screenshot_01.png" />
+  <Screenshot Value="Properties/Screenshot_02.png" />
+  <Screenshot Value="Properties/Screenshot_03.png" />
+  <Screenshot Value="Properties/Screenshot_04.png" />
+  <Tag Value="Code Mod" />
+  <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
+  <ModVersion Value="0.9.4" />
+  <GameVersion Value="1.1.*" />
+  <ChangeLog>
+# v0.9.4
+## Asset Changes
+* Added missing props, including decals, road signs, pillars, stops, and a few more.
+* Removed dangerous assets that cause crashes or that do not work.
+* Cleaned up some asset sub-categories.
+</ChangeLog>
+  <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
+  <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
 </Publish>
