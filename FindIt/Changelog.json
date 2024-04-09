@@ -2,6 +2,21 @@
   {
     "Stable": false,
     "Beta": true,
+    "Version": "0.9.4.1",
+    "Date": "2024-04-07",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Potential fix for an indexing error / crash.",
+          "Updated icons for some sub-categories."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": false,
+    "Beta": true,
     "Version": "0.9.4",
     "Date": "2024-04-07",
     "ChangeGroups": [

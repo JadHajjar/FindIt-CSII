@@ -8,7 +8,7 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public class RoadPropsPrefabCategoryProcessor : IPrefabCategoryProcessor
+	public class RoadUtilityPropsPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		public EntityQueryDesc[] GetEntityQuery()
 		{
@@ -16,13 +16,16 @@ namespace FindIt.Domain.Utilities
 			{
 				new EntityQueryDesc
 				{
-					Any = new[]
+					All = new[]
 					{
-						ComponentType.ReadOnly<TrafficSignData>(),
-						ComponentType.ReadOnly<LaneDirectionData>(),
-						ComponentType.ReadOnly<TrafficLightData>(),
+						ComponentType.ReadOnly<UtilityObjectData>(),
+						ComponentType.ReadOnly<SubLane>(),
 					},
-				}
+					None = new[]
+					{
+						ComponentType.ReadOnly<PillarData>(),
+					},
+				},
 			};
 		}
 

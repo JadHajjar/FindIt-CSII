@@ -49,7 +49,7 @@ namespace FindIt.Domain.Enums
 		Networks_Paths,
 		[CategoryIcon("coui://ui-mods/PrefabThumbnails/BusStop.png")]
 		Networks_Stops,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/BridgePillar.png")]
+		[CategoryIcon("coui://ui-mods/PrefabThumbnails/Pillar.svg")]
 		Networks_Pillars,
 
 		[Obsolete("Use PrefabCategory", true)]
@@ -60,7 +60,7 @@ namespace FindIt.Domain.Enums
 		Trees_Shrubs,
 		[CategoryIcon("Media/Game/Resources/Stone.svg")]
 		Trees_Rocks,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/FlowerPot.png")]
+		[CategoryIcon("coui://ui-mods/PrefabThumbnails/FlowerPot.svg")]
 		Trees_Props,
 		[CategoryIcon("coui://uil/Colored/Chicken.svg")]
 		Trees_Spawners,
@@ -83,7 +83,7 @@ namespace FindIt.Domain.Enums
 		Props_Fences,
 		[CategoryIcon("Media/Game/Icons/ParksAndRecreation.svg")]
 		Props_Park,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/RoadArrows.png")]
+		[CategoryIcon("coui://ui-mods/PrefabThumbnails/Decals.svg")]
 		Props_Decals,
 		[CategoryIcon("coui://uil/Colored/LampProp.svg")]
 		Props_Lights,

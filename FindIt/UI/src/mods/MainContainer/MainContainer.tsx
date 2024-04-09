@@ -59,6 +59,7 @@ export const FindItMainContainerComponent = () => {
               className={GameMainScreneTheme.toolPanel}
               style={{ width: panelWidth + "rem" }}
             >
+              <SortingPanel></SortingPanel>
               <div>
                 <div className={DefaultMainTheme.header}>
                   <TopBarComponent></TopBarComponent>
