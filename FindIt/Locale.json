@@ -60,7 +60,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "Open Find It's panel after picking an object",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "Choose between opening the Find It panel after selecting an object with Picker, or the vanilla panel if available.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "Select the first asset when opening Find It",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "Choose between opening the Find It panel after selecting an object with Picker, or the vanilla panel if available.",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "Automatically selects the first asset in the list when opening the Find it panel, this affects behaviors like closing other tools and using the Escape key to close Find it.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ScrollSpeed]": "Scroll Speed",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ScrollSpeed]": "Represents a multiplier of the size of one row of items.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.RowCount]": "Row Count",

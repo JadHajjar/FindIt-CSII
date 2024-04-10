@@ -3,3 +3,20 @@
   bottom: 137rem;
   pointer-events: auto;
 }
+
+.rightPanel {
+  position: absolute;
+  padding-left: 10rem;
+}
+
+.rightPanel > div {
+  padding: 10rem;
+  max-width: 250rem;
+  background-color: var(--panelColorDark);
+  backdrop-filter: var(--panelBlur);
+  color: var(--accentColorNormal);
+  border-bottom-left-radius: var(--panelRadius);
+  border-bottom-right-radius: var(--panelRadius);
+  border-top-left-radius: var(--panelRadius);
+  border-top-right-radius: var(--panelRadius);
+}

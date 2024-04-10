@@ -3,10 +3,12 @@ import { game, Theme } from "cs2/bindings";
 import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
 import { TopBarComponent } from "mods/TopBar/TopBar";
+import { ContentViewType } from "../../domain/ContentViewType";
 import { PrefabSelectionComponent } from "mods/PrefabSelection/PrefabSelection";
-import { SortingPanel } from "../SortingPanel/SortingPanel";
 import { Portal } from "cs2/ui";
+import { useState } from "react";
 import styles from "./mainContainer.module.scss";
+import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";
 
 // These contain the coui paths to Unified Icon Library svg assets
 const findItIconSrc = "coui://uil/Standard/Magnifier.svg";
@@ -40,10 +42,12 @@ export const FindItMainContainerComponent = () => {
   const isPhotoMode =
     useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
 
+  const [viewType, setViewType] = useState(ContentViewType.GridWithText);
+
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$);
   const ColumnCount = useValue(ColumnCount$);
-  const panelWidth = ColumnCount * 113 + 10 + 20;
+  const panelWidth = ColumnCount * 113 + 15 + 20;
 
   if (isPhotoMode || !ShowFindItPanel) return null;
 
@@ -59,21 +63,29 @@ export const FindItMainContainerComponent = () => {
               className={GameMainScreneTheme.toolPanel}
               style={{ width: panelWidth + "rem" }}
             >
-              <SortingPanel></SortingPanel>
               <div>
                 <div className={DefaultMainTheme.header}>
                   <TopBarComponent></TopBarComponent>
                 </div>
                 <div
                   className={
-                    DefaultMainTheme.content +
-                    " " +
-                    PanelTheme.panel +
-                    " " +
-                    AssetMenuTheme.assetPanel
+                    DefaultMainTheme.content + " " + AssetMenuTheme.assetPanel
                   }
                 >
-                  <PrefabSelectionComponent></PrefabSelectionComponent>
+                  <PrefabSelectionComponent
+                    viewType={viewType}
+                  ></PrefabSelectionComponent>
+                </div>
+              </div>
+              <div
+                className={styles.rightPanel}
+                style={{ left: panelWidth + "rem" }}
+              >
+                <div>
+                  <OptionsPanelComponent
+                    viewType={viewType}
+                    setViewType={setViewType}
+                  ></OptionsPanelComponent>
                 </div>
               </div>
             </div>
@@ -83,3 +95,40 @@ export const FindItMainContainerComponent = () => {
     </Portal>
   );
 };
+
+/*
+<div className={styles.findItMainContainer}>
+<div className={GameMainScreneTheme.toolLayout}>
+  <div>
+    <div className={styles.toolContainer}>
+      <div>
+        <div className={styles.toolContent}>
+          <div>
+            <div style={{ width: panelWidth + "rem" }}>
+              <div className={DefaultMainTheme.header}>
+                <TopBarComponent
+                  viewType={viewType}
+                  setViewType={setViewType}
+                ></TopBarComponent>
+              </div>
+              <div
+                className={
+                  DefaultMainTheme.content +
+                  " " +
+                  AssetMenuTheme.assetPanel
+                }
+              >
+                <PrefabSelectionComponent
+                  viewType={viewType}
+                ></PrefabSelectionComponent>
+              </div>
+            </div>
+            <div className={styles.rightPanel}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+*/

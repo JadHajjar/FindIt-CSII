@@ -7,6 +7,7 @@ import { getModule } from "cs2/modding";
 import { FocusKey } from "cs2/bindings";
 import styles from "./topBar.module.scss";
 import { useEffect, useRef, useState } from "react";
+import { ContentViewType } from "../../domain/ContentViewType";
 import { PrefabCategory } from "../../domain/category";
 import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
@@ -57,7 +58,6 @@ const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
 const ClearSearchBar$ = bindValue<boolean>(mod.id, "ClearSearchBar");
 const FocusSearchBar$ = bindValue<boolean>(mod.id, "FocusSearchBar");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
-const ShowSortingPanel$ = bindValue<boolean>(mod.id, "ShowSortingPanel");
 const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
 const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
@@ -78,7 +78,6 @@ export const TopBarComponent = () => {
   const CurrentSearch = useValue(CurrentSearch$);
   const ClearSearchBar = useValue(ClearSearchBar$);
   const FocusSearchBar = useValue(FocusSearchBar$);
-  const ShowSortingPanel = useValue(ShowSortingPanel$);
   const searchRef = useRef(null);
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
@@ -168,21 +167,6 @@ export const TopBarComponent = () => {
               </Button>
             )}
           </div>
-
-          {!ShowSortingPanel && (
-            <Button
-              className={
-                VanillaComponentResolver.instance.assetGridTheme.item +
-                " " +
-                styles.sortIcon
-              }
-              variant="icon"
-              onSelect={() => trigger(mod.id, "ToggleSortingPanel")}
-              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            >
-              <img src="coui://uil/Standard/XClose.svg"></img>
-            </Button>
-          )}
         </div>
 
         <div className={styles.topBarSection}>

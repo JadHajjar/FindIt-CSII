@@ -1,4 +1,4 @@
-.gridItem {
+.GridWithText .gridItem {
   margin: 4rem !important;
   width: 105rem !important;
   height: 90rem !important;
@@ -10,22 +10,52 @@
   overflow: hidden;
 }
 
-.gridThumbnail {
+.GridWithText .gridThumbnail {
   width: 45rem !important;
   height: 45rem !important;
 }
 
-.jpgThumb {
+.GridWithText .jpgThumb {
   border-radius: 5rem;
   margin-bottom: 5rem;
 }
 
-.gridItemText {
+.GridWithText .gridItemText {
   width: 95rem;
   font-size: 12rem;
   max-height: 4em;
   white-space: normal;
   overflow: hidden;
+}
+
+.GridNoText .gridItem {
+  margin: 4rem !important;
+  width: 75rem !important;
+  height: 75rem !important;
+  width: 105rem !important;
+  height: 90rem !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.GridNoText .gridThumbnail {
+  width: 70rem !important;
+  height: 70rem !important;
+  width: 90rem !important;
+  height: 90rem !important;
+}
+
+.GridNoText .jpgThumb {
+  border-radius: 5rem;
+  margin-bottom: 5rem;
+}
+
+.GridNoText .gridItemText {
+  display: none;
 }
 
 .gridItemText p {

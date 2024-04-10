@@ -22,7 +22,6 @@ namespace FindIt.Systems
 		private ValueBinding<bool> _FocusSearchBar;
 		private ValueBinding<bool> _ClearSearchBar;
 		private ValueBinding<bool> _ShowFindItPanel;
-		private ValueBinding<bool> _ShowSortingPanel;
 		private ValueBinding<int> _ActivePrefabId;
 		private ValueBinding<int> _CurrentCategoryBinding;
 		private ValueBinding<int> _CurrentSubCategoryBinding;
@@ -58,7 +57,6 @@ namespace FindIt.Systems
 			AddBinding(_FocusSearchBar = new ValueBinding<bool>(Mod.Id, "FocusSearchBar", false));
 			AddBinding(_ClearSearchBar = new ValueBinding<bool>(Mod.Id, "ClearSearchBar", false));
 			AddBinding(_ShowFindItPanel = new ValueBinding<bool>(Mod.Id, "ShowFindItPanel", false));
-			AddBinding(_ShowSortingPanel = new ValueBinding<bool>(Mod.Id, "ShowSortingPanel", false));
 			AddBinding(_ActivePrefabId = new ValueBinding<int>(Mod.Id, "ActivePrefabId", 0));
 			AddBinding(_RowCount = new ValueBinding<float>(Mod.Id, "RowCount", 2f));
 			AddBinding(_ColumnCount = new ValueBinding<float>(Mod.Id, "ColumnCount", 8f));
@@ -68,7 +66,6 @@ namespace FindIt.Systems
 			AddBinding(new TriggerBinding(Mod.Id, "FindItIconToggled", FindItIconClicked));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "SetCurrentPrefab", TryActivatePrefabTool));
 			AddBinding(new TriggerBinding<int>(Mod.Id, "ToggleFavorited", ToggleFavorited));
-			AddBinding(new TriggerBinding(Mod.Id, "ToggleSortingPanel", () => _ShowSortingPanel.Update(!_ShowSortingPanel.value)));
 			AddBinding(new TriggerBinding(Mod.Id, "OnSearchFocused", () => _FocusSearchBar.Update(false)));
 			AddBinding(new TriggerBinding(Mod.Id, "OnSearchCleared", () => _ClearSearchBar.Update(false)));
 

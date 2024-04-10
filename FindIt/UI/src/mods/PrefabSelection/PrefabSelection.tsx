@@ -1,9 +1,15 @@
 import { bindValue, trigger, useValue } from "cs2/api";
 import styles from "./prefabSelection.module.scss";
 import mod from "../../../mod.json";
+import PrefabItemStyles from "../PrefabItem/prefabItem.module.scss";
 import { useRef, useState } from "react";
 import { PrefabEntry } from "../../domain/prefabEntry";
 import { PrefabItemComponent } from "../PrefabItem/PrefabItem";
+import { ContentViewType } from "../../domain/ContentViewType";
+
+export interface PrefabSelectionProps {
+  viewType: ContentViewType;
+}
 
 // These establishes the binding with C# side.
 export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
@@ -15,7 +21,7 @@ export const MaxScrollIndex$ = bindValue<number>(mod.id, "MaxScrollIndex");
 export const RowCount$ = bindValue<number>(mod.id, "RowCount");
 export const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
 
-export const PrefabSelectionComponent = () => {
+export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$);
   const PrefabList = useValue(PrefabList$);
@@ -36,7 +42,7 @@ export const PrefabSelectionComponent = () => {
   }
 
   const panelHeight = RowCount * 98 + 10;
-  const panelWidth = ColumnCount * 113 + 10;
+  const panelWidth = ColumnCount * 113 + 15;
 
   function OnWheel(obj: any) {
     trigger(mod.id, "OnScroll", obj.deltaY);
@@ -74,6 +80,14 @@ export const PrefabSelectionComponent = () => {
     setIsDragging(false);
   }
 
+  function GetViewTypeStyle(): string {
+    if (props.viewType == ContentViewType.GridNoText) {
+      return PrefabItemStyles.GridNoText;
+    }
+
+    return PrefabItemStyles.GridWithText;
+  }
+
   return (
     <>
       {isDragging && (
@@ -86,10 +100,10 @@ export const PrefabSelectionComponent = () => {
       <div
         onWheel={OnWheel}
         className={styles.scrollableContainer}
-        style={{ height: panelHeight }}
+        style={{ height: panelHeight + "rem" }}
       >
         <div
-          className={styles.panelSection}
+          className={styles.panelSection + " " + GetViewTypeStyle()}
           style={{
             margin: `${(ScrollIndex % 1) * -98}rem 0 0 0`,
             width: panelWidth + "rem",
@@ -106,7 +120,7 @@ export const PrefabSelectionComponent = () => {
         {MaxScrollIndex > 0 && (
           <div
             className={styles.scrollContainer}
-            style={{ height: panelHeight - 20 }}
+            style={{ height: panelHeight - 20 + "rem" }}
             ref={scrollBarRef}
             onClick={handleScrollContainerClick}
           >

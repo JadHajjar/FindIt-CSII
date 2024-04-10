@@ -2,6 +2,35 @@
   {
     "Stable": false,
     "Beta": true,
+    "Version": "0.9.4.3",
+    "Date": "2024-04-09",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Fixed the columns & rows not correctly aligning in some configurations."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": false,
+    "Beta": true,
+    "Version": "0.9.4.2",
+    "Date": "2024-04-09",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Added Nature prop thumbnails.",
+          "Code Cleanup."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": false,
+    "Beta": true,
     "Version": "0.9.4.1",
     "Date": "2024-04-07",
     "ChangeGroups": [
