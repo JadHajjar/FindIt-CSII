@@ -1,10 +1,6 @@
-﻿using Colossal.UI.Binding;
-
-using FindIt.Domain.Enums;
+﻿using FindIt.Domain.Enums;
 using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
-
-using Game.UI;
 
 using System;
 using System.Collections.Generic;
@@ -14,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace FindIt.Systems
 {
-	internal partial class PrefabSearchUISystem : UISystemBase
+	internal partial class PrefabSearchUISystem : ExtendedUISystemBase
 	{
 		private CancellationTokenSource tokenSource;
 
-		private ValueBinding<bool> _IsSearchLoading;
-		private ValueBinding<string> _CurrentSearch;
-		private ValueBinding<double> _ScrollIndex;
-		private ValueBinding<double> _MaxScrollIndex;
-		private ValueBinding<CategoryUIEntry[]> _CategoryBinding;
-		private ValueBinding<SubCategoryUIEntry[]> _SubCategoryBinding;
-		private ValueBinding<PrefabUIEntry[]> _PrefabListBinding;
+		private ValueBindingHelper<bool> _IsSearchLoading;
+		private ValueBindingHelper<string> _CurrentSearch;
+		private ValueBindingHelper<double> _ScrollIndex;
+		private ValueBindingHelper<double> _MaxScrollIndex;
+		private ValueBindingHelper<CategoryUIEntry[]> _CategoryBinding;
+		private ValueBindingHelper<SubCategoryUIEntry[]> _SubCategoryBinding;
+		private ValueBindingHelper<PrefabUIEntry[]> _PrefabListBinding;
 
 		private bool filterCompleted;
 		private double scrollIndex;
@@ -33,31 +29,31 @@ namespace FindIt.Systems
 		{
 			base.OnCreate();
 
-			AddBinding(_IsSearchLoading = new ValueBinding<bool>(Mod.Id, "IsSearchLoading", false));
-			AddBinding(_ScrollIndex = new ValueBinding<double>(Mod.Id, "ScrollIndex", 0));
-			AddBinding(_MaxScrollIndex = new ValueBinding<double>(Mod.Id, "MaxScrollIndex", 0));
-			AddBinding(_CategoryBinding = new ValueBinding<CategoryUIEntry[]>(Mod.Id, "CategoryList", new CategoryUIEntry[] { new(PrefabCategory.Any) }, new ArrayWriter<CategoryUIEntry>(new ValueWriter<CategoryUIEntry>())));
-			AddBinding(_SubCategoryBinding = new ValueBinding<SubCategoryUIEntry[]>(Mod.Id, "SubCategoryList", new SubCategoryUIEntry[] { new(PrefabSubCategory.Any) }, new ArrayWriter<SubCategoryUIEntry>(new ValueWriter<SubCategoryUIEntry>())));
-			AddBinding(_PrefabListBinding = new ValueBinding<PrefabUIEntry[]>(Mod.Id, "PrefabList", new PrefabUIEntry[0], new ArrayWriter<PrefabUIEntry>(new ValueWriter<PrefabUIEntry>())));
-			AddBinding(_CurrentSearch = new ValueBinding<string>(Mod.Id, "CurrentSearch", ""));
+			_IsSearchLoading = CreateBinding("IsSearchLoading", false);
+			_ScrollIndex = CreateBinding("ScrollIndex", 0D);
+			_MaxScrollIndex = CreateBinding("MaxScrollIndex", 0D);
+			_CategoryBinding = CreateBinding("CategoryList", new CategoryUIEntry[] { new(PrefabCategory.Any) });
+			_SubCategoryBinding = CreateBinding("SubCategoryList", new SubCategoryUIEntry[] { new(PrefabSubCategory.Any) });
+			_PrefabListBinding = CreateBinding("PrefabList", new PrefabUIEntry[0]);
+			_CurrentSearch = CreateBinding("CurrentSearch", "");
 
-			AddBinding(new TriggerBinding<string>(Mod.Id, "SearchChanged", t => SearchChanged(t)));
-			AddBinding(new TriggerBinding<int>(Mod.Id, "OnScroll", OnScroll));
-			AddBinding(new TriggerBinding<double>(Mod.Id, "SetScrollIndex", SetScrollIndex));
+			CreateTrigger<string>("SearchChanged", t => SearchChanged(t));
+			CreateTrigger<int>("OnScroll", OnScroll);
+			CreateTrigger<double>("SetScrollIndex", SetScrollIndex);
 		}
 
 		private void SetScrollIndex(double index)
 		{
 			SetScroll(index);
 
-			_PrefabListBinding.Update(GetDisplayedPrefabs());
+			_PrefabListBinding.Value = GetDisplayedPrefabs();
 		}
 
 		private void OnScroll(int direction)
 		{
 			scrollIndex += Mod.Settings.ScrollSpeed * (direction > 0 ? 2 : -2) / Mod.Settings.RowCount;
 
-			_PrefabListBinding.Update(GetDisplayedPrefabs());
+			_PrefabListBinding.Value = GetDisplayedPrefabs();
 		}
 
 		private PrefabUIEntry[] GetDisplayedPrefabs()
@@ -70,8 +66,8 @@ namespace FindIt.Systems
 
 			scrollIndex = Math.Max(Math.Min(scrollIndex, rows - displayedRows), 0);
 
-			_ScrollIndex.Update(scrollIndex);
-			_MaxScrollIndex.Update(rows - displayedRows);
+			_ScrollIndex.Value = scrollIndex;
+			_MaxScrollIndex.Value = rows - displayedRows;
 
 			var uiEntries = new List<PrefabUIEntry>();
 			var startIndex = (int)(Math.Floor(scrollIndex) * columns);
@@ -87,12 +83,12 @@ namespace FindIt.Systems
 
 		internal PrefabUIEntry UpdateCategoriesList()
 		{
-			_CategoryBinding.Update(FindItUtil.GetCategories().Select(x => new CategoryUIEntry(x)).ToArray());
-			_SubCategoryBinding.Update(FindItUtil.GetSubCategories().Select(x => new SubCategoryUIEntry(x)).ToArray());
+			_CategoryBinding.Value = FindItUtil.GetCategories().Select(x => new CategoryUIEntry(x)).ToArray();
+			_SubCategoryBinding.Value = FindItUtil.GetSubCategories().Select(x => new SubCategoryUIEntry(x)).ToArray();
 
 			var prefabs = GetDisplayedPrefabs();
 
-			_PrefabListBinding.Update(prefabs);
+			_PrefabListBinding.Value = prefabs;
 
 			return prefabs.FirstOrDefault();
 		}
@@ -117,15 +113,15 @@ namespace FindIt.Systems
 		{
 			text = text.Replace("\r", "").Replace("\n", "");
 
-			if (!force && _CurrentSearch.value == text && FindItUtil.CurrentSearch == text)
+			if (!force && _CurrentSearch == text && FindItUtil.CurrentSearch == text)
 			{
 				return;
 			}
 
 			FindItUtil.CurrentSearch = text.Trim();
 
-			_IsSearchLoading.Update(true);
-			_CurrentSearch.Update(text);
+			_IsSearchLoading.Value = true;
+			_CurrentSearch.Value = text;
 
 			Task.Run(DelayedSearch);
 		}
@@ -134,8 +130,8 @@ namespace FindIt.Systems
 		{
 			FindItUtil.CurrentSearch = string.Empty;
 			filterCompleted = false;
-			_IsSearchLoading.Update(false);
-			_CurrentSearch.Update(string.Empty);
+			_IsSearchLoading.Value = false;
+			_CurrentSearch.Value = string.Empty;
 			tokenSource?.Cancel();
 		}
 
@@ -175,8 +171,8 @@ namespace FindIt.Systems
 				filterCompleted = false;
 				scrollIndex = 0;
 
-				_IsSearchLoading.Update(false);
-				_PrefabListBinding.Update(GetDisplayedPrefabs());
+				_IsSearchLoading.Value = false;
+				_PrefabListBinding.Value = GetDisplayedPrefabs();
 			}
 
 			base.OnUpdate();
