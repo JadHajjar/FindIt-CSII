@@ -5,11 +5,6 @@ import PrefabItemStyles from "../PrefabItem/prefabItem.module.scss";
 import { useRef, useState } from "react";
 import { PrefabEntry } from "../../domain/prefabEntry";
 import { PrefabItemComponent } from "../PrefabItem/PrefabItem";
-import { ContentViewType } from "../../domain/ContentViewType";
-
-export interface PrefabSelectionProps {
-  viewType: ContentViewType;
-}
 
 // These establishes the binding with C# side.
 export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
@@ -20,8 +15,13 @@ export const ScrollIndex$ = bindValue<number>(mod.id, "ScrollIndex");
 export const MaxScrollIndex$ = bindValue<number>(mod.id, "MaxScrollIndex");
 export const RowCount$ = bindValue<number>(mod.id, "RowCount");
 export const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
+export const ViewStyle$ = bindValue<string>(
+  mod.id,
+  "ViewStyle",
+  "GridWithText"
+);
 
-export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
+export const PrefabSelectionComponent = () => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$);
   const PrefabList = useValue(PrefabList$);
@@ -31,6 +31,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   const MaxScrollIndex = useValue(MaxScrollIndex$);
   const RowCount = useValue(RowCount$);
   const ColumnCount = useValue(ColumnCount$);
+  const ViewStyle = useValue(ViewStyle$);
   const scrollBarRef = useRef(null);
   const thumbRef = useRef(null);
 
@@ -80,14 +81,6 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
     setIsDragging(false);
   }
 
-  function GetViewTypeStyle(): string {
-    if (props.viewType == ContentViewType.GridNoText) {
-      return PrefabItemStyles.GridNoText;
-    }
-
-    return PrefabItemStyles.GridWithText;
-  }
-
   return (
     <>
       {isDragging && (
@@ -103,7 +96,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
         style={{ height: panelHeight + "rem" }}
       >
         <div
-          className={styles.panelSection + " " + GetViewTypeStyle()}
+          className={styles.panelSection + " " + PrefabItemStyles[ViewStyle]}
           style={{
             margin: `${(ScrollIndex % 1) * -98}rem 0 0 0`,
             width: panelWidth + "rem",

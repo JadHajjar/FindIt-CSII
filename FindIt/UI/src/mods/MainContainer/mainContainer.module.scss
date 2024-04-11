@@ -10,11 +10,11 @@
 }
 
 .rightPanel > div {
-  padding: 10rem;
-  max-width: 250rem;
+  padding: 10rem 0;
+  width: 250rem;
   background-color: var(--panelColorDark);
   backdrop-filter: var(--panelBlur);
-  color: var(--accentColorNormal);
+  color: var(--textColorDim);
   border-bottom-left-radius: var(--panelRadius);
   border-bottom-right-radius: var(--panelRadius);
   border-top-left-radius: var(--panelRadius);

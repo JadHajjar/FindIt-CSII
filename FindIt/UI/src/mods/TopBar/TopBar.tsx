@@ -7,7 +7,6 @@ import { getModule } from "cs2/modding";
 import { FocusKey } from "cs2/bindings";
 import styles from "./topBar.module.scss";
 import { useEffect, useRef, useState } from "react";
-import { ContentViewType } from "../../domain/ContentViewType";
 import { PrefabCategory } from "../../domain/category";
 import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
@@ -173,7 +172,7 @@ export const TopBarComponent = () => {
           <div className={styles.categorySection}>
             {CategoryList.map((element) => (
               <VanillaComponentResolver.instance.ToolButton
-                tooltip={element.toolTip}
+                //tooltip={element.toolTip}
                 selected={element.id == CurrentCategory}
                 onSelect={() => setCurrentCategory(element.id)}
                 src={element.icon}

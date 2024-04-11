@@ -8,23 +8,8 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public abstract class ExtendedUISystemBase : UISystemBase
+	public abstract partial class ExtendedUISystemBase : UISystemBase
 	{
-		protected override void OnCreate()
-		{
-			base.OnCreate();
-
-			var fields = GetType().GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-			for (var i = 0; i < fields.Length; i++)
-			{
-				if (fields[i].FieldType.IsAssignableFrom(typeof(ComponentSystemBase)))
-				{
-					fields[i].SetValue(this, World.GetOrCreateSystemManaged(fields[i].FieldType));
-				}
-			}
-		}
-
 		public ValueBindingHelper<T> CreateBinding<T>(string key, T initialValue)
 		{
 			var helper = new ValueBindingHelper<T>(new(Mod.Id, key, initialValue));

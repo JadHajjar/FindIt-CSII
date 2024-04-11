@@ -21,15 +21,20 @@ namespace FindIt.Systems
 		private ValueBindingHelper<float> _RowCount;
 		private ValueBindingHelper<float> _ColumnCount;
 
-		private readonly ToolSystem _toolSystem;
-		private readonly PrefabSystem _prefabSystem;
-		private readonly PrefabSearchUISystem _prefabSearchUISystem;
-		private readonly DefaultToolSystem _defaultToolSystem;
+		private ToolSystem _toolSystem;
+		private PrefabSystem _prefabSystem;
+		private PrefabSearchUISystem _prefabSearchUISystem;
+		private DefaultToolSystem _defaultToolSystem;
 		private bool settingPrefab;
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
+
+			_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
+			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
+			_prefabSearchUISystem = World.GetOrCreateSystemManaged<PrefabSearchUISystem>();
+			_defaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
 
 			// ToolSystem toolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<ToolSystem>(); // I don't know why vanilla game did this.
 			_toolSystem.EventPrefabChanged += OnPrefabChanged;

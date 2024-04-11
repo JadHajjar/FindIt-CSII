@@ -22,12 +22,16 @@ namespace FindIt.Domain.UIBinding
 		public readonly void Write(IJsonWriter writer)
 		{
 			writer.TypeBegin(GetType().FullName);
+
 			writer.PropertyName("id");
 			writer.Write(Id);
+
 			writer.PropertyName("icon");
 			writer.Write(Icon);
+
 			writer.PropertyName("toolTip");
 			writer.Write(ToolTip);
+
 			writer.TypeEnd();
 		}
 	}

@@ -47,7 +47,7 @@ namespace FindIt.Domain.Enums
 		Networks_Intersections,
 		[CategoryIcon("Media/Game/Icons/Pathways.svg")]
 		Networks_Paths,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/BusStop.png")]
+		[CategoryIcon("coui://ui-mods/PrefabThumbnails/BusShelter.svg")]
 		Networks_Stops,
 		[CategoryIcon("coui://ui-mods/PrefabThumbnails/Pillar.svg")]
 		Networks_Pillars,

@@ -3,7 +3,6 @@ import { game, Theme } from "cs2/bindings";
 import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
 import { TopBarComponent } from "mods/TopBar/TopBar";
-import { ContentViewType } from "../../domain/ContentViewType";
 import { PrefabSelectionComponent } from "mods/PrefabSelection/PrefabSelection";
 import { Portal } from "cs2/ui";
 import { useState } from "react";
@@ -42,8 +41,6 @@ export const FindItMainContainerComponent = () => {
   const isPhotoMode =
     useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
 
-  const [viewType, setViewType] = useState(ContentViewType.GridWithText);
-
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$);
   const ColumnCount = useValue(ColumnCount$);
@@ -72,9 +69,7 @@ export const FindItMainContainerComponent = () => {
                     DefaultMainTheme.content + " " + AssetMenuTheme.assetPanel
                   }
                 >
-                  <PrefabSelectionComponent
-                    viewType={viewType}
-                  ></PrefabSelectionComponent>
+                  <PrefabSelectionComponent></PrefabSelectionComponent>
                 </div>
               </div>
               <div
@@ -82,10 +77,7 @@ export const FindItMainContainerComponent = () => {
                 style={{ left: panelWidth + "rem" }}
               >
                 <div>
-                  <OptionsPanelComponent
-                    viewType={viewType}
-                    setViewType={setViewType}
-                  ></OptionsPanelComponent>
+                  <OptionsPanelComponent></OptionsPanelComponent>
                 </div>
               </div>
             </div>

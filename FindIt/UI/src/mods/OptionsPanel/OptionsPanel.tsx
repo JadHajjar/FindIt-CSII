@@ -7,32 +7,45 @@ import { getModule } from "cs2/modding";
 import { FocusKey } from "cs2/bindings";
 import styles from "./OptionsPanel.module.scss";
 import { useEffect, useRef, useState } from "react";
-import { ContentViewType } from "../../domain/ContentViewType";
+import { optionSection, optionItem } from "../../domain/ContentViewType";
 import { PrefabCategory } from "../../domain/category";
 import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
 
-export interface TopBarProps {
-  viewType: ContentViewType;
-  setViewType: (viewType: ContentViewType) => void;
-}
+const ToolOptionsTheme: Theme | any = getModule(
+  "game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.module.scss",
+  "classes"
+);
 
-export const OptionsPanelComponent = (props: TopBarProps) => {
+const OptionsList$ = bindValue<optionSection[]>(mod.id, "OptionsList");
+
+export const OptionsPanelComponent = () => {
+  const OptionsList = useValue(OptionsList$);
+
   return (
     <>
-      <VanillaComponentResolver.instance.ToolButton
-        selected={false}
-        onSelect={() =>
-          props.setViewType(
-            props.viewType == ContentViewType.GridNoText
-              ? ContentViewType.GridWithText
-              : ContentViewType.GridNoText
-          )
-        }
-        src="coui://uil/Standard/XClose.svg"
-        focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-        className={VanillaComponentResolver.instance.toolButtonTheme.button}
-      ></VanillaComponentResolver.instance.ToolButton>
+      {OptionsList.map((section) => (
+        <div className={ToolOptionsTheme.item}>
+          <div className={ToolOptionsTheme.itemContent}>
+            <div className={ToolOptionsTheme.label}>{section.name}</div>
+            <div className={ToolOptionsTheme.content}>
+              {section.options.map((option) => (
+                <VanillaComponentResolver.instance.ToolButton
+                  selected={option.selected}
+                  onSelect={() =>
+                    trigger(mod.id, "OptionClicked", section.id, option.id)
+                  }
+                  src={option.icon}
+                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                  className={
+                    VanillaComponentResolver.instance.toolButtonTheme.button
+                  }
+                ></VanillaComponentResolver.instance.ToolButton>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
     </>
   );
 };

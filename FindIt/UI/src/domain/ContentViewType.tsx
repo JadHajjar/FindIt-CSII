@@ -1,4 +1,12 @@
-export enum ContentViewType {
-  GridWithText,
-  GridNoText,
+export interface optionSection {
+  id: number;
+  name: string;
+  options: optionItem[];
+}
+
+export interface optionItem {
+  id: number;
+  name: string;
+  icon: string;
+  selected: boolean;
 }
