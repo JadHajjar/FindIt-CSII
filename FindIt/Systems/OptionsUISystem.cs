@@ -1,83 +1,62 @@
-﻿using FindIt.Domain.UIBinding;
+﻿using FindIt.Domain.Interfaces;
+using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FindIt.Systems
 {
 	internal partial class OptionsUISystem : ExtendedUISystemBase
 	{
+		private readonly Dictionary<int, IOptionSection> _sections = new();
 		private ValueBindingHelper<string> _ViewStyle;
-		private ValueBindingHelper<OptionSection[]> _OptionsList;
+		private ValueBindingHelper<OptionSectionUIEntry[]> _OptionsList;
+
+		public string ViewStyle { get => _ViewStyle; set => _ViewStyle.Value = value; }
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
 
-			_ViewStyle = CreateBinding("ViewStyle", "GridWithText");
-			_OptionsList = CreateBinding("OptionsList", new OptionSection[]
+			foreach (var type in typeof(OptionsUISystem).Assembly.GetTypes())
 			{
-				new()
+				if (typeof(IOptionSection).IsAssignableFrom(type) && !type.IsAbstract)
 				{
-					Id = 1,
-					Name = "View Style",
-					Options = new[]
-					{
-						new OptionItem()
-						{
-							Id = 1,
-							Name = "",
-							Icon = "coui://uil/Standard/PencilPaper.svg",
-							Selected = _ViewStyle == "GridWithText",
-						},
-						new OptionItem()
-						{
-							Id = 2,
-							Name = "",
-							Icon = "coui://uil/Standard/House.svg",
-							Selected = _ViewStyle == "GridNoText",
-						}
-					}
+					var section = (IOptionSection)Activator.CreateInstance(type, this);
+
+					_sections.Add(section.Id, section);
 				}
-			});
+			}
+
+			_ViewStyle = CreateBinding("ViewStyle", "GridWithText");
+			_OptionsList = CreateBinding("OptionsList", GetOptionsList());
 
 			CreateTrigger<int, int>("OptionClicked", OptionClicked);
 		}
 
+		internal void RefreshOptions()
+		{
+			_OptionsList.Value = GetOptionsList();
+		}
+
+		private OptionSectionUIEntry[] GetOptionsList()
+		{
+			return _sections.Values
+				.Where(x => x.IsVisible())
+				.Select(x => x.AsUIEntry())
+				.ToArray();
+		}
+
 		private void OptionClicked(int sectionId, int optionId)
 		{
-			if (optionId == 1)
+			if (!_sections.TryGetValue(sectionId, out var section))
 			{
-				_ViewStyle.Value = "GridWithText";
-			}
-			else
-			{
-				_ViewStyle.Value = "GridNoText";
+				return;
 			}
 
-			_OptionsList.Value = new OptionSection[]
-			{
-				new()
-				{
-					Id = 1,
-					Name = "View Style",
-					Options = new[]
-					{
-						new OptionItem()
-						{
-							Id = 1,
-							Name = "",
-							Icon = "coui://uil/Standard/PencilPaper.svg",
-							Selected = _ViewStyle == "GridWithText",
-						},
-						new OptionItem()
-						{
-							Id = 2,
-							Name = "",
-							Icon = "coui://uil/Standard/House.svg",
-							Selected = _ViewStyle == "GridNoText",
-						}
-					}
-				}
-			};
+			section.OnOptionClicked(optionId);
 		}
 	}
 }

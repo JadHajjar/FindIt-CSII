@@ -217,6 +217,7 @@ namespace FindIt.Systems
 
 			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites) && contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
 			{
+				prefabIndex.DlcId = dlcRequirements.m_Dlc;
 				prefabIndex.DlcThumbnail = $"Media/DLC/{PlatformManager.instance.GetDlcName(dlcRequirements.m_Dlc)}.svg";
 			}
 

@@ -2,14 +2,14 @@
 
 namespace FindIt.Domain.UIBinding
 {
-	public struct OptionItem : IJsonWritable
+	public struct OptionItemUIEntry : IJsonWritable
 	{
         public int Id { get; set; }
         public string Name { get; set; }
         public string Icon { get; set; }
         public bool Selected { get; set; }
 
-		public void Write(IJsonWriter writer)
+		public readonly void Write(IJsonWriter writer)
 		{
 			writer.TypeBegin(GetType().FullName);
 			writer.PropertyName("id");

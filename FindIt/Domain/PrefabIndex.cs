@@ -1,4 +1,6 @@
-﻿using FindIt.Domain.Enums;
+﻿using Colossal.PSI.Common;
+
+using FindIt.Domain.Enums;
 
 using Game.Prefabs;
 
@@ -14,6 +16,7 @@ namespace FindIt.Domain
 	{
 		public PrefabCategory Category { get; set; }
 		public PrefabSubCategory SubCategory { get; set; }
+		public DlcId DlcId { get; set; }
 
 		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{

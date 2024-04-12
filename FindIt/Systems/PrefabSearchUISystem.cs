@@ -120,8 +120,14 @@ namespace FindIt.Systems
 
 			FindItUtil.CurrentSearch = text.Trim();
 
-			_IsSearchLoading.Value = true;
 			_CurrentSearch.Value = text;
+
+			TriggerSearch();
+		}
+
+		internal void TriggerSearch()
+		{
+			_IsSearchLoading.Value = true;
 
 			Task.Run(DelayedSearch);
 		}

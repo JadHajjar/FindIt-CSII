@@ -1,4 +1,9 @@
 {
+  "Options.LABEL[FindIt.LotDepth]": "Lot Depth",
+  "Options.LABEL[FindIt.LotWidth]": "Lot Width",
+  "Options.LABEL[FindIt.DlcFilter]": "DLC Filter",
+  "Options.LABEL[FindIt.Sorting]": "Sorting",
+  "Options.LABEL[FindIt.ViewStyle]": "ViewS tyle",
   "Tooltip.LABEL[FindIt.ClosePanel]": "Close Panel",
   "Tooltip.LABEL[FindIt.RemoveFavorite]": "Remove from favorites",
   "Tooltip.LABEL[FindIt.AddFavorite]": "Favorite this asset",

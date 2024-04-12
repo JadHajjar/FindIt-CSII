@@ -32,7 +32,7 @@ namespace FindIt.Domain.UIBinding
 			Favorited = prefab.Favorited;
 		}
 
-        public void Write(IJsonWriter writer)
+        public readonly void Write(IJsonWriter writer)
 		{
 			writer.TypeBegin(GetType().FullName);
 

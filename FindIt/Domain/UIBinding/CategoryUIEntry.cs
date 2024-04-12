@@ -1,10 +1,9 @@
 ﻿using Colossal.UI.Binding;
 
 using FindIt.Domain.Enums;
+using FindIt.Domain.Utilities;
 
 using Game.Debug.Tests;
-
-using Skyve.Mod.CS2.Shared;
 
 namespace FindIt.Domain.UIBinding
 {

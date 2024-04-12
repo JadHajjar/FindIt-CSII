@@ -14,6 +14,26 @@ namespace FindIt.Domain.Utilities
 {
 	internal static class SearchUtil
 	{
+		public static bool HasMoreThanOne<T, T2>(this List<T> enumerable, Func<T, T2> predicate)
+		{
+			if (enumerable.Count < 2)
+			{
+				return false;
+			}
+
+			var first = predicate(enumerable[0]);
+
+			for (var i = 1; i < enumerable.Count; i++)
+			{
+				if (!predicate(enumerable[i]).Equals(first))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public static bool IsBrandEntity(this EntityManager entityManager, Entity entity)
 		{
 			if (entityManager.HasComponent<BrandObjectData>(entity))

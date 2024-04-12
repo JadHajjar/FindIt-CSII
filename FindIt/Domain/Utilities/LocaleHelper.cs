@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Skyve.Mod.CS2.Shared
+namespace FindIt.Domain.Utilities
 {
 	public class LocaleHelper
 	{
@@ -36,27 +36,25 @@ namespace Skyve.Mod.CS2.Shared
 
 			Dictionary<string, string> GetDictionary(string resourceName)
 			{
-				using (var resourceStream = assembly.GetManifestResourceStream(resourceName))
+				using var resourceStream = assembly.GetManifestResourceStream(resourceName);
+				if (resourceStream == null)
 				{
-					if (resourceStream == null)
-					{
-						return new Dictionary<string, string>();
-					}
-
-					using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
-					{
-						JSON.MakeInto<Dictionary<string, string>>(JSON.Load(reader.ReadToEnd()), out var dictionary);
-
-						return dictionary;
-					}
+					return new Dictionary<string, string>();
 				}
+
+				using var reader = new StreamReader(resourceStream, Encoding.UTF8);
+				JSON.MakeInto<Dictionary<string, string>>(JSON.Load(reader.ReadToEnd()), out var dictionary);
+
+				return dictionary;
 			}
 		}
 
 		public static string Translate(string id)
 		{
 			if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(id, out var result))
+			{
 				return result;
+			}
 
 			return id;
 		}

@@ -1,4 +1,5 @@
 ﻿using Colossal.Json;
+using Colossal.PSI.Common;
 
 using FindIt.Domain.Enums;
 
@@ -21,6 +22,9 @@ namespace FindIt.Domain.Utilities
 		public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
 		public static string CurrentSearch { get; set; }
 		public static bool IsActive { get; set; }
+		public static int SelectedDlc { get; set; }
+		public static int LotWidthFilter { get; set; }
+		public static int LotDepthFilter { get; set; }
 
 		public static IEnumerable<PrefabCategory> GetCategories()
 		{

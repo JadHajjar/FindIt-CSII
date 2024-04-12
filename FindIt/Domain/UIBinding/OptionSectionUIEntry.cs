@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace FindIt.Domain.UIBinding
 {
-	public struct OptionSection : IJsonWritable
+	public struct OptionSectionUIEntry : IJsonWritable
 	{
         public int Id { get; set; }
         public string Name { get; set; }
-        public OptionItem[] Options { get; set; }
+        public OptionItemUIEntry[] Options { get; set; }
 
-		public void Write(IJsonWriter writer)
+		public readonly void Write(IJsonWriter writer)
 		{
 			writer.TypeBegin(GetType().FullName);
 
