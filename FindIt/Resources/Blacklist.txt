@@ -65,3 +65,24 @@ TrashbagRandom01
 Oneway Tram Track - Inside
 Water Tile
 Road Tree Placeholder
+Oil Extractor Placeholder
+Invisible Car Oneway Lane 3
+Invisible Car Twoway Lane 3
+Invisible Car Bay Lane 3
+Alley Crosswalk Lane 2
+Highway Crosswalk Lane 2
+Invisible Pedestrian Lane 0.5
+Invisible Pedestrian Lane 2
+Tiled Crosswalk Lane 2
+Seaway Edge Lane 5
+EU Crosswalk Lane 2
+EU Alley Crosswalk Lane 2
+EU Highway Crosswalk Lane 2
+NA Crosswalk Lane 2
+NA Alley Crosswalk Lane 2
+NA Highway Crosswalk Lane 2
+Ground Cable Lane 8 - Vertical
+Ground Cable Lane 0.5
+Ground Cable Lane 1
+Ground Cable Lane 1.5
+Ground Cable Lane 8

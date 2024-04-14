@@ -55,7 +55,29 @@
 }
 
 .GridNoText .gridItemText {
-  display: none;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.15s;
+  //transition-delay: 0.25s;
+  transition-timing-function: ease-in-out;
+  position: absolute;
+  width: 95rem !important;
+  bottom: 5rem;
+  font-size: 12rem;
+  padding: 3rem;
+  white-space: normal;
+  overflow: hidden;
+  background-color: rgba(50, 50, 50, 0.75);
+  backdrop-filter: var(--panelBlur);
+  color: var(--textColorDim);
+  border-bottom-left-radius: var(--panelRadius);
+  border-bottom-right-radius: var(--panelRadius);
+  border-top-left-radius: var(--panelRadius);
+  border-top-right-radius: var(--panelRadius);
+}
+
+.GridNoText .gridItem:hover .gridItemText {
+  opacity: 1;
 }
 
 .gridItemText p {

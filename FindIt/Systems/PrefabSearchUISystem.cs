@@ -15,6 +15,7 @@ namespace FindIt.Systems
 		private CancellationTokenSource tokenSource;
 
 		private ValueBindingHelper<bool> _IsSearchLoading;
+		private ValueBindingHelper<bool> _IsExpanded;
 		private ValueBindingHelper<string> _CurrentSearch;
 		private ValueBindingHelper<double> _ScrollIndex;
 		private ValueBindingHelper<double> _MaxScrollIndex;
@@ -30,6 +31,7 @@ namespace FindIt.Systems
 			base.OnCreate();
 
 			_IsSearchLoading = CreateBinding("IsSearchLoading", false);
+			_IsExpanded = CreateBinding("IsExpanded", "SetIsExpanded", false, _ => UpdateCategoriesList());
 			_ScrollIndex = CreateBinding("ScrollIndex", 0D);
 			_MaxScrollIndex = CreateBinding("MaxScrollIndex", 0D);
 			_CategoryBinding = CreateBinding("CategoryList", new CategoryUIEntry[] { new(PrefabCategory.Any) });
@@ -51,7 +53,7 @@ namespace FindIt.Systems
 
 		private void OnScroll(int direction)
 		{
-			scrollIndex += Mod.Settings.ScrollSpeed * (direction > 0 ? 2 : -2) / Mod.Settings.RowCount;
+			scrollIndex += Mod.Settings.ScrollSpeed * (direction > 0 ? 2f : -2f) / (_IsExpanded ? Mod.Settings.ExpandedRowCount : Mod.Settings.RowCount);
 
 			_PrefabListBinding.Value = GetDisplayedPrefabs();
 		}
@@ -60,8 +62,8 @@ namespace FindIt.Systems
 		{
 			var list = FindItUtil.GetFilteredPrefabs();
 
-			var columns = (float)Mod.Settings.ColumnCount;
-			var displayedRows = Mod.Settings.RowCount;
+			var columns = (float)(_IsExpanded ? Mod.Settings.ExpandedColumnCount : Mod.Settings.ColumnCount);
+			var displayedRows = _IsExpanded ? Mod.Settings.ExpandedRowCount : Mod.Settings.RowCount;
 			var rows = Math.Ceiling(list.Count / columns);
 
 			scrollIndex = Math.Max(Math.Min(scrollIndex, rows - displayedRows), 0);
@@ -105,20 +107,21 @@ namespace FindIt.Systems
 
 			if (index > -1)
 			{
-				scrollIndex = Math.Floor(index / (double)Mod.Settings.ColumnCount);
+				var columns = (double)(_IsExpanded ? Mod.Settings.ExpandedColumnCount : Mod.Settings.ColumnCount);
+				scrollIndex = Math.Floor(index / columns);
 			}
 		}
 
-		public void SearchChanged(string text, bool force = false)
+		private void SearchChanged(string text)
 		{
 			text = text.Replace("\r", "").Replace("\n", "");
 
-			if (!force && _CurrentSearch == text && FindItUtil.CurrentSearch == text)
+			if (_CurrentSearch == text && FindItUtil.Filters.CurrentSearch == text)
 			{
 				return;
 			}
 
-			FindItUtil.CurrentSearch = text.Trim();
+			FindItUtil.Filters.CurrentSearch = text.Trim();
 
 			_CurrentSearch.Value = text;
 
@@ -134,7 +137,7 @@ namespace FindIt.Systems
 
 		internal void ClearSearch()
 		{
-			FindItUtil.CurrentSearch = string.Empty;
+			FindItUtil.Filters.CurrentSearch = string.Empty;
 			filterCompleted = false;
 			_IsSearchLoading.Value = false;
 			_CurrentSearch.Value = string.Empty;

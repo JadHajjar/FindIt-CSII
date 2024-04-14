@@ -6,6 +6,10 @@ import { useRef, useState } from "react";
 import { PrefabEntry } from "../../domain/prefabEntry";
 import { PrefabItemComponent } from "../PrefabItem/PrefabItem";
 
+export interface PrefabSelectionProps {
+  expanded: boolean;
+}
+
 // These establishes the binding with C# side.
 export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 export const PrefabList$ = bindValue<PrefabEntry[]>(mod.id, "PrefabList");
@@ -15,22 +19,30 @@ export const ScrollIndex$ = bindValue<number>(mod.id, "ScrollIndex");
 export const MaxScrollIndex$ = bindValue<number>(mod.id, "MaxScrollIndex");
 export const RowCount$ = bindValue<number>(mod.id, "RowCount");
 export const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
+export const ExpandedRowCount$ = bindValue<number>(mod.id, "ExpandedRowCount");
+export const ExpandedColumnCount$ = bindValue<number>(
+  mod.id,
+  "ExpandedColumnCount"
+);
 export const ViewStyle$ = bindValue<string>(
   mod.id,
   "ViewStyle",
   "GridWithText"
 );
 
-export const PrefabSelectionComponent = () => {
+export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
-  const ShowFindItPanel = useValue(ShowFindItPanel$);
   const PrefabList = useValue(PrefabList$);
   const ActivePrefabId = useValue(ActivePrefabId$);
   const CurrentCategory = useValue(CurrentCategory$);
   const ScrollIndex = useValue(ScrollIndex$);
   const MaxScrollIndex = useValue(MaxScrollIndex$);
-  const RowCount = useValue(RowCount$);
-  const ColumnCount = useValue(ColumnCount$);
+  const RowCount = props.expanded
+    ? useValue(ExpandedRowCount$)
+    : useValue(RowCount$);
+  const ColumnCount = props.expanded
+    ? useValue(ExpandedColumnCount$)
+    : useValue(ColumnCount$);
   const ViewStyle = useValue(ViewStyle$);
   const scrollBarRef = useRef(null);
   const thumbRef = useRef(null);
@@ -38,11 +50,7 @@ export const PrefabSelectionComponent = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [initialDivPos, setInitialDivPos] = useState(0);
 
-  if (!ShowFindItPanel) {
-    return null;
-  }
-
-  const panelHeight = RowCount * 98 + 10;
+  const panelHeight = RowCount * 98 + 9;
   const panelWidth = ColumnCount * 113 + 15;
 
   function OnWheel(obj: any) {

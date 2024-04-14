@@ -4,8 +4,6 @@ using Game.UI;
 
 using System;
 
-using Unity.Entities;
-
 namespace FindIt.Domain.Utilities
 {
 	public abstract partial class ExtendedUISystemBase : UISystemBase
@@ -116,28 +114,27 @@ namespace FindIt.Domain.Utilities
 
 	public class ValueBindingHelper<T>
 	{
-		private readonly ValueBinding<T> _binding;
 		private readonly Action<T> _updateCallBack;
 
-		public ValueBinding<T> Binding => _binding;
+		public ValueBinding<T> Binding { get; }
 
-		public T Value { get => _binding.value; set => _binding.Update(value); }
+		public T Value { get => Binding.value; set => Binding.Update(value); }
 
 		public ValueBindingHelper(ValueBinding<T> binding, Action<T> updateCallBack = null)
 		{
-			_binding = binding;
+			Binding = binding;
 			_updateCallBack = updateCallBack;
 		}
 
 		public void UpdateCallback(T value)
 		{
-			_binding.Update(value);
+			Binding.Update(value);
 			_updateCallBack?.Invoke(value);
 		}
 
 		public static implicit operator T(ValueBindingHelper<T> helper)
 		{
-			return helper._binding.value;
+			return helper.Binding.value;
 		}
 	}
 }

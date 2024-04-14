@@ -132,7 +132,7 @@ namespace FindIt.Domain.Utilities
 				return true;
 			}
 
-			if (!_entityManager.HasComponent<SpawnableObjectData>(entity))
+			if (!_entityManager.HasComponent<SpawnableObjectData>(entity) && !_entityManager.HasComponent<PlaceholderObjectData>(entity))
 			{
 				return false;
 			}

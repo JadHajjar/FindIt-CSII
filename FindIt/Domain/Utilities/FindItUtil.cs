@@ -1,5 +1,4 @@
 ﻿using Colossal.Json;
-using Colossal.PSI.Common;
 
 using FindIt.Domain.Enums;
 
@@ -20,11 +19,8 @@ namespace FindIt.Domain.Utilities
 		public static Dictionary<PrefabCategory, Dictionary<PrefabSubCategory, IndexedPrefabList>> CategorizedPrefabs { get; } = new();
 		public static PrefabCategory CurrentCategory { get; set; } = PrefabCategory.Any;
 		public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
-		public static string CurrentSearch { get; set; }
-		public static bool IsActive { get; set; }
-		public static int SelectedDlc { get; set; }
-		public static int LotWidthFilter { get; set; }
-		public static int LotDepthFilter { get; set; }
+		public static bool IsReady { get; set; }
+		public static Filters Filters { get; set; } = new();
 
 		public static IEnumerable<PrefabCategory> GetCategories()
 		{
@@ -47,12 +43,27 @@ namespace FindIt.Domain.Utilities
 
 		public static List<PrefabIndex> GetFilteredPrefabs()
 		{
-			if (string.IsNullOrWhiteSpace(CurrentSearch))
+			if (!IsReady)
+			{
+				return new();
+			}
+
+			if (!Filters.GetFilterList().Any())
 			{
 				return _cachedSearch = CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
 			}
 
 			return _cachedSearch;
+		}
+
+		public static List<PrefabIndex> GetUnfilteredPrefabs()
+		{
+			if (!IsReady)
+			{
+				return new();
+			}
+
+			return CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
 		}
 
 		public static PrefabBase GetPrefabBase(int id)
@@ -63,6 +74,20 @@ namespace FindIt.Domain.Utilities
 			}
 
 			return null;
+		}
+
+		public static void SetSorting(bool? descending = null, PrefabSorting? sorting = null)
+		{
+			IndexedPrefabList.Sorting = sorting ?? IndexedPrefabList.Sorting;
+			IndexedPrefabList.SortingDescending = descending ?? IndexedPrefabList.SortingDescending;
+
+			foreach (var item in CategorizedPrefabs)
+			{
+				foreach (var list in item.Value.Values)
+				{
+					list.ResetOrder();
+				}
+			}
 		}
 
 		public static bool IsFavorited(PrefabBase prefab)
@@ -126,42 +151,6 @@ namespace FindIt.Domain.Utilities
 			CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 		}
 
-		public static void ProcessSearch(CancellationToken token)
-		{
-			if (string.IsNullOrWhiteSpace(CurrentSearch))
-			{
-				return;
-			}
-
-			var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].ToList();
-			var index = 0;
-
-			while (index < prefabList.Count)
-			{
-				if (token.IsCancellationRequested)
-				{
-					return;
-				}
-
-				if (CurrentSearch.SearchCheck(prefabList[index].Name)
-					|| prefabList[index].Prefab.name.IndexOf(CurrentSearch, System.StringComparison.InvariantCultureIgnoreCase) >= 0
-					|| prefabList[index].SubCategory.ToString().IndexOf(CurrentSearch, System.StringComparison.InvariantCultureIgnoreCase) >= 0)
-				{
-					index++;
-					continue;
-				}
-
-				prefabList.RemoveAt(index);
-			}
-
-			if (token.IsCancellationRequested)
-			{
-				return;
-			}
-
-			_cachedSearch = prefabList;
-		}
-
 		public static void SaveCustomPrefabData()
 		{
 			var path = Path.Combine(FolderUtil.ContentFolder, "CustomPrefabData.json");
@@ -179,7 +168,7 @@ namespace FindIt.Domain.Utilities
 			}
 		}
 
-		public static bool Pick(PrefabBase prefab, out int id)
+		public static bool Find(PrefabBase prefab, bool setCategory, out int id)
 		{
 			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => prefab.name == x.Prefab.name);
 
@@ -189,10 +178,75 @@ namespace FindIt.Domain.Utilities
 				return false;
 			}
 
-			CurrentCategory = prefabIndex.Category;
-			CurrentSubCategory = prefabIndex.SubCategory;
+			if (setCategory)
+			{
+				CurrentCategory = prefabIndex.Category;
+				CurrentSubCategory = prefabIndex.SubCategory;
+			}
+
 			id = prefabIndex.Id;
 			return true;
+		}
+
+		public static ZoneTypeFilter GetZoneType(ZonePrefab zonePrefab)
+		{
+			if (zonePrefab.name.Contains(" Row"))
+			{
+				return ZoneTypeFilter.Row;
+			}
+			else if (zonePrefab.name.Contains(" Medium") || zonePrefab.name.Contains(" Mixed"))
+			{
+				return ZoneTypeFilter.Medium;
+			}
+			else if (zonePrefab.name.Contains(" High") || zonePrefab.name.Contains(" LowRent"))
+			{
+				return ZoneTypeFilter.High;
+			}
+			else if (zonePrefab.name.Contains(" Low"))
+			{
+				return ZoneTypeFilter.Low;
+			}
+
+			return ZoneTypeFilter.Any;
+		}
+
+		public static void ProcessSearch(CancellationToken token)
+		{
+			var filterList = Filters.GetFilterList().ToList();
+
+			if (filterList.Count == 0)
+			{
+				return;
+			}
+
+			var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].ToList();
+			var index = 0;
+
+			while (index < prefabList.Count)
+			{
+				if (token.IsCancellationRequested)
+				{
+					return;
+				}
+
+				var prefab = prefabList[index];
+
+				if (filterList.All(filter => filter(prefab)))
+				{
+					index++;
+				}
+				else
+				{
+					prefabList.RemoveAt(index);
+				}
+			}
+
+			if (token.IsCancellationRequested)
+			{
+				return;
+			}
+
+			_cachedSearch = prefabList;
 		}
 	}
 }

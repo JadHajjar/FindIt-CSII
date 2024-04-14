@@ -25,10 +25,10 @@
 
 	<Target Name="CopyFiles" AfterTargets="DeployWIP">
 		<ItemGroup>
-			<IconFiles Include=".\Resources\Thumbnails\*.*" />
+			<IconFiles Include=".\Resources\Images\*.*" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(IconFiles)" DestinationFiles="@(IconFiles->'$(DeployDir)\PrefabThumbnails\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(IconFiles)" DestinationFiles="@(IconFiles->'$(DeployDir)\images\%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 
 	<Target Name="BuildUI" AfterTargets="AfterBuild">
@@ -113,6 +113,10 @@
 	<ItemGroup>
 		<None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 </Project>

@@ -20,43 +20,59 @@ namespace FindIt.Systems
 		{
 			base.OnCreate();
 
-			foreach (var type in typeof(OptionsUISystem).Assembly.GetTypes())
-			{
-				if (typeof(IOptionSection).IsAssignableFrom(type) && !type.IsAbstract)
-				{
-					var section = (IOptionSection)Activator.CreateInstance(type, this);
-
-					_sections.Add(section.Id, section);
-				}
-			}
-
 			_ViewStyle = CreateBinding("ViewStyle", "GridWithText");
-			_OptionsList = CreateBinding("OptionsList", GetOptionsList());
+			_OptionsList = CreateBinding("OptionsList", new OptionSectionUIEntry[0]);
 
-			CreateTrigger<int, int>("OptionClicked", OptionClicked);
+			CreateTrigger<int, int, int>("OptionClicked", OptionClicked);
 		}
 
 		internal void RefreshOptions()
 		{
-			_OptionsList.Value = GetOptionsList();
-		}
+			if (!FindItUtil.IsReady)
+			{
+				return;
+			}
 
-		private OptionSectionUIEntry[] GetOptionsList()
-		{
-			return _sections.Values
-				.Where(x => x.IsVisible())
+			if (_sections.Count == 0)
+			{
+				foreach (var type in typeof(OptionsUISystem).Assembly.GetTypes())
+				{
+					if (typeof(IOptionSection).IsAssignableFrom(type) && !type.IsAbstract)
+					{
+						var section = (IOptionSection)Activator.CreateInstance(type, this);
+
+						_sections.Add(section.Id, section);
+					}
+				}
+			}
+
+			_OptionsList.Value = GetVisibleSections()
+				.OrderBy(x => x.Id)
 				.Select(x => x.AsUIEntry())
 				.ToArray();
 		}
 
-		private void OptionClicked(int sectionId, int optionId)
+		private IEnumerable<IOptionSection> GetVisibleSections()
+		{
+			foreach (var section in _sections.Values)
+			{
+				if (section.IsVisible())
+					yield return section;
+				else
+					section.OnReset();
+			}
+		}
+
+		private void OptionClicked(int sectionId, int optionId, int value)
 		{
 			if (!_sections.TryGetValue(sectionId, out var section))
 			{
 				return;
 			}
 
-			section.OnOptionClicked(optionId);
+			section.OnOptionClicked(optionId, value);
+
+			RefreshOptions();
 		}
 	}
 }

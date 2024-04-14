@@ -20,9 +20,9 @@ namespace FindIt.Domain.Options
 			_optionsUISystem = optionsUISystem;
 			_styles = new()
 			{
-				[1] = ("style1", ""),
-				[2] = ("style2", ""),
-				[3] = ("style2", ""),
+				[1] = ("GridWithText", "coui://uil/Standard/GridTextViewSmall.svg"),
+				[2] = ("GridNoText", "coui://uil/Standard/Image.svg"),
+				[3] = ("ListSimple", "coui://uil/Standard/ListViewDense.svg"),
 			};
 		}
 
@@ -47,9 +47,12 @@ namespace FindIt.Domain.Options
 			return true;
 		}
 
-		public void OnOptionClicked(int optionId)
+		public void OnOptionClicked(int optionId, int value)
 		{
 			_optionsUISystem.ViewStyle = _styles[optionId].Name;
 		}
+
+		public void OnReset()
+		{ }
 	}
 }

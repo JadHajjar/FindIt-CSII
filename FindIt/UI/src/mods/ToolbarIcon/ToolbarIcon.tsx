@@ -4,9 +4,9 @@ import { Theme } from "cs2/bindings";
 import { getModule, ModuleRegistryExtend } from "cs2/modding";
 import { Button } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
-import PickerIconSrc from "./PickerPipette.svg";
 import mod from "../../../mod.json";
 
+const PickerIconSrc = "coui://uil/Standard/PickerPipette.svg"; // Your tool's icon source
 const FindItIconSrc = "coui://uil/Standard/Magnifier.svg"; // Your tool's icon source
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel"); // Binding to get if your tool is active
 const PickerEnabled$ = bindValue<boolean>(mod.id, "PickerEnabled"); // Binding to get if your tool is active

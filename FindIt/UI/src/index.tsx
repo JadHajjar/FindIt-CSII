@@ -5,8 +5,7 @@ import { TopBarComponent } from "mods/TopBar/TopBar";
 
 import mod from "../mod.json";
 import { ToolbarIconComponent } from "mods/ToolbarIcon/ToolbarIcon";
-import { RemoveVanillaTopBarComponent } from "mods/RemoveVanillaTopBar/RemoveVanillaTopBar";
-import { RemoveVanillaAssetGridComponent } from "mods/RemoveVanillaAssetGrid/RemoveVanillaAssetGrid";
+import { RemoveVanillaAssetMenuComponent } from "mods/RemoveVanillaAssetMenu/RemoveVanillaAssetMenu";
 import { FindItMainContainerComponent } from "mods/MainContainer/MainContainer";
 
 const register: ModRegistrar = (moduleRegistry) => {
@@ -15,16 +14,9 @@ const register: ModRegistrar = (moduleRegistry) => {
 
   // This repalaces the asset grid.
   moduleRegistry.extend(
-    "game-ui/game/components/asset-menu/asset-grid/asset-grid.tsx",
-    "AssetGrid",
-    RemoveVanillaAssetGridComponent
-  );
-
-  // This repalaces the asset category top bar
-  moduleRegistry.extend(
-    "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.tsx",
-    "AssetCategoryTabBar",
-    RemoveVanillaTopBarComponent
+    "game-ui/game/components/asset-menu/asset-menu.tsx",
+    "AssetMenu",
+    RemoveVanillaAssetMenuComponent
   );
 
   // This adds the fint it and picker icons to the toolbar

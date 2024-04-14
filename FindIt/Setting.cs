@@ -50,13 +50,21 @@ namespace FindIt
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public float ScrollSpeed { get; set; } = 0.6f;
 
-		[SettingsUISlider(min = 1f, max = 6f, step = 0.25f, scalarMultiplier = 1f, unit = Unit.kFloatTwoFractions)]
+		[SettingsUISlider(min = 1f, max = 4f, step = 0.25f, scalarMultiplier = 1f, unit = Unit.kFloatTwoFractions)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
 		public float RowCount { get; set; } = 2f;
 
-		[SettingsUISlider(min = 4f, max = 20f, step = 1f, scalarMultiplier = 1f)]
+		[SettingsUISlider(min = 4f, max = 12f, step = 1f, scalarMultiplier = 1f)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public int ColumnCount { get; set; } = 8;
+		public int ColumnCount { get; set; } = 6;
+
+		[SettingsUISlider(min = 1f, max = 10f, step = 0.25f, scalarMultiplier = 1f, unit = Unit.kFloatTwoFractions)]
+		[SettingsUISection(MAIN_SECTION, DISPLAY)]
+		public float ExpandedRowCount { get; set; } = 3f;
+
+		[SettingsUISlider(min = 4f, max = 30f, step = 1f, scalarMultiplier = 1f)]
+		[SettingsUISection(MAIN_SECTION, DISPLAY)]
+		public int ExpandedColumnCount { get; set; } = 8;
 
 		//[SettingsUIDropdown(typeof(Setting), nameof(GetIntDropdownItems))]
 		//[SettingsUISection(kSection, kDropdownGroup)]

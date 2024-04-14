@@ -1,9 +1,12 @@
 {
   "Options.LABEL[FindIt.LotDepth]": "Lot Depth",
   "Options.LABEL[FindIt.LotWidth]": "Lot Width",
-  "Options.LABEL[FindIt.DlcFilter]": "DLC Filter",
+  "Options.LABEL[FindIt.ZoneType]": "Zone Type",
+  "Options.LABEL[FindIt.ExtraFilters]": "Extra Filters",
+  "Options.LABEL[FindIt.DlcFilter]": "DLC",
+  "Options.LABEL[FindIt.SortOrder]": "Sort Order",
   "Options.LABEL[FindIt.Sorting]": "Sorting",
-  "Options.LABEL[FindIt.ViewStyle]": "ViewS tyle",
+  "Options.LABEL[FindIt.ViewStyle]": "View Style",
   "Tooltip.LABEL[FindIt.ClosePanel]": "Close Panel",
   "Tooltip.LABEL[FindIt.RemoveFavorite]": "Remove from favorites",
   "Tooltip.LABEL[FindIt.AddFavorite]": "Favorite this asset",
@@ -71,5 +74,9 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.RowCount]": "Row Count",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.RowCount]": "Customize how many rows are displayed in the Find It panel.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ColumnCount]": "Column Count",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ColumnCount]": "Customize how many columns are displayed in the Find It panel."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ColumnCount]": "Customize how many columns are displayed in the Find It panel.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedRowCount]": "Expanded Row Count",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedRowCount]": "Customize how many rows are displayed while the Find It panel is expanded.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnCount]": "Expanded Column Count",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnCount]": "Customize how many columns are displayed while the Find It panel is expanded."
 }

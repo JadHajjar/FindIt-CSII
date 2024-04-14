@@ -13,48 +13,89 @@ namespace FindIt.Domain.Options
 	internal class DlcOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
+		private readonly List<OptionItemUIEntry> _dlcs;
 
 		public int Id { get; } = 100;
 
 		public DlcOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-		}
-
-		public OptionSectionUIEntry AsUIEntry()
-		{
-			var dlcs = new List<OptionItemUIEntry>();
-
-			foreach (var item in FindItUtil.GetFilteredPrefabs())
+			_dlcs = new List<OptionItemUIEntry>
 			{
-				if (!dlcs.Any(x => x.Id == item.DlcId.id))
+				new()
 				{
-					dlcs.Add(new OptionItemUIEntry
+					Id = int.MinValue,
+					Name = "Any",
+					Icon = "coui://uil/Standard/StarAll.svg",
+				},
+				new()
+				{
+					Id = -1,
+					Name = "Base Game",
+					Icon = "coui://uil/Colored/BaseGame.svg",
+				}
+			};
+
+			foreach (var item in FindItUtil.CategorizedPrefabs[Enums.PrefabCategory.Any][Enums.PrefabSubCategory.Any])
+			{
+				if (item.DlcId.id >= 0 && !_dlcs.Any(x => x.Id == item.DlcId.id))
+				{
+					_dlcs.Add(new OptionItemUIEntry
 					{
 						Id = item.DlcId.id,
 						Name = PlatformManager.instance.GetDlcName(item.DlcId),
 						Icon = $"Media/DLC/{PlatformManager.instance.GetDlcName(item.DlcId)}.svg",
-						Selected = FindItUtil.SelectedDlc == item.DlcId.id
 					});
 				}
+			}
+		}
+
+		public OptionSectionUIEntry AsUIEntry()
+		{
+			for (var i = 0; i < _dlcs.Count; i++)
+			{
+				var dlc = _dlcs[i];
+
+				dlc.Selected = FindItUtil.Filters.SelectedDlc == dlc.Id;
+
+				_dlcs[i] = dlc;
 			}
 
 			return new OptionSectionUIEntry
 			{
 				Id = Id,
 				Name = LocaleHelper.Translate("Options.LABEL[FindIt.DlcFilter]"),
-				Options = dlcs.ToArray()
+				Options = _dlcs.ToArray()
 			};
 		}
 
 		public bool IsVisible()
 		{
-			return FindItUtil.GetFilteredPrefabs().HasMoreThanOne(x => x.DlcId);
+			return _dlcs.Count > 2;
 		}
 
-		public void OnOptionClicked(int optionId)
+		public void OnOptionClicked(int optionId, int value)
 		{
-			FindItUtil.SelectedDlc = optionId;
+			if (FindItUtil.Filters.SelectedDlc == optionId)
+			{
+				FindItUtil.Filters.SelectedDlc = int.MinValue;
+			}
+			else
+			{
+				FindItUtil.Filters.SelectedDlc = optionId;
+			}
+
+			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+		}
+
+		public void OnReset()
+		{
+			if (FindItUtil.Filters.SelectedDlc == int.MinValue)
+			{
+				return;
+			}
+
+			FindItUtil.Filters.SelectedDlc = int.MinValue;
 
 			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
 		}

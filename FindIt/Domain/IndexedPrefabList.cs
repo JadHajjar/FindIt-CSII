@@ -1,4 +1,8 @@
-﻿using System;
+﻿using FindIt.Domain.Enums;
+using FindIt.Domain.Utilities;
+using FindIt.Systems;
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +16,9 @@ namespace FindIt.Domain
 		private readonly Dictionary<int, PrefabIndex> _dictionary;
 		private List<PrefabIndex> _orderedList;
 
+		public static PrefabSorting Sorting { get; set; }
+        public static bool SortingDescending { get; set; }
+
         public IndexedPrefabList()
         {
 			_dictionary = new();
@@ -19,7 +26,7 @@ namespace FindIt.Domain
 
 		public int Count => _dictionary.Count;
 
-		public List<PrefabIndex> OrderedList => _orderedList ??= _dictionary.Values.OrderBy(x => x.Name).ToList();
+		public List<PrefabIndex> OrderedList => _orderedList ??= Sort(_dictionary.Values).ToList();
 
 		public PrefabIndex this[int index]
 		{
@@ -50,6 +57,33 @@ namespace FindIt.Domain
 		{
 			_dictionary.Remove(prefabIndex.Id);
 			_orderedList?.Remove(prefabIndex);
+		}
+
+		internal void ResetOrder()
+		{
+			_orderedList = null;
+		}
+
+		private IEnumerable<PrefabIndex> Sort(IEnumerable<PrefabIndex> values)
+		{
+			if (SortingDescending)
+			{
+				return Sorting switch
+				{
+					PrefabSorting.MostUsed => values.OrderBy(PrefabTrackingSystem.GetMostUsedCount).OrderByDescending(x => x.Name),
+					PrefabSorting.LastUsed => values.OrderBy(PrefabTrackingSystem.GetLastUsedIndex).OrderByDescending(x => x.Name),
+					_ => values.OrderByDescending(x => x.Name),
+				};
+			}
+			else
+			{
+				return Sorting switch
+				{
+					PrefabSorting.MostUsed => values.OrderByDescending(PrefabTrackingSystem.GetMostUsedCount).ThenBy(x => x.Name),
+					PrefabSorting.LastUsed => values.OrderByDescending(PrefabTrackingSystem.GetLastUsedIndex).ThenBy(x => x.Name),
+					_ => values.OrderBy(x => x.Name),
+				};
+			}
 		}
 
 		public static implicit operator List<PrefabIndex>(IndexedPrefabList prefabs) => prefabs.OrderedList;

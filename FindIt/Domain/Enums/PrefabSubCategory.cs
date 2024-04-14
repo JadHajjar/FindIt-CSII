@@ -8,10 +8,10 @@ namespace FindIt.Domain.Enums
 {
 	public enum PrefabSubCategory
 	{
-		[CategoryIcon("Media/Tools/Snap Options/All.svg")]
+		[CategoryIcon("coui://uil/Standard/StarAll.svg")]
 		Any = PrefabCategory.Any,
 
-		[CategoryIcon("coui://uil/Colored/StarFilledSmall.svg")]
+		[CategoryIcon("coui://uil/Colored/StarFilledSmallIso.svg")]
 		Favorite = PrefabCategory.Favorite,
 
 		[Obsolete("Use PrefabCategory", true)]
@@ -28,7 +28,7 @@ namespace FindIt.Domain.Enums
 		Buildings_Office,
 		[CategoryIcon("Media/Game/Icons/ZoneExtractors.svg")]
 		Buildings_Specialized,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/ServiceBuilding.svg")]
+		[CategoryIcon("coui://uil/Colored/ServiceBuilding.svg")]
 		Buildings_Services,
 		[CategoryIcon("coui://uil/Colored/HouseAlternative.svg")]
 		Buildings_Miscellaneous,
@@ -47,10 +47,12 @@ namespace FindIt.Domain.Enums
 		Networks_Intersections,
 		[CategoryIcon("Media/Game/Icons/Pathways.svg")]
 		Networks_Paths,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/BusShelter.svg")]
+		[CategoryIcon("coui://uil/Colored/BusShelter.svg")]
 		Networks_Stops,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/Pillar.svg")]
+		[CategoryIcon("coui://uil/Colored/Pillar.svg")]
 		Networks_Pillars,
+		[CategoryIcon("coui://uil/Colored/Road.svg")]
+		Networks_Lanes,
 
 		[Obsolete("Use PrefabCategory", true)]
 		Trees = PrefabCategory.Trees,
@@ -60,14 +62,14 @@ namespace FindIt.Domain.Enums
 		Trees_Shrubs,
 		[CategoryIcon("Media/Game/Resources/Stone.svg")]
 		Trees_Rocks,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/FlowerPot.svg")]
+		[CategoryIcon("coui://uil/Colored/FlowerPot.svg")]
 		Trees_Props,
 		[CategoryIcon("coui://uil/Colored/Chicken.svg")]
 		Trees_Spawners,
 
 		[Obsolete("Use PrefabCategory", true)]
 		Props = PrefabCategory.Props,
-		[CategoryIcon("coui://uil/Colored/Furniture.svg")]
+		[CategoryIcon("coui://uil/Colored/FurnitureIso.svg")]
 		Props_Misc,
 		[CategoryIcon("Media/Game/Icons/LotTool.svg")]
 		Props_Surfaces,
@@ -77,15 +79,15 @@ namespace FindIt.Domain.Enums
 		Props_Commercial,
 		[CategoryIcon("Media/Game/Icons/ZoneIndustrial.svg")]
 		Props_Industrial,
-		[CategoryIcon("Media/Game/Icons/Police.svg")]
+		[CategoryIcon("coui://uil/Colored/HealthcareServiceProps.svg")]
 		Props_Service,
-		[CategoryIcon("coui://uil/Colored/Fence.svg")]
+		[CategoryIcon("coui://uil/Colored/FenceIsometric.svg")]
 		Props_Fences,
-		[CategoryIcon("Media/Game/Icons/ParksAndRecreation.svg")]
+		[CategoryIcon("coui://uil/Colored/BenchAndParkProps.svg")]
 		Props_Park,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/Decals.svg")]
+		[CategoryIcon("coui://uil/Colored/Decals.svg")]
 		Props_Decals,
-		[CategoryIcon("coui://uil/Colored/LampProp.svg")]
+		[CategoryIcon("coui://uil/Colored/LampProps.svg")]
 		Props_Lights,
 		[CategoryIcon("coui://uil/Colored/Billboard.svg")]
 		Props_Branding,
@@ -100,7 +102,7 @@ namespace FindIt.Domain.Enums
 		Vehicles_Bikes,
 		[CategoryIcon("coui://uil/Colored/DeliveryVan.svg")]
 		Vehicles_Industrial,
-		[CategoryIcon("coui://ui-mods/PrefabThumbnails/ServiceVehicles.svg")]
+		[CategoryIcon("coui://uil/Colored/ServiceVehicles.svg")]
 		Vehicles_Services,
 		[CategoryIcon("Media/Game/Icons/Bus.svg")]
 		Vehicles_Bus,

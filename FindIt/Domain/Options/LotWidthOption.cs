@@ -3,58 +3,63 @@ using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
 
+using System;
+
 namespace FindIt.Domain.Options
 {
 	internal class LotWidthOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly OptionItemUIEntry[] _options;
 
 		public int Id { get; } = 10;
 
 		public LotWidthOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-			_options = new OptionItemUIEntry[8];
-
-			for (var i = 0; i < _options.Length; i++)
-			{
-				_options[i] = new OptionItemUIEntry
-				{
-					Id = i,
-					Name = i.ToString(),
-					Icon = i is 0 ? "Media/Tools/Snap Options/All.svg" : i.ToString(),
-				};
-			}
 		}
 
 		public OptionSectionUIEntry AsUIEntry()
 		{
-			for (var i = 0; i < _options.Length; i++)
-			{
-				var option = _options[i];
-
-				option.Selected = FindItUtil.LotWidthFilter == i;
-
-				_options[i] = option;
-			}
-
 			return new OptionSectionUIEntry
 			{
 				Id = Id,
 				Name = LocaleHelper.Translate("Options.LABEL[FindIt.LotWidth]"),
-				Options = _options
+				Options = new[]
+				{
+					new OptionItemUIEntry
+					{
+						IsValue = true,
+						Value = FindItUtil.Filters.LotWidthFilter switch
+						{
+							0 => "Any",
+							10 => "10+",
+							_ => FindItUtil.Filters.LotWidthFilter.ToString(),
+						}
+					}
+				}
 			};
 		}
 
 		public bool IsVisible()
 		{
-			return true;
+			return FindItUtil.CurrentCategory == Enums.PrefabCategory.Buildings;
 		}
 
-		public void OnOptionClicked(int optionId)
+		public void OnOptionClicked(int optionId, int value)
 		{
-			FindItUtil.LotWidthFilter = optionId;
+			FindItUtil.Filters.LotWidthFilter = Math.Max(0, Math.Min(10, FindItUtil.Filters.LotWidthFilter + value));
+
+			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+		}
+
+		public void OnReset()
+		{
+			if (FindItUtil.Filters.LotWidthFilter == 0)
+			{
+				return;
+			}
+
+			FindItUtil.Filters.LotWidthFilter = 0;
 
 			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
 		}

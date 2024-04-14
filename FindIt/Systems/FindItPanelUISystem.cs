@@ -3,8 +3,10 @@ using FindIt.Domain.Utilities;
 
 using Game.Prefabs;
 using Game.Tools;
+using Game.UI.Menu;
 
 using System.IO;
+using System.Linq;
 
 using UnityEngine.InputSystem;
 
@@ -20,10 +22,12 @@ namespace FindIt.Systems
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
 		private ValueBindingHelper<float> _RowCount;
 		private ValueBindingHelper<float> _ColumnCount;
-
+		private ValueBindingHelper<float> _ExpandedRowCount;
+		private ValueBindingHelper<float> _ExpandedColumnCount;
 		private ToolSystem _toolSystem;
 		private PrefabSystem _prefabSystem;
 		private PrefabSearchUISystem _prefabSearchUISystem;
+		private OptionsUISystem _optionsUISystem;
 		private DefaultToolSystem _defaultToolSystem;
 		private bool settingPrefab;
 
@@ -34,6 +38,7 @@ namespace FindIt.Systems
 			_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
 			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			_prefabSearchUISystem = World.GetOrCreateSystemManaged<PrefabSearchUISystem>();
+			_optionsUISystem = World.GetOrCreateSystemManaged<OptionsUISystem>();
 			_defaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
 
 			// ToolSystem toolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<ToolSystem>(); // I don't know why vanilla game did this.
@@ -52,6 +57,8 @@ namespace FindIt.Systems
 			_ActivePrefabId = CreateBinding("ActivePrefabId", 0);
 			_RowCount = CreateBinding("RowCount", Mod.Settings.RowCount);
 			_ColumnCount = CreateBinding("ColumnCount", (float)Mod.Settings.ColumnCount);
+			_ExpandedRowCount = CreateBinding("ExpandedRowCount", Mod.Settings.ExpandedRowCount);
+			_ExpandedColumnCount = CreateBinding("ExpandedColumnCount", (float)Mod.Settings.ExpandedColumnCount);
 
 			// These establish listeners to trigger events from UI.
 			CreateTrigger("FindItCloseToggled", () => ToggleFindItPanel(false));
@@ -85,6 +92,8 @@ namespace FindIt.Systems
 		{
 			FindItUtil.CurrentCategory = (PrefabCategory)category;
 
+			_CurrentSubCategoryBinding.Value = (int)PrefabSubCategory.Any;
+
 			SetCurrentSubCategory((int)PrefabSubCategory.Any);
 		}
 
@@ -95,10 +104,12 @@ namespace FindIt.Systems
 			_prefabSearchUISystem.SetScroll(0);
 			_prefabSearchUISystem.UpdateCategoriesList();
 
-			if (!string.IsNullOrWhiteSpace(FindItUtil.CurrentSearch))
+			if (FindItUtil.Filters.GetFilterList().Any())
 			{
-				_prefabSearchUISystem.SearchChanged(FindItUtil.CurrentSearch, true);
+				_prefabSearchUISystem.TriggerSearch();
 			}
+
+			_optionsUISystem.RefreshOptions();
 		}
 
 		private void ToggleFavorited(int id)
@@ -120,8 +131,14 @@ namespace FindIt.Systems
 			{
 				_RowCount.Value = Mod.Settings.RowCount;
 				_ColumnCount.Value = Mod.Settings.ColumnCount;
+				_ExpandedRowCount.Value = Mod.Settings.ExpandedRowCount;
+				_ExpandedColumnCount.Value = Mod.Settings.ExpandedColumnCount;
+
+				FindItUtil.SetSorting();
 
 				var prefab = _prefabSearchUISystem.UpdateCategoriesList();
+
+				_optionsUISystem.RefreshOptions();
 
 				if (activatePrefab && Mod.Settings.SelectPrefabOnOpen)
 				{
@@ -129,7 +146,6 @@ namespace FindIt.Systems
 				}
 			}
 
-			FindItUtil.IsActive = visible;
 			_ShowFindItPanel.Value = visible;
 		}
 

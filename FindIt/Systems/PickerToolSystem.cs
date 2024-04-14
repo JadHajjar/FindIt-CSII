@@ -68,7 +68,7 @@ namespace FindIt.Systems
 				{
 					if (Mod.Settings.OpenPanelOnPicker)
 					{
-						if (FindItUtil.Pick(prefab, out var id))
+						if (FindItUtil.Find(prefab, true, out var id))
 						{
 							_findItPanelUISystem.ClearSearch();
 							_findItPanelUISystem.RefreshCategoryAndSubCategory();

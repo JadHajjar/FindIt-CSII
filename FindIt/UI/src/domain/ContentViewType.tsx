@@ -9,4 +9,6 @@ export interface optionItem {
   name: string;
   icon: string;
   selected: boolean;
+  isValue: boolean;
+  value: string;
 }

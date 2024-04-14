@@ -52,6 +52,17 @@ namespace FindIt.Domain.Utilities
 				return false;
 			}
 
+			if (prefab.name == "Ore Extractor Placeholder")
+			{
+				prefabIndex = new PrefabIndex(prefab)
+				{
+					Category = Enums.PrefabCategory.Buildings,
+					SubCategory = Enums.PrefabSubCategory.Buildings_Specialized
+				};
+
+				return true;
+			}
+
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Props,

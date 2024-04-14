@@ -13,11 +13,13 @@ namespace FindIt.Domain.Utilities
 	{
 		private readonly EntityManager _entityManager;
 		private readonly ImageSystem _imageSystem;
+		private readonly PrefabSystem _prefabSystem;
 
-		public ZonedBuildingPrefabCategoryProcessor(EntityManager entityManager, ImageSystem imageSystem)
+		public ZonedBuildingPrefabCategoryProcessor(EntityManager entityManager, ImageSystem imageSystem, PrefabSystem prefabSystem)
 		{
 			_entityManager = entityManager;
 			_imageSystem = imageSystem;
+			_prefabSystem = prefabSystem;
 		}
 
 		public EntityQueryDesc[] GetEntityQuery()
@@ -27,7 +29,7 @@ namespace FindIt.Domain.Utilities
 				new EntityQueryDesc
 				{
 					All = new[]
-					{	
+					{
 						ComponentType.ReadOnly<BuildingData>()
 					},
 					Any = new[]
@@ -58,8 +60,14 @@ namespace FindIt.Domain.Utilities
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Buildings,
-				FallbackThumbnail = _imageSystem.GetIconOrGroupIcon(zonePrefab)
 			};
+
+			prefabIndex.CategoryThumbnail = prefabIndex.FallbackThumbnail = _imageSystem.GetIconOrGroupIcon(zonePrefab);
+
+			if (_prefabSystem.TryGetPrefab<ZonePrefab>(zonePrefab, out var _zonePrefab))
+			{
+				prefabIndex.ZoneType = FindItUtil.GetZoneType(_zonePrefab);
+			}
 
 			var zoneData = _entityManager.GetComponentData<ZoneData>(zonePrefab);
 			var ambienceData = _entityManager.GetComponentData<GroupAmbienceData>(zonePrefab);

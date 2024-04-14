@@ -1,4 +1,5 @@
-﻿using FindIt.Domain.Interfaces;
+﻿using FindIt.Domain.Enums;
+using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
@@ -11,18 +12,18 @@ namespace FindIt.Domain.Options
 	internal class SortingOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly Dictionary<int, (string Name, string Icon)> _styles;
+		private readonly Dictionary<PrefabSorting, string> _sortOptions;
 
-		public int Id { get; } = 2;
+		public int Id { get; } = 3;
 
 		public SortingOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-			_styles = new()
+			_sortOptions = new()
 			{
-				[1] = ("style1", ""),
-				[2] = ("style2", ""),
-				[3] = ("style2", ""),
+				[PrefabSorting.Name] = "coui://uil/Standard/NameSort.svg",
+				[PrefabSorting.MostUsed] = "coui://uil/Standard/Statistics.svg",
+				[PrefabSorting.LastUsed] = "coui://uil/Standard/ClockArrowBackward.svg",
 			};
 		}
 
@@ -32,12 +33,12 @@ namespace FindIt.Domain.Options
 			{
 				Id = Id,
 				Name = LocaleHelper.Translate("Options.LABEL[FindIt.Sorting]"),
-				Options = _styles.Select(x => new OptionItemUIEntry
+				Options = _sortOptions.Select(x => new OptionItemUIEntry
 				{
-					Id = x.Key,
-					Name = x.Value.Name,
-					Icon = x.Value.Icon,
-					Selected = _optionsUISystem.ViewStyle == x.Value.Name
+					Id = (int)x.Key,
+					Name = x.Key.ToString(),
+					Icon = x.Value,
+					Selected = IndexedPrefabList.Sorting == x.Key
 				}).ToArray()
 			};
 		}
@@ -47,9 +48,14 @@ namespace FindIt.Domain.Options
 			return true;
 		}
 
-		public void OnOptionClicked(int optionId)
+		public void OnOptionClicked(int optionId, int value)
 		{
-			_optionsUISystem.ViewStyle = _styles[optionId].Name;
+			FindItUtil.SetSorting(sorting: (PrefabSorting)optionId);
+
+			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().UpdateCategoriesList();
 		}
+
+		public void OnReset()
+		{ }
 	}
 }

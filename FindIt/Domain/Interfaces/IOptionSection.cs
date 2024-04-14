@@ -14,6 +14,7 @@ namespace FindIt.Domain.Interfaces
 
 		bool IsVisible();
 		OptionSectionUIEntry AsUIEntry();
-		void OnOptionClicked(int optionId);
+		void OnOptionClicked(int optionId, int value);
+		void OnReset();
 	}
 }

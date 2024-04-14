@@ -1,4 +1,5 @@
-﻿using Colossal.Logging;
+﻿using Colossal.Entities;
+using Colossal.Logging;
 using Colossal.PSI.Common;
 using Colossal.Serialization.Entities;
 
@@ -169,9 +170,11 @@ namespace FindIt.Systems
 				}
 			}
 
+			FindItUtil.IsReady = true;
+
 			stopWatch.Stop();
 
-			Mod.Log.Info($"Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds}s");
+			Mod.Log.Info($"Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds:0.000}s");
 			Mod.Log.Info($"Indexed Prefabs Count: {FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Count}");
 
 			Enabled = false;
@@ -203,14 +206,9 @@ namespace FindIt.Systems
 
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
 		{
-			if (PrefabIconUtil.TryGetCustomThumbnail(prefab.name, out var prefabThumbnail))
-			{
-				prefabIndex.Thumbnail = prefabThumbnail;
-			}
-
 			prefabIndex.Id = entity.Index;
 			prefabIndex.Name = GetAssetName(prefab);
-			prefabIndex.Thumbnail ??= _imageSystem.GetThumbnail(entity);
+			prefabIndex.Thumbnail ??= ImageSystem.GetThumbnail(prefab);
 			prefabIndex.Favorited = FindItUtil.IsFavorited(prefab);
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.Category).Icon;
@@ -219,6 +217,15 @@ namespace FindIt.Systems
 			{
 				prefabIndex.DlcId = dlcRequirements.m_Dlc;
 				prefabIndex.DlcThumbnail = $"Media/DLC/{PlatformManager.instance.GetDlcName(dlcRequirements.m_Dlc)}.svg";
+			}
+			else
+			{
+				prefabIndex.DlcId = DlcId.Invalid;
+			}
+
+			if (EntityManager.TryGetComponent<BuildingData>(entity, out var buildingData))
+			{
+				prefabIndex.LotSize = buildingData.m_LotSize;
 			}
 
 			FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
