@@ -52,6 +52,10 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
 
   const panelHeight = RowCount * 98 + 9;
   const panelWidth = ColumnCount * 113 + 15;
+  const scrollBarHeight = Math.max(
+    30,
+    (panelHeight * RowCount) / (MaxScrollIndex + RowCount)
+  );
 
   function OnWheel(obj: any) {
     trigger(mod.id, "OnScroll", obj.deltaY);
@@ -79,7 +83,9 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
     const thumbRect = (scrollBarRef.current as any).getBoundingClientRect();
 
     const diffY = event.clientY - thumbRect.y - initialDivPos;
-    const scrollPerc = diffY / Number(thumbRect.height - 30);
+    const scrollPerc =
+      diffY /
+      Number(thumbRect.height - (scrollBarHeight * window.innerHeight) / 1080);
     const index = scrollPerc * MaxScrollIndex;
 
     trigger(mod.id, "SetScrollIndex", index);
@@ -133,9 +139,10 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
               ref={thumbRef}
               style={{
                 top:
-                  (ScrollIndex / MaxScrollIndex) * (panelHeight - 20 - 30) +
+                  (ScrollIndex / MaxScrollIndex) *
+                    (panelHeight - 20 - scrollBarHeight) +
                   "rem",
-                height: "30rem",
+                height: scrollBarHeight + "rem",
               }}
             ></div>
           </div>

@@ -44,28 +44,6 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
       onSelect={() => SetCurrentPrefab(props.prefab.id)}
       focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
     >
-      <img
-        src={props.prefab.thumbnail}
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null; // prevents looping
-          currentTarget.src = props.prefab.fallbackThumbnail;
-        }}
-        className={
-          VanillaComponentResolver.instance.assetGridTheme.thumbnail +
-          " " +
-          styles.gridThumbnail +
-          " " +
-          (props.prefab.thumbnail.endsWith(".jpeg") ||
-          props.prefab.thumbnail.endsWith(".jpg")
-            ? styles.jpgThumb
-            : null)
-        }
-      ></img>
-
-      <div className={styles.gridItemText}>
-        <p>{props.prefab.name}</p>
-      </div>
-
       <Tooltip
         tooltip={
           props.prefab.favorited
@@ -100,20 +78,36 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         </Button>
       </Tooltip>
 
+      <img
+        src={props.prefab.thumbnail}
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null; // prevents looping
+          currentTarget.src = props.prefab.fallbackThumbnail;
+        }}
+        className={
+          VanillaComponentResolver.instance.assetGridTheme.thumbnail +
+          " " +
+          styles.gridThumbnail +
+          " " +
+          (props.prefab.thumbnail.endsWith(".jpeg") ||
+          props.prefab.thumbnail.endsWith(".jpg")
+            ? styles.jpgThumb
+            : null)
+        }
+      ></img>
+
+      <div className={styles.gridItemText}>
+        <p>{props.prefab.name}</p>
+      </div>
+
       <div className={styles.rightSideContainer}>
-        {props.showCategory && (
-          <img
-            src={props.prefab.categoryThumbnail}
-            className={styles.categoryThumbnail}
-          ></img>
-        )}
+        {props.showCategory && <img src={props.prefab.categoryThumbnail}></img>}
 
         {props.prefab.dlcThumbnail && (
-          <img
-            src={props.prefab.dlcThumbnail}
-            className={styles.dlcThumbnail}
-          ></img>
+          <img src={props.prefab.dlcThumbnail}></img>
         )}
+
+        {props.prefab.random && <img src="coui://uil/Colored/Dice.svg"></img>}
       </div>
     </Button>
   );

@@ -43,7 +43,7 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			if (prefab is not NetLaneGeometryPrefab)
+			if (!Mod.IsExtraDetailingEnabled || prefab is not NetLaneGeometryPrefab)
 			{
 				prefabIndex = null;
 				return false;

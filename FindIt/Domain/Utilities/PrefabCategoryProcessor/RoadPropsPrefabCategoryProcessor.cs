@@ -10,6 +10,13 @@ namespace FindIt.Domain.Utilities
 {
 	public class RoadPropsPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
+		private readonly EntityManager _entityManager;
+
+		public RoadPropsPrefabCategoryProcessor(EntityManager entityManager)
+		{
+			_entityManager = entityManager;
+		}
+
 		public EntityQueryDesc[] GetEntityQuery()
 		{
 			return new[]
@@ -33,11 +40,9 @@ namespace FindIt.Domain.Utilities
 				Category = Enums.PrefabCategory.Props,
 			};
 
-			if (prefab.name.IndexOf("marking", StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| prefab.name.IndexOf("arrow", StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| prefab.name.IndexOf("decal", StringComparison.InvariantCultureIgnoreCase) >= 0)
+			if (_entityManager.IsDecal(entity))
 			{
-				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Decals;
+				return false;
 			}
 			else
 			{

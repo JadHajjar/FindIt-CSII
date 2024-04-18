@@ -19,6 +19,8 @@ namespace FindIt
 		public static ILog Log { get; } = LogManager.GetLogger(nameof(FindIt)).SetShowsErrorsInUI(false);
 		public static FindItSettings Settings { get; private set; }
 
+		public static bool IsExtraDetailingEnabled { get;private set; }
+
 		public void OnLoad(UpdateSystem updateSystem)
 		{
 			Log.Info(nameof(OnLoad));

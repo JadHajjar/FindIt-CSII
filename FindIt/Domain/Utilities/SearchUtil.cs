@@ -34,6 +34,21 @@ namespace FindIt.Domain.Utilities
 			return false;
 		}
 
+		public static bool IsDecal(this EntityManager entityManager, Entity entity)
+		{
+			if (!entityManager.TryGetBuffer<SubMesh>(entity, true, out var subMesh) || subMesh.Length == 0)
+			{
+				return false;
+			}
+
+			if (!entityManager.TryGetComponent<MeshData>(subMesh[0].m_SubMesh, out var component))
+			{
+				return false;
+			}
+
+			return component.m_State == MeshFlags.Decal;
+		}
+
 		public static bool IsBrandEntity(this EntityManager entityManager, Entity entity)
 		{
 			if (entityManager.HasComponent<BrandObjectData>(entity))

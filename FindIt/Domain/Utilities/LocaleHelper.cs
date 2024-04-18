@@ -3,6 +3,7 @@ using Colossal.Json;
 
 using Game.SceneFlow;
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -57,6 +58,11 @@ namespace FindIt.Domain.Utilities
 			}
 
 			return id;
+		}
+
+		internal static string GetTooltip(string key)
+		{
+			return Translate($"Tooltip.LABEL[{Mod.Id}.{key}]");
 		}
 
 		public IEnumerable<DictionarySource> GetAvailableLanguages()

@@ -30,8 +30,6 @@
 
 .GridNoText .gridItem {
   margin: 4rem !important;
-  width: 75rem !important;
-  height: 75rem !important;
   width: 105rem !important;
   height: 90rem !important;
   display: flex;
@@ -80,23 +78,68 @@
   opacity: 1;
 }
 
-.gridItemText p {
-  text-align: center;
+.ListSimple {
+  padding-right: 10rem;
+}
+
+.ListSimple .gridItem {
+  margin: 1.25rem !important;
+  width: 100% !important;
+  height: 20rem !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.ListSimple .gridThumbnail {
+  width: 15rem !important;
+  height: 15rem !important;
+  margin-right: 10rem;
+}
+
+.ListSimple .jpgThumb {
+  border-radius: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.ListSimple .gridItemText {
+  font-size: 12rem;
+  overflow: hidden;
 }
 
 .favoriteIcon {
-  display: none;
   background: none;
   width: 1.75em;
   height: 1.75em;
   z-index: 99;
+}
+
+.GridNoText .favoriteIcon,
+.GridWithText .favoriteIcon {
+  display: none;
   position: absolute;
   top: 0.125em;
   left: 0.125em;
 }
 
-.favoriteIcon.favorited {
+.ListSimple .favoriteIcon {
+  opacity: 0;
+}
+
+.GridNoText .gridItem:hover .favoriteIcon,
+.GridWithText .gridItem:hover .favoriteIcon,
+.GridNoText .gridItem .favoriteIcon.favorited,
+.GridWithText .gridItem .favoriteIcon.favorited {
   display: flex;
+}
+
+.ListSimple .gridItem:hover .favoriteIcon,
+.ListSimple .favoriteIcon.favorited {
+  opacity: 1;
 }
 
 .favoriteIcon img {
@@ -104,11 +147,17 @@
   height: 1.15em;
 }
 
+.ListSimple .favoriteIcon img {
+  width: 15rem;
+  height: 15rem;
+}
+
 .gridItem:hover .favoriteIcon {
   display: flex;
 }
 
-.rightSideContainer {
+.GridWithText .rightSideContainer,
+.GridNoText .rightSideContainer {
   position: absolute;
   top: 0.375em;
   right: 0.375em;
@@ -116,14 +165,30 @@
   flex-direction: column;
 }
 
-.dlcThumbnail {
+.GridWithText .rightSideContainer > img,
+.GridNoText .rightSideContainer > img {
   width: 1.15em;
   height: 1.15em;
   margin-bottom: 0.375em;
 }
 
-.categoryThumbnail {
-  width: 1.15em;
-  height: 1.15em;
-  margin-bottom: 0.375em;
+.ListSimple .rightSideContainer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.ListSimple .rightSideContainer > img {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.375em;
+}
+
+.GridWithText .gridItemText p,
+.GridNoText .gridItemText p {
+  text-align: center;
 }

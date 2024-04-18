@@ -209,9 +209,11 @@ namespace FindIt.Systems
 			prefabIndex.Id = entity.Index;
 			prefabIndex.Name = GetAssetName(prefab);
 			prefabIndex.Thumbnail ??= ImageSystem.GetThumbnail(prefab);
-			prefabIndex.Favorited = FindItUtil.IsFavorited(prefab);
+			prefabIndex.IsFavorited = FindItUtil.IsFavorited(prefab);
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.Category).Icon;
+			prefabIndex.IsVanilla = prefab.builtin;
+			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
 
 			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites) && contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
 			{
@@ -232,7 +234,7 @@ namespace FindIt.Systems
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 
-			if (prefabIndex.Favorited)
+			if (prefabIndex.IsFavorited)
 			{
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 

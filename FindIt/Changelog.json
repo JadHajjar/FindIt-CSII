@@ -1,5 +1,46 @@
 [
   {
+    "Stable": true,
+    "Beta": false,
+    "Version": "1.0.0",
+    "Date": "2024-04-18",
+    "Tagline": "We're out of Beta!",
+    "ChangeGroups": [
+      {
+        "Name": "New Filter & Sorting panel",
+        "Changes": [
+          "Added a toggleable panel that includes various sorting & advanced filtering options.",
+          "Added a 'Grid with no text' view with large thumbnails for assets.",
+          "Added a 'List' view",
+          "Added a 'Sort by most used' sorting to quickly find assets you've used in your city.",
+          "Added a 'Sort by recently selected' sorting to easily go back to assets you last used.",
+          "Added a 'Base Game' & 'DLC' filter.",
+          "Added a 'No branding assets' filter to declutter your results from the thousands of ad assets.",
+          "Added a various filters for Buildings including 'Lot Depth', 'Lot Width' & 'Zone Type'."
+        ]
+      },
+      {
+        "Name": "More Additions",
+        "Changes": [
+          "Added an 'Expand' button to toggle between a small and larger view, which you can customise in the mod settings.",
+          "Added hundreds of missing assets.",
+          "Added an option to hide 'Random' assets, enabled by default.",
+          "Added a dice icon next to 'Random' assets."
+        ]
+      },
+      {
+        "Name": "Other Changes",
+        "Changes": [
+          "Updated various category icons.",
+          "Toggling to the terrain or zoning toolbars will now correctly dismiss Find It.",
+          "Fixed stutters happening when hovering over category buttons.",
+          "Fixed the scroll bar not correctly following your cursor if you have screen sizes other than 1080p.",
+          "Scroll bar height now reflects the amount of assets displayed."
+        ]
+      }
+    ]
+  },
+  {
     "Stable": false,
     "Beta": true,
     "Version": "0.9.4.3",

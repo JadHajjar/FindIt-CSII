@@ -26,13 +26,24 @@ namespace FindIt.Domain.Options
 			{
 				Id = Id,
 				Name = LocaleHelper.Translate("Options.LABEL[FindIt.ExtraFilters]"),
-				Options = new[]{ new OptionItemUIEntry
-				{
-					Id = 0,
-					Name = "Remove Ads",
-					Icon = "coui://uil/Standard/NoAds.svg",
-					Selected = FindItUtil.Filters.HideAds
-				} }
+				Options = new[]
+				{ 
+					new OptionItemUIEntry
+					{
+						Id = 0,
+						Name = LocaleHelper.GetTooltip("RemoveAds"),
+						Icon = "coui://uil/Standard/NoAds.svg",
+						Selected = FindItUtil.Filters.HideAds
+					},
+					new OptionItemUIEntry
+					{
+						Id = 1,
+						Name = LocaleHelper.GetTooltip("CustomAssets"),
+						Icon = "coui://ui-mods/images/ParadoxMods.svg",
+						//Icon = "coui://uil/Standard/PDXPlatypusHexagon.svg",
+						Selected = FindItUtil.Filters.HideVanilla
+					} 
+				}
 			};
 		}
 
@@ -48,6 +59,9 @@ namespace FindIt.Domain.Options
 				case 0:
 					FindItUtil.Filters.HideAds = !FindItUtil.Filters.HideAds;
 					break;
+				case 1:
+					FindItUtil.Filters.HideVanilla = !FindItUtil.Filters.HideVanilla;
+					break;
 				default:
 					return;
 			}
@@ -57,12 +71,13 @@ namespace FindIt.Domain.Options
 
 		public void OnReset()
 		{
-			if (!FindItUtil.Filters.HideAds)
+			if (!FindItUtil.Filters.HideAds && !FindItUtil.Filters.HideVanilla)
 			{
 				return;
 			}
 
 			FindItUtil.Filters.HideAds = false;
+			FindItUtil.Filters.HideVanilla = false;
 
 			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
 		}

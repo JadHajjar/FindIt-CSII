@@ -63,6 +63,12 @@ namespace FindIt.Domain.Utilities
 				return true;
 			}
 
+			if (_entityManager.IsDecal(entity))
+			{
+				prefabIndex = null;
+				return false;
+			}
+
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Props,

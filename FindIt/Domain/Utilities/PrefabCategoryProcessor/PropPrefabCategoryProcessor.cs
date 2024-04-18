@@ -120,10 +120,9 @@ namespace FindIt.Domain.Utilities
 				}
 			}
 
-			if (prefab.name.IndexOf("decal", StringComparison.InvariantCultureIgnoreCase) >= 0)
+			if (_entityManager.IsDecal(entity))
 			{
-				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Decals;
-				return true;
+				return false;
 			}
 
 			if (prefab.name.StartsWith("NotreDame"))

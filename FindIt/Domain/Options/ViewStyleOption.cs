@@ -3,6 +3,7 @@ using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +12,7 @@ namespace FindIt.Domain.Options
 	internal class ViewStyleOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
+		private readonly PrefabSearchUISystem _prefabSearchUISystem;
 		private readonly Dictionary<int, (string Name, string Icon)> _styles;
 
 		public int Id { get; } = 1;
@@ -18,6 +20,7 @@ namespace FindIt.Domain.Options
 		public ViewStyleOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
+			_prefabSearchUISystem = optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>();
 			_styles = new()
 			{
 				[1] = ("GridWithText", "coui://uil/Standard/GridTextViewSmall.svg"),
@@ -35,9 +38,9 @@ namespace FindIt.Domain.Options
 				Options = _styles.Select(x => new OptionItemUIEntry
 				{
 					Id = x.Key,
-					Name = x.Value.Name,
+					Name = LocaleHelper.GetTooltip($"View{x.Value.Name}"),
 					Icon = x.Value.Icon,
-					Selected = _optionsUISystem.ViewStyle == x.Value.Name
+					Selected = _prefabSearchUISystem.ViewStyle == x.Value.Name
 				}).ToArray()
 			};
 		}
@@ -49,7 +52,7 @@ namespace FindIt.Domain.Options
 
 		public void OnOptionClicked(int optionId, int value)
 		{
-			_optionsUISystem.ViewStyle = _styles[optionId].Name;
+			_prefabSearchUISystem.ViewStyle = _styles[optionId].Name;
 		}
 
 		public void OnReset()

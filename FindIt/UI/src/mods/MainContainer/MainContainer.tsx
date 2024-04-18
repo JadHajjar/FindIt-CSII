@@ -53,7 +53,8 @@ export const FindItMainContainerComponent = () => {
   const panelWidth = ColumnCount * 113 + 15 + 20;
 
   const optionsOverflow = () =>
-    window.innerWidth < panelWidth + containerLeft + 280;
+    window.innerWidth <
+    containerLeft + ((panelWidth + 300) * window.innerHeight) / 1080;
 
   useEffect(() => {
     var newLeft =

@@ -38,7 +38,10 @@ namespace FindIt.Domain.Utilities
 
 		public static IEnumerable<PrefabSubCategory> GetSubCategories()
 		{
-			return CategorizedPrefabs[CurrentCategory].Keys.OrderBy(x => (int)x);
+			return CategorizedPrefabs[CurrentCategory]
+				.Where(x => x.Value.Count > 0)
+				.Select(x => x.Key)
+				.OrderBy(x => (int)x);
 		}
 
 		public static List<PrefabIndex> GetFilteredPrefabs()
@@ -106,7 +109,7 @@ namespace FindIt.Domain.Utilities
 			{
 				data.IsFavorited = !data.IsFavorited;
 
-				prefabIndex.Favorited = data.IsFavorited;
+				prefabIndex.IsFavorited = data.IsFavorited;
 			}
 			else
 			{
@@ -115,7 +118,7 @@ namespace FindIt.Domain.Utilities
 					IsFavorited = true
 				};
 
-				prefabIndex.Favorited = true;
+				prefabIndex.IsFavorited = true;
 			}
 
 			UpdateFavoritesList(prefabIndex);
@@ -125,7 +128,7 @@ namespace FindIt.Domain.Utilities
 
 		private static void UpdateFavoritesList(PrefabIndex prefabIndex)
 		{
-			if (!prefabIndex.Favorited)
+			if (!prefabIndex.IsFavorited)
 			{
 				if (CategorizedPrefabs[PrefabCategory.Favorite].ContainsKey(prefabIndex.SubCategory))
 				{

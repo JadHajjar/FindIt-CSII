@@ -6,4 +6,5 @@ export interface PrefabEntry {
   dlcThumbnail: string;
   categoryThumbnail: string;
   favorited: boolean;
+  random: boolean;
 }

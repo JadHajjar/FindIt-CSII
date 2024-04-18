@@ -40,7 +40,7 @@ namespace FindIt.Systems
 
 			RequireForUpdate(generalEntityQuery);
 
-			timer = new Timer(TimeSpan.FromMinutes(15).TotalMilliseconds);
+			timer = new Timer(TimeSpan.FromMinutes(1).TotalMilliseconds);
 			timer.Elapsed += (s, e) => Enabled = true;
 			timer.Start();
 		}

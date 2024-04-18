@@ -36,7 +36,7 @@ namespace FindIt.Domain.Options
 				Options = _sortOptions.Select(x => new OptionItemUIEntry
 				{
 					Id = (int)x.Key,
-					Name = x.Key.ToString(),
+					Name = LocaleHelper.GetTooltip($"Sorting{x.Key}"),
 					Icon = x.Value,
 					Selected = IndexedPrefabList.Sorting == x.Key
 				}).ToArray()

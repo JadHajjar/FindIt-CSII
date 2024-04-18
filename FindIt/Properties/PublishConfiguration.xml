@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Publish>
   <ModId Value="77240" />
-  <DisplayName Value="Find It [Beta]" />
+  <DisplayName Value="Find It" />
   <ShortDescription Value="Find It is a mod that lets you quickly browse and search for all of the assets inside of the game." />
   <LongDescription>
-# Find It [Beta] for Cities: Skylines II
+# Find It for Cities: Skylines II
 Quickly browse and search through all of the assets inside of the game.
 Use **Ctrl+F** to quickly open the Find It panel, or click on the magnifier icon in your toolbar.
 Use **Ctrl+P** to enable the Picker tool, or click on the picker icon in your toolbar.
@@ -18,25 +18,21 @@ Thank you to **Chameleon** for providing the Icons.
 And thank you to **Baka-gourd** (NullPinter) for their help with focus.
 
 ## Features
-* Uses similar categories lookup methods as the base game. As well as the vanilla UI components.
 * Quick and intelligent search methods.
-* Find It panel stays open while placing assets, no jumping between different tabs.
+* Extensive and comprehensive asset categories.
+* Panel stays open while placing assets, no jumping between different tabs.
 * Tool options like Tree Controller and Line Tool are fully supported and can be used while the panel is open.
-* Thumbnails for all assets, no more guessing what something is.
 * Favorite your most used assets.
 * Integrated Picker
+* Extensive sorting and filtering options.
 
 ## Planned Features
 * Mutli-tab support, to have multiple instances open at the same time
 * Custom tagging, add your own tags to assets. Will also come with cross compatibility with Skyve.
-* Advanced filtering options
 * Asset information when hovering over an item.
 
 ## Notes
 Find It should automatically support any mods that add or alter the vanilla assets.
-For example: Extra Landscaping Tool and Extra Networks and Areas
-
-This is currently in public Beta, but it should be stable to use.
 
 If you're having any issues, please report them on my discord as it's easier to help you that way.
 </LongDescription>
@@ -45,15 +41,39 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_02.png" />
   <Screenshot Value="Properties/Screenshot_03.png" />
   <Screenshot Value="Properties/Screenshot_04.png" />
+  <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="0.9.4.3" />
+  <ModVersion Value="1.0.0" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v0.9.4.3
-## Hotfix
-* Fixed the columns &amp; rows not correctly aligning in some configurations.
+# v1.0.0
+*We're out of Beta!*
+
+## New Filter &amp; Sorting panel
+* Added a toggleable panel that includes various sorting &amp; advanced filtering options.
+* Added a 'Grid with no text' view with large thumbnails for assets.
+* Added a 'List' view
+* Added a 'Sort by most used' sorting to quickly find assets you've used in your city.
+* Added a 'Sort by recently selected' sorting to easily go back to assets you last used.
+* Added a 'Base Game' &amp; 'DLC' filter.
+* Added a 'No branding assets' filter to declutter your results from the thousands of ad assets.
+* Added a various filters for Buildings including 'Lot Depth', 'Lot Width' &amp; 'Zone Type'.
+
+## More Additions
+* Added an 'Expand' button to toggle between a small and larger view, which you can customise in the mod settings.
+* Added hundreds of missing assets.
+* Added an option to hide 'Random' assets, enabled by default.
+* Added a dice icon next to 'Random' assets.
+
+## Other Changes
+* Updated various category icons.
+* Toggling to the terrain or zoning toolbars will now correctly dismiss Find It.
+* Fixed stutters happening when hovering over category buttons.
+* Fixed the scroll bar not correctly following your cursor if you have screen sizes other than 1080p.
+* Scroll bar height now reflects the amount of assets displayed.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
+  <Dependency Id="74417" />
 </Publish>

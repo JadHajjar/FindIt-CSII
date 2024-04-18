@@ -217,7 +217,7 @@ namespace FindIt.Systems
 		/// <param name="tool"></param>
 		private void OnToolChanged(ToolBaseSystem tool)
 		{
-			if (!settingPrefab && tool == _defaultToolSystem || tool.toolID is "MoveItTool")
+			if (!settingPrefab && tool == _defaultToolSystem || tool.toolID is "MoveItTool" or "Terrain Tool" or "Zone Tool")
 			{
 				ToggleFindItPanel(false);
 			}

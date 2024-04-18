@@ -27,14 +27,14 @@ namespace FindIt.Domain.Options
 					new OptionItemUIEntry
 					{
 						Id = 0,
-						Name = "Ascending",
+						Name = LocaleHelper.GetTooltip("Ascending"),
 						Icon = "coui://uil/Standard/ArrowSortLowDown.svg",
 						Selected = !IndexedPrefabList.SortingDescending
 					},
 					new OptionItemUIEntry
 					{
 						Id = 1,
-						Name = "Descending",
+						Name = LocaleHelper.GetTooltip("Descending"),
 						Icon = "coui://uil/Standard/ArrowSortHighDown.svg",
 						Selected = IndexedPrefabList.SortingDescending
 					},

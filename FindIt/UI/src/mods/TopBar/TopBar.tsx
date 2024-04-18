@@ -152,7 +152,7 @@ export const TopBarComponent = (props: TopBarProps) => {
             )}
             {!IsSearchLoading && (
               <img
-                src="coui://uil/Standard/Magnifier.svg"
+                src="coui://uil/Standard/MagnifierThin.svg"
                 className={styles.searchIcon}
               ></img>
             )}
@@ -192,7 +192,10 @@ export const TopBarComponent = (props: TopBarProps) => {
 
             <div className={styles.toggleSection}>
               <VanillaComponentResolver.instance.ToolButton
-                tooltip={"element.toolTip"}
+                tooltip={translate(
+                  "Tooltip.LABEL[FindIt.FiltersSorting]",
+                  "Filters & Sorting"
+                )}
                 selected={props.optionsOpen}
                 onSelect={props.toggleOptionsOpen}
                 src={"coui://uil/Standard/FunnelFilter.svg"}
@@ -202,7 +205,17 @@ export const TopBarComponent = (props: TopBarProps) => {
                 }
               />
               <VanillaComponentResolver.instance.ToolButton
-                tooltip={"element.toolTip"}
+                tooltip={
+                  props.expanded
+                    ? translate(
+                        "Tooltip.LABEL[FindIt.Shrink]",
+                        "Filters & Sorting"
+                      )
+                    : translate(
+                        "Tooltip.LABEL[FindIt.Expand]",
+                        "Filters & Sorting"
+                      )
+                }
                 selected={props.expanded}
                 onSelect={props.toggleEnlarge}
                 src={
@@ -247,7 +260,10 @@ export const TopBarComponent = (props: TopBarProps) => {
           <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>
         )}
 
-        <div className={AssetCategoryTabTheme.assetCategoryTabBar}>
+        <div
+          className={AssetCategoryTabTheme.assetCategoryTabBar}
+          style={{ paddingLeft: "10rem", paddingRight: "10rem" }}
+        >
           <div
             className={
               AssetCategoryTabTheme.items + " " + styles.subCategoryContainer

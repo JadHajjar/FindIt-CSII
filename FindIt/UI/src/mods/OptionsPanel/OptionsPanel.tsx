@@ -5,6 +5,7 @@ import { getModule } from "cs2/modding";
 import styles from "./OptionsPanel.module.scss";
 import { optionSection, optionItem } from "../../domain/ContentViewType";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
+import { Tooltip } from "cs2/ui";
 
 const ToolOptionsTheme: Theme | any = getModule(
   "game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.module.scss",
@@ -47,7 +48,7 @@ export const OptionsPanelComponent = () => {
                         VanillaComponentResolver.instance.mouseToolOptionsTheme
                           .startButton
                       }
-                    ></VanillaComponentResolver.instance.ToolButton>
+                    />
 
                     <div
                       className={
@@ -79,11 +80,12 @@ export const OptionsPanelComponent = () => {
                         VanillaComponentResolver.instance.mouseToolOptionsTheme
                           .endButton
                       }
-                    ></VanillaComponentResolver.instance.ToolButton>
+                    />
                   </>
                 ) : (
                   <VanillaComponentResolver.instance.ToolButton
                     selected={option.selected}
+                    tooltip={option.name}
                     onSelect={() =>
                       trigger(mod.id, "OptionClicked", section.id, option.id, 0)
                     }
@@ -94,7 +96,7 @@ export const OptionsPanelComponent = () => {
                       " " +
                       styles.singleButton
                     }
-                  ></VanillaComponentResolver.instance.ToolButton>
+                  />
                 )
               )}
             </div>

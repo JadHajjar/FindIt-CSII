@@ -25,13 +25,13 @@ namespace FindIt.Domain.Options
 				new()
 				{
 					Id = int.MinValue,
-					Name = "Any",
+					Name = LocaleHelper.GetTooltip("Any"),
 					Icon = "coui://uil/Standard/StarAll.svg",
 				},
 				new()
 				{
 					Id = -1,
-					Name = "Base Game",
+					Name = LocaleHelper.GetTooltip("BaseGame"),
 					Icon = "coui://uil/Colored/BaseGame.svg",
 				}
 			};
@@ -43,7 +43,7 @@ namespace FindIt.Domain.Options
 					_dlcs.Add(new OptionItemUIEntry
 					{
 						Id = item.DlcId.id,
-						Name = PlatformManager.instance.GetDlcName(item.DlcId),
+						Name = LocaleHelper.Translate($"Common.DLC_TITLE[{PlatformManager.instance.GetDlcName(item.DlcId)}]"),
 						Icon = $"Media/DLC/{PlatformManager.instance.GetDlcName(item.DlcId)}.svg",
 					});
 				}

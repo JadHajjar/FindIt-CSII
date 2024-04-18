@@ -11,16 +11,12 @@ namespace FindIt.Systems
 	internal partial class OptionsUISystem : ExtendedUISystemBase
 	{
 		private readonly Dictionary<int, IOptionSection> _sections = new();
-		private ValueBindingHelper<string> _ViewStyle;
 		private ValueBindingHelper<OptionSectionUIEntry[]> _OptionsList;
-
-		public string ViewStyle { get => _ViewStyle; set => _ViewStyle.Value = value; }
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
 
-			_ViewStyle = CreateBinding("ViewStyle", "GridWithText");
 			_OptionsList = CreateBinding("OptionsList", new OptionSectionUIEntry[0]);
 
 			CreateTrigger<int, int, int>("OptionClicked", OptionClicked);

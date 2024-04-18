@@ -10,6 +10,13 @@ namespace FindIt.Domain.Utilities
 {
 	public class SportPropPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
+		private readonly EntityManager _entityManager;
+
+		public SportPropPrefabCategoryProcessor(EntityManager entityManager)
+		{
+			_entityManager = entityManager;
+		}
+
 		public EntityQueryDesc[] GetEntityQuery()
 		{
 			return new[]
@@ -43,10 +50,9 @@ namespace FindIt.Domain.Utilities
 				Category = Enums.PrefabCategory.Props,
 			};
 
-			if (prefab.name.IndexOf("decal", StringComparison.InvariantCultureIgnoreCase) >= 0)
+			if (_entityManager.IsDecal(entity))
 			{
-				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Decals;
-				return true;
+				return false;
 			}
 
 			prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Misc;

@@ -31,7 +31,7 @@ namespace FindIt.Domain.Options
 						IsValue = true,
 						Value = FindItUtil.Filters.LotDepthFilter switch
 						{
-							0 => "Any",
+							0 => LocaleHelper.GetTooltip("Any"),
 							10 => "10+",
 							_ => FindItUtil.Filters.LotDepthFilter.ToString(),
 						}

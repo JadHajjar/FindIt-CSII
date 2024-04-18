@@ -38,7 +38,7 @@ namespace FindIt.Domain.Options
 				Options = _styles.Select(x => new OptionItemUIEntry
 				{
 					Id = (int)x.Key,
-					Name = x.Key.ToString(),
+					Name = LocaleHelper.GetTooltip(x.Key == ZoneTypeFilter.Any ? "Any" : $"Zone{x.Key}"),
 					Icon = x.Value,
 					Selected = FindItUtil.Filters.SelectedZoneType == x.Key
 				}).ToArray()
@@ -47,9 +47,8 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return FindItUtil.CurrentCategory is PrefabCategory.Any
-				|| (FindItUtil.CurrentCategory is PrefabCategory.Buildings
-				&& (FindItUtil.CurrentSubCategory is PrefabSubCategory.Any or PrefabSubCategory.Buildings_Residential or PrefabSubCategory.Buildings_Mixed or PrefabSubCategory.Buildings_Commercial or PrefabSubCategory.Buildings_Office or PrefabSubCategory.Buildings_Industrial));
+			return FindItUtil.CurrentCategory is PrefabCategory.Buildings
+				&& (FindItUtil.CurrentSubCategory is PrefabSubCategory.Any or PrefabSubCategory.Buildings_Residential or PrefabSubCategory.Buildings_Mixed or PrefabSubCategory.Buildings_Commercial or PrefabSubCategory.Buildings_Office or PrefabSubCategory.Buildings_Industrial);
 		}
 
 		public void OnOptionClicked(int optionId, int value)

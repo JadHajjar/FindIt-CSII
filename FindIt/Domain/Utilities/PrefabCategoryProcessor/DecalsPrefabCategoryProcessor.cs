@@ -2,17 +2,15 @@
 
 using Game.Prefabs;
 
-using System;
-
 using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
 {
-	public class RoadUtilityPropsPrefabCategoryProcessor : IPrefabCategoryProcessor
+	public class DecalsPrefabCategoryProcessor : IPrefabCategoryProcessor
 	{
 		private readonly EntityManager _entityManager;
 
-		public RoadUtilityPropsPrefabCategoryProcessor(EntityManager entityManager)
+		public DecalsPrefabCategoryProcessor(EntityManager entityManager)
 		{
 			_entityManager = entityManager;
 		}
@@ -25,33 +23,32 @@ namespace FindIt.Domain.Utilities
 				{
 					All = new[]
 					{
-						ComponentType.ReadOnly<UtilityObjectData>(),
-						ComponentType.ReadOnly<SubLane>(),
+						ComponentType.ReadOnly<StaticObjectData>(),
+						ComponentType.ReadOnly<SubMesh>(),
 					},
 					None = new[]
 					{
-						ComponentType.ReadOnly<PillarData>(),
+						ComponentType.ReadOnly<BuildingData>(),
+						ComponentType.ReadOnly<BrandObjectData>(),
 						ComponentType.ReadOnly<PlaceholderObjectElement>(),
-					},
+					}
 				},
 			};
 		}
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
+			if (prefab is not StaticObjectPrefab || !_entityManager.IsDecal(entity))
+			{
+				prefabIndex = null;
+				return false;
+			}
+
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Props,
+				SubCategory = Enums.PrefabSubCategory.Props_Decals
 			};
-
-			if (_entityManager.IsDecal(entity))
-			{
-				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Decals;
-			}
-			else
-			{
-				prefabIndex.SubCategory = Enums.PrefabSubCategory.Props_Road;
-			}
 
 			return true;
 		}

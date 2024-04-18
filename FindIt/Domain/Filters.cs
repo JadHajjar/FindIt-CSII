@@ -17,12 +17,18 @@ namespace FindIt.Domain
 		public int LotDepthFilter { get; set; }
 		public ThemePrefab SelectedTheme { get; set; }
 		public bool HideAds { get; set; }
+		public bool HideVanilla { get; set; }
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
 			if (HideAds)
 			{
 				yield return DoAdFilter;
+			}
+
+			if (HideVanilla)
+			{
+				yield return DoNoVanillaFilter;
 			}
 
 			if (SelectedDlc != int.MinValue)
@@ -80,6 +86,11 @@ namespace FindIt.Domain
 		private bool DoAdFilter(PrefabIndex prefab)
 		{
 			return prefab.SubCategory != PrefabSubCategory.Props_Branding;
+		}
+
+		private bool DoNoVanillaFilter(PrefabIndex prefab)
+		{
+			return !prefab.IsVanilla;
 		}
 	}
 }

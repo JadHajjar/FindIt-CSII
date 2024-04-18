@@ -19,6 +19,10 @@ namespace FindIt.Domain.Utilities
 						ComponentType.ReadOnly<AreaData>(),
 						ComponentType.ReadOnly<SurfaceData>(),
 					},
+					None = new[]
+					{
+						ComponentType.ReadOnly<PlaceholderObjectElement>(),
+					}
 				},
 			};
 		}

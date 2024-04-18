@@ -13,13 +13,14 @@ namespace FindIt.Domain.UIBinding
 {
 	public struct PrefabUIEntry : IJsonWritable
 	{
-		public int Id { get; set; }
-		public string Name { get; set; }
-		public string Thumbnail { get; set; }
-		public string FallbackThumbnail { get; set; }
-		public string DlcThumbnail { get; set; }
-		public string CategoryThumbnail { get; set; }
-		public bool Favorited { get; set; }
+		public readonly int Id;
+		private readonly string Name;
+		private readonly string Thumbnail;
+		private readonly string FallbackThumbnail;
+		private readonly string DlcThumbnail;
+		private readonly string CategoryThumbnail;
+		private readonly bool Favorited;
+		private readonly bool Random;
 
 		public PrefabUIEntry(PrefabIndexBase prefab)
         {
@@ -29,7 +30,8 @@ namespace FindIt.Domain.UIBinding
 			FallbackThumbnail = prefab.FallbackThumbnail;
 			DlcThumbnail = prefab.DlcThumbnail;
 			CategoryThumbnail = prefab.CategoryThumbnail;
-			Favorited = prefab.Favorited;
+			Favorited = prefab.IsFavorited;
+			Random = prefab.IsRandom;
 		}
 
         public readonly void Write(IJsonWriter writer)
@@ -56,6 +58,9 @@ namespace FindIt.Domain.UIBinding
 
 			writer.PropertyName("favorited");
 			writer.Write(Favorited);
+
+			writer.PropertyName("random");
+			writer.Write(Random);
 
 			writer.TypeEnd();
 		}

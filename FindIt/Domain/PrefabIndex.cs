@@ -21,6 +21,7 @@ namespace FindIt.Domain
 		public DlcId DlcId { get; set; }
 		public ZoneTypeFilter ZoneType { get; set; } = ZoneTypeFilter.Any;
 		public int2 LotSize { get; set; }
+		public bool IsVanilla { get; set; }
 
 		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{
