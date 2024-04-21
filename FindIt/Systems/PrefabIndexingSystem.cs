@@ -215,6 +215,22 @@ namespace FindIt.Systems
 			prefabIndex.IsVanilla = prefab.builtin;
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
 
+			if (prefabIndex.IsRandom && EntityManager.TryGetBuffer<PlaceholderObjectElement>(entity, true, out var placeholderObjectElements))
+			{
+				prefabIndex.RandomPrefabs = new int[placeholderObjectElements.Length];
+				prefabIndex.RandomPrefabThumbnails = new string[placeholderObjectElements.Length];
+
+				for (var i = 0; i < placeholderObjectElements.Length; i++)
+				{
+					prefabIndex.RandomPrefabs[i] = placeholderObjectElements[i].m_Object.Index;
+
+					if (_prefabSystem.TryGetPrefab<PrefabBase>(placeholderObjectElements[i].m_Object, out var randomPrefab))
+					{
+						prefabIndex.RandomPrefabThumbnails[i] = ImageSystem.GetThumbnail(randomPrefab);
+					}
+				}
+			}
+
 			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites) && contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
 			{
 				prefabIndex.DlcId = dlcRequirements.m_Dlc;

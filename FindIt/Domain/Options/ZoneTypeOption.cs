@@ -14,7 +14,7 @@ namespace FindIt.Domain.Options
 		private readonly OptionsUISystem _optionsUISystem;
 		private readonly Dictionary<ZoneTypeFilter, string> _styles;
 
-		public int Id { get; } = 13;
+		public int Id { get; } = 14;
 
 		public ZoneTypeOption(OptionsUISystem optionsUISystem)
 		{

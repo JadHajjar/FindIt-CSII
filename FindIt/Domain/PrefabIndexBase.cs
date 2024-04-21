@@ -1,9 +1,13 @@
 ﻿using Game.Prefabs;
 
+using System;
+
 namespace FindIt.Domain
 {
 	public class PrefabIndexBase
 	{
+		private Random random;
+
 		public PrefabBase Prefab { get; }
 		public int Id { get; set; }
 		public string Name { get; set; }
@@ -13,6 +17,9 @@ namespace FindIt.Domain
 		public string CategoryThumbnail { get; set; }
 		public bool IsFavorited { get; set; }
 		public bool IsRandom { get; set; }
+		public string[] RandomPrefabThumbnails { get; set; }
+
+		public Random Random => random ??= new Random(Id);
 
 		public PrefabIndexBase(PrefabBase prefabBase)
 		{

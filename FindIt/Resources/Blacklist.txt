@@ -87,3 +87,14 @@ Ground Cable Lane 1
 Ground Cable Lane 1.5
 Ground Cable Lane 8
 Tunnel Light Placeholder
+Pillar Placeholder
+GoldenGateBridgePylon Placeholder
+GrandBridgePillar Placeholder
+GrandBridgePylon Placeholder
+GoldenGateBridgePillar Placeholder
+PowerLinePole01 Placeholder
+PileSmallRandom01
+LogPileLargeRandom01
+LogPileMediumRandom01
+LogPileSmallRandom01
+PowerLinePylon01 Placeholder

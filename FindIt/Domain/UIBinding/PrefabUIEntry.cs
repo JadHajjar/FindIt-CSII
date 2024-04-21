@@ -1,18 +1,11 @@
 ﻿using Colossal.UI.Binding;
 
-using FindIt.Domain.Enums;
-using Game.Prefabs;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FindIt.Domain.UIBinding
 {
 	public struct PrefabUIEntry : IJsonWritable
 	{
+
+
 		public readonly int Id;
 		private readonly string Name;
 		private readonly string Thumbnail;
@@ -23,18 +16,26 @@ namespace FindIt.Domain.UIBinding
 		private readonly bool Random;
 
 		public PrefabUIEntry(PrefabIndexBase prefab)
-        {
-            Id = prefab.Id;
+		{
+			Id = prefab.Id;
 			Name = prefab.Name;
-			Thumbnail = prefab.Thumbnail;
 			FallbackThumbnail = prefab.FallbackThumbnail;
 			DlcThumbnail = prefab.DlcThumbnail;
 			CategoryThumbnail = prefab.CategoryThumbnail;
 			Favorited = prefab.IsFavorited;
 			Random = prefab.IsRandom;
+
+			if (prefab.IsRandom && prefab.RandomPrefabThumbnails != null)
+			{
+				Thumbnail = prefab.RandomPrefabThumbnails[prefab.Random.Next(0, prefab.RandomPrefabThumbnails.Length)];
+			}
+			else
+			{
+				Thumbnail = prefab.Thumbnail;
+			}
 		}
 
-        public readonly void Write(IJsonWriter writer)
+		public readonly void Write(IJsonWriter writer)
 		{
 			writer.TypeBegin(GetType().FullName);
 

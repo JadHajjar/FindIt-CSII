@@ -18,6 +18,7 @@ namespace FindIt.Domain
 		public ThemePrefab SelectedTheme { get; set; }
 		public bool HideAds { get; set; }
 		public bool HideVanilla { get; set; }
+		public int BuildingLevelFilter { get; set; }
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
@@ -39,6 +40,11 @@ namespace FindIt.Domain
 			if (SelectedZoneType != ZoneTypeFilter.Any)
 			{
 				yield return DoZoneTypeFilter;
+			}
+
+			if (BuildingLevelFilter != 0)
+			{
+				yield return DoBuildingLevelFilter;
 			}
 
 			if (LotDepthFilter != 0)
@@ -71,6 +77,11 @@ namespace FindIt.Domain
 		private bool DoZoneTypeFilter(PrefabIndex prefab)
 		{
 			return prefab.ZoneType == SelectedZoneType;
+		}
+
+		private bool DoBuildingLevelFilter(PrefabIndex prefab)
+		{
+			return prefab.BuildingLevel == BuildingLevelFilter;
 		}
 
 		private bool DoLotWidthFilter(PrefabIndex prefab)

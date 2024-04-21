@@ -49,7 +49,7 @@ namespace FindIt.Domain.Utilities
 				return false;
 			}
 
-			var zonePrefab = GetZonePrefab(entity);
+			var zonePrefab = GetZonePrefab(entity, out var level);
 
 			if (zonePrefab == Entity.Null)
 			{
@@ -60,6 +60,7 @@ namespace FindIt.Domain.Utilities
 			prefabIndex = new PrefabIndex(prefab)
 			{
 				Category = Enums.PrefabCategory.Buildings,
+				BuildingLevel = level
 			};
 
 			prefabIndex.CategoryThumbnail = prefabIndex.FallbackThumbnail = _imageSystem.GetIconOrGroupIcon(zonePrefab);
@@ -102,12 +103,16 @@ namespace FindIt.Domain.Utilities
 			return true;
 		}
 
-		private Entity GetZonePrefab(Entity entity)
+		private Entity GetZonePrefab(Entity entity, out int level)
 		{
 			if (_entityManager.TryGetComponent<SpawnableBuildingData>(entity, out var component))
 			{
+				level = component.m_Level;
+
 				return component.m_ZonePrefab;
 			}
+
+			level = 0;
 
 			if (_entityManager.TryGetComponent<PlaceholderBuildingData>(entity, out var component2))
 			{

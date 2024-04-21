@@ -31,7 +31,7 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			if (prefab.name.Contains("ADDAD"))
+			if (prefab.name.Contains("ADDAD") || prefab.name == "BillboardWallLarge01 - AllmostMeat")
 			{
 				prefabIndex = null;
 				return false;

@@ -22,6 +22,7 @@
   "Options.LABEL[FindIt.LotWidth]": "Lot Width",
   "Options.LABEL[FindIt.ZoneType]": "Zone Type",
   "Options.LABEL[FindIt.ExtraFilters]": "Extra Filters",
+  "Options.LABEL[FindIt.BuildingLevel]": "Building Level",
   "Options.LABEL[FindIt.DlcFilter]": "DLC",
   "Options.LABEL[FindIt.SortOrder]": "Sort Order",
   "Options.LABEL[FindIt.Sorting]": "Sorting",
