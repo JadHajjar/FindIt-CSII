@@ -11,19 +11,16 @@ export interface PrefabSelectionProps {
 }
 
 // These establishes the binding with C# side.
-export const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
-export const PrefabList$ = bindValue<PrefabEntry[]>(mod.id, "PrefabList");
-export const ActivePrefabId$ = bindValue<number>(mod.id, "ActivePrefabId");
-export const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
-export const ScrollIndex$ = bindValue<number>(mod.id, "ScrollIndex");
-export const MaxScrollIndex$ = bindValue<number>(mod.id, "MaxScrollIndex");
-export const RowCount$ = bindValue<number>(mod.id, "RowCount");
-export const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
-export const ExpandedRowCount$ = bindValue<number>(mod.id, "ExpandedRowCount");
-export const ExpandedColumnCount$ = bindValue<number>(
-  mod.id,
-  "ExpandedColumnCount"
-);
+const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+const PrefabList$ = bindValue<PrefabEntry[]>(mod.id, "PrefabList");
+const ActivePrefabId$ = bindValue<number>(mod.id, "ActivePrefabId");
+const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
+const ScrollIndex$ = bindValue<number>(mod.id, "ScrollIndex");
+const MaxScrollIndex$ = bindValue<number>(mod.id, "MaxScrollIndex");
+const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
+const PanelHeight$ = bindValue<number>(mod.id, "PanelHeight");
+const RowCount$ = bindValue<number>(mod.id, "RowCount");
+const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
 export const ViewStyle$ = bindValue<string>(
   mod.id,
   "ViewStyle",
@@ -34,27 +31,48 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const PrefabList = useValue(PrefabList$);
   const ActivePrefabId = useValue(ActivePrefabId$);
-  const CurrentCategory = useValue(CurrentCategory$);
+  const CurrentSubCategory = useValue(CurrentSubCategory$);
   const ScrollIndex = useValue(ScrollIndex$);
   const MaxScrollIndex = useValue(MaxScrollIndex$);
-  const RowCount = props.expanded
-    ? useValue(ExpandedRowCount$)
-    : useValue(RowCount$);
-  const ColumnCount = props.expanded
-    ? useValue(ExpandedColumnCount$)
-    : useValue(ColumnCount$);
   const ViewStyle = useValue(ViewStyle$);
+  const RowCount = useValue(RowCount$);
+  const ColumnCount = useValue(ColumnCount$);
+  const PanelWidth = useValue(PanelWidth$) + 15;
+  const PanelHeight = useValue(PanelHeight$) + 9;
   const scrollBarRef = useRef(null);
   const thumbRef = useRef(null);
+  var itemMargin = 8;
+  var PanelItemHeight = 0;
+
+  switch (ViewStyle) {
+    case "ListSimple":
+      itemMargin = 2.5;
+      break;
+    case "GridSmall":
+      itemMargin = 4;
+      break;
+  }
+
+  const PanelItemWidth = (PanelWidth - 15) / ColumnCount - itemMargin + "rem";
+
+  switch (ViewStyle) {
+    case "ListSimple":
+      PanelItemHeight = 22.5;
+      break;
+    case "GridWithText":
+      PanelItemHeight = 98;
+      break;
+    default:
+      PanelItemHeight = (PanelWidth - 15) / ColumnCount;
+      break;
+  }
 
   const [isDragging, setIsDragging] = useState(false);
   const [initialDivPos, setInitialDivPos] = useState(0);
 
-  const panelHeight = RowCount * 98 + 9;
-  const panelWidth = ColumnCount * 113 + 15;
   const scrollBarHeight = Math.max(
     30,
-    (panelHeight * RowCount) / (MaxScrollIndex + RowCount)
+    (PanelHeight * RowCount) / (MaxScrollIndex + RowCount)
   );
 
   function OnWheel(obj: any) {
@@ -107,27 +125,28 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
       <div
         onWheel={OnWheel}
         className={styles.scrollableContainer}
-        style={{ height: panelHeight + "rem" }}
+        style={{ height: PanelHeight + "rem" }}
       >
         <div
           className={styles.panelSection + " " + PrefabItemStyles[ViewStyle]}
           style={{
-            margin: `${(ScrollIndex % 1) * -98}rem 0 0 0`,
-            width: panelWidth + "rem",
+            margin: `${(ScrollIndex % 1) * -PanelItemHeight}rem 0 0 0`,
+            width: PanelWidth + "rem",
           }}
         >
           {PrefabList.map((prefab) => (
             <PrefabItemComponent
               prefab={prefab}
               selected={prefab.id == ActivePrefabId}
-              showCategory={CurrentCategory === -1}
+              showCategory={CurrentSubCategory === -1}
+              width={PanelItemWidth}
             ></PrefabItemComponent>
           ))}
         </div>
         {MaxScrollIndex > 0 && (
           <div
             className={styles.scrollContainer}
-            style={{ height: panelHeight - 20 + "rem" }}
+            style={{ height: PanelHeight - 20 + "rem" }}
             ref={scrollBarRef}
             onClick={handleScrollContainerClick}
           >
@@ -140,7 +159,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
               style={{
                 top:
                   (ScrollIndex / MaxScrollIndex) *
-                    (panelHeight - 20 - scrollBarHeight) +
+                    (PanelHeight - 20 - scrollBarHeight) +
                   "rem",
                 height: scrollBarHeight + "rem",
               }}

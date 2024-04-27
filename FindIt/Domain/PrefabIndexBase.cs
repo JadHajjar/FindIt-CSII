@@ -19,8 +19,6 @@ namespace FindIt.Domain
 		public bool IsRandom { get; set; }
 		public string[] RandomPrefabThumbnails { get; set; }
 
-		public Random Random => random ??= new Random(Id);
-
 		public PrefabIndexBase(PrefabBase prefabBase)
 		{
 			Prefab = prefabBase;

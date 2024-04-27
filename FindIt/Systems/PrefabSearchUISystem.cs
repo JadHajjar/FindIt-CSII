@@ -15,10 +15,11 @@ namespace FindIt.Systems
 		private CancellationTokenSource tokenSource;
 
 		private ValueBindingHelper<bool> _IsSearchLoading;
-		private ValueBindingHelper<bool> _IsExpanded;
 		private ValueBindingHelper<string> _CurrentSearch;
 		private ValueBindingHelper<double> _ScrollIndex;
 		private ValueBindingHelper<double> _MaxScrollIndex;
+		private ValueBindingHelper<double> _ColumnCount;
+		private ValueBindingHelper<double> _RowCount;
 		private ValueBindingHelper<string> _ViewStyle;
 		private ValueBindingHelper<CategoryUIEntry[]> _CategoryBinding;
 		private ValueBindingHelper<SubCategoryUIEntry[]> _SubCategoryBinding;
@@ -27,21 +28,31 @@ namespace FindIt.Systems
 		private bool filterCompleted;
 		private double scrollIndex;
 
-		public string ViewStyle { get => _ViewStyle; set { _ViewStyle.Value = value; UpdateCategoriesList(); } }
+		public string ViewStyle
+		{
+			get => _ViewStyle;
+			set
+			{
+				Mod.Settings.DefaultViewStyle = _ViewStyle.Value = value;
+				Mod.Settings.ApplyAndSave();
+				UpdateCategoriesList();
+			}
+		}
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
 
 			_IsSearchLoading = CreateBinding("IsSearchLoading", false);
-			_IsExpanded = CreateBinding("IsExpanded", "SetIsExpanded", false, _ => UpdateCategoriesList());
 			_ScrollIndex = CreateBinding("ScrollIndex", 0D);
 			_MaxScrollIndex = CreateBinding("MaxScrollIndex", 0D);
+			_ColumnCount = CreateBinding("ColumnCount", 0D);
+			_RowCount = CreateBinding("RowCount", 0D);
 			_CategoryBinding = CreateBinding("CategoryList", new CategoryUIEntry[] { new(PrefabCategory.Any) });
 			_SubCategoryBinding = CreateBinding("SubCategoryList", new SubCategoryUIEntry[] { new(PrefabSubCategory.Any) });
 			_PrefabListBinding = CreateBinding("PrefabList", new PrefabUIEntry[0]);
 			_CurrentSearch = CreateBinding("CurrentSearch", "");
-			_ViewStyle = CreateBinding("ViewStyle", "GridWithText");
+			_ViewStyle = CreateBinding("ViewStyle", Mod.Settings.DefaultViewStyle);
 
 			CreateTrigger<string>("SearchChanged", t => SearchChanged(t));
 			CreateTrigger<int>("OnScroll", OnScroll);
@@ -57,7 +68,7 @@ namespace FindIt.Systems
 
 		private void OnScroll(int direction)
 		{
-			scrollIndex += Mod.Settings.ScrollSpeed * (direction > 0 ? 2f : -2f) / (_IsExpanded ? Mod.Settings.ExpandedRowCount : Mod.Settings.RowCount);
+			scrollIndex += Mod.Settings.ScrollSpeed * (direction > 0 ? 2f : -2f) * GridUtil.GetScrollMultiplier() / GridUtil.GetCurrentRowCount();
 
 			_PrefabListBinding.Value = GetDisplayedPrefabs();
 		}
@@ -66,18 +77,20 @@ namespace FindIt.Systems
 		{
 			var list = FindItUtil.GetFilteredPrefabs();
 
-			var columns = (float)(ViewStyle is "ListSimple" ? 4 : _IsExpanded ? Mod.Settings.ExpandedColumnCount : Mod.Settings.ColumnCount);
-			var displayedRows = _IsExpanded ? Mod.Settings.ExpandedRowCount : Mod.Settings.RowCount;
-			var rows = Math.Ceiling(list.Count / columns);
+			var columns = GridUtil.GetCurrentColumnCount();
+			var displayedRows = GridUtil.GetCurrentRowCount();
+			var rows = Math.Ceiling(list.Count / (float)columns);
 
 			scrollIndex = Math.Max(Math.Min(scrollIndex, rows - displayedRows), 0);
 
 			_ScrollIndex.Value = scrollIndex;
 			_MaxScrollIndex.Value = rows - displayedRows;
+			_ColumnCount.Value = columns;
+			_RowCount.Value = displayedRows;
 
 			var uiEntries = new List<PrefabUIEntry>();
 			var startIndex = (int)(Math.Floor(scrollIndex) * columns);
-			var maxIndex = startIndex + (int)(columns * (2 + displayedRows));
+			var maxIndex = startIndex + (columns * (2 + displayedRows));
 
 			for (var i = startIndex; i < maxIndex && i < list.Count; i++)
 			{
@@ -111,7 +124,7 @@ namespace FindIt.Systems
 
 			if (index > -1)
 			{
-				var columns = ViewStyle is "ListSimple" ? 4 : (double)(_IsExpanded ? Mod.Settings.ExpandedColumnCount : Mod.Settings.ColumnCount);
+				var columns = (float)GridUtil.GetCurrentColumnCount();
 				scrollIndex = Math.Floor(index / columns);
 			}
 		}

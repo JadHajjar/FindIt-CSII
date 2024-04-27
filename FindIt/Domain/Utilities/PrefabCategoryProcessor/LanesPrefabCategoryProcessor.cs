@@ -36,6 +36,7 @@ namespace FindIt.Domain.Utilities
 						ComponentType.ReadOnly<BridgeData>(),
 						ComponentType.ReadOnly<TrackData>(),
 						ComponentType.ReadOnly<TrackLaneData>(),
+						ComponentType.ReadOnly<PlaceholderObjectElement>(),
 					}
 				},
 			};

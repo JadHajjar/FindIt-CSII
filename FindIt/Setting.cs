@@ -2,6 +2,9 @@
 using Colossal.IO.AssetDatabase;
 using Colossal.Json;
 
+using FindIt.Domain.Options;
+using FindIt.Domain.Utilities;
+
 using Game.Modding;
 using Game.Settings;
 using Game.UI;
@@ -12,14 +15,15 @@ using System.Collections.Generic;
 namespace FindIt
 {
 	[FileLocation(nameof(FindIt))]
-	[SettingsUIGroupOrder(BEHAVIOR, DISPLAY)]
-	[SettingsUIShowGroupName(BEHAVIOR, DISPLAY)]
+	[SettingsUIGroupOrder(BEHAVIOR, DISPLAY, OTHER)]
+	[SettingsUIShowGroupName(BEHAVIOR, DISPLAY, OTHER)]
 	public class FindItSettings : ModSetting
 	{
 		public const string MAIN_SECTION = "Main";
 
 		public const string BEHAVIOR = "Behavior";
 		public const string DISPLAY = "Display";
+		public const string OTHER = "Other";
 
 		public FindItSettings(IMod mod) : base(mod)
 		{
@@ -29,13 +33,12 @@ namespace FindIt
 		[SettingsUIHidden]
 		public bool DefaultBlock { get; set; }
 
-		//[SettingsUISection(kSection, kButtonGroup)]
-		//public bool Button { set { Mod.Log.Info("Button clicked"); } }
-
-		//[SettingsUIButton]
-		//[SettingsUIConfirmation]
-		//[SettingsUISection(kSection, kButtonGroup)]
-		//public bool ButtonWithConfirmation { set { Mod.Log.Info("ButtonWithConfirmation clicked"); } }
+		[SettingsUIHidden]
+		public string DefaultViewStyle { get; set; } = "GridWithText";
+	
+		[SettingsUIButton]
+		[SettingsUISection(MAIN_SECTION, OTHER)]
+		public bool ResetFavorites { set { FindItUtil.ResetFavorites(); } }
 
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool OpenPanelOnPicker { get; set; } = true;
@@ -44,60 +47,30 @@ namespace FindIt
 		public bool SelectPrefabOnOpen { get; set; } = true;
 
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
-		public bool HideRandomAssets { get; set; } = true;
+		public bool HideRandomAssets { get; set; }
 
 		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, scalarMultiplier = 1f, unit = Unit.kFloatSingleFraction)]
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public float ScrollSpeed { get; set; } = 0.6f;
 
-		[SettingsUISlider(min = 1f, max = 4f, step = 0.25f, scalarMultiplier = 1f, unit = Unit.kFloatTwoFractions)]
+		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public float RowCount { get; set; } = 2f;
+		public float RowSize { get; set; } = 40f;
 
-		[SettingsUISlider(min = 4f, max = 12f, step = 1f, scalarMultiplier = 1f)]
+		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public int ColumnCount { get; set; } = 6;
+		public float ColumnSize { get; set; } = 40;
 
-		[SettingsUISlider(min = 1f, max = 10f, step = 0.25f, scalarMultiplier = 1f, unit = Unit.kFloatTwoFractions)]
+		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public float ExpandedRowCount { get; set; } = 3f;
+		public float ExpandedRowSize { get; set; } = 80;
 
-		[SettingsUISlider(min = 4f, max = 30f, step = 1f, scalarMultiplier = 1f)]
+		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public int ExpandedColumnCount { get; set; } = 8;
-
-		//[SettingsUIDropdown(typeof(Setting), nameof(GetIntDropdownItems))]
-		//[SettingsUISection(kSection, kDropdownGroup)]
-		//public int IntDropdown { get; set; }
-
-		//[SettingsUISection(kSection, kDropdownGroup)]
-		//public SomeEnum EnumDropdown { get; set; } = SomeEnum.Value1;
-
-		//public DropdownItem<int>[] GetIntDropdownItems()
-		//{
-		//	var items = new List<DropdownItem<int>>();
-
-		//	for (var i = 0; i < 3; i += 1)
-		//	{
-		//		items.Add(new DropdownItem<int>()
-		//		{
-		//			value = i,
-		//			displayName = i.ToString(),
-		//		});
-		//	}
-
-		//	return items.ToArray();
-		//}
+		public float ExpandedColumnSize { get; set; } = 80;
 
 		public override void SetDefaults()
-		{ 
+		{
 		}
-
-		//public enum SomeEnum
-		//{
-		//	Value1,
-		//	Value2,
-		//	Value3,
-		//}
 	}
 }

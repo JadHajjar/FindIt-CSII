@@ -98,3 +98,13 @@ LogPileLargeRandom01
 LogPileMediumRandom01
 LogPileSmallRandom01
 PowerLinePylon01 Placeholder
+FlowerBushWildChild02
+FlowerBushWildDead02
+FlowerBushWildElderly01
+GreenBushWildAdult01
+GreenBushWildChild01
+GreenBushWildElderly01
+GreenBushWildTeen01
+GarageSignRandom01
+GarageSignRandom02
+GarageSignRandom03

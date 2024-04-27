@@ -25,7 +25,8 @@ namespace FindIt.Domain.Options
 			{
 				[1] = ("GridWithText", "coui://uil/Standard/GridTextViewSmall.svg"),
 				[2] = ("GridNoText", "coui://uil/Standard/Image.svg"),
-				[3] = ("ListSimple", "coui://uil/Standard/ListViewDense.svg"),
+				[3] = ("GridSmall", "coui://uil/Standard/GridView.svg"),
+				[4] = ("ListSimple", "coui://uil/Standard/ListViewDense.svg"),
 			};
 		}
 

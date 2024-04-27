@@ -44,34 +44,12 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.0.0" />
+  <ModVersion Value="1.0.2" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.0.0
-*We're out of Beta!*
-
-## New Filter &amp; Sorting panel
-* Added a toggleable panel that includes various sorting &amp; advanced filtering options.
-* Added a 'Grid with no text' view with large thumbnails for assets.
-* Added a 'List' view
-* Added a 'Sort by most used' sorting to quickly find assets you've used in your city.
-* Added a 'Sort by recently selected' sorting to easily go back to assets you last used.
-* Added a 'Base Game' &amp; 'DLC' filter.
-* Added a 'No branding assets' filter to declutter your results from the thousands of ad assets.
-* Added a various filters for Buildings including 'Lot Depth', 'Lot Width' &amp; 'Zone Type'.
-
-## More Additions
-* Added an 'Expand' button to toggle between a small and larger view, which you can customise in the mod settings.
-* Added hundreds of missing assets.
-* Added an option to hide 'Random' assets, enabled by default.
-* Added a dice icon next to 'Random' assets.
-
-## Other Changes
-* Updated various category icons.
-* Toggling to the terrain or zoning toolbars will now correctly dismiss Find It.
-* Fixed stutters happening when hovering over category buttons.
-* Fixed the scroll bar not correctly following your cursor if you have screen sizes other than 1080p.
-* Scroll bar height now reflects the amount of assets displayed.
+# v1.0.2
+## Changes
+* Small improvements in preparations for Asset Icon Library.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />

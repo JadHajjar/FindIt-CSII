@@ -71,7 +71,7 @@ namespace FindIt.Systems
 
 			stopWatch.Stop();
 
-			Mod.Log.Info($"Most used tracking finished in {stopWatch.Elapsed.TotalSeconds:0.000}s");
+			Mod.Log.Debug($"Most used tracking finished in {stopWatch.Elapsed.TotalSeconds:0.000}s");
 		}
 
 		private void OnPrefabChanged(PrefabBase prefab)

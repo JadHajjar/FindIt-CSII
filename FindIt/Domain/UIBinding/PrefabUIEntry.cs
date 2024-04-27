@@ -4,11 +4,9 @@ namespace FindIt.Domain.UIBinding
 {
 	public struct PrefabUIEntry : IJsonWritable
 	{
-
-
 		public readonly int Id;
 		private readonly string Name;
-		private readonly string Thumbnail;
+		private readonly string[] Thumbnails;
 		private readonly string FallbackThumbnail;
 		private readonly string DlcThumbnail;
 		private readonly string CategoryThumbnail;
@@ -27,11 +25,11 @@ namespace FindIt.Domain.UIBinding
 
 			if (prefab.IsRandom && prefab.RandomPrefabThumbnails != null)
 			{
-				Thumbnail = prefab.RandomPrefabThumbnails[prefab.Random.Next(0, prefab.RandomPrefabThumbnails.Length)];
+				Thumbnails = prefab.RandomPrefabThumbnails;
 			}
 			else
 			{
-				Thumbnail = prefab.Thumbnail;
+				Thumbnails = new[] { prefab.Thumbnail };
 			}
 		}
 
@@ -45,8 +43,8 @@ namespace FindIt.Domain.UIBinding
 			writer.PropertyName("name");
 			writer.Write(Name);
 
-			writer.PropertyName("thumbnail");
-			writer.Write(Thumbnail);
+			writer.PropertyName("thumbnails");
+			writer.Write(Thumbnails);
 
 			writer.PropertyName("fallbackThumbnail");
 			writer.Write(FallbackThumbnail);

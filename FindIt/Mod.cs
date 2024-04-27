@@ -8,18 +8,21 @@ using Game;
 using Game.Modding;
 using Game.SceneFlow;
 
-using System.IO;
+using System.Linq;
 
 namespace FindIt
 {
 	public class Mod : IMod
 	{
 		public const string Id = "FindIt";
+		private static bool? isExtraDetailingEnabled;
+		private static bool? isAssetIconLibraryEnabled;
 
 		public static ILog Log { get; } = LogManager.GetLogger(nameof(FindIt)).SetShowsErrorsInUI(false);
 		public static FindItSettings Settings { get; private set; }
 
-		public static bool IsExtraDetailingEnabled { get;private set; }
+		public static bool IsExtraDetailingEnabled => isExtraDetailingEnabled ??= GameManager.instance.modManager.ListModsEnabled().Any(x => x == "ExtraDetailingTools");
+		public static bool IsAssetIconLibraryEnabled => isAssetIconLibraryEnabled ??= GameManager.instance.modManager.ListModsEnabled().Any(x => x == "AssetIconLibrary");
 
 		public void OnLoad(UpdateSystem updateSystem)
 		{

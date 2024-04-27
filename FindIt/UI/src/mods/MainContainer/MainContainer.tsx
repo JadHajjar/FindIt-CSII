@@ -3,13 +3,15 @@ import { game, Theme } from "cs2/bindings";
 import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
 import { TopBarComponent } from "mods/TopBar/TopBar";
-import { PrefabSelectionComponent } from "mods/PrefabSelection/PrefabSelection";
+import {
+  PrefabSelectionComponent,
+  ViewStyle$,
+} from "mods/PrefabSelection/PrefabSelection";
 import { useState, useRef, useEffect } from "react";
 import styles from "./mainContainer.module.scss";
 import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";
 
-const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
-const ExpandedColumnCount$ = bindValue<number>(mod.id, "ExpandedColumnCount");
+const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const IsExpanded$ = bindValue<boolean>(mod.id, "IsExpanded");
 
 // This functions trigger an event on C# side and C# designates the method to implement.
@@ -47,14 +49,11 @@ export const FindItMainContainerComponent = () => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$);
   const IsExpanded = useValue(IsExpanded$);
-  const ColumnCount = IsExpanded
-    ? useValue(ExpandedColumnCount$)
-    : useValue(ColumnCount$);
-  const panelWidth = ColumnCount * 113 + 15 + 20;
+  const PanelWidth = useValue(PanelWidth$) + 15 + 20;
 
   const optionsOverflow = () =>
     window.innerWidth <
-    containerLeft + ((panelWidth + 300) * window.innerHeight) / 1080;
+    containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
 
   useEffect(() => {
     var newLeft =
@@ -76,7 +75,7 @@ export const FindItMainContainerComponent = () => {
             <div
               className={GameMainScreneTheme.toolPanel}
               ref={containerRef}
-              style={{ width: panelWidth + "rem" }}
+              style={{ width: PanelWidth + "rem" }}
             >
               <div>
                 {optionsOpen && optionsOverflow() && (
@@ -92,8 +91,8 @@ export const FindItMainContainerComponent = () => {
                   <TopBarComponent
                     optionsOpen={optionsOpen}
                     expanded={IsExpanded}
-                    small={ColumnCount <= 5}
-                    large={ColumnCount >= 8}
+                    small={PanelWidth <= 685}
+                    large={PanelWidth >= 850}
                     toggleOptionsOpen={() => setOptionsOpen(!optionsOpen)}
                     toggleEnlarge={() =>
                       trigger(mod.id, "SetIsExpanded", !IsExpanded)
@@ -111,7 +110,7 @@ export const FindItMainContainerComponent = () => {
               {optionsOpen && !optionsOverflow() && (
                 <div
                   className={styles.rightPanel}
-                  style={{ left: panelWidth + "rem" }}
+                  style={{ left: PanelWidth + "rem" }}
                 >
                   <div>
                     <OptionsPanelComponent></OptionsPanelComponent>
@@ -125,40 +124,3 @@ export const FindItMainContainerComponent = () => {
     </>
   );
 };
-
-/*
-<div className={styles.findItMainContainer}>
-<div className={GameMainScreneTheme.toolLayout}>
-  <div>
-    <div className={styles.toolContainer}>
-      <div>
-        <div className={styles.toolContent}>
-          <div>
-            <div style={{ width: panelWidth + "rem" }}>
-              <div className={DefaultMainTheme.header}>
-                <TopBarComponent
-                  viewType={viewType}
-                  setViewType={setViewType}
-                ></TopBarComponent>
-              </div>
-              <div
-                className={
-                  DefaultMainTheme.content +
-                  " " +
-                  AssetMenuTheme.assetPanel
-                }
-              >
-                <PrefabSelectionComponent
-                  viewType={viewType}
-                ></PrefabSelectionComponent>
-              </div>
-            </div>
-            <div className={styles.rightPanel}></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-*/

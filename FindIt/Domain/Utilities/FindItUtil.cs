@@ -4,6 +4,7 @@ using FindIt.Domain.Enums;
 
 using Game.Prefabs;
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -152,6 +153,19 @@ namespace FindIt.Domain.Utilities
 
 			CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 			CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
+		}
+
+		public static void ResetFavorites()
+		{
+			CategorizedPrefabs[PrefabCategory.Favorite] = new();
+			CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any] = new();
+
+			foreach (var item in customPrefabsData.Values)
+			{
+				item.IsFavorited = false;
+			}
+
+			SaveCustomPrefabData();
 		}
 
 		public static void SaveCustomPrefabData()

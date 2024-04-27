@@ -1,6 +1,5 @@
 .GridWithText .gridItem {
   margin: 4rem !important;
-  width: 105rem !important;
   height: 90rem !important;
   display: flex;
   flex-direction: column;
@@ -21,7 +20,7 @@
 }
 
 .GridWithText .gridItemText {
-  width: 95rem;
+  width: 95%;
   font-size: 12rem;
   max-height: 4em;
   white-space: normal;
@@ -30,8 +29,6 @@
 
 .GridNoText .gridItem {
   margin: 4rem !important;
-  width: 105rem !important;
-  height: 90rem !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,10 +38,8 @@
 }
 
 .GridNoText .gridThumbnail {
-  width: 70rem !important;
-  height: 70rem !important;
-  width: 90rem !important;
-  height: 90rem !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .GridNoText .jpgThumb {
@@ -54,18 +49,17 @@
 
 .GridNoText .gridItemText {
   opacity: 0;
+  width: 95%;
   transition-property: opacity;
   transition-duration: 0.15s;
-  //transition-delay: 0.25s;
   transition-timing-function: ease-in-out;
   position: absolute;
-  width: 95rem !important;
-  bottom: 5rem;
-  font-size: 12rem;
+  bottom: 2.5rem;
+  font-size: 10rem;
   padding: 3rem;
   white-space: normal;
   overflow: hidden;
-  background-color: rgba(50, 50, 50, 0.75);
+  background-color: rgba(50, 50, 50, 0.6);
   backdrop-filter: var(--panelBlur);
   color: var(--textColorDim);
   border-bottom-left-radius: var(--panelRadius);
@@ -76,6 +70,30 @@
 
 .GridNoText .gridItem:hover .gridItemText {
   opacity: 1;
+}
+
+.GridSmall .gridItem {
+  margin: 2rem !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.GridSmall .gridThumbnail {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.GridSmall .jpgThumb {
+  border-radius: 5rem;
+  margin-bottom: 5rem;
+}
+
+.GridSmall .gridItemText {
+  display: none;
 }
 
 .ListSimple {
@@ -113,17 +131,23 @@
 
 .favoriteIcon {
   background: none;
-  width: 1.75em;
-  height: 1.75em;
+  width: 1.5em;
+  height: 1.5em;
   z-index: 99;
 }
 
+.GridSmall .favoriteIcon {
+  width: 1em;
+  height: 1em;
+}
+
 .GridNoText .favoriteIcon,
+.GridSmall .favoriteIcon,
 .GridWithText .favoriteIcon {
   display: none;
   position: absolute;
-  top: 0.125em;
-  left: 0.125em;
+  top: 0;
+  left: 0;
 }
 
 .ListSimple .favoriteIcon {
@@ -131,8 +155,10 @@
 }
 
 .GridNoText .gridItem:hover .favoriteIcon,
+.GridSmall .gridItem:hover .favoriteIcon,
 .GridWithText .gridItem:hover .favoriteIcon,
 .GridNoText .gridItem .favoriteIcon.favorited,
+.GridSmall .gridItem .favoriteIcon.favorited,
 .GridWithText .gridItem .favoriteIcon.favorited {
   display: flex;
 }
@@ -143,8 +169,14 @@
 }
 
 .favoriteIcon img {
-  width: 1.15em;
-  height: 1.15em;
+  width: 0.9em;
+  height: 0.9em;
+  filter: drop-shadow(0px 0px 1.5rem rgba(0, 0, 0, 0.5));
+}
+
+.GridSmall .favoriteIcon img {
+  width: 0.6em;
+  height: 0.6em;
 }
 
 .ListSimple .favoriteIcon img {
@@ -157,10 +189,11 @@
 }
 
 .GridWithText .rightSideContainer,
+.GridSmall .rightSideContainer,
 .GridNoText .rightSideContainer {
   position: absolute;
-  top: 0.375em;
-  right: 0.375em;
+  top: 0.15em;
+  right: 0.15em;
   display: flex;
   flex-direction: column;
 }
@@ -170,6 +203,14 @@
   width: 1.15em;
   height: 1.15em;
   margin-bottom: 0.375em;
+  filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5));
+}
+
+.GridSmall .rightSideContainer > img {
+  width: 0.7em;
+  height: 0.7em;
+  margin-bottom: 0.15em;
+  filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5));
 }
 
 .ListSimple .rightSideContainer {

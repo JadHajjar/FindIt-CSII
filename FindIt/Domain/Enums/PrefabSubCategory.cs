@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FindIt.Domain.Enums
 {
@@ -37,22 +33,22 @@ namespace FindIt.Domain.Enums
 		Networks = PrefabCategory.Networks,
 		[CategoryIcon("coui://uil/Colored/Road.svg")]
 		Networks_Roads,
-		[CategoryIcon("Media/Game/Icons/Highways.svg")]
+		[CategoryIcon("coui://uil/Colored/Highway.svg")]
 		Networks_Highways,
-		[CategoryIcon("Media/Game/Icons/TwoWayTrainTrack.svg")]
+		[CategoryIcon("coui://uil/Colored/RailTrack.svg")]
 		Networks_Tracks,
-		[CategoryIcon("Media/Game/Icons/CableStayed.svg")]
+		[CategoryIcon("coui://uil/Colored/Bridge.svg")]
 		Networks_Bridges,
-		[CategoryIcon("Media/Game/Icons/Intersections.svg")]
+		[CategoryIcon("coui://uil/Colored/Intersection.svg")]
 		Networks_Intersections,
-		[CategoryIcon("Media/Game/Icons/Pathways.svg")]
+		[CategoryIcon("coui://uil/Colored/PedestrianPath.svg")]
 		Networks_Paths,
+		[CategoryIcon("coui://uil/Colored/Lanes.svg")]
+		Networks_Lanes,
 		[CategoryIcon("coui://uil/Colored/BusShelter.svg")]
 		Networks_Stops,
 		[CategoryIcon("coui://uil/Colored/Pillar.svg")]
 		Networks_Pillars,
-		[CategoryIcon("coui://uil/Colored/Road.svg")]
-		Networks_Lanes,
 
 		[Obsolete("Use PrefabCategory", true)]
 		Trees = PrefabCategory.Trees,
@@ -73,11 +69,11 @@ namespace FindIt.Domain.Enums
 		Props_Misc,
 		[CategoryIcon("Media/Game/Icons/LotTool.svg")]
 		Props_Surfaces,
-		[CategoryIcon("Media/Game/Icons/ZoneResidential.svg")]
+		[CategoryIcon("coui://uil/Colored/PropResidential.svg")]
 		Props_Residential,
-		[CategoryIcon("Media/Game/Icons/ZoneCommercial.svg")]
+		[CategoryIcon("coui://uil/Colored/PropCommercial.svg")]
 		Props_Commercial,
-		[CategoryIcon("Media/Game/Icons/ZoneIndustrial.svg")]
+		[CategoryIcon("coui://uil/Colored/PropIndustrial.svg")]
 		Props_Industrial,
 		[CategoryIcon("coui://uil/Colored/HealthcareServiceProps.svg")]
 		Props_Service,

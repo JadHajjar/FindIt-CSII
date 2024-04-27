@@ -1,6 +1,44 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.2",
+    "Date": "2024-04-27",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Small improvements in preparations for Asset Icon Library."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.0.1",
+    "Date": "2024-04-09",
+    "ChangeGroups": [
+      {
+        "Name": "New Additions",
+        "Changes": [
+          "Added a Building Level filter.",
+          "Added a 'Small Grid' view style",
+          "Added a reset favorites button in the settings."
+        ]
+      },
+      {
+        "Name": "Other Changes",
+        "Changes": [
+          "The settings that change the Find It panel's size have been reworked into percetange-based sizes. This is to help maintain the same size while switching between different view styles.",
+          "Your last selected 'View Style' will now be remembered after restarting the game.",
+          "Icons on the top-right of assets now use the asset's sub-category icon instead of category icon.",
+          "Updated the icons for Residential, Industrial, and Commercial Props.",
+          "The 'Hide Random Assets' option is now disabled by default."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Beta": false,
     "Version": "1.0.0",
     "Date": "2024-04-18",

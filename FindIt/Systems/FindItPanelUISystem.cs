@@ -5,6 +5,7 @@ using Game.Prefabs;
 using Game.Tools;
 using Game.UI.Menu;
 
+using System;
 using System.IO;
 using System.Linq;
 
@@ -17,19 +18,20 @@ namespace FindIt.Systems
 		private ValueBindingHelper<bool> _FocusSearchBar;
 		private ValueBindingHelper<bool> _ClearSearchBar;
 		private ValueBindingHelper<bool> _ShowFindItPanel;
+		private ValueBindingHelper<bool> _IsExpanded;
 		private ValueBindingHelper<int> _ActivePrefabId;
 		private ValueBindingHelper<int> _CurrentCategoryBinding;
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
-		private ValueBindingHelper<float> _RowCount;
-		private ValueBindingHelper<float> _ColumnCount;
-		private ValueBindingHelper<float> _ExpandedRowCount;
-		private ValueBindingHelper<float> _ExpandedColumnCount;
+		private ValueBindingHelper<float> _PanelHeight;
+		private ValueBindingHelper<float> _PanelWidth;
 		private ToolSystem _toolSystem;
 		private PrefabSystem _prefabSystem;
 		private PrefabSearchUISystem _prefabSearchUISystem;
 		private OptionsUISystem _optionsUISystem;
 		private DefaultToolSystem _defaultToolSystem;
 		private bool settingPrefab;
+
+		public bool IsExpanded => _IsExpanded;
 
 		protected override void OnCreate()
 		{
@@ -54,11 +56,10 @@ namespace FindIt.Systems
 			_FocusSearchBar = CreateBinding("FocusSearchBar", false);
 			_ClearSearchBar = CreateBinding("ClearSearchBar", false);
 			_ShowFindItPanel = CreateBinding("ShowFindItPanel", false);
+			_IsExpanded = CreateBinding("IsExpanded", "SetIsExpanded", false, _ => ExpandedToggled());
 			_ActivePrefabId = CreateBinding("ActivePrefabId", 0);
-			_RowCount = CreateBinding("RowCount", Mod.Settings.RowCount);
-			_ColumnCount = CreateBinding("ColumnCount", (float)Mod.Settings.ColumnCount);
-			_ExpandedRowCount = CreateBinding("ExpandedRowCount", Mod.Settings.ExpandedRowCount);
-			_ExpandedColumnCount = CreateBinding("ExpandedColumnCount", (float)Mod.Settings.ExpandedColumnCount);
+			_PanelHeight = CreateBinding("PanelHeight", 0f);
+			_PanelWidth = CreateBinding("PanelWidth", 0f);
 
 			// These establish listeners to trigger events from UI.
 			CreateTrigger("FindItCloseToggled", () => ToggleFindItPanel(false));
@@ -129,10 +130,8 @@ namespace FindIt.Systems
 
 			if (visible)
 			{
-				_RowCount.Value = Mod.Settings.RowCount;
-				_ColumnCount.Value = Mod.Settings.ColumnCount;
-				_ExpandedRowCount.Value = Mod.Settings.ExpandedRowCount;
-				_ExpandedColumnCount.Value = Mod.Settings.ExpandedColumnCount;
+				_PanelWidth.Value = GridUtil.GetWidth();
+				_PanelHeight.Value = GridUtil.GetHeight();
 
 				FindItUtil.SetSorting();
 
@@ -147,6 +146,14 @@ namespace FindIt.Systems
 			}
 
 			_ShowFindItPanel.Value = visible;
+		}
+
+		private void ExpandedToggled()
+		{
+			_PanelWidth.Value = GridUtil.GetWidth();
+			_PanelHeight.Value = GridUtil.GetHeight();
+
+			_prefabSearchUISystem.UpdateCategoriesList();
 		}
 
 		/// <summary>

@@ -39,8 +39,7 @@ namespace FindIt.Domain.Options
 					{
 						Id = 1,
 						Name = LocaleHelper.GetTooltip("CustomAssets"),
-						Icon = "coui://ui-mods/images/ParadoxMods.svg",
-						//Icon = "coui://uil/Standard/PDXPlatypusHexagon.svg",
+						Icon = "coui://uil/Standard/PDXPlatypusHexagon.svg",
 						Selected = FindItUtil.Filters.HideVanilla
 					} 
 				}
