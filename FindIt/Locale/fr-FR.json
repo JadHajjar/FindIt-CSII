@@ -1,6 +1,6 @@
 {
   "Tooltip.LABEL[FindIt.RemoveAds]": "Hide \"Branding\" assets",
-  "Tooltip.LABEL[FindIt.CustomAssets]": "Only show custom assets",
+  "Tooltip.LABEL[FindIt.CustomAssets]": "Afficher uniquement les assets personnalisés",
   "Tooltip.LABEL[FindIt.Ascending]": "Ordre croissant",
   "Tooltip.LABEL[FindIt.Descending]": "Ordre décroissant",
   "Tooltip.LABEL[FindIt.SortingName]": "Trier par nom",
