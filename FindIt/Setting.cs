@@ -47,6 +47,9 @@ namespace FindIt
 		public bool SelectPrefabOnOpen { get; set; } = true;
 
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
+		public bool StrictSearch { get; set; }
+
+		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool HideRandomAssets { get; set; }
 
 		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, scalarMultiplier = 1f, unit = Unit.kFloatSingleFraction)]

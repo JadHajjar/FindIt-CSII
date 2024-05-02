@@ -11,23 +11,23 @@ namespace FindIt.Systems
 {
 	internal partial class PickerUISystem : UISystemBase
 	{
-		private ToolSystem _ToolSystem;
-		private PickerToolSystem _PickerToolSystem;
-		private DefaultToolSystem _DefaultToolSystem;
-		private FindItPanelUISystem _FindItPanelUISystem;
-		private ValueBinding<bool> _PickerEnabled;
+		private ToolSystem _toolSystem;
+		private PickerToolSystem _pickerToolSystem;
+		private DefaultToolSystem _defaultToolSystem;
+		private FindItUISystem _findItUISystem;
+		private ValueBinding<bool> _pickerEnabled;
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
 
-			_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
-			_PickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>();
-			_DefaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
-			_FindItPanelUISystem = World.GetOrCreateSystemManaged<FindItPanelUISystem>();
-			_ToolSystem.EventToolChanged += OnToolChanged;
+			_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
+			_pickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>();
+			_defaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
+			_findItUISystem = World.GetOrCreateSystemManaged<FindItUISystem>();
+			_toolSystem.EventToolChanged += OnToolChanged;
 
-			AddBinding(_PickerEnabled = new ValueBinding<bool>(Mod.Id, "PickerEnabled", false));
+			AddBinding(_pickerEnabled = new ValueBinding<bool>(Mod.Id, "PickerEnabled", false));
 			AddBinding(new TriggerBinding(Mod.Id, "PickerIconToggled", PickerClicked));
 
 			InputAction hotKeyCtrlP = new($"{Mod.Id}/CtrlP");
@@ -36,30 +36,30 @@ namespace FindIt.Systems
 			hotKeyCtrlP.Enable();
 		}
 
-		private void OnCtrlPKeyPressed(InputAction.CallbackContext context)
-		{
-			_FindItPanelUISystem.ToggleFindItPanel(false);
-
-			_ToolSystem.activeTool = _PickerToolSystem;
-		}
-
 		private void OnToolChanged(ToolBaseSystem system)
 		{
-			_PickerEnabled.Update(_ToolSystem.activeTool == _PickerToolSystem);
+			_pickerEnabled.Update(_toolSystem.activeTool == _pickerToolSystem);
 		}
 
 		private void PickerClicked()
 		{
-			if (_ToolSystem.activeTool == _PickerToolSystem)
+			if (_toolSystem.activeTool == _pickerToolSystem)
 			{
-				_ToolSystem.activeTool = _DefaultToolSystem;
+				_toolSystem.activeTool = _defaultToolSystem;
 			}
 			else
 			{
-				_FindItPanelUISystem.ToggleFindItPanel(false);
+				_findItUISystem.ToggleFindItPanel(false);
 
-				_ToolSystem.activeTool = _PickerToolSystem;
+				_toolSystem.activeTool = _pickerToolSystem;
 			}
+		}
+
+		private void OnCtrlPKeyPressed(InputAction.CallbackContext context)
+		{
+			_findItUISystem.ToggleFindItPanel(false);
+
+			_toolSystem.activeTool = _pickerToolSystem;
 		}
 	}
 }

@@ -53,9 +53,13 @@ namespace FindIt.Systems
 			foreach (var section in _sections.Values)
 			{
 				if (section.IsVisible())
+				{
 					yield return section;
+				}
 				else
+				{
 					section.OnReset();
+				}
 			}
 		}
 

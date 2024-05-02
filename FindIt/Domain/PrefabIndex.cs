@@ -24,6 +24,7 @@ namespace FindIt.Domain
 		public int BuildingLevel { get; set; }
 		public bool IsVanilla { get; set; }
 		public int[] RandomPrefabs { get; set; }
+		public List<string> Tags { get; set; }
 
 		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{

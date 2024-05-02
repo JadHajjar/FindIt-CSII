@@ -5,6 +5,7 @@ using Game.Prefabs;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FindIt.Domain
 {
@@ -59,14 +60,27 @@ namespace FindIt.Domain
 
 			if (!string.IsNullOrWhiteSpace(CurrentSearch))
 			{
-				yield return DoSearchFilter;
+				yield return Mod.Settings.StrictSearch ? DoStrictSearchFilter : DoSearchFilter;
 			}
 		}
 
 		private bool DoSearchFilter(PrefabIndex prefab)
 		{
 			return CurrentSearch.SearchCheck(prefab.Name)
-				|| prefab.Prefab.name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0;
+				|| CurrentSearch.SearchCheck(prefab.Prefab.name)
+				|| prefab.Tags.Any(DoTagSearch);
+		}
+
+		private bool DoStrictSearchFilter(PrefabIndex prefab)
+		{
+			return prefab.Name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
+				|| prefab.Prefab.name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
+				|| prefab.Tags.Any(DoTagSearch);
+		}
+
+		private bool DoTagSearch(string tag)
+		{
+			return tag.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0;
 		}
 
 		private bool DoDlcFilter(PrefabIndex prefab)

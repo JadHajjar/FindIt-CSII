@@ -91,9 +91,6 @@ namespace FindIt.Systems
 
 			AddAllCategories();
 
-			var tm_ExcludeCategories = new HashSet<string>();
-			var tm_IncludeCategories = new HashSet<string>();
-
 			for (var ind = 0; ind < _prefabCategoryProcessors.Count; ind++)
 			{
 				var processor = _prefabCategoryProcessors[ind];
@@ -212,6 +209,7 @@ namespace FindIt.Systems
 			prefabIndex.IsFavorited = FindItUtil.IsFavorited(prefab);
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
+			prefabIndex.Tags ??= new();
 			prefabIndex.IsVanilla = prefab.builtin;
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
 

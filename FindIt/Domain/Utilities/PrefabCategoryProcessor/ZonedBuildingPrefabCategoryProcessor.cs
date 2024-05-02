@@ -1,5 +1,6 @@
 ﻿using Colossal.Entities;
 
+using FindIt.Domain.Enums;
 using FindIt.Domain.Interfaces;
 
 using Game.Prefabs;
@@ -59,7 +60,7 @@ namespace FindIt.Domain.Utilities
 
 			prefabIndex = new PrefabIndex(prefab)
 			{
-				Category = Enums.PrefabCategory.Buildings,
+				Category = PrefabCategory.Buildings,
 				BuildingLevel = level
 			};
 
@@ -67,7 +68,7 @@ namespace FindIt.Domain.Utilities
 
 			if (_prefabSystem.TryGetPrefab<ZonePrefab>(zonePrefab, out var _zonePrefab))
 			{
-				prefabIndex.ZoneType = FindItUtil.GetZoneType(_zonePrefab);
+				prefabIndex.ZoneType = GetZoneType(_zonePrefab);
 			}
 
 			var zoneData = _entityManager.GetComponentData<ZoneData>(zonePrefab);
@@ -76,23 +77,23 @@ namespace FindIt.Domain.Utilities
 			switch (zoneData.m_AreaType)
 			{
 				case Game.Zones.AreaType.Residential:
-					prefabIndex.SubCategory = ambienceData.m_AmbienceType == Game.Simulation.GroupAmbienceType.ResidentialMixed ? Enums.PrefabSubCategory.Buildings_Mixed : Enums.PrefabSubCategory.Buildings_Residential;
+					prefabIndex.SubCategory = ambienceData.m_AmbienceType == Game.Simulation.GroupAmbienceType.ResidentialMixed ? PrefabSubCategory.Buildings_Mixed : PrefabSubCategory.Buildings_Residential;
 					break;
 				case Game.Zones.AreaType.Commercial:
-					prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Commercial;
+					prefabIndex.SubCategory = PrefabSubCategory.Buildings_Commercial;
 					break;
 				case Game.Zones.AreaType.Industrial:
 					if (zoneData.m_ZoneFlags == ZoneFlags.Office)
 					{
-						prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Office;
+						prefabIndex.SubCategory = PrefabSubCategory.Buildings_Office;
 					}
 					else if (ambienceData.m_AmbienceType == Game.Simulation.GroupAmbienceType.Industrial)
 					{
-						prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Industrial;
+						prefabIndex.SubCategory = PrefabSubCategory.Buildings_Industrial;
 					}
 					else
 					{
-						prefabIndex.SubCategory = Enums.PrefabSubCategory.Buildings_Specialized;
+						prefabIndex.SubCategory = PrefabSubCategory.Buildings_Specialized;
 					}
 
 					break;
@@ -120,6 +121,28 @@ namespace FindIt.Domain.Utilities
 			}
 
 			return Entity.Null;
+		}
+
+		private static ZoneTypeFilter GetZoneType(ZonePrefab zonePrefab)
+		{
+			if (zonePrefab.name.Contains(" Row"))
+			{
+				return ZoneTypeFilter.Row;
+			}
+			else if (zonePrefab.name.Contains(" Medium") || zonePrefab.name.Contains(" Mixed"))
+			{
+				return ZoneTypeFilter.Medium;
+			}
+			else if (zonePrefab.name.Contains(" High") || zonePrefab.name.Contains(" LowRent"))
+			{
+				return ZoneTypeFilter.High;
+			}
+			else if (zonePrefab.name.Contains(" Low"))
+			{
+				return ZoneTypeFilter.Low;
+			}
+
+			return ZoneTypeFilter.Any;
 		}
 	}
 }

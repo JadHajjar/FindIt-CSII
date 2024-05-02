@@ -21,7 +21,7 @@ namespace FindIt.Domain.Utilities
 		public static PrefabCategory CurrentCategory { get; set; } = PrefabCategory.Any;
 		public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
 		public static bool IsReady { get; set; }
-		public static Filters Filters { get; set; } = new();
+		public static Filters Filters { get; } = new();
 
 		public static IEnumerable<PrefabCategory> GetCategories()
 		{
@@ -179,9 +179,18 @@ namespace FindIt.Domain.Utilities
 		{
 			var path = Path.Combine(FolderUtil.ContentFolder, "CustomPrefabData.json");
 
-			if (File.Exists(path))
+			if (!File.Exists(path))
+			{
+				return;
+			}
+
+			try
 			{
 				customPrefabsData = JSON.MakeInto<Dictionary<string, CustomPrefabData>>(JSON.Load(File.ReadAllText(path))) ?? new();
+			}
+			catch (Exception ex)
+			{
+				Mod.Log.Error(ex, "Failed to load custom prefab data");
 			}
 		}
 
@@ -203,28 +212,6 @@ namespace FindIt.Domain.Utilities
 
 			id = prefabIndex.Id;
 			return true;
-		}
-
-		public static ZoneTypeFilter GetZoneType(ZonePrefab zonePrefab)
-		{
-			if (zonePrefab.name.Contains(" Row"))
-			{
-				return ZoneTypeFilter.Row;
-			}
-			else if (zonePrefab.name.Contains(" Medium") || zonePrefab.name.Contains(" Mixed"))
-			{
-				return ZoneTypeFilter.Medium;
-			}
-			else if (zonePrefab.name.Contains(" High") || zonePrefab.name.Contains(" LowRent"))
-			{
-				return ZoneTypeFilter.High;
-			}
-			else if (zonePrefab.name.Contains(" Low"))
-			{
-				return ZoneTypeFilter.Low;
-			}
-
-			return ZoneTypeFilter.Any;
 		}
 
 		public static void ProcessSearch(CancellationToken token)

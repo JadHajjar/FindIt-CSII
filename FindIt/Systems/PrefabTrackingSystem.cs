@@ -1,6 +1,4 @@
-﻿using Colossal.Serialization.Entities;
-
-using FindIt.Domain;
+﻿using FindIt.Domain;
 using FindIt.Domain.Utilities;
 
 using Game;
@@ -23,7 +21,6 @@ namespace FindIt.Systems
 		private static readonly List<int> _lastUsedPrefabs = new();
 		private static Dictionary<int, int> _mostUsedPrefabs = new();
 
-		private PrefabSystem _prefabSystem;
 		private ToolSystem _toolSystem;
 		private EntityQuery generalEntityQuery;
 		private Timer timer;
@@ -32,7 +29,6 @@ namespace FindIt.Systems
 		{
 			base.OnCreate();
 
-			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
 			_toolSystem.EventPrefabChanged += OnPrefabChanged;
 

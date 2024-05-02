@@ -17,8 +17,7 @@ namespace FindIt.Systems
 	public partial class PickerToolSystem : ToolBaseSystem
 	{
 		private PrefabSystem _prefabSystem;
-		private FindItPanelUISystem _findItPanelUISystem;
-		private PrefabSearchUISystem _prefabSearchUISystem;
+		private FindItUISystem _findItUISystem;
 		private EntityQuery _highlightedQuery;
 		private ProxyAction _applyAction;
 
@@ -29,8 +28,7 @@ namespace FindIt.Systems
 			base.OnCreate();
 
 			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
-			_findItPanelUISystem = World.GetOrCreateSystemManaged<FindItPanelUISystem>();
-			_prefabSearchUISystem = World.GetOrCreateSystemManaged<PrefabSearchUISystem>();
+			_findItUISystem = World.GetOrCreateSystemManaged<FindItUISystem>();
 
 			_highlightedQuery = GetEntityQuery(ComponentType.ReadOnly<Highlighted>());
 
@@ -70,17 +68,17 @@ namespace FindIt.Systems
 					{
 						if (FindItUtil.Find(prefab, true, out var id))
 						{
-							_findItPanelUISystem.ClearSearch();
-							_findItPanelUISystem.RefreshCategoryAndSubCategory();
-							_findItPanelUISystem.TryActivatePrefabTool(id);
-							_prefabSearchUISystem.ScrollTo(id);
+							_findItUISystem.ClearSearch();
+							_findItUISystem.RefreshCategoryAndSubCategory();
+							_findItUISystem.TryActivatePrefabTool(id);
+							_findItUISystem.ScrollTo(id);
 						}
 						else
 						{
 							m_ToolSystem.ActivatePrefabTool(prefab);
 						}
 
-						_findItPanelUISystem.ToggleFindItPanel(true, false);
+						_findItUISystem.ToggleFindItPanel(true, false);
 					}
 					else
 					{
