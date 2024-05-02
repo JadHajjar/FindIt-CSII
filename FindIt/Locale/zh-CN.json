@@ -103,5 +103,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "展开后列尺寸",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "自定义展开后面板上列的尺寸。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "重置收藏",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "从收藏中删除所有资产。"
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "从收藏中删除所有资产。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes."
 }
