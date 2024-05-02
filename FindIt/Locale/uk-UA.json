@@ -103,5 +103,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "Expanded Column Size",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "Customize how many columns are displayed while the Find It panel is expanded.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Reset Favorites",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Remove all assets from your favorites."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Remove all assets from your favorites.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes."
 }
