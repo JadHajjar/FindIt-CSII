@@ -1,5 +1,6 @@
 {
   "Tooltip.LABEL[FindIt.RemoveAds]": "隐藏“品牌”资产",
+  "Tooltip.LABEL[FindIt.RemoveRandoms]": "Hide \"Random\" assets",
   "Tooltip.LABEL[FindIt.CustomAssets]": "仅显示自定义资产",
   "Tooltip.LABEL[FindIt.Ascending]": "升序",
   "Tooltip.LABEL[FindIt.Descending]": "降序",
@@ -10,7 +11,6 @@
   "Tooltip.LABEL[FindIt.ViewGridNoText]": "网格视图（无资产名称）",
   "Tooltip.LABEL[FindIt.ViewGridSmall]": "较小的网格视图（无资产名称）",
   "Tooltip.LABEL[FindIt.ViewListSimple]": "列表视图",
-  "Tooltip.LABEL[FindIt.Zone]": "低密度建筑",
   "Tooltip.LABEL[FindIt.ZoneLow]": "低密度建筑",
   "Tooltip.LABEL[FindIt.ZoneRow]": "联排建筑",
   "Tooltip.LABEL[FindIt.ZoneMedium]": "中密度建筑",
@@ -87,7 +87,7 @@
   "Options.GROUP[FindIt.FindIt.Mod.Display]": "面板大小",
   "Options.GROUP[FindIt.FindIt.Mod.Other]": "其他",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "隐藏“随机”资产类型",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "忽略标记为随机或占位符的资产，需要重新加载存档才能应用更改。",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "Ignores assets that are marked as Random or Placeholders. Requires re-loading your save to apply the changes.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "在选取物品后打开 Find It 面板",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "启用此选项后，使用拾取器拾取物品会打开 Find It 面板；若不启用此选项，则不会打开，并在允许的情况下打开游戏原版的面板。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "打开 Find It 面板时自动选择第一个资产",
@@ -105,5 +105,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "重置收藏",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "从收藏中删除所有资产。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section.",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes"
 }
