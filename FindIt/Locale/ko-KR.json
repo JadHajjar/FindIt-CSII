@@ -103,5 +103,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "확장된 열 크기",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "확장된 Find It 패널에 표시할 가로 열 크기를 정의합니다.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "즐겨찾기 초기화",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "모든 즐겨찾기된 에셋 목록을 제거합니다."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "모든 즐겨찾기된 에셋 목록을 제거합니다.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes."
 }
