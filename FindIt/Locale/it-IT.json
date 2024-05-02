@@ -103,5 +103,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "Estendi la dimensione della colonna",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "Personalizza quante file vengono visualizzate quando il pannello Trova è esteso.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Reimposta i preferiti",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Rimuovi tutti gli asset dai tuoi preferiti."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Rimuovi tutti gli asset dai tuoi preferiti.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes."
 }
