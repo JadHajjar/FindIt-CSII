@@ -1,5 +1,6 @@
 {
   "Tooltip.LABEL[FindIt.RemoveAds]": "Nascondi gli asset \"Branding\"",
+  "Tooltip.LABEL[FindIt.RemoveRandoms]": "Hide \"Random\" assets",
   "Tooltip.LABEL[FindIt.CustomAssets]": "Mostra solo gli asset personalizzati",
   "Tooltip.LABEL[FindIt.Ascending]": "Ordine crescente",
   "Tooltip.LABEL[FindIt.Descending]": "Ordine decrescente",
@@ -10,7 +11,6 @@
   "Tooltip.LABEL[FindIt.ViewGridNoText]": "Griglia senza la visualizzazione del testo",
   "Tooltip.LABEL[FindIt.ViewGridSmall]": "Griglia piccola senza la visualizzazione del testo",
   "Tooltip.LABEL[FindIt.ViewListSimple]": "Visualizzazione dell'elenco",
-  "Tooltip.LABEL[FindIt.Zone]": "Edifici \"Bassi\"",
   "Tooltip.LABEL[FindIt.ZoneLow]": "Edifici \"Bassi\"",
   "Tooltip.LABEL[FindIt.ZoneRow]": "Edifici \"Case a Schiera\"",
   "Tooltip.LABEL[FindIt.ZoneMedium]": "Edifici \"Medi\"",
@@ -87,7 +87,7 @@
   "Options.GROUP[FindIt.FindIt.Mod.Display]": "Schermo",
   "Options.GROUP[FindIt.FindIt.Mod.Other]": "Altro",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "Nascondi gli asset di tipo \"Casuale\"",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "Ignora gli asset che sono contrassegnati come Casuale o Segnaposto, richiede il ricaricamento del salvataggio per applicare le modifiche.",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "Ignores assets that are marked as Random or Placeholders. Requires re-loading your save to apply the changes.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "Apri il pannello Trova dopo aver selezionato un oggetto",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "Scegli tra l'apertura del pannello Trova dopo aver selezionato un oggetto con il Selettore o il pannello normale, se disponibile.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "Seleziona il primo asset quando apri Trova",
@@ -105,5 +105,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Reimposta i preferiti",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Rimuovi tutti gli asset dai tuoi preferiti.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section.",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes"
 }
