@@ -91,15 +91,13 @@ namespace FindIt.Systems
 
 			AddAllCategories();
 
-			for (var ind = 0; ind < _prefabCategoryProcessors.Count; ind++)
+			foreach (var processor in _prefabCategoryProcessors)
 			{
-				var processor = _prefabCategoryProcessors[ind];
-
 				Mod.Log.Info($"Indexing prefabs with {processor.GetType().Name}");
 
 				try
 				{
-					var queries = _prefabCategoryProcessors[ind].GetEntityQuery();
+					var queries = processor.GetEntityQuery();
 
 					if (Mod.Settings.HideRandomAssets)
 					{
@@ -149,23 +147,9 @@ namespace FindIt.Systems
 				}
 			}
 
-			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].GroupBy(x => x.Name))
-			{
-				var count = grp.Count();
+			AddNumberToDuplicatePrefabNames();
 
-				if (count == 1)
-				{
-					continue;
-				}
-
-				var format = new string('0', count.ToString().Length);
-				var index = 1;
-
-				foreach (var prefab in grp)
-				{
-					prefab.Name = $"{prefab.Name} {index++.ToString(format)}";
-				}
-			}
+			CleanupBrandPrefabs();
 
 			FindItUtil.IsReady = true;
 
@@ -175,30 +159,6 @@ namespace FindIt.Systems
 			Mod.Log.Info($"Indexed Prefabs Count: {FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Count}");
 
 			Enabled = false;
-		}
-
-		private void AddAllCategories()
-		{
-			foreach (PrefabCategory category in Enum.GetValues(typeof(PrefabCategory)))
-			{
-				FindItUtil.CategorizedPrefabs[category] = new()
-				{
-					{ PrefabSubCategory.Any, new() }
-				};
-
-				if (category == PrefabCategory.Any)
-				{
-					continue;
-				}
-
-				foreach (PrefabSubCategory subCategory in Enum.GetValues(typeof(PrefabSubCategory)))
-				{
-					if ((int)subCategory > (int)category && (int)subCategory < (int)category + 100)
-					{
-						FindItUtil.CategorizedPrefabs[category][subCategory] = new();
-					}
-				}
-			}
 		}
 
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
@@ -244,8 +204,12 @@ namespace FindIt.Systems
 				prefabIndex.LotSize = buildingData.m_LotSize;
 			}
 
-			FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
-			FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
+			if (!Mod.Settings.HideBrandsFromAny || prefabIndex.SubCategory is not PrefabSubCategory.Props_Branding)
+			{
+				FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
+				FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
+			}
+
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 
 			if (prefabIndex.IsFavorited)
@@ -271,6 +235,82 @@ namespace FindIt.Systems
 			}
 
 			return prefab.name.Replace('_', ' ').FormatWords();
+		}
+
+		private static void AddNumberToDuplicatePrefabNames()
+		{
+			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].GroupBy(x => x.Name))
+			{
+				var count = grp.Count();
+
+				if (count == 1)
+				{
+					continue;
+				}
+
+				var format = new string('0', count.ToString().Length);
+				var index = 1;
+
+				foreach (var prefab in grp)
+				{
+					prefab.Name = $"{prefab.Name} {index++.ToString(format)}";
+				}
+			}
+		}
+
+		private void CleanupBrandPrefabs()
+		{
+			var brands = new HashSet<string>(FindItUtil.CategorizedPrefabs[PrefabCategory.Props][PrefabSubCategory.Props_Branding].Select(x => x.Prefab.name));
+
+			foreach (var category in FindItUtil.CategorizedPrefabs.Keys)
+			{
+				if (category is PrefabCategory.Any)
+				{
+					continue;
+				}
+
+				foreach (var subCategory in FindItUtil.CategorizedPrefabs[category].Keys)
+				{
+					if (subCategory is PrefabSubCategory.Props_Branding || (category is PrefabCategory.Props && subCategory is PrefabSubCategory.Any))
+					{
+						continue;
+					}
+
+					foreach (var item in FindItUtil.CategorizedPrefabs[category][subCategory].ToList())
+					{
+						if (brands.Contains(item.Prefab.name))
+						{
+							FindItUtil.CategorizedPrefabs[category][subCategory].Remove(item);
+
+							Mod.Log.Debug($"Removed {item.Prefab.name} from {subCategory}");
+						}
+					}
+				}
+			}
+		}
+
+		private void AddAllCategories()
+		{
+			foreach (PrefabCategory category in Enum.GetValues(typeof(PrefabCategory)))
+			{
+				FindItUtil.CategorizedPrefabs[category] = new()
+				{
+					{ PrefabSubCategory.Any, new() }
+				};
+
+				if (category == PrefabCategory.Any)
+				{
+					continue;
+				}
+
+				foreach (PrefabSubCategory subCategory in Enum.GetValues(typeof(PrefabSubCategory)))
+				{
+					if ((int)subCategory > (int)category && (int)subCategory < (int)category + 100)
+					{
+						FindItUtil.CategorizedPrefabs[category][subCategory] = new();
+					}
+				}
+			}
 		}
 	}
 }

@@ -60,7 +60,7 @@ namespace FindIt.Domain.Enums
 		Trees_Rocks,
 		[CategoryIcon("coui://uil/Colored/FlowerPot.svg")]
 		Trees_Props,
-		[CategoryIcon("coui://uil/Colored/Chicken.svg")]
+		[CategoryIcon("coui://uil/Colored/MarkerSpawner.svg")]
 		Trees_Spawners,
 
 		[Obsolete("Use PrefabCategory", true)]

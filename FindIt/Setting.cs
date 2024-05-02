@@ -52,6 +52,9 @@ namespace FindIt
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool HideRandomAssets { get; set; }
 
+		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
+		public bool HideBrandsFromAny { get; set; }
+
 		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, scalarMultiplier = 1f, unit = Unit.kFloatSingleFraction)]
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public float ScrollSpeed { get; set; } = 0.6f;

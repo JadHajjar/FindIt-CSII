@@ -24,6 +24,7 @@ namespace FindIt.Domain.Utilities
 					All = new[]
 					{
 						ComponentType.ReadOnly<PillarData>(),
+						ComponentType.ReadOnly<SpawnableObjectData>(),
 					}
 				},
 			};
@@ -31,12 +32,6 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			if (prefab.name.Contains("ADDAD") || prefab.name == "BillboardWallLarge01 - AllmostMeat")
-			{
-				prefabIndex = null;
-				return false;
-			}
-
 			var netObjectData = _entityManager.GetComponentData<NetObjectData>(entity);
 
 			prefabIndex = new PrefabIndex(prefab)

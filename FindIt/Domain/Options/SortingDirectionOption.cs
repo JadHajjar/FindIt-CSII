@@ -51,7 +51,7 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.SetSorting(optionId != 0);
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().UpdateCategoriesList();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().UpdateCategoriesAndPrefabList();
 		}
 
 		public void OnReset()

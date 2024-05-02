@@ -38,6 +38,11 @@ namespace FindIt.Domain
 			}
 		}
 
+		public bool Contains(int id)
+		{
+			return _dictionary.ContainsKey(id);
+		}
+
 		public bool TryGetValue(int id, out PrefabIndex prefabIndex)
 		{
 			return _dictionary.TryGetValue(id, out prefabIndex);

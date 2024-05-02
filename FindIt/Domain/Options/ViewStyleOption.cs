@@ -12,7 +12,7 @@ namespace FindIt.Domain.Options
 	internal class ViewStyleOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly PrefabSearchUISystem _prefabSearchUISystem;
+		private readonly FindItUISystem _findItUISystem;
 		private readonly Dictionary<int, (string Name, string Icon)> _styles;
 
 		public int Id { get; } = 1;
@@ -20,7 +20,7 @@ namespace FindIt.Domain.Options
 		public ViewStyleOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-			_prefabSearchUISystem = optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>();
+			_findItUISystem = optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>();
 			_styles = new()
 			{
 				[1] = ("GridWithText", "coui://uil/Standard/GridTextViewSmall.svg"),
@@ -41,7 +41,7 @@ namespace FindIt.Domain.Options
 					Id = x.Key,
 					Name = LocaleHelper.GetTooltip($"View{x.Value.Name}"),
 					Icon = x.Value.Icon,
-					Selected = _prefabSearchUISystem.ViewStyle == x.Value.Name
+					Selected = _findItUISystem.ViewStyle == x.Value.Name
 				}).ToArray()
 			};
 		}
@@ -53,7 +53,7 @@ namespace FindIt.Domain.Options
 
 		public void OnOptionClicked(int optionId, int value)
 		{
-			_prefabSearchUISystem.ViewStyle = _styles[optionId].Name;
+			_findItUISystem.ViewStyle = _styles[optionId].Name;
 		}
 
 		public void OnReset()

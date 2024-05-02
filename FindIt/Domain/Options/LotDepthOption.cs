@@ -49,7 +49,7 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.Filters.LotDepthFilter = Math.Max(0, Math.Min(10, FindItUtil.Filters.LotDepthFilter + value));
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged <FindItUISystem> ().TriggerSearch();
 		}
 
 		public void OnReset()
@@ -61,7 +61,7 @@ namespace FindIt.Domain.Options
 
 			FindItUtil.Filters.LotDepthFilter = 0;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
 		}
 	}
 }

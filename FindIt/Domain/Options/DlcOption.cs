@@ -85,7 +85,7 @@ namespace FindIt.Domain.Options
 				FindItUtil.Filters.SelectedDlc = optionId;
 			}
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
 		}
 
 		public void OnReset()
@@ -97,7 +97,7 @@ namespace FindIt.Domain.Options
 
 			FindItUtil.Filters.SelectedDlc = int.MinValue;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
 		}
 	}
 }

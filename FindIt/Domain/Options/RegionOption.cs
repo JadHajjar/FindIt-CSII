@@ -64,14 +64,14 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.Filters.SelectedTheme = optionId == -1 ? null : _themeList[optionId];
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
 		}
 
 		public void OnReset()
 		{
 			FindItUtil.Filters.SelectedTheme = null;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
 		}
 
 		private List<ThemePrefab> GetThemePrefabs()

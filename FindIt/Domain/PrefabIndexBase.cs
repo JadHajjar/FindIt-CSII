@@ -6,8 +6,6 @@ namespace FindIt.Domain
 {
 	public class PrefabIndexBase
 	{
-		private Random random;
-
 		public PrefabBase Prefab { get; }
 		public int Id { get; set; }
 		public string Name { get; set; }

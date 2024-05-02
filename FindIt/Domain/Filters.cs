@@ -18,6 +18,7 @@ namespace FindIt.Domain
 		public int LotDepthFilter { get; set; }
 		public ThemePrefab SelectedTheme { get; set; }
 		public bool HideAds { get; set; }
+		public bool HideRandoms { get; set; }
 		public bool HideVanilla { get; set; }
 		public int BuildingLevelFilter { get; set; }
 
@@ -26,6 +27,11 @@ namespace FindIt.Domain
 			if (HideAds)
 			{
 				yield return DoAdFilter;
+			}
+
+			if (HideRandoms)
+			{
+				yield return DoRandomFilter;
 			}
 
 			if (HideVanilla)
@@ -111,6 +117,11 @@ namespace FindIt.Domain
 		private bool DoAdFilter(PrefabIndex prefab)
 		{
 			return prefab.SubCategory != PrefabSubCategory.Props_Branding;
+		}
+
+		private bool DoRandomFilter(PrefabIndex prefab)
+		{
+			return !prefab.IsRandom;
 		}
 
 		private bool DoNoVanillaFilter(PrefabIndex prefab)

@@ -1,18 +1,21 @@
 ﻿using Colossal.UI.Binding;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FindIt.Domain.UIBinding
 {
 	public struct OptionSectionUIEntry : IJsonWritable
 	{
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public OptionItemUIEntry[] Options { get; set; }
+		private OptionItemUIEntry[] _options;
+
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public IEnumerable<OptionItemUIEntry> Options 
+		{
+			get => _options; 
+			set => _options = value.Where(x => !x.Hidden).ToArray();
+		}
 
 		public readonly void Write(IJsonWriter writer)
 		{
@@ -25,11 +28,12 @@ namespace FindIt.Domain.UIBinding
 			writer.Write(Name);
 
 			writer.PropertyName("options");
-			writer.ArrayBegin(Options.Length);
-			for (var i = 0; i < Options.Length; i++)
+			writer.ArrayBegin(_options.Length);
+			for (var i = 0; i < _options.Length; i++)
 			{
-				Options[i].Write(writer);
+				_options[i].Write(writer);
 			}
+
 			writer.ArrayEnd();
 
 			writer.TypeEnd();

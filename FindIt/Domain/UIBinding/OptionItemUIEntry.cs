@@ -10,6 +10,7 @@ namespace FindIt.Domain.UIBinding
         public bool Selected { get; set; }
         public bool IsValue { get; set; }
 		public string Value { get; set; }
+		public bool Hidden { get; set; }
 
 		public readonly void Write(IJsonWriter writer)
 		{

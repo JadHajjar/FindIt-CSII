@@ -48,7 +48,7 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.Filters.BuildingLevelFilter = Math.Max(0, Math.Min(5, FindItUtil.Filters.BuildingLevelFilter + value));
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
 		}
 
 		public void OnReset()
@@ -60,7 +60,7 @@ namespace FindIt.Domain.Options
 
 			FindItUtil.Filters.BuildingLevelFilter = 0;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<PrefabSearchUISystem>().TriggerSearch();
+			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
 		}
 	}
 }
