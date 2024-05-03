@@ -103,9 +103,11 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "Étendre la taille de la colonne",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "Personnalisez le nombre de colonnes affichées pendant que le panneau Find It est étendu.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Réinitialiser les favoris",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Retirer tous les actes de vos favoris.",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Remove all assets from your favorites",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section.",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes"
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
 }
