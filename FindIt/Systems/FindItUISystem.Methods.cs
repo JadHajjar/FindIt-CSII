@@ -97,7 +97,7 @@ namespace FindIt.Systems
 			filterCompleted = false;
 			_IsSearchLoading.Value = false;
 			_CurrentSearch.Value = string.Empty;
-			tokenSource?.Cancel();
+			searchTokenSource?.Cancel();
 		}
 
 		private async Task DelayedSearch()
@@ -106,10 +106,10 @@ namespace FindIt.Systems
 			// the Cancellation Token is used to stop any ongoing searches if a new one is requested
 			// and is used to disregard outdated results
 
-			tokenSource?.Cancel();
-			tokenSource = new();
+			searchTokenSource.Cancel();
+			searchTokenSource = new();
 
-			var token = tokenSource.Token;
+			var token = searchTokenSource.Token;
 
 			await Task.Delay(250);
 
@@ -170,7 +170,7 @@ namespace FindIt.Systems
 
 		private void OnToolChanged(ToolBaseSystem tool)
 		{
-			if (!settingPrefab && tool == _defaultToolSystem || tool.toolID is "MoveItTool" or "Terrain Tool" or "Zone Tool")
+			if ((!settingPrefab && tool == _defaultToolSystem) || tool.toolID is "MoveItTool" or "Terrain Tool" or "Zone Tool")
 			{
 				ToggleFindItPanel(false);
 			}

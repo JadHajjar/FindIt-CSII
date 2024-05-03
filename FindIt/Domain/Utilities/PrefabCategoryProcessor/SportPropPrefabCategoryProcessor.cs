@@ -2,8 +2,6 @@
 
 using Game.Prefabs;
 
-using System;
-
 using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
@@ -43,7 +41,7 @@ namespace FindIt.Domain.Utilities
 			{
 				prefabIndex = null;
 				return false;
-			}	
+			}
 
 			prefabIndex = new PrefabIndex(prefab)
 			{

@@ -1,17 +1,14 @@
-﻿using FindIt.Domain.Enums;
-using FindIt.Domain.Interfaces;
+﻿using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
-using System.Collections.Generic;
 
 namespace FindIt.Domain.Options
 {
 	internal class ExtraFiltersOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		
+
 		public int Id { get; } = 99;
 
 		public ExtraFiltersOption(OptionsUISystem optionsUISystem)
@@ -49,7 +46,7 @@ namespace FindIt.Domain.Options
 						Name = LocaleHelper.GetTooltip("CustomAssets"),
 						Icon = "coui://uil/Standard/PDXPlatypusHexagon.svg",
 						Selected = FindItUtil.Filters.HideVanilla
-					} 
+					}
 				}
 			};
 		}

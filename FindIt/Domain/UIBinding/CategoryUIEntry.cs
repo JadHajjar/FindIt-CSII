@@ -3,8 +3,6 @@
 using FindIt.Domain.Enums;
 using FindIt.Domain.Utilities;
 
-using Game.Debug.Tests;
-
 namespace FindIt.Domain.UIBinding
 {
 	public struct CategoryUIEntry : IJsonWritable

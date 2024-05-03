@@ -1,6 +1,29 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.3",
+    "Date": "2024-05-03",
+    "ChangeGroups": [
+      {
+        "Name": "Scroll Changes",
+        "Changes": [
+          "Added a buffered delay to scrolling in an attempt to fix crashes when scrolling really fast.",
+          "Added an option, 'Fast & Smooth Scroll', to revert back to the previous scroll refresh rate."
+        ]
+      },
+      {
+        "Name": "New Features",
+        "Changes": [
+          "Added an option to hide Branding props from all views except their own sub-category.",
+          "Added an option to use a strict text search.",
+          "Added a Random asset filter that can be used if the corresponding option is not enabled.",
+          "Fixed Branding props appearing sometimes in other categories."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.2",
     "Date": "2024-04-27",
     "ChangeGroups": [

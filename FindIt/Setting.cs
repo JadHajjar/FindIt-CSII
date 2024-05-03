@@ -1,16 +1,10 @@
-﻿using Colossal;
-using Colossal.IO.AssetDatabase;
-using Colossal.Json;
+﻿using Colossal.IO.AssetDatabase;
 
-using FindIt.Domain.Options;
 using FindIt.Domain.Utilities;
 
 using Game.Modding;
 using Game.Settings;
 using Game.UI;
-using Game.UI.Widgets;
-
-using System.Collections.Generic;
 
 namespace FindIt
 {
@@ -35,10 +29,10 @@ namespace FindIt
 
 		[SettingsUIHidden]
 		public string DefaultViewStyle { get; set; } = "GridWithText";
-	
+
 		[SettingsUIButton]
 		[SettingsUISection(MAIN_SECTION, OTHER)]
-		public bool ResetFavorites { set { FindItUtil.ResetFavorites(); } }
+		public bool ResetFavorites { set => FindItUtil.ResetFavorites(); }
 
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool OpenPanelOnPicker { get; set; } = true;
@@ -54,6 +48,9 @@ namespace FindIt
 
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool HideBrandsFromAny { get; set; }
+
+		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
+		public bool SmoothScroll { get; set; }
 
 		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, scalarMultiplier = 1f, unit = Unit.kFloatSingleFraction)]
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]

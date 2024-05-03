@@ -4,11 +4,11 @@ namespace FindIt.Domain.UIBinding
 {
 	public struct OptionItemUIEntry : IJsonWritable
 	{
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Icon { get; set; }
-        public bool Selected { get; set; }
-        public bool IsValue { get; set; }
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public string Icon { get; set; }
+		public bool Selected { get; set; }
+		public bool IsValue { get; set; }
 		public string Value { get; set; }
 		public bool Hidden { get; set; }
 

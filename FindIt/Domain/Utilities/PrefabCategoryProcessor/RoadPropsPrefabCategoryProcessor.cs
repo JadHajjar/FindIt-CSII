@@ -2,8 +2,6 @@
 
 using Game.Prefabs;
 
-using System;
-
 using Unity.Entities;
 
 namespace FindIt.Domain.Utilities

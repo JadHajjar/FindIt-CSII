@@ -1,7 +1,5 @@
 ﻿using Game.Prefabs;
 
-using System;
-
 namespace FindIt.Domain
 {
 	public class PrefabIndexBase

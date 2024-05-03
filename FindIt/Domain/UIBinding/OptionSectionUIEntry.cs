@@ -11,9 +11,9 @@ namespace FindIt.Domain.UIBinding
 
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public IEnumerable<OptionItemUIEntry> Options 
+		public IEnumerable<OptionItemUIEntry> Options
 		{
-			get => _options; 
+			get => _options;
 			set => _options = value.Where(x => !x.Hidden).ToArray();
 		}
 

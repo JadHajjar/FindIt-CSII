@@ -3,8 +3,6 @@
 using Game.Tools;
 using Game.UI;
 
-using System;
-
 using UnityEngine.InputSystem;
 
 namespace FindIt.Systems

@@ -1,6 +1,4 @@
-﻿using Colossal.Entities;
-
-using FindIt.Domain.Interfaces;
+﻿using FindIt.Domain.Interfaces;
 
 using Game.Prefabs;
 
@@ -28,7 +26,7 @@ namespace FindIt.Domain.Utilities
 						ComponentType.ReadOnly<BuildingData>(),
 						ComponentType.ReadOnly<ServiceObjectData>()
 					},
-					None = new[] 
+					None = new[]
 					{
 						ComponentType.ReadOnly<TrafficSpawnerData>(),
 						ComponentType.ReadOnly<SpawnableBuildingData>(),
@@ -50,7 +48,7 @@ namespace FindIt.Domain.Utilities
 					{
 						ComponentType.ReadOnly<TrafficSpawnerData>(),
 						ComponentType.ReadOnly<SpawnableBuildingData>(),
-						ComponentType.ReadOnly<PlaceholderBuildingData>() 
+						ComponentType.ReadOnly<PlaceholderBuildingData>()
 					}
 				}
 			};

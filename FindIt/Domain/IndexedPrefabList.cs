@@ -1,13 +1,9 @@
 ﻿using FindIt.Domain.Enums;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FindIt.Domain
 {
@@ -17,10 +13,10 @@ namespace FindIt.Domain
 		private List<PrefabIndex> _orderedList;
 
 		public static PrefabSorting Sorting { get; set; }
-        public static bool SortingDescending { get; set; }
+		public static bool SortingDescending { get; set; }
 
-        public IndexedPrefabList()
-        {
+		public IndexedPrefabList()
+		{
 			_dictionary = new();
 		}
 
@@ -91,6 +87,9 @@ namespace FindIt.Domain
 			}
 		}
 
-		public static implicit operator List<PrefabIndex>(IndexedPrefabList prefabs) => prefabs.OrderedList;
+		public static implicit operator List<PrefabIndex>(IndexedPrefabList prefabs)
+		{
+			return prefabs.OrderedList;
+		}
 	}
 }

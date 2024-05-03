@@ -2,6 +2,7 @@
 using FindIt.Domain.Utilities;
 
 using System.Linq;
+using System.Threading.Tasks;
 
 using UnityEngine.InputSystem;
 
@@ -39,15 +40,13 @@ namespace FindIt.Systems
 
 			scrollIndex = 0;
 
+			UpdateCategoriesAndPrefabList();
+
 			if (FindItUtil.Filters.GetFilterList().Any()) // Check if there are any active filters
 			{
 				// Trigger the delayed search instead of refreshing the list immediately
 
 				TriggerSearch();
-			}
-			else
-			{
-				UpdateCategoriesAndPrefabList();
 			}
 
 			_optionsUISystem.RefreshOptions();
@@ -102,18 +101,43 @@ namespace FindIt.Systems
 
 		private void SetScrollIndex(double index)
 		{
+			if (scrollIndex == index)
+				return;
+
 			scrollIndex = index;
 
-			_PrefabListBinding.Value = GetDisplayedPrefabs();
+			if (Mod.Settings.SmoothScroll)
+			{
+				_PrefabListBinding.Value = GetDisplayedPrefabs();
+			}
+			else
+			{
+				Task.Run(DelayedApplyScroll);
+			}
 		}
 
 		private void OnScroll(int direction)
 		{
-			SetScrollIndex(scrollIndex + 
-				Mod.Settings.ScrollSpeed
-				* (direction > 0 ? 1f : -1f) 
-				* GridUtil.GetScrollMultiplier() 
-				/ GridUtil.GetCurrentRowCount());
+			SetScrollIndex(scrollIndex +
+				(Mod.Settings.ScrollSpeed
+				* (direction > 0 ? 1f : -1f)
+				* GridUtil.GetScrollMultiplier()
+				/ GridUtil.GetCurrentRowCount()));
+		}
+
+		private async Task DelayedApplyScroll()
+		{
+			var token = scrollTokenSource.Token;
+
+			await Task.Delay(50);
+
+			if (!token.IsCancellationRequested)
+			{
+				scrollTokenSource.Cancel();
+				scrollTokenSource = new();
+
+				scrollCompleted = true;
+			}
 		}
 
 		private void SearchChanged(string text)

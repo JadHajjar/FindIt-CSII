@@ -157,8 +157,10 @@ namespace FindIt.Domain.Utilities
 
 		public static void ResetFavorites()
 		{
-			CategorizedPrefabs[PrefabCategory.Favorite] = new();
-			CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any] = new();
+			CategorizedPrefabs[PrefabCategory.Favorite] = new()
+			{
+				[PrefabSubCategory.Any] = new()
+			};
 
 			foreach (var item in customPrefabsData.Values)
 			{

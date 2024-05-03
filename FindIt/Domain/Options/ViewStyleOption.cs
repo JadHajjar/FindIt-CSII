@@ -3,7 +3,6 @@ using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

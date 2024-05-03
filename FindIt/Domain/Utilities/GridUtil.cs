@@ -1,10 +1,6 @@
 ﻿using FindIt.Systems;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Unity.Entities;
 
@@ -30,7 +26,7 @@ namespace FindIt.Domain.Utilities
 
 		internal static float GetWidth()
 		{
-			return 325 + (_findItUISystem.IsExpanded ? Mod.Settings.ExpandedColumnSize : Mod.Settings.ColumnSize) * 8.5f;
+			return 325 + ((_findItUISystem.IsExpanded ? Mod.Settings.ExpandedColumnSize : Mod.Settings.ColumnSize) * 8.5f);
 		}
 
 		internal static float GetItemWidth()
@@ -47,8 +43,8 @@ namespace FindIt.Domain.Utilities
 			var itemHeight = _findItUISystem.ViewStyle switch
 			{
 				"GridWithText" => 98f,
-				"GridNoText" => GetItemWidth()+4,
-				"GridSmall" => GetItemWidth()+2,
+				"GridNoText" => GetItemWidth() + 4,
+				"GridSmall" => GetItemWidth() + 2,
 				"ListSimple" => 22.5f,
 				_ => float.MaxValue
 			};
@@ -58,7 +54,7 @@ namespace FindIt.Domain.Utilities
 
 		internal static float GetHeight()
 		{
-			return 100 + (_findItUISystem.IsExpanded ? Mod.Settings.ExpandedRowSize : Mod.Settings.RowSize) * 2.5f;
+			return 100 + ((_findItUISystem.IsExpanded ? Mod.Settings.ExpandedRowSize : Mod.Settings.RowSize) * 2.5f);
 		}
 
 		internal static float GetScrollMultiplier()

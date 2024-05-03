@@ -14,9 +14,11 @@ namespace FindIt.Systems
 	internal partial class FindItUISystem : ExtendedUISystemBase
 	{
 		private bool filterCompleted;
+		private bool scrollCompleted;
 		private bool settingPrefab;
 		private double scrollIndex;
-		private CancellationTokenSource tokenSource;
+		private CancellationTokenSource searchTokenSource = new();
+		private CancellationTokenSource scrollTokenSource = new();
 
 		private ToolSystem _toolSystem;
 		private PrefabSystem _prefabSystem;
@@ -118,6 +120,14 @@ namespace FindIt.Systems
 				scrollIndex = 0;
 
 				_IsSearchLoading.Value = false;
+				_PrefabListBinding.Value = GetDisplayedPrefabs();
+			}
+
+			if (scrollCompleted)
+			{
+				Mod.Log.Info("X");
+				scrollCompleted = false;
+
 				_PrefabListBinding.Value = GetDisplayedPrefabs();
 			}
 
