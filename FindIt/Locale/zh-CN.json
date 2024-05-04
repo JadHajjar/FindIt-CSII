@@ -103,11 +103,11 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "展开后列尺寸",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "自定义展开后面板上列的尺寸。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "重置收藏",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Remove all assets from your favorites",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "从收藏中删除所有资产",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "精确搜索",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "使用严格的文本搜索，而不考虑拼写错误时使用近似的搜索。",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Fast & Smooth Scroll",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "在“任何”部分隐藏“品牌”资产",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "隐藏“任何”类别中的广告牌资产，这样它们只会在“品牌与广告牌”类别中显示。需要重新加载存档才能应用更改。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速和平滑的滚动",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。"
 }
