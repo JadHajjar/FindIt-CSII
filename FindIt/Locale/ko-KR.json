@@ -104,10 +104,10 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ExpandedColumnSize]": "확장된 Find It 패널에 표시할 가로 열 크기를 정의합니다.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "즐겨찾기 초기화",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "모든 에셋 즐겨찾기 제거",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Fast & Smooth Scroll",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "엄격한 검색",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "맞춤법 오류를 고려한 대략적인 검색 대신 엄격한 글자 검색을 사용합니다.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "\"전체\" 카테고리 탭에서 \"광고\" 에셋 숨기기",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "'브랜드 및 광고판'이 하위 카테고리에 속한 경우에만 표시되도록 '전체' 카테고리에서 광고 프롭을 숨깁니다. 변경 사항을 적용하려면 저장된 게임을 다시 불러와야 합니다.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "빠르고 부드러운 스크롤",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "스크롤의 새로 고침 빈도 수를 높입니다. 이로 인해 일부 컴퓨터에서는 충돌이 발생할 수 있습니다."
 }
