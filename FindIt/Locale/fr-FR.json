@@ -19,6 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "Étendre le panneau",
   "Tooltip.LABEL[FindIt.Shrink]": "Réduire le panneau",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtres et Tri",
+  "Options.LABEL[FindIt.ThemeFilter]": "Theme",
   "Options.LABEL[FindIt.LotDepth]": "Profondeur du lot",
   "Options.LABEL[FindIt.LotWidth]": "Largeur du lot",
   "Options.LABEL[FindIt.ZoneType]": "Type de zone",
@@ -109,5 +110,9 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Masquer les assets de \"Marques\" de la section \"Tous\" (Any)",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Masque les accessoires de marque de la catégorie 'Tous' afin qu'ils ne s'affichent que si vous êtes spécifiquement dans la sous-catégorie 'Marques et Panneau d'affichage'. Nécessite le rechargement de votre sauvegarde pour appliquer les modifications.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Défilement Rapide & Lisse",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Augmente le taux de rafraîchissement du défilement. Cela peut causer des plantages sur certains ordinateurs."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Augmente le taux de rafraîchissement du défilement. Cela peut causer des plantages sur certains ordinateurs.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
 }
