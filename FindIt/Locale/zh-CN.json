@@ -19,6 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "展开面板",
   "Tooltip.LABEL[FindIt.Shrink]": "缩小面板",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "筛选和排序",
+  "Options.LABEL[FindIt.ThemeFilter]": "Theme",
   "Options.LABEL[FindIt.LotDepth]": "建筑进深",
   "Options.LABEL[FindIt.LotWidth]": "建筑面宽",
   "Options.LABEL[FindIt.ZoneType]": "建筑密度",
@@ -109,5 +110,9 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "在“任何”部分隐藏“品牌”资产",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "隐藏“任何”类别中的广告牌资产，这样它们只会在“品牌与广告牌”类别中显示。需要重新加载存档才能应用更改。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速和平滑的滚动",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。"
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
 }
