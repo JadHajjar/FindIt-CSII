@@ -19,6 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "erweiterte Ansicht",
   "Tooltip.LABEL[FindIt.Shrink]": "verkleinerte Ansicht",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtern & Sortierung",
+  "Options.LABEL[FindIt.ThemeFilter]": "Theme",
   "Options.LABEL[FindIt.LotDepth]": "Lot-Tiefe",
   "Options.LABEL[FindIt.LotWidth]": "Lot-Breite",
   "Options.LABEL[FindIt.ZoneType]": "Zonentyp",
@@ -109,5 +110,9 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Fast & Smooth Scroll",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Increases the refresh rate of scrolling. This may cause crashes on some computers.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
 }
