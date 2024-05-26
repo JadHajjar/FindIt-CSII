@@ -19,6 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "Expandir panel",
   "Tooltip.LABEL[FindIt.Shrink]": "Contraer panel",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtros y Orden",
+  "Options.LABEL[FindIt.ThemeFilter]": "Theme",
   "Options.LABEL[FindIt.LotDepth]": "Profundidad de terreno",
   "Options.LABEL[FindIt.LotWidth]": "Ancho de terreno",
   "Options.LABEL[FindIt.ZoneType]": "Tipo de zona",
@@ -109,5 +110,9 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Ocultar activos de \"Marca\" de la sección de \"Todos\"",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Oculta decoraciones de marcas en la categoría de \"Todos\". Se mostrarán únicamente en la sub categoría de \"Vallas Comerciales\". Requiere cargar de nuevo el juego para aplicar los cambios.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Desplazamiento rápido y suave",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Aumenta la velocidad de actualización del desplazamiento. Esto puede causar que el juego se cierre de forma inesperada en algunas computadoras."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Aumenta la velocidad de actualización del desplazamiento. Esto puede causar que el juego se cierre de forma inesperada en algunas computadoras.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Fast & Smooth Scroll",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
 }
