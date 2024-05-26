@@ -44,21 +44,16 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.0.3" />
+  <ModVersion Value="1.0.3.1" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.0.3
-## Scroll Changes
-* Added a buffered delay to scrolling in an attempt to fix crashes when scrolling really fast.
-* Added an option, 'Fast &amp; Smooth Scroll', to revert back to the previous scroll refresh rate.
-
+# v1.0.3.1
 ## New Features
-* Added an option to hide Branding props from all views except their own sub-category.
-* Added an option to use a strict text search.
-* Added a Random asset filter that can be used if the corresponding option is not enabled.
-* Fixed Branding props appearing sometimes in other categories.
+* Added a 'Theme' filter to only show European or North Amercian assets.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
+	<ExternalLink Type="buymeacoffee" Url="https://www.buymeacoffee.com/tdwsvillage" />
   <Dependency Id="74417" />
+  <Dependency Id="79634" />
 </Publish>

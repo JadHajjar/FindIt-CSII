@@ -30,16 +30,14 @@ namespace FindIt
 
 			Settings = new FindItSettings(this);
 			Settings.RegisterInOptionsUI();
+			Settings.RegisterKeyBindings();
 
 			foreach (var item in new LocaleHelper("FindIt.Locale.json").GetAvailableLanguages())
 			{
 				GameManager.instance.localizationManager.AddSource(item.LocaleId, item);
 			}
 
-			AssetDatabase.global.LoadSettings(nameof(FindIt), Settings, new FindItSettings(this)
-			{
-				DefaultBlock = true
-			});
+			AssetDatabase.global.LoadSettings(nameof(FindIt), Settings, new FindItSettings(this));
 
 			FindItUtil.LoadCustomPrefabData();
 

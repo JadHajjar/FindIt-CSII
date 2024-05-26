@@ -87,7 +87,7 @@ namespace FindIt.Systems
 			UpdateCategoriesAndPrefabList();
 		}
 
-		private void OnCtrlFKeyPressed(InputAction.CallbackContext context)
+		private void OnSearchKeyPressed()
 		{
 			if (_ShowFindItPanel)
 			{

@@ -55,9 +55,9 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.Filters.SelectedZoneType = (ZoneTypeFilter)optionId;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
-
+		
 		public void OnReset()
 		{
 			if (FindItUtil.Filters.SelectedZoneType == ZoneTypeFilter.Any)
@@ -67,7 +67,7 @@ namespace FindIt.Domain.Options
 
 			FindItUtil.Filters.SelectedZoneType = ZoneTypeFilter.Any;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
 	}
 }

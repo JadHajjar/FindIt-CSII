@@ -9,7 +9,7 @@ namespace FindIt.Domain.Options
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 
-		public int Id { get; } = 99;
+		public int Id { get; } = 90;
 
 		public ExtraFiltersOption(OptionsUISystem optionsUISystem)
 		{
@@ -73,7 +73,7 @@ namespace FindIt.Domain.Options
 					return;
 			}
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
 
 		public void OnReset()
@@ -87,7 +87,7 @@ namespace FindIt.Domain.Options
 			FindItUtil.Filters.HideVanilla = false;
 			FindItUtil.Filters.HideRandoms = false;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
 	}
 }

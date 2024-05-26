@@ -49,7 +49,7 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.Filters.LotWidthFilter = Math.Max(0, Math.Min(10, FindItUtil.Filters.LotWidthFilter + value));
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
 
 		public void OnReset()
@@ -61,7 +61,7 @@ namespace FindIt.Domain.Options
 
 			FindItUtil.Filters.LotWidthFilter = 0;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
 	}
 }

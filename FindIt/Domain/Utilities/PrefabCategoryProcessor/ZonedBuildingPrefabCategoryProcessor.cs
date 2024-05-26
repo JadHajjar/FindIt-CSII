@@ -69,6 +69,7 @@ namespace FindIt.Domain.Utilities
 			if (_prefabSystem.TryGetPrefab<ZonePrefab>(zonePrefab, out var _zonePrefab))
 			{
 				prefabIndex.ZoneType = GetZoneType(_zonePrefab);
+				prefabIndex.Theme = _zonePrefab.GetComponent<ThemeObject>()?.m_Theme;
 			}
 
 			var zoneData = _entityManager.GetComponentData<ZoneData>(zonePrefab);

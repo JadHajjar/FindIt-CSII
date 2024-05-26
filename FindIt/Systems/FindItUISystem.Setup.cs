@@ -2,12 +2,11 @@
 using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 
+using Game.Input;
 using Game.Prefabs;
 using Game.Tools;
 
 using System.Threading;
-
-using UnityEngine.InputSystem;
 
 namespace FindIt.Systems
 {
@@ -35,6 +34,7 @@ namespace FindIt.Systems
 		private ValueBindingHelper<double> _ColumnCount;
 		private ValueBindingHelper<double> _RowCount;
 		private ValueBindingHelper<int> _ActivePrefabId;
+		private ProxyAction _searchKeyBinding;
 		private ValueBindingHelper<int> _CurrentCategoryBinding;
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
 		private ValueBindingHelper<float> _PanelHeight;
@@ -71,6 +71,9 @@ namespace FindIt.Systems
 			_toolSystem.EventPrefabChanged += OnPrefabChanged;
 			_toolSystem.EventToolChanged += OnToolChanged;
 
+			// Keybinding caching
+			_searchKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.SearchKeyBinding));
+
 			// These establish the bindings for the categories
 			_CurrentCategoryBinding = CreateBinding("CurrentCategory", "SetCurrentCategory", (int)FindItUtil.CurrentCategory, SetCurrentCategory);
 			_CurrentSubCategoryBinding = CreateBinding("CurrentSubCategory", "SetCurrentSubCategory", (int)FindItUtil.CurrentSubCategory, SetCurrentSubCategory);
@@ -104,12 +107,6 @@ namespace FindIt.Systems
 			CreateTrigger<int>("ToggleFavorited", FindItUtil.ToggleFavorited);
 			CreateTrigger("OnSearchFocused", () => _FocusSearchBar.Value = false);
 			CreateTrigger("OnSearchCleared", () => _ClearSearchBar.Value = false);
-
-			// This setup a keybinding for activating FindItPanel.
-			var hotKeyCtrlF = new InputAction($"{Mod.Id}/CtrlF");
-			hotKeyCtrlF.AddCompositeBinding("ButtonWithOneModifier").With("Modifier", "<Keyboard>/ctrl").With("Button", "<Keyboard>/f");
-			hotKeyCtrlF.performed += OnCtrlFKeyPressed;
-			hotKeyCtrlF.Enable();
 		}
 
 		protected override void OnUpdate()
@@ -125,10 +122,14 @@ namespace FindIt.Systems
 
 			if (scrollCompleted)
 			{
-				Mod.Log.Info("X");
 				scrollCompleted = false;
 
 				_PrefabListBinding.Value = GetDisplayedPrefabs();
+			}
+
+			if (_searchKeyBinding.WasPressedThisFrame())
+			{
+				OnSearchKeyPressed();
 			}
 
 			base.OnUpdate();

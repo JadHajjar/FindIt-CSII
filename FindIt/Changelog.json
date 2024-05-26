@@ -1,6 +1,19 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.3.1",
+    "Date": "2024-05-05",
+    "ChangeGroups": [
+      {
+        "Name": "New Features",
+        "Changes": [
+          "Added a 'Theme' filter to only show European or North Amercian assets."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.3",
     "Date": "2024-05-03",
     "ChangeGroups": [

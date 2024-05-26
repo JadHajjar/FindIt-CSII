@@ -1,8 +1,10 @@
-﻿using FindIt.Domain.UIBinding;
+﻿using FindIt.Domain.Interfaces;
+using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
 
 using Game.Prefabs;
+using Game.UI;
 
 using System.Collections.Generic;
 
@@ -11,14 +13,14 @@ using Unity.Entities;
 
 namespace FindIt.Domain.Options
 {
-	internal class RegionOption// : IOptionSection
+	internal class ThemeOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 		private readonly List<ThemePrefab> _themeList;
 
-		public int Id { get; } = 9;
+		public int Id { get; } = 95;
 
-		public RegionOption(OptionsUISystem optionsUISystem)
+		public ThemeOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
 			_themeList = GetThemePrefabs();
@@ -28,11 +30,19 @@ namespace FindIt.Domain.Options
 		{
 			var themes = new List<OptionItemUIEntry>
 			{
-				new() {
-					Id = -1,
-					Name = "Any",
+				new()
+				{
+					Id = -2,
+					Name = LocaleHelper.GetTooltip("Any"),
 					Icon = "coui://uil/Standard/StarAll.svg",
-					Selected = FindItUtil.Filters.SelectedTheme == null
+					Selected = !FindItUtil.Filters.SelectedThemeNone&&FindItUtil.Filters.SelectedTheme == null
+				},
+				new()
+				{
+					Id = -1,
+					Name = LocaleHelper.GetTooltip("No Theme"),
+					Icon = "coui://uil/Standard/XClose.svg",
+					Selected = FindItUtil.Filters.SelectedThemeNone
 				},
 			};
 
@@ -41,9 +51,9 @@ namespace FindIt.Domain.Options
 				themes.Add(new OptionItemUIEntry
 				{
 					Id = i,
-					Name = _themeList[i].name,
-					Icon = _themeList[i].thumbnailUrl,
-					Selected = FindItUtil.Filters.SelectedTheme == _themeList[i]
+					Name = _optionsUISystem.GetAssetName(_themeList[i]),
+					Icon = ImageSystem.GetThumbnail(_themeList[i]),
+					Selected = !FindItUtil.Filters.SelectedThemeNone && FindItUtil.Filters.SelectedTheme == _themeList[i]
 				});
 			}
 
@@ -60,18 +70,33 @@ namespace FindIt.Domain.Options
 			return true;
 		}
 
-		public void OnOptionClicked(int optionId)
+		public void OnOptionClicked(int optionId, int value)
 		{
-			FindItUtil.Filters.SelectedTheme = optionId == -1 ? null : _themeList[optionId];
+			switch (optionId)
+			{
+				case -2:
+					FindItUtil.Filters.SelectedThemeNone = false;
+					FindItUtil.Filters.SelectedTheme = null;
+					break;
+				case -1:
+					FindItUtil.Filters.SelectedThemeNone = true;
+					FindItUtil.Filters.SelectedTheme = null;
+					break;
+				default:
+					FindItUtil.Filters.SelectedThemeNone = false;
+					FindItUtil.Filters.SelectedTheme = _themeList[optionId];
+					break;
+			}
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
 
 		public void OnReset()
 		{
 			FindItUtil.Filters.SelectedTheme = null;
+			FindItUtil.Filters.SelectedThemeNone = false;
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().TriggerSearch();
+			_optionsUISystem.TriggerSearch();
 		}
 
 		private List<ThemePrefab> GetThemePrefabs()
@@ -81,17 +106,14 @@ namespace FindIt.Domain.Options
 			var prefabSystem = _optionsUISystem.World.GetOrCreateSystemManaged<PrefabSystem>();
 			var list = new List<ThemePrefab>();
 
-			Mod.Log.Info("themes:" + entities.Length);
-
 			for (var i = 0; i < entities.Length; i++)
 			{
 				if (prefabSystem.TryGetPrefab<ThemePrefab>(entities[i], out var prefab))
 				{
+					Mod.Log.Info(prefab.name);
 					list.Add(prefab);
 				}
 			}
-
-			Mod.Log.Info("list:" + list.Count);
 
 			return list;
 		}

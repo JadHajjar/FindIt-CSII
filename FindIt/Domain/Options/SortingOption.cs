@@ -52,7 +52,7 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.SetSorting(sorting: (PrefabSorting)optionId);
 
-			_optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>().UpdateCategoriesAndPrefabList();
+			_optionsUISystem.UpdateCategoriesAndPrefabList();
 		}
 
 		public void OnReset()

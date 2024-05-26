@@ -43,12 +43,6 @@ Agriculture Lot
 Agriculture Lot - Field
 Extractor Lot
 Forestry Lot
-HedgeHigh Placeholder
-HedgeHigh01
-HedgeHigh02
-HedgeLow Placeholder
-HedgeLow01
-HedgeLow02
 Landfill Site Lot
 Oil Lot
 Oil Lot - Navigation

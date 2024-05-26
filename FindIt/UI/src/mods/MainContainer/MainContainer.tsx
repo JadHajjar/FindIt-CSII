@@ -66,6 +66,17 @@ export const FindItMainContainerComponent = () => {
 
   return (
     <>
+      <div
+        style={{
+          position: "fixed",
+          left: 100 + "px",
+          top: 100 + "px",
+          width: "100px",
+          height: "100px",
+          background: "red",
+          zIndex: 9999,
+        }}
+      ></div>
       <div className={styles.findItMainContainer}>
         <div className={GameMainScreneTheme.toolLayout}>
           <div

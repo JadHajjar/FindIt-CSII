@@ -2,9 +2,12 @@
 
 using FindIt.Domain.Utilities;
 
+using Game.Input;
 using Game.Modding;
 using Game.Settings;
 using Game.UI;
+
+using UnityEngine.InputSystem;
 
 namespace FindIt
 {
@@ -25,12 +28,10 @@ namespace FindIt
 		}
 
 		[SettingsUIHidden]
-		public bool DefaultBlock { get; set; }
-
-		[SettingsUIHidden]
 		public string DefaultViewStyle { get; set; } = "GridWithText";
 
 		[SettingsUIButton]
+		[SettingsUIConfirmation]
 		[SettingsUISection(MAIN_SECTION, OTHER)]
 		public bool ResetFavorites { set => FindItUtil.ResetFavorites(); }
 
@@ -71,6 +72,14 @@ namespace FindIt
 		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
 		public float ExpandedColumnSize { get; set; } = 80;
+
+		[SettingsUIKeyboardBinding(Key.F, nameof(SearchKeyBinding), ctrl: true)]
+		[SettingsUISection(MAIN_SECTION, DISPLAY)]
+		public ProxyBinding SearchKeyBinding { get; set; }
+
+		[SettingsUIKeyboardBinding(Key.P, nameof(PickerKeyBinding), ctrl: true)]
+		[SettingsUISection(MAIN_SECTION, DISPLAY)]
+		public ProxyBinding PickerKeyBinding { get; set; }
 
 		public override void SetDefaults()
 		{

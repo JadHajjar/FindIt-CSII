@@ -2,6 +2,10 @@
 using FindIt.Domain.UIBinding;
 using FindIt.Domain.Utilities;
 
+using Game.Prefabs;
+using Game.SceneFlow;
+using Game.UI.InGame;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +15,17 @@ namespace FindIt.Systems
 	internal partial class OptionsUISystem : ExtendedUISystemBase
 	{
 		private readonly Dictionary<int, IOptionSection> _sections = new();
-		private ValueBindingHelper<OptionSectionUIEntry[]> _OptionsList;
+		private PrefabUISystem _prefabUISystem;
+		private FindItUISystem _findItUISystem;
+		private ValueBindingHelper<OptionSectionUIEntry[]> _optionsList;
 
 		protected override void OnCreate()
 		{
 			base.OnCreate();
 
-			_OptionsList = CreateBinding("OptionsList", new OptionSectionUIEntry[0]);
+			_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
+			_findItUISystem = World.GetOrCreateSystemManaged<FindItUISystem>();
+			_optionsList = CreateBinding("OptionsList", new OptionSectionUIEntry[0]);
 
 			CreateTrigger<int, int, int>("OptionClicked", OptionClicked);
 		}
@@ -42,7 +50,7 @@ namespace FindIt.Systems
 				}
 			}
 
-			_OptionsList.Value = GetVisibleSections()
+			_optionsList.Value = GetVisibleSections()
 				.OrderBy(x => x.Id)
 				.Select(x => x.AsUIEntry())
 				.ToArray();
@@ -73,6 +81,28 @@ namespace FindIt.Systems
 			section.OnOptionClicked(optionId, value);
 
 			RefreshOptions();
+		}
+
+		public string GetAssetName(PrefabBase prefab)
+		{
+			_prefabUISystem.GetTitleAndDescription(prefab, out var titleId, out var _);
+
+			if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
+			{
+				return name;
+			}
+
+			return prefab.name.Replace('_', ' ').FormatWords();
+		}
+
+		public void TriggerSearch()
+		{
+			_findItUISystem.TriggerSearch();
+		}
+
+		internal void UpdateCategoriesAndPrefabList()
+		{
+			_findItUISystem.UpdateCategoriesAndPrefabList();
 		}
 	}
 }

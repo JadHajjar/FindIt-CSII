@@ -1,9 +1,8 @@
 ﻿using Colossal.UI.Binding;
 
+using Game.Input;
 using Game.Tools;
 using Game.UI;
-
-using UnityEngine.InputSystem;
 
 namespace FindIt.Systems
 {
@@ -14,6 +13,7 @@ namespace FindIt.Systems
 		private DefaultToolSystem _defaultToolSystem;
 		private FindItUISystem _findItUISystem;
 		private ValueBinding<bool> _pickerEnabled;
+		private ProxyAction _pickerKeyBinding;
 
 		protected override void OnCreate()
 		{
@@ -25,13 +25,20 @@ namespace FindIt.Systems
 			_findItUISystem = World.GetOrCreateSystemManaged<FindItUISystem>();
 			_toolSystem.EventToolChanged += OnToolChanged;
 
+			_pickerKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.PickerKeyBinding));
+
 			AddBinding(_pickerEnabled = new ValueBinding<bool>(Mod.Id, "PickerEnabled", false));
 			AddBinding(new TriggerBinding(Mod.Id, "PickerIconToggled", PickerClicked));
+		}
 
-			InputAction hotKeyCtrlP = new($"{Mod.Id}/CtrlP");
-			hotKeyCtrlP.AddCompositeBinding("ButtonWithOneModifier").With("Modifier", "<Keyboard>/ctrl").With("Button", "<Keyboard>/p");
-			hotKeyCtrlP.performed += OnCtrlPKeyPressed;
-			hotKeyCtrlP.Enable();
+		protected override void OnUpdate()
+		{
+			if (_pickerKeyBinding.WasPressedThisFrame())
+			{
+				OnPickerKeyPressed();
+			}
+
+			base.OnUpdate();
 		}
 
 		private void OnToolChanged(ToolBaseSystem system)
@@ -53,7 +60,7 @@ namespace FindIt.Systems
 			}
 		}
 
-		private void OnCtrlPKeyPressed(InputAction.CallbackContext context)
+		private void OnPickerKeyPressed()
 		{
 			_findItUISystem.ToggleFindItPanel(false);
 

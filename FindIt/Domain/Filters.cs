@@ -5,7 +5,6 @@ using Game.Prefabs;
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FindIt.Domain
 {
@@ -17,6 +16,7 @@ namespace FindIt.Domain
 		public int LotWidthFilter { get; set; }
 		public int LotDepthFilter { get; set; }
 		public ThemePrefab SelectedTheme { get; set; }
+		public bool SelectedThemeNone { get; set; }
 		public bool HideAds { get; set; }
 		public bool HideRandoms { get; set; }
 		public bool HideVanilla { get; set; }
@@ -64,6 +64,15 @@ namespace FindIt.Domain
 				yield return DoLotWidthFilter;
 			}
 
+			if (SelectedThemeNone)
+			{
+				yield return DoNoThemeFilter;
+			}
+			else if (SelectedTheme != null)
+			{
+				yield return DoThemeFilter;
+			}
+
 			if (!string.IsNullOrWhiteSpace(CurrentSearch))
 			{
 				yield return Mod.Settings.StrictSearch ? DoStrictSearchFilter : DoSearchFilter;
@@ -74,14 +83,14 @@ namespace FindIt.Domain
 		{
 			return CurrentSearch.SearchCheck(prefab.Name)
 				|| CurrentSearch.SearchCheck(prefab.Prefab.name);
-				//|| prefab.Tags.Any(DoTagSearch);
+			//|| prefab.Tags.Any(DoTagSearch);
 		}
 
 		private bool DoStrictSearchFilter(PrefabIndex prefab)
 		{
 			return prefab.Name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
 				|| prefab.Prefab.name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0;
-				//|| prefab.Tags.Any(DoTagSearch);
+			//|| prefab.Tags.Any(DoTagSearch);
 		}
 
 		private bool DoTagSearch(string tag)
@@ -127,6 +136,16 @@ namespace FindIt.Domain
 		private bool DoNoVanillaFilter(PrefabIndex prefab)
 		{
 			return !prefab.IsVanilla;
+		}
+
+		private bool DoNoThemeFilter(PrefabIndex prefab)
+		{
+			return prefab.Theme == null;
+		}
+
+		private bool DoThemeFilter(PrefabIndex prefab)
+		{
+			return prefab.Theme == SelectedTheme;
 		}
 	}
 }
