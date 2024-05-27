@@ -19,7 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "Rozwiń panel",
   "Tooltip.LABEL[FindIt.Shrink]": "Zmniejsz panel",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtry i sortowanie",
-  "Options.LABEL[FindIt.ThemeFilter]": "Theme",
+  "Options.LABEL[FindIt.ThemeFilter]": "Motyw",
   "Options.LABEL[FindIt.LotDepth]": "Głębokość",
   "Options.LABEL[FindIt.LotWidth]": "Szerokość",
   "Options.LABEL[FindIt.ZoneType]": "Typ strefy",
@@ -111,8 +111,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Ukrywa markowe obiekty z kategorii \"Wszystkie\", więc będą one widoczne tylko w podkategorii \"Marki i billboardy\". Wymaga ponownego załadowania zapisu, aby wprowadzić zmiany.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Szybkie i płynne przewijanie",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Zwiększa częstotliwość odświeżania przewijania. Może to spowodować nieoczekiwane zamknięcie gry na niektórych komputerach.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Fast & Smooth Scroll",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Fast & Smooth Scroll",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Szybkie i płynne przewijanie",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Zwiększa częstotliwość odświeżania przewijania. Może to spowodować nieoczekiwane zamknięcie gry na niektórych komputerach.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Szybkie i płynne przewijanie",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Zwiększa częstotliwość odświeżania przewijania. Może to spowodować nieoczekiwane zamknięcie gry na niektórych komputerach."
 }
