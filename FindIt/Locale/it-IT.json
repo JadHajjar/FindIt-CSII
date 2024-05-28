@@ -19,7 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "Espandi Il pannello",
   "Tooltip.LABEL[FindIt.Shrink]": "Riduci Il pannello",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtra e ordina",
-  "Options.LABEL[FindIt.ThemeFilter]": "Theme",
+  "Options.LABEL[FindIt.ThemeFilter]": "Tema",
   "Options.LABEL[FindIt.LotDepth]": "Profondità del lotto",
   "Options.LABEL[FindIt.LotWidth]": "Larghezza del lotto",
   "Options.LABEL[FindIt.ZoneType]": "Tipo di zona",
@@ -111,8 +111,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Nasconde gli oggetti con brand commerciale dalla categoria \"Qualsiasi\" in modo che vengano visualizzati solo se si trovino specificatamente nella sottocategoria \"Brand commerciali e cartelloni pubblicitari\". Richiede il riavvio del salvataggio per applicare le modifiche.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Scorrimento Veloce",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Aumenta la velocità di aggiornamento dello scorrimento. Questo potrebbe causare crash su alcuni computer.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Fast & Smooth Scroll",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Fast & Smooth Scroll",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Increases the refresh rate of scrolling. This may cause crashes on some computers."
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Scorrimento Veloce e Fluido",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Incrementa la frequenza di aggiornamento dello scorrimento. Potrebbe causare dei crash su alcuni computer.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Scorrimento Veloce e Fluido",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Incrementa la frequenza di aggiornamento dello scorrimento. Potrebbe causare dei crash su alcuni computer."
 }
