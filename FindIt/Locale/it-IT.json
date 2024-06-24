@@ -19,7 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "Espandi Il pannello",
   "Tooltip.LABEL[FindIt.Shrink]": "Riduci Il pannello",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtra e ordina",
-  "Tooltip.LABEL[FindIt.No Theme]": "No Theme",
+  "Tooltip.LABEL[FindIt.No Theme]": "Nessun tema",
   "Options.LABEL[FindIt.ThemeFilter]": "Tema",
   "Options.LABEL[FindIt.LotDepth]": "Profondità del lotto",
   "Options.LABEL[FindIt.LotWidth]": "Larghezza del lotto",
@@ -112,8 +112,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Nasconde gli oggetti con brand commerciale dalla categoria \"Qualsiasi\" in modo che vengano visualizzati solo se si trovino specificatamente nella sottocategoria \"Brand commerciali e cartelloni pubblicitari\". Richiede il riavvio del salvataggio per applicare le modifiche.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Scorrimento Veloce",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Aumenta la velocità di aggiornamento dello scorrimento. Questo potrebbe causare crash su alcuni computer.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Open Find It / Focus search bar",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determines the hot-key to bring up the Find It panel, or focus the search bar in case the panel is already visible.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Picker",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Determines the hot-key to activate the Picker tool."
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Apri Trova / Focus barra di ricerca",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determina il tasto di scelta rapida per far apparire il pannello Trova, oppure mette a fuoco la barra di ricerca nel caso in cui il pannello sia già visibile.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Selettore",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Determina il tasto di scelta rapida per attivare lo strumento di selezionamento."
 }
