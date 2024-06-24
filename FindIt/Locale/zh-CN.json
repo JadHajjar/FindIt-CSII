@@ -19,6 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "展开面板",
   "Tooltip.LABEL[FindIt.Shrink]": "缩小面板",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "筛选和排序",
+  "Tooltip.LABEL[FindIt.No Theme]": "No Theme",
   "Options.LABEL[FindIt.ThemeFilter]": "主题",
   "Options.LABEL[FindIt.LotDepth]": "建筑进深",
   "Options.LABEL[FindIt.LotWidth]": "建筑面宽",
@@ -111,8 +112,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "隐藏“任何”类别中的广告牌资产，这样它们只会在“品牌与广告牌”类别中显示。需要重新加载存档才能应用更改。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速和平滑的滚动",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "快速和平滑的滚动",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "快速和平滑的滚动",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。"
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Open Find It / Focus search bar",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determines the hot-key to bring up the Find It panel, or focus the search bar in case the panel is already visible.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Picker",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Determines the hot-key to activate the Picker tool."
 }
