@@ -19,6 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "Expandir panel",
   "Tooltip.LABEL[FindIt.Shrink]": "Contraer panel",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtros y Orden",
+  "Tooltip.LABEL[FindIt.No Theme]": "No Theme",
   "Options.LABEL[FindIt.ThemeFilter]": "Temática",
   "Options.LABEL[FindIt.LotDepth]": "Profundidad de terreno",
   "Options.LABEL[FindIt.LotWidth]": "Ancho de terreno",
@@ -111,8 +112,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Oculta decoraciones de marcas en la categoría de \"Todos\". Se mostrarán únicamente en la sub categoría de \"Vallas Comerciales\". Requiere cargar de nuevo el juego para aplicar los cambios.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Desplazamiento rápido y suave",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Aumenta la velocidad de actualización del desplazamiento. Esto puede causar que el juego se cierre de forma inesperada en algunas computadoras.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Desplazamiento rápido y suave",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Aumenta la velocidad de actualización del desplazamiento. Esto puede causar que el juego se cierre de forma inesperada en algunas computadoras.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Desplazamiento rápido y suave",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Aumenta la velocidad de actualización del desplazamiento. Esto puede causar que el juego se cierre de forma inesperada en algunas computadoras."
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Open Find It / Focus search bar",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determines the hot-key to bring up the Find It panel, or focus the search bar in case the panel is already visible.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Picker",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Determines the hot-key to activate the Picker tool."
 }
