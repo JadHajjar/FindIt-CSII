@@ -41,7 +41,7 @@ namespace FindIt.Domain.Options
 				{
 					Id = -1,
 					Name = LocaleHelper.GetTooltip("No Theme"),
-					Icon = "coui://uil/Standard/XClose.svg",
+					Icon = "coui://ui-mods/images/globe.svg",
 					Selected = FindItUtil.Filters.SelectedThemeNone
 				},
 			};

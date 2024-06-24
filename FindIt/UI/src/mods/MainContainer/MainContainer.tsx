@@ -3,10 +3,7 @@ import { game, Theme } from "cs2/bindings";
 import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
 import { TopBarComponent } from "mods/TopBar/TopBar";
-import {
-  PrefabSelectionComponent,
-  ViewStyle$,
-} from "mods/PrefabSelection/PrefabSelection";
+import { PrefabSelectionComponent, ViewStyle$ } from "mods/PrefabSelection/PrefabSelection";
 import { useState, useRef, useEffect } from "react";
 import styles from "./mainContainer.module.scss";
 import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";
@@ -17,29 +14,16 @@ const IsExpanded$ = bindValue<boolean>(mod.id, "IsExpanded");
 // This functions trigger an event on C# side and C# designates the method to implement.
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 
-const GameMainScreneTheme: Theme | any = getModule(
-  "game-ui/game/components/game-main-screen.module.scss",
-  "classes"
-);
+const GameMainScreneTheme: Theme | any = getModule("game-ui/game/components/game-main-screen.module.scss", "classes");
 
-const PanelTheme: Theme | any = getModule(
-  "game-ui/common/panel/panel.module.scss",
-  "classes"
-);
+const PanelTheme: Theme | any = getModule("game-ui/common/panel/panel.module.scss", "classes");
 
-const AssetMenuTheme: Theme | any = getModule(
-  "game-ui/game/components/asset-menu/asset-menu.module.scss",
-  "classes"
-);
+const AssetMenuTheme: Theme | any = getModule("game-ui/game/components/asset-menu/asset-menu.module.scss", "classes");
 
-const DefaultMainTheme: Theme | any = getModule(
-  "game-ui/common/panel/themes/default.module.scss",
-  "classes"
-);
+const DefaultMainTheme: Theme | any = getModule("game-ui/common/panel/themes/default.module.scss", "classes");
 
 export const FindItMainContainerComponent = () => {
-  const isPhotoMode =
-    useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
+  const isPhotoMode = useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
 
   const containerRef = useRef(null);
 
@@ -51,13 +35,10 @@ export const FindItMainContainerComponent = () => {
   const IsExpanded = useValue(IsExpanded$);
   const PanelWidth = useValue(PanelWidth$) + 15 + 20;
 
-  const optionsOverflow = () =>
-    window.innerWidth <
-    containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
+  const optionsOverflow = () => window.innerWidth < containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
 
   useEffect(() => {
-    var newLeft =
-      (containerRef.current as any)?.getBoundingClientRect().left ?? 0;
+    var newLeft = (containerRef.current as any)?.getBoundingClientRect().left ?? 0;
 
     if (newLeft !== 0) setContainerLeft(newLeft);
   });
@@ -66,28 +47,10 @@ export const FindItMainContainerComponent = () => {
 
   return (
     <>
-      <div
-        style={{
-          position: "fixed",
-          left: 100 + "px",
-          top: 100 + "px",
-          width: "100px",
-          height: "100px",
-          background: "red",
-          zIndex: 9999,
-        }}
-      ></div>
       <div className={styles.findItMainContainer}>
         <div className={GameMainScreneTheme.toolLayout}>
-          <div
-            className={GameMainScreneTheme.toolMainColumn}
-            style={{ position: "relative" }}
-          >
-            <div
-              className={GameMainScreneTheme.toolPanel}
-              ref={containerRef}
-              style={{ width: PanelWidth + "rem" }}
-            >
+          <div className={GameMainScreneTheme.toolMainColumn} style={{ position: "relative" }}>
+            <div className={GameMainScreneTheme.toolPanel} ref={containerRef} style={{ width: PanelWidth + "rem" }}>
               <div>
                 {optionsOpen && optionsOverflow() && (
                   <div style={{ position: "relative" }}>
@@ -105,24 +68,15 @@ export const FindItMainContainerComponent = () => {
                     small={PanelWidth <= 685}
                     large={PanelWidth >= 850}
                     toggleOptionsOpen={() => setOptionsOpen(!optionsOpen)}
-                    toggleEnlarge={() =>
-                      trigger(mod.id, "SetIsExpanded", !IsExpanded)
-                    }
+                    toggleEnlarge={() => trigger(mod.id, "SetIsExpanded", !IsExpanded)}
                   ></TopBarComponent>
                 </div>
-                <div
-                  className={styles.content + " " + AssetMenuTheme.assetPanel}
-                >
-                  <PrefabSelectionComponent
-                    expanded={IsExpanded}
-                  ></PrefabSelectionComponent>
+                <div className={styles.content + " " + AssetMenuTheme.assetPanel}>
+                  <PrefabSelectionComponent expanded={IsExpanded}></PrefabSelectionComponent>
                 </div>
               </div>
               {optionsOpen && !optionsOverflow() && (
-                <div
-                  className={styles.rightPanel}
-                  style={{ left: PanelWidth + "rem" }}
-                >
+                <div className={styles.rightPanel} style={{ left: PanelWidth + "rem" }}>
                   <div>
                     <OptionsPanelComponent></OptionsPanelComponent>
                   </div>

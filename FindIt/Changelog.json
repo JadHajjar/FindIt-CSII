@@ -1,6 +1,20 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.3.2",
+    "Date": "2024-06-24",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Added custom hotkey support in the mod's options.",
+          "Added a 'Global' theme filter to show assets that do not have any themes."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.3.1",
     "Date": "2024-05-05",
     "ChangeGroups": [

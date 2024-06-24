@@ -35,6 +35,14 @@ namespace FindIt
 		[SettingsUISection(MAIN_SECTION, OTHER)]
 		public bool ResetFavorites { set => FindItUtil.ResetFavorites(); }
 
+		[SettingsUIKeyboardBinding(Key.F, nameof(SearchKeyBinding), ctrl: true)]
+		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
+		public ProxyBinding SearchKeyBinding { get; set; }
+
+		[SettingsUIKeyboardBinding(Key.P, nameof(PickerKeyBinding), ctrl: true)]
+		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
+		public ProxyBinding PickerKeyBinding { get; set; }
+
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool OpenPanelOnPicker { get; set; } = true;
 
@@ -72,14 +80,6 @@ namespace FindIt
 		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
 		public float ExpandedColumnSize { get; set; } = 80;
-
-		[SettingsUIKeyboardBinding(Key.F, nameof(SearchKeyBinding), ctrl: true)]
-		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public ProxyBinding SearchKeyBinding { get; set; }
-
-		[SettingsUIKeyboardBinding(Key.P, nameof(PickerKeyBinding), ctrl: true)]
-		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public ProxyBinding PickerKeyBinding { get; set; }
 
 		public override void SetDefaults()
 		{

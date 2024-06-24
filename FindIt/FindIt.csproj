@@ -5,7 +5,7 @@
 		<LangVersion>9</LangVersion>
 		<TargetFramework>net472</TargetFramework>
 		<Configurations>Debug;Release</Configurations>
-		<Version>1.0.3.1</Version>
+		<Version>1.0.3.2</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<Company>T. D. W.</Company>
@@ -43,14 +43,13 @@
 		<EmbeddedResource Include="Resources\Blacklist.txt" />
 	</ItemGroup>
 
-	<Target Name="UpdatePublishConfiguration" BeforeTargets="Publish">
+	<Target Name="UpdatePublishConfiguration" BeforeTargets="Publish" Condition="'$(ModPublisherCommand)'=='NewVersion'">
 		<PropertyGroup>
-			<PdxPublishConfiguration>$([System.IO.Path]::GetFullPath('..\PdxPublishConfiguration\PdxPublishConfiguration.exe'))</PdxPublishConfiguration>
-			<ChangelogJsonFile>"$([System.IO.Path]::GetFullPath('..\FindIt\Changelog.json'))"</ChangelogJsonFile>
-			<PublishConfigurationFile>"$([System.IO.Path]::GetFullPath('..\FindIt\$(PublishConfigurationPath)'))"</PublishConfigurationFile>
+			<PdxPublishConfiguration>"$(SolutionDir)..\PdxPublishConfiguration\PdxPublishConfiguration.exe"</PdxPublishConfiguration>
+			<PublishConfigurationFile>"$(ProjectDir)AutoPublishConfiguration.json"</PublishConfigurationFile>
 		</PropertyGroup>
 
-		<Exec Command="$(PdxPublishConfiguration) $(PublishConfigurationFile) $(Version) Stable $(ChangelogJsonFile) $(ModPublisherCommand)" />
+		<Exec Command="$(PdxPublishConfiguration) $(Version) $(PublishConfigurationFile)" />
 	</Target>
 
 	<ItemGroup>

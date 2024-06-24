@@ -23,14 +23,12 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   const imgRef = useRef(null);
   const [favoriteFlip, setFavorited] = useState(false);
   const [thumbnailIndex, setThumbnailIndex] = useState(0);
+  //const [showRightClick, setShowRightclick] = useState(false);
 
-  var showrightclick = false;
   var rightclickpos = { x: 0, y: 0 };
 
   const mouseOver = () => {
-    setThumbnailIndex(
-      Math.floor(Math.random() * props.prefab.thumbnails.length)
-    );
+    setThumbnailIndex(Math.floor(Math.random() * props.prefab.thumbnails.length));
   };
 
   function SetCurrentPrefab(id: number) {
@@ -44,9 +42,9 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   }
 
   function OnMouseUp(e: any) {
-    if (e.button == 2) {
-      showrightclick = true;
+    if (e.button === 2) {
       rightclickpos = { x: e.clientX, y: e.clientY };
+      //setShowRightclick(true);
     }
   }
 
@@ -55,15 +53,11 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   return (
     <>
       <Button
-        className={
-          VanillaComponentResolver.instance.assetGridTheme.item +
-          " " +
-          styles.gridItem
-        }
+        className={VanillaComponentResolver.instance.assetGridTheme.item + " " + styles.gridItem}
         selected={props.selected}
         variant="icon"
         onSelect={() => SetCurrentPrefab(props.prefab.id)}
-        onMouseUp={(e) => OnMouseUp(e)}
+        //onMouseUp={(e) => OnMouseUp(e)}
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
         style={{ width: props.width, height: props.width }}
         onMouseEnter={props.prefab.random ? mouseOver : undefined}
@@ -71,14 +65,8 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         <Tooltip
           tooltip={
             props.prefab.favorited
-              ? translate(
-                  "Tooltip.LABEL[FindIt.RemoveFavorite]",
-                  "Remove from favorites"
-                )
-              : translate(
-                  "Tooltip.LABEL[FindIt.AddFavorite]",
-                  "Favorite this asset"
-                )
+              ? translate("Tooltip.LABEL[FindIt.RemoveFavorite]", "Remove from favorites")
+              : translate("Tooltip.LABEL[FindIt.AddFavorite]", "Favorite this asset")
           }
         >
           <Button
@@ -92,13 +80,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
             onSelect={() => ToggleFavorited(props.prefab.id)}
             focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
           >
-            <img
-              src={
-                props.prefab.favorited
-                  ? "coui://uil/Colored/StarFilled.svg"
-                  : "coui://uil/Colored/StarOutline.svg"
-              }
-            ></img>
+            <img src={props.prefab.favorited ? "coui://uil/Colored/StarFilled.svg" : "coui://uil/Colored/StarOutline.svg"}></img>
           </Button>
         </Tooltip>
 
@@ -109,11 +91,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src = props.prefab.fallbackThumbnail;
           }}
-          className={
-            VanillaComponentResolver.instance.assetGridTheme.thumbnail +
-            " " +
-            styles.gridThumbnail
-          }
+          className={VanillaComponentResolver.instance.assetGridTheme.thumbnail + " " + styles.gridThumbnail}
           onMouseEnter={props.prefab.random ? mouseOver : undefined}
         ></img>
 
@@ -122,29 +100,13 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         </div>
 
         <div className={styles.rightSideContainer}>
-          {props.showCategory && (
-            <img src={props.prefab.categoryThumbnail}></img>
-          )}
+          {props.showCategory && <img src={props.prefab.categoryThumbnail}></img>}
 
-          {props.prefab.dlcThumbnail && (
-            <img src={props.prefab.dlcThumbnail}></img>
-          )}
+          {props.prefab.dlcThumbnail && <img src={props.prefab.dlcThumbnail}></img>}
 
           {props.prefab.random && <img src="coui://uil/Colored/Dice.svg"></img>}
         </div>
       </Button>
-
-      <div
-        style={{
-          position: "fixed",
-          left: rightclickpos.x + "px",
-          top: rightclickpos.y + "px",
-          width: "100px",
-          height: "100px",
-          background: "red",
-          zIndex: 9999,
-        }}
-      ></div>
     </>
   );
 };
