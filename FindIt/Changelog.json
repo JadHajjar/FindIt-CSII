@@ -1,6 +1,19 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.3.3",
+    "Date": "2024-06-24",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Updated & fixed localizations."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.3.2",
     "Date": "2024-06-24",
     "ChangeGroups": [
