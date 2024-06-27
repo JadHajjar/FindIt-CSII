@@ -113,7 +113,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Défilement Rapide & Lisse",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Augmente le taux de rafraîchissement du défilement. Cela peut causer des plantages sur certains ordinateurs.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Ouvrir Find It / Barre de rechercher Focus",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Détermine le raccourci pour ouvrir le panneau Find It, ou la barre de recherche Focus si le panneau est déjà ouvert.",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Détermine le raccourci pour ouvrir la fenêtre Find It, ou la barre de recherche Focus si Find It est déjà ouvert.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Picker",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Attribuer une touche pour l'outil Picker."
 }
