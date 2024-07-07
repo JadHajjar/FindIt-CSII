@@ -8,9 +8,15 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
 
+using System.Collections.Generic;
+using System;
+using System.Linq;
+
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+
+using UnityEngine.InputSystem;
 
 namespace FindIt.Systems
 {
@@ -32,7 +38,23 @@ namespace FindIt.Systems
 
 			_highlightedQuery = GetEntityQuery(ComponentType.ReadOnly<Highlighted>());
 
-			_applyAction = InputManager.instance.FindAction("Tool", "Apply");
+			_applyAction = Mod.Settings.GetAction(nameof(FindIt) + "Apply");
+
+			var builtInApplyAction = InputManager.instance.FindAction(InputManager.kToolMap, "Apply");
+            var mimicApplyBinding = _applyAction.bindings.FirstOrDefault(b => b.group == nameof(Mouse));
+			var builtInApplyBinding = builtInApplyAction.bindings.FirstOrDefault(b => b.group == nameof(Mouse));
+
+			mimicApplyBinding.path = builtInApplyBinding.path;
+			mimicApplyBinding.modifiers = builtInApplyBinding.modifiers;
+
+            InputManager.instance.SetBinding(mimicApplyBinding, out _);
+
+			//ProxyBinding result = new ProxyBinding(Mod.Settings.id, nameof(FindIt) + "Apply", ActionComponent.Press, InputManager.CompositeComponentData.defaultData.m_BindingName, new CompositeInstance(nameof(Mouse)));
+			//result.group = nameof(Mouse);
+			//result.path = builtInApplyBinding.path;
+			//result.originalPath = builtInApplyBinding.path;
+			//result.modifiers = builtInApplyBinding.modifiers;
+			//result.originalModifiers = builtInApplyBinding.modifiers;
 		}
 
 		public override void InitializeRaycast()
@@ -50,6 +72,13 @@ namespace FindIt.Systems
 			base.OnStartRunning();
 
 			_applyAction.shouldBeEnabled = true;
+		}
+
+		protected override void OnStopRunning()
+		{
+			base.OnStopRunning();
+
+			_applyAction.shouldBeEnabled = false;
 		}
 
 		protected override JobHandle OnUpdate(JobHandle inputDeps)

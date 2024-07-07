@@ -1,6 +1,32 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.3.5",
+    "Date": "2024-07-03",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Fixed search and picker hotkeys not working."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.0.3.4",
+    "Date": "2024-07-03",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Compatibility with patch 1.1.6."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.3.3",
     "Date": "2024-06-24",
     "ChangeGroups": [

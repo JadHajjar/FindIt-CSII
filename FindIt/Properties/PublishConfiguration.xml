@@ -44,16 +44,17 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.0.3.3" />
+  <ModVersion Value="1.0.3.5" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.0.3.3
+# v1.0.3.5
 ## Changes
-* Updated &amp; fixed localizations.
+* Fixed search and picker hotkeys not working.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
   <ExternalLink Type="buymeacoffee" Url="https://www.buymeacoffee.com/tdwsvillage" />
+  <ExternalLink Type="crowdin" Url="https://crowdin.com/project/find-it-csii" />
   <Dependency Id="74417" />
   <Dependency Id="79634" />
 </Publish>

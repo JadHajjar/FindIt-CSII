@@ -26,6 +26,7 @@ namespace FindIt.Systems
 			_toolSystem.EventToolChanged += OnToolChanged;
 
 			_pickerKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.PickerKeyBinding));
+			_pickerKeyBinding.shouldBeEnabled = true;
 
 			AddBinding(_pickerEnabled = new ValueBinding<bool>(Mod.Id, "PickerEnabled", false));
 			AddBinding(new TriggerBinding(Mod.Id, "PickerIconToggled", PickerClicked));
@@ -33,7 +34,7 @@ namespace FindIt.Systems
 
 		protected override void OnUpdate()
 		{
-			if (_pickerKeyBinding.WasPressedThisFrame())
+			if (_pickerKeyBinding.WasPerformedThisFrame())
 			{
 				OnPickerKeyPressed();
 			}

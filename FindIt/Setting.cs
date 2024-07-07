@@ -14,6 +14,7 @@ namespace FindIt
 	[FileLocation(nameof(FindIt))]
 	[SettingsUIGroupOrder(BEHAVIOR, DISPLAY, OTHER)]
 	[SettingsUIShowGroupName(BEHAVIOR, DISPLAY, OTHER)]
+	[SettingsUIMouseAction(nameof(FindIt) + "Apply", "CustomUsage")]
 	public class FindItSettings : ModSetting
 	{
 		public const string MAIN_SECTION = "Main";
@@ -27,6 +28,9 @@ namespace FindIt
 
 		}
 
+		[SettingsUIMouseBinding(nameof(FindIt) + "Apply"), SettingsUIHidden]
+		public ProxyBinding ApplyMimic { get; set; }
+
 		[SettingsUIHidden]
 		public string DefaultViewStyle { get; set; } = "GridWithText";
 
@@ -35,11 +39,11 @@ namespace FindIt
 		[SettingsUISection(MAIN_SECTION, OTHER)]
 		public bool ResetFavorites { set => FindItUtil.ResetFavorites(); }
 
-		[SettingsUIKeyboardBinding(Key.F, nameof(SearchKeyBinding), ctrl: true)]
+		[SettingsUIKeyboardBinding(BindingKeyboard.F, nameof(SearchKeyBinding), ctrl: true)]
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public ProxyBinding SearchKeyBinding { get; set; }
 
-		[SettingsUIKeyboardBinding(Key.P, nameof(PickerKeyBinding), ctrl: true)]
+		[SettingsUIKeyboardBinding(BindingKeyboard.P, nameof(PickerKeyBinding), ctrl: true)]
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public ProxyBinding PickerKeyBinding { get; set; }
 

@@ -73,6 +73,7 @@ namespace FindIt.Systems
 
 			// Keybinding caching
 			_searchKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.SearchKeyBinding));
+			_searchKeyBinding.shouldBeEnabled = true;
 
 			// These establish the bindings for the categories
 			_CurrentCategoryBinding = CreateBinding("CurrentCategory", "SetCurrentCategory", (int)FindItUtil.CurrentCategory, SetCurrentCategory);
@@ -127,7 +128,7 @@ namespace FindIt.Systems
 				_PrefabListBinding.Value = GetDisplayedPrefabs();
 			}
 
-			if (_searchKeyBinding.WasPressedThisFrame())
+			if (_searchKeyBinding.WasPerformedThisFrame())
 			{
 				OnSearchKeyPressed();
 			}
