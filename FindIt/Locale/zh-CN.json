@@ -90,7 +90,7 @@
   "Options.GROUP[FindIt.FindIt.Mod.Other]": "其他",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "隐藏“随机”资产类型",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "忽略标记为随机或占位符的资产，需要重新加载存档才能应用更改。",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "在选取物品后打开 Find It 面板",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "在拾取物品后打开 Find It 面板",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "启用此选项后，使用拾取器拾取物品会打开 Find It 面板；若不启用此选项，则不会打开，并在允许的情况下打开游戏原版的面板。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "打开 Find It 面板时自动选择第一个资产",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "启用此选项后，打开 Find It 面板时会自动选择列表中的第一个资产。这会影响其他工具或使用 ESC 键关闭 Find It 的行为。",
@@ -113,7 +113,7 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速和平滑的滚动",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "打开 Find It / 聚焦搜索栏",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "开启 Find It 面板或聚焦到搜索框的按键",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "选择器",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "激活选择工具的按键"
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "开启 Find It 面板或聚焦到搜索框的快捷键。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "拾取器",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "激活拾取器的快捷键。"
 }
