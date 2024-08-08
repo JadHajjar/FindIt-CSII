@@ -17,10 +17,8 @@ const ToolBarButtonTheme: Theme | any = getModule(
   "classes"
 );
 // Getting the vanilla theme css for compatibility
-const ToolBarTheme: Theme | any = getModule(
-  "game-ui/game/components/toolbar/toolbar.module.scss",
-  "classes"
-);
+const ToolBarTheme: Theme | any = getModule("game-ui/game/components/toolbar/toolbar.module.scss", "classes");
+const EditorButtonTheme: Theme | any = getModule("game-ui/editor/themes/editor-tool-button.module.scss", "classes");
 
 // Trigger Icon Click on the C# side
 function HandleFindItClick() {

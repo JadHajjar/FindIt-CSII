@@ -44,12 +44,13 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.0.3.5" />
+  <ModVersion Value="1.0.3.6" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.0.3.5
+# v1.0.3.6
 ## Changes
-* Fixed search and picker hotkeys not working.
+* Added an automatic cleanup to fix the UI not appearing for some users.
+* Added partial support in the Editor, activate Find It and Picker using their hotkeys.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />

@@ -170,7 +170,7 @@ namespace FindIt.Systems
 
 		private void OnToolChanged(ToolBaseSystem tool)
 		{
-			if ((!settingPrefab && tool == _defaultToolSystem) || tool.toolID is "MoveItTool" or "Terrain Tool" or "Zone Tool")
+			if ((!settingPrefab && tool == _defaultToolSystem) || tool.toolID is "RoadBuilderTool" or "MoveItTool" or "Terrain Tool" or "Zone Tool")
 			{
 				ToggleFindItPanel(false);
 			}

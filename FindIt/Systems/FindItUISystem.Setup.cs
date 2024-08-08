@@ -81,7 +81,6 @@ namespace FindIt.Systems
 
 			// These establish the bindings with UI code.
 			_FocusSearchBar = CreateBinding("FocusSearchBar", false);
-			_FocusSearchBar = CreateBinding("FocusSearchBar", false);
 			_ClearSearchBar = CreateBinding("ClearSearchBar", false);
 			_ShowFindItPanel = CreateBinding("ShowFindItPanel", false);
 			_IsSearchLoading = CreateBinding("IsSearchLoading", false);

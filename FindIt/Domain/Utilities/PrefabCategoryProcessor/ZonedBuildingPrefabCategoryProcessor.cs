@@ -31,11 +31,15 @@ namespace FindIt.Domain.Utilities
 				{
 					All = new[]
 					{
-						ComponentType.ReadOnly<BuildingData>()
-					},
-					Any = new[]
-					{
+						ComponentType.ReadOnly<BuildingData>(),
 						ComponentType.ReadOnly<SpawnableBuildingData>(),
+					}
+				},
+				new EntityQueryDesc
+				{
+					All = new[]
+					{
+						ComponentType.ReadOnly<BuildingData>(),
 						ComponentType.ReadOnly<PlaceholderBuildingData>()
 					}
 				}

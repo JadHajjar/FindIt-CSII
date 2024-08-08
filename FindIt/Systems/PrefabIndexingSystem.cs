@@ -9,6 +9,7 @@ using FindIt.Domain.Interfaces;
 using FindIt.Domain.Utilities;
 
 using Game;
+using Game.Common;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI;
@@ -19,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 using Unity.Collections;
 using Unity.Entities;
@@ -31,7 +33,7 @@ namespace FindIt.Systems
 		private ImageSystem _imageSystem;
 		private PrefabUISystem _prefabUISystem;
 		private HashSet<string> _blackList;
-
+		private ComponentType? roadBuilderDiscarded;
 		private readonly List<IPrefabCategoryProcessor> _prefabCategoryProcessors = new();
 
 		protected override void OnCreate()
@@ -74,26 +76,58 @@ namespace FindIt.Systems
 					_prefabCategoryProcessors.Add((IPrefabCategoryProcessor)Activator.CreateInstance(type, objectParams));
 				}
 			}
+
+			RequireForUpdate(SystemAPI.QueryBuilder().WithAll<PrefabData>().WithAny<Created, Updated>().Build());
+
+			Enabled = false;
 		}
 
 		protected override void OnGamePreload(Purpose purpose, GameMode mode)
 		{
 			base.OnGamePreload(purpose, mode);
 
-			Enabled = true;
+			Enabled = false;
+		}
+
+		protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
+		{
+			base.OnGameLoadingComplete(purpose, mode);
+
+			if (Mod.IsRoadBuilderEnabled)
+			{
+				roadBuilderDiscarded ??= new ComponentType(Assembly.Load("RoadBuilder").GetType("RoadBuilder.Domain.Components.DiscardedRoadBuilderPrefab"), ComponentType.AccessMode.ReadOnly);
+			}
+
+			if (mode is GameMode.Game or GameMode.Editor)
+			{
+				RunIndex(true);
+
+				Enabled = true;
+			}
 		}
 
 		protected override void OnUpdate()
 		{
+			RunIndex(false);
+		}
+
+		private void RunIndex(bool full)
+		{
 			var stopWatch = Stopwatch.StartNew();
 
-			FindItUtil.CategorizedPrefabs.Clear();
+			if (full)
+			{
+				FindItUtil.CategorizedPrefabs.Clear();
 
-			AddAllCategories();
+				AddAllCategories();
+			}
 
 			foreach (var processor in _prefabCategoryProcessors)
 			{
-				Mod.Log.Info($"Indexing prefabs with {processor.GetType().Name}");
+				if (full)
+				{
+					Mod.Log.Info($"Indexing prefabs with {processor.GetType().Name}");
+				}
 
 				try
 				{
@@ -107,9 +141,27 @@ namespace FindIt.Systems
 						}
 					}
 
-					var entities = GetEntityQuery(queries).ToEntityArray(Allocator.Temp);
+					if (!full)
+					{
+						for (var i = 0; i < queries.Length; i++)
+						{
+							queries[i].Any = new[] { ComponentType.ReadOnly<Created>(), ComponentType.ReadOnly<Updated>() };
+						}
+					}
 
-					Mod.Log.Info($"\tTotal Entities Count: {entities.Length}");
+					var query = GetEntityQuery(queries);
+
+					if (query.IsEmptyIgnoreFilter)
+					{
+						continue;
+					}
+
+					var entities = query.ToEntityArray(Allocator.Temp);
+
+					if (full)
+					{
+						Mod.Log.Info($"\tTotal Entities Count: {entities.Length}");
+					}
 
 					for (var i = 0; i < entities.Length; i++)
 					{
@@ -122,7 +174,7 @@ namespace FindIt.Systems
 								continue;
 							}
 
-							if (Mod.Log.isLevelEnabled(Level.Debug))
+							if (full && Mod.Log.isLevelEnabled(Level.Debug))
 							{
 								Mod.Log.Debug($"\tProcessing: {prefab.name}");
 #if DEBUG
@@ -130,6 +182,18 @@ namespace FindIt.Systems
 #endif
 							}
 
+							if (roadBuilderDiscarded.HasValue && EntityManager.HasComponent(entity, roadBuilderDiscarded.Value))
+							{
+								FindItUtil.RemoveItem(entity);
+
+								continue;
+							}
+
+							if (!full && EntityManager.HasComponent<Created>(entity) && FindItUtil.Find(_prefabSystem.GetPrefab<PrefabBase>(entity), false, out var oldId))
+							{
+								FindItUtil.RemoveItem(oldId);
+							}
+							
 							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
 							{
 								AddPrefab(prefab, entity, prefabIndex);
@@ -147,18 +211,19 @@ namespace FindIt.Systems
 				}
 			}
 
-			AddNumberToDuplicatePrefabNames();
+			if (full)
+			{
+				AddNumberToDuplicatePrefabNames();
 
-			CleanupBrandPrefabs();
+				CleanupBrandPrefabs();
+			}
 
 			FindItUtil.IsReady = true;
 
 			stopWatch.Stop();
 
-			Mod.Log.Info($"Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds:0.000}s");
+			Mod.Log.Info($"{(full ? "Full" : "Partial")} Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds:0.000}s");
 			Mod.Log.Info($"Indexed Prefabs Count: {FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Count}");
-
-			Enabled = false;
 		}
 
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)

@@ -14,9 +14,19 @@ namespace FindIt.Domain.Utilities
 			{
 				new EntityQueryDesc
 				{
-					Any = new[]
+					All = new[]
 					{
 						ComponentType.ReadOnly<AreaData>(),
+					},
+					None = new[]
+					{
+						ComponentType.ReadOnly<PlaceholderObjectElement>(),
+					}
+				},
+				new EntityQueryDesc
+				{
+					All = new[]
+					{
 						ComponentType.ReadOnly<SurfaceData>(),
 					},
 					None = new[]

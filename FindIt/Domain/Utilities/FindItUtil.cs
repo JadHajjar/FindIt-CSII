@@ -10,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
+using Unity.Entities;
+
 namespace FindIt.Domain.Utilities
 {
 	public static class FindItUtil
@@ -253,6 +255,25 @@ namespace FindIt.Domain.Utilities
 			}
 
 			_cachedSearch = prefabList;
+		}
+
+		public static void RemoveItem(Entity entity)
+		{
+			RemoveItem(entity.Index);
+		}
+
+		public static void RemoveItem(int index)
+		{
+			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(index, out var prefabIndex))
+			{
+				if (IsFavorited(prefabIndex.Prefab))
+				{
+					ToggleFavorited(index);
+				}
+
+				CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Remove(prefabIndex);
+				CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory].Remove(prefabIndex);
+			}
 		}
 	}
 }

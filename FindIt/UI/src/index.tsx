@@ -21,6 +21,7 @@ const register: ModRegistrar = (moduleRegistry) => {
 
   // This wraps prefab selection and top bar components.
   moduleRegistry.append("Game", FindItMainContainerComponent);
+  moduleRegistry.append("Editor", FindItMainContainerComponent);
 
   //moduleRegistry.append("Game", RightClickMenuComponent);
 

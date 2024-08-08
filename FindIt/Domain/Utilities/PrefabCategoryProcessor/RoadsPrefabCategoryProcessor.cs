@@ -2,6 +2,8 @@
 
 using Game.Prefabs;
 
+using System.Reflection;
+
 using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
@@ -10,6 +12,24 @@ namespace FindIt.Domain.Utilities
 	{
 		public EntityQueryDesc[] GetEntityQuery()
 		{
+			if (Mod.IsRoadBuilderEnabled)
+			{
+				return new[]
+				{
+					new EntityQueryDesc
+					{
+						All = new[]
+						{
+							ComponentType.ReadOnly<RoadData>(),
+						},
+						None = new[]
+						{
+							ComponentType.ReadOnly<BridgeData>(),
+						},
+					},
+				};
+			}
+
 			return new[]
 			{
 				new EntityQueryDesc

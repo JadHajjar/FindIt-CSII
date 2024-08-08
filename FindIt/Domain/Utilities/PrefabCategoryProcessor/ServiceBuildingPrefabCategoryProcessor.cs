@@ -37,11 +37,21 @@ namespace FindIt.Domain.Utilities
 				{
 					All = new[]
 					{
-						ComponentType.ReadOnly<ServiceUpgradeBuilding>()
-					},
-					Any = new[]
-					{
+						ComponentType.ReadOnly<ServiceUpgradeBuilding>(),
 						ComponentType.ReadOnly<BuildingData>(),
+					},
+					None = new[]
+					{
+						ComponentType.ReadOnly<TrafficSpawnerData>(),
+						ComponentType.ReadOnly<SpawnableBuildingData>(),
+						ComponentType.ReadOnly<PlaceholderBuildingData>()
+					}
+				},
+				new EntityQueryDesc
+				{
+					All = new[]
+					{
+						ComponentType.ReadOnly<ServiceUpgradeBuilding>(),
 						ComponentType.ReadOnly<BuildingExtensionData>()
 					},
 					None = new[]
