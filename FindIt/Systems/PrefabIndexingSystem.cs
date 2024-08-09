@@ -32,6 +32,7 @@ namespace FindIt.Systems
 		private PrefabSystem _prefabSystem;
 		private ImageSystem _imageSystem;
 		private PrefabUISystem _prefabUISystem;
+		private FindItUISystem _finditUISystem;
 		private HashSet<string> _blackList;
 		private ComponentType? roadBuilderDiscarded;
 		private readonly List<IPrefabCategoryProcessor> _prefabCategoryProcessors = new();
@@ -43,6 +44,7 @@ namespace FindIt.Systems
 			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			_imageSystem = World.GetOrCreateSystemManaged<ImageSystem>();
 			_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
+			_finditUISystem = World.GetOrCreateSystemManaged<FindItUISystem>();
 
 			using var stream = typeof(Mod).Assembly.GetManifestResourceStream("FindIt.Resources.Blacklist.txt");
 			using var reader = new StreamReader(stream);
@@ -141,19 +143,19 @@ namespace FindIt.Systems
 						}
 					}
 
+					var query = GetEntityQuery(queries);
+
 					if (!full)
 					{
 						for (var i = 0; i < queries.Length; i++)
 						{
 							queries[i].Any = new[] { ComponentType.ReadOnly<Created>(), ComponentType.ReadOnly<Updated>() };
 						}
-					}
 
-					var query = GetEntityQuery(queries);
-
-					if (query.IsEmptyIgnoreFilter)
-					{
-						continue;
+						if (GetEntityQuery(queries).IsEmptyIgnoreFilter)
+						{
+							continue;
+						}
 					}
 
 					var entities = query.ToEntityArray(Allocator.Temp);
@@ -219,6 +221,8 @@ namespace FindIt.Systems
 			}
 
 			FindItUtil.IsReady = true;
+
+			_finditUISystem.TriggerSearch();
 
 			stopWatch.Stop();
 

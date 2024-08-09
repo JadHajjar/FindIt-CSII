@@ -44,13 +44,12 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.0.3.6" />
+  <ModVersion Value="1.0.4" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.0.3.6
+# v1.0.4
 ## Changes
-* Added an automatic cleanup to fix the UI not appearing for some users.
-* Added partial support in the Editor, activate Find It and Picker using their hotkeys.
+* Prefab list now updates automatically when a prefab is created or updated.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />

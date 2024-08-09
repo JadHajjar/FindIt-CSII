@@ -57,7 +57,8 @@ namespace FindIt.Domain
 		internal void Remove(PrefabIndex prefabIndex)
 		{
 			_dictionary.Remove(prefabIndex.Id);
-			_orderedList?.Remove(prefabIndex);
+
+			ResetOrder();
 		}
 
 		internal void ResetOrder()
