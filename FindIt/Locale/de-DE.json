@@ -108,12 +108,12 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ResetFavorites]": "Alle Assets aus Ihren Favoriten entfernen",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Genaue Suche",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Verwendet eine strikte Textsuche, anstatt eine ungefähre Suche zu verwenden, die Schreibfehler berücksichtigt.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "„Branding“-Assets im Abschnitt „Alle“ ausblenden",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Blendet markenspezifische Requisiten aus den „Alle“-Kategorien aus, sodass sie nur angezeigt werden, wenn du speziell in der Unterkategorie „Branding & Billboards“ bist. Ein erneutes Laden deines Spielstands ist erforderlich, um die Änderungen anzuwenden.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Schnell & gleichmäßig Scrollen",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Erhöht die Aktualisierungsrate beim scrollen. Dies kann zu Abstürzen auf einigen Computern führen.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Find It öffnen/ Suchleiste fokussieren",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determines the hot-key to bring up the Find It panel, or focus the search bar in case the panel is already visible.",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Bestimmt die Tastenkombination, um das „Find It“-Panel zu öffnen oder die Suchleiste in den Fokus zu rücken, falls das Panel bereits sichtbar ist.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Pipette",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Legt die Taste fest, um die Pipette zu aktivieren."
 }
