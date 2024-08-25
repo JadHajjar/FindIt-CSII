@@ -92,7 +92,7 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideRandomAssets]": "Ignoriert Assets, die als zufällig oder Platzhalter markiert sind, erfordert ein erneutes Laden des Spielstandes, um die Änderungen zu übernehmen.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "Öffnet das Suchfeld, nachdem Sie ein Objekt ausgewählt haben.",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.OpenPanelOnPicker]": "Wählen Sie nach der Auswahl eines Objekts mit Picker zwischen dem Öffnen des Find It  oder dem Vanilla Fenster, falls verfügbar.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "Wählen Sie das erste Asset beim Öffnen von \"Finden\"",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "Wähle das erste Asset aus, wenn du Find It öffnest.",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SelectPrefabOnOpen]": "Automatisch das erste Asset in der Liste auswählen, wenn \"Finden\" geöffnet wird. Dies wirkt sich auf Verhaltensweisen wie das Schließen anderer Werkzeuge und die Escape-Taste zum Schließen von \"Finden\" aus.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.ScrollSpeed]": "Scrollgeschwindigkeit",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.ScrollSpeed]": "Größe der dargestellten Elemente",
