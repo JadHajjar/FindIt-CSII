@@ -19,7 +19,7 @@
   "Tooltip.LABEL[FindIt.Expand]": "Étendre le panneau",
   "Tooltip.LABEL[FindIt.Shrink]": "Réduire le panneau",
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filtres et Tri",
-  "Tooltip.LABEL[FindIt.No Theme]": "No Theme",
+  "Tooltip.LABEL[FindIt.No Theme]": "Pas de thème",
   "Options.LABEL[FindIt.ThemeFilter]": "Thème",
   "Options.LABEL[FindIt.LotDepth]": "Profondeur du lot",
   "Options.LABEL[FindIt.LotWidth]": "Largeur du lot",
@@ -112,8 +112,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Masque les accessoires de marque de la catégorie 'Tous' afin qu'ils ne s'affichent que si vous êtes spécifiquement dans la sous-catégorie 'Marques et Panneau d'affichage'. Nécessite le rechargement de votre sauvegarde pour appliquer les modifications.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Défilement Rapide & Lisse",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Augmente le taux de rafraîchissement du défilement. Cela peut causer des plantages sur certains ordinateurs.",
-  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Open Find It / Focus search bar",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determines the hot-key to bring up the Find It panel, or focus the search bar in case the panel is already visible.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Ouvrir Find It / Barre de rechercher Focus",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Détermine le raccourci pour ouvrir la fenêtre Find It, ou la barre de recherche Focus si Find It est déjà ouvert.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Picker",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Determines the hot-key to activate the Picker tool."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Attribuer une touche pour l'outil Picker."
 }
