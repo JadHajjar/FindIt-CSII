@@ -233,9 +233,10 @@ namespace FindIt.Systems
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
 		{
 			prefabIndex.Id = entity.Index;
+			prefabIndex.PrefabName = prefab.name;
 			prefabIndex.Name = GetAssetName(prefab);
 			prefabIndex.Thumbnail ??= ImageSystem.GetThumbnail(prefab);
-			prefabIndex.IsFavorited = FindItUtil.IsFavorited(prefab);
+			prefabIndex.IsFavorited = FindItUtil.IsFavorited(prefab.name);
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.Theme ??= prefab.GetComponent<ThemeObject>()?.m_Theme;
@@ -330,7 +331,7 @@ namespace FindIt.Systems
 
 		private void CleanupBrandPrefabs()
 		{
-			var brands = new HashSet<string>(FindItUtil.CategorizedPrefabs[PrefabCategory.Props][PrefabSubCategory.Props_Branding].Select(x => x.Prefab.name));
+			var brands = new HashSet<string>(FindItUtil.CategorizedPrefabs[PrefabCategory.Props][PrefabSubCategory.Props_Branding].Select(x => x.PrefabName));
 
 			foreach (var category in FindItUtil.CategorizedPrefabs.Keys)
 			{
@@ -348,11 +349,11 @@ namespace FindIt.Systems
 
 					foreach (var item in FindItUtil.CategorizedPrefabs[category][subCategory].ToList())
 					{
-						if (brands.Contains(item.Prefab.name))
+						if (brands.Contains(item.PrefabName))
 						{
 							FindItUtil.CategorizedPrefabs[category][subCategory].Remove(item);
 
-							Mod.Log.Debug($"Removed {item.Prefab.name} from {subCategory}");
+							Mod.Log.Debug($"Removed {item.PrefabName} from {subCategory}");
 						}
 					}
 				}

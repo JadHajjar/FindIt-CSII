@@ -1,6 +1,20 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.5",
+    "Date": "2024-08-09",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Added suport for citizen props.",
+          "Small fixes and improvements."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.4",
     "Date": "2024-08-09",
     "ChangeGroups": [

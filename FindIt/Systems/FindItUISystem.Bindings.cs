@@ -152,6 +152,7 @@ namespace FindIt.Systems
 			FindItUtil.Filters.CurrentSearch = text.Trim();
 
 			_CurrentSearch.Value = text;
+			_CurrentSearch.ForceUpdate();
 
 			TriggerSearch();
 		}

@@ -82,14 +82,14 @@ namespace FindIt.Domain
 		private bool DoSearchFilter(PrefabIndex prefab)
 		{
 			return CurrentSearch.SearchCheck(prefab.Name)
-				|| CurrentSearch.SearchCheck(prefab.Prefab.name);
+				|| CurrentSearch.SearchCheck(prefab.PrefabName);
 			//|| prefab.Tags.Any(DoTagSearch);
 		}
 
 		private bool DoStrictSearchFilter(PrefabIndex prefab)
 		{
 			return prefab.Name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| prefab.Prefab.name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0;
+				|| prefab.PrefabName.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0;
 			//|| prefab.Tags.Any(DoTagSearch);
 		}
 

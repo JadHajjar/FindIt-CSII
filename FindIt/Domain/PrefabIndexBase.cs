@@ -6,6 +6,7 @@ namespace FindIt.Domain
 	{
 		public PrefabBase Prefab { get; }
 		public int Id { get; set; }
+		public string PrefabName { get; set; }
 		public string Name { get; set; }
 		public string Thumbnail { get; set; }
 		public string FallbackThumbnail { get; set; }

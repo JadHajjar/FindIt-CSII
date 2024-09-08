@@ -96,9 +96,9 @@ namespace FindIt.Domain.Utilities
 			}
 		}
 
-		public static bool IsFavorited(PrefabBase prefab)
+		public static bool IsFavorited(string prefab)
 		{
-			return customPrefabsData.TryGetValue(prefab.name, out var data) && data.IsFavorited;
+			return customPrefabsData.TryGetValue(prefab, out var data) && data.IsFavorited;
 		}
 
 		public static void ToggleFavorited(int id)
@@ -108,7 +108,7 @@ namespace FindIt.Domain.Utilities
 				return;
 			}
 
-			if (customPrefabsData.TryGetValue(prefabIndex.Prefab.name, out var data))
+			if (customPrefabsData.TryGetValue(prefabIndex.PrefabName, out var data))
 			{
 				data.IsFavorited = !data.IsFavorited;
 
@@ -116,7 +116,7 @@ namespace FindIt.Domain.Utilities
 			}
 			else
 			{
-				customPrefabsData[prefabIndex.Prefab.name] = new CustomPrefabData
+				customPrefabsData[prefabIndex.PrefabName] = new CustomPrefabData
 				{
 					IsFavorited = true
 				};
@@ -200,7 +200,7 @@ namespace FindIt.Domain.Utilities
 
 		public static bool Find(PrefabBase prefab, bool setCategory, out int id)
 		{
-			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => prefab.name == x.Prefab.name);
+			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => prefab.name == x.PrefabName);
 
 			if (prefabIndex is null)
 			{
@@ -266,7 +266,7 @@ namespace FindIt.Domain.Utilities
 		{
 			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(index, out var prefabIndex))
 			{
-				if (IsFavorited(prefabIndex.Prefab))
+				if (IsFavorited(prefabIndex.PrefabName))
 				{
 					ToggleFavorited(index);
 				}
