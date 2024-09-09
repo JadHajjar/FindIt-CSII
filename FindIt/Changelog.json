@@ -1,14 +1,28 @@
 [
   {
     "Stable": true,
-    "Version": "1.0.5",
-    "Date": "2024-08-09",
+    "Version": "1.0.7",
+    "Date": "2024-09-09",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Fixed Chinese translations."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.0.6",
+    "Date": "2024-09-08",
     "ChangeGroups": [
       {
         "Name": "Changes",
         "Changes": [
           "Added suport for citizen props.",
-          "Small fixes and improvements."
+          "Small fixes and improvements.",
+          "Updated translations."
         ]
       }
     ]

@@ -44,13 +44,12 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.0.5" />
+  <ModVersion Value="1.0.7" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.0.5
+# v1.0.7
 ## Changes
-* Added suport for citizen props.
-* Small fixes and improvements.
+* Fixed Chinese translations.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
