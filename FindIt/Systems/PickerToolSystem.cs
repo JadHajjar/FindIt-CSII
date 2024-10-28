@@ -41,8 +41,8 @@ namespace FindIt.Systems
 			_applyAction = Mod.Settings.GetAction(nameof(FindIt) + "Apply");
 
 			var builtInApplyAction = InputManager.instance.FindAction(InputManager.kToolMap, "Apply");
-            var mimicApplyBinding = _applyAction.bindings.FirstOrDefault(b => b.group == nameof(Mouse));
-			var builtInApplyBinding = builtInApplyAction.bindings.FirstOrDefault(b => b.group == nameof(Mouse));
+            var mimicApplyBinding = _applyAction.bindings.FirstOrDefault(b => b.device == InputManager.DeviceType.Mouse);
+			var builtInApplyBinding = builtInApplyAction.bindings.FirstOrDefault(b => b.device == InputManager.DeviceType.Mouse);
 
 			mimicApplyBinding.path = builtInApplyBinding.path;
 			mimicApplyBinding.modifiers = builtInApplyBinding.modifiers;

@@ -89,7 +89,7 @@ namespace FindIt.Domain.Utilities
 					prefabIndex.SubCategory = PrefabSubCategory.Buildings_Commercial;
 					break;
 				case Game.Zones.AreaType.Industrial:
-					if (zoneData.m_ZoneFlags == ZoneFlags.Office)
+					if (_zonePrefab.m_Office)
 					{
 						prefabIndex.SubCategory = PrefabSubCategory.Buildings_Office;
 					}

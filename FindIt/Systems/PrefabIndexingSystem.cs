@@ -195,7 +195,7 @@ namespace FindIt.Systems
 							{
 								FindItUtil.RemoveItem(oldId);
 							}
-							
+
 							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
 							{
 								AddPrefab(prefab, entity, prefabIndex);
@@ -244,6 +244,13 @@ namespace FindIt.Systems
 			prefabIndex.Tags ??= new();
 			prefabIndex.IsVanilla = prefab.builtin;
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
+
+#if DEBUG
+			if (prefabIndex.SubCategory != PrefabSubCategory.Props_Branding && !prefabIndex.IsRandom && ImageSystem.GetIcon(prefab) is null or "")
+			{
+				Mod.Log.Info("MISSINGICON: " + prefab.name);
+			}
+#endif
 
 			if (prefabIndex.IsRandom && EntityManager.TryGetBuffer<PlaceholderObjectElement>(entity, true, out var placeholderObjectElements))
 			{
@@ -301,12 +308,9 @@ namespace FindIt.Systems
 		{
 			_prefabUISystem.GetTitleAndDescription(prefab, out var titleId, out var _);
 
-			if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
-			{
-				return name;
-			}
-
-			return prefab.name.Replace('_', ' ').FormatWords();
+			return GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name)
+				? name
+				: prefab.name.Replace('_', ' ').FormatWords();
 		}
 
 		private static void AddNumberToDuplicatePrefabNames()

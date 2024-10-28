@@ -1,6 +1,46 @@
 [
   {
     "Stable": true,
+    "Version": "1.0.10",
+    "Date": "2024-10-29",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Fixed French Region Pack's office buildings showing up in specialized industries.",
+          "Fixed the filters not showing lot type."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.0.9",
+    "Date": "2024-10-28",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Added the 'Asset Pack' to the filters list."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.0.8",
+    "Date": "2024-10-23",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Compatibility with patch 1.1.10f1"
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.7",
     "Date": "2024-09-09",
     "ChangeGroups": [

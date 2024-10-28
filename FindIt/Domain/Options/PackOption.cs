@@ -18,7 +18,7 @@ namespace FindIt.Domain.Options
 		private readonly OptionsUISystem _optionsUISystem;
 		private readonly List<AssetPackPrefab> _themeList;
 
-		public int Id { get; } = 95;
+		public int Id { get; } = 94;
 
 		public PackOption(OptionsUISystem optionsUISystem)
 		{
