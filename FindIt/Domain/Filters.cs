@@ -5,6 +5,7 @@ using Game.Prefabs;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FindIt.Domain
 {
@@ -16,6 +17,7 @@ namespace FindIt.Domain
 		public int LotWidthFilter { get; set; }
 		public int LotDepthFilter { get; set; }
 		public ThemePrefab SelectedTheme { get; set; }
+		public AssetPackPrefab SelectedAssetPack { get; set; }
 		public bool SelectedThemeNone { get; set; }
 		public bool HideAds { get; set; }
 		public bool HideRandoms { get; set; }
@@ -71,6 +73,11 @@ namespace FindIt.Domain
 			else if (SelectedTheme != null)
 			{
 				yield return DoThemeFilter;
+			}
+
+			if (SelectedAssetPack != null)
+			{
+				yield return DoAssetPackFilter;
 			}
 
 			if (!string.IsNullOrWhiteSpace(CurrentSearch))
@@ -146,6 +153,11 @@ namespace FindIt.Domain
 		private bool DoThemeFilter(PrefabIndex prefab)
 		{
 			return prefab.Theme == SelectedTheme;
+		}
+
+		private bool DoAssetPackFilter(PrefabIndex prefab)
+		{
+			return prefab.AssetPacks?.Any(x => x == SelectedAssetPack) ?? false;
 		}
 	}
 }

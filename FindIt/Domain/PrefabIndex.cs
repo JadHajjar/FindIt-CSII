@@ -20,6 +20,7 @@ namespace FindIt.Domain
 		public int BuildingLevel { get; set; }
 		public bool IsVanilla { get; set; }
 		public ThemePrefab Theme { get; set; }
+		public AssetPackPrefab[] AssetPacks { get; set; }
 		public int[] RandomPrefabs { get; set; }
 		public List<string> Tags { get; set; }
 
