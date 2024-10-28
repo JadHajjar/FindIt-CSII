@@ -21,6 +21,7 @@
   "Tooltip.LABEL[FindIt.FiltersSorting]": "필터 및 정렬",
   "Tooltip.LABEL[FindIt.No Theme]": "테마 없음",
   "Options.LABEL[FindIt.ThemeFilter]": "테마",
+  "Options.LABEL[FindIt.AssetPackFilter]": "Pack",
   "Options.LABEL[FindIt.LotDepth]": "세로 길이",
   "Options.LABEL[FindIt.LotWidth]": "가로 길이",
   "Options.LABEL[FindIt.ZoneType]": "구역 유형",
