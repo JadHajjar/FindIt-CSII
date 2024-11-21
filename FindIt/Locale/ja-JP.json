@@ -21,6 +21,7 @@
   "Tooltip.LABEL[FindIt.FiltersSorting]": "Filters & Sorting",
   "Tooltip.LABEL[FindIt.No Theme]": "No Theme",
   "Options.LABEL[FindIt.ThemeFilter]": "Theme",
+  "Options.LABEL[FindIt.AssetPackFilter]": "Pack",
   "Options.LABEL[FindIt.LotDepth]": "Lot Depth",
   "Options.LABEL[FindIt.LotWidth]": "Lot Width",
   "Options.LABEL[FindIt.ZoneType]": "Zone Type",

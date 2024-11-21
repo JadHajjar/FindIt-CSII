@@ -21,6 +21,7 @@
   "Tooltip.LABEL[FindIt.FiltersSorting]": "筛选和排序",
   "Tooltip.LABEL[FindIt.No Theme]": "无主题",
   "Options.LABEL[FindIt.ThemeFilter]": "主题",
+  "Options.LABEL[FindIt.AssetPackFilter]": "数据包",
   "Options.LABEL[FindIt.LotDepth]": "建筑进深",
   "Options.LABEL[FindIt.LotWidth]": "建筑面宽",
   "Options.LABEL[FindIt.ZoneType]": "建筑密度",
