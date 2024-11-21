@@ -54,7 +54,7 @@ If you're having any issues, please report them on my discord as it's easier to 
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
-  <ExternalLink Type="buymeacoffee" Url="https://www.buymeacoffee.com/tdwsvillage" />
+	<!--<ExternalLink Type="buymeacoffee" Url="https://www.buymeacoffee.com/tdwsvillage" />-->
   <ExternalLink Type="crowdin" Url="https://crowdin.com/project/find-it-csii" />
   <Dependency Id="74417" />
   <Dependency Id="79634" />

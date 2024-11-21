@@ -16,6 +16,7 @@ namespace FindIt.Domain
 		public PrefabSubCategory SubCategory { get; set; }
 		public DlcId DlcId { get; set; }
 		public ZoneTypeFilter ZoneType { get; set; } = ZoneTypeFilter.Any;
+		public BuildingCornerFilter CornerType { get; set; }
 		public int2 LotSize { get; set; }
 		public int BuildingLevel { get; set; }
 		public bool IsVanilla { get; set; }

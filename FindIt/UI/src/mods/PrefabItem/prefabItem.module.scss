@@ -25,6 +25,7 @@
   max-height: 4em;
   white-space: normal;
   overflow: hidden;
+  text-shadow: 0px 0px 6rem rgb(0 0 0);
 }
 
 .GridNoText .gridItem {
@@ -55,17 +56,18 @@
   transition-timing-function: ease-in-out;
   position: absolute;
   bottom: 2.5rem;
-  font-size: 10rem;
-  padding: 3rem;
+  font-size: 12rem;
+  padding: 1.5rem;
   white-space: normal;
-  overflow: hidden;
   background-color: rgba(50, 50, 50, 0.6);
   backdrop-filter: var(--panelBlur);
   color: var(--textColorDim);
-  border-bottom-left-radius: var(--panelRadius);
-  border-bottom-right-radius: var(--panelRadius);
-  border-top-left-radius: var(--panelRadius);
-  border-top-right-radius: var(--panelRadius);
+  border-radius: 3rem;
+
+  p {
+    max-height: 40rem;
+    coh-font-fit-mode: shrink;
+  }
 }
 
 .GridNoText .gridItem:hover .gridItemText {
@@ -127,6 +129,7 @@
 .ListSimple .gridItemText {
   font-size: 12rem;
   overflow: hidden;
+  text-shadow: 0px 0px 6rem rgb(0 0 0);
 }
 
 .favoriteIcon {
@@ -232,4 +235,14 @@
 .GridWithText .gridItemText p,
 .GridNoText .gridItemText p {
   text-align: center;
+}
+
+.gridItem {
+  &.selected {
+    pointer-events: none !important;
+  }
+  &.selected,
+  &:active {
+    background-color: var(--accentColorDark-focused) !important;
+  }
 }

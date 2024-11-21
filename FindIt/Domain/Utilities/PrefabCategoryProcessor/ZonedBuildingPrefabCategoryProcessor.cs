@@ -6,6 +6,8 @@ using FindIt.Domain.Interfaces;
 using Game.Prefabs;
 using Game.UI;
 
+using System;
+
 using Unity.Entities;
 
 namespace FindIt.Domain.Utilities
@@ -48,7 +50,7 @@ namespace FindIt.Domain.Utilities
 
 		public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
 		{
-			if (prefab is not BuildingPrefab)
+			if (prefab is not BuildingPrefab buildingPrefab)
 			{
 				prefabIndex = null;
 				return false;
@@ -69,6 +71,7 @@ namespace FindIt.Domain.Utilities
 			};
 
 			prefabIndex.CategoryThumbnail = prefabIndex.FallbackThumbnail = _imageSystem.GetIconOrGroupIcon(zonePrefab);
+			prefabIndex.CornerType = GetCornerType(buildingPrefab.m_AccessType);
 
 			if (_prefabSystem.TryGetPrefab<ZonePrefab>(zonePrefab, out var _zonePrefab))
 			{
@@ -108,6 +111,18 @@ namespace FindIt.Domain.Utilities
 			}
 
 			return true;
+		}
+
+		private BuildingCornerFilter GetCornerType(BuildingAccessType m_AccessType)
+		{
+			return m_AccessType switch
+			{
+				BuildingAccessType.LeftCorner or BuildingAccessType.LeftAndBackCorner => BuildingCornerFilter.Left,
+				BuildingAccessType.RightCorner or BuildingAccessType.RightAndBackCorner => BuildingCornerFilter.Right,
+				BuildingAccessType.LeftAndRightCorner => BuildingCornerFilter.Left | BuildingCornerFilter.Right,
+				BuildingAccessType.All => BuildingCornerFilter.Left | BuildingCornerFilter.Right | BuildingCornerFilter.Front,
+				_ => BuildingCornerFilter.Front
+			};
 		}
 
 		private Entity GetZonePrefab(Entity entity, out int level)

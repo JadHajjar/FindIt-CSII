@@ -1,6 +1,28 @@
 [
   {
     "Stable": true,
+    "Version": "1.1.0",
+    "Date": "2024-11-21",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Added a Building Corner filter, allowing you to search for Left and Right corner buildings, as well as Front-only buildings."
+        ]
+      },
+      {
+        "Name": "UI and UX Improvements",
+        "Changes": [
+          "Fixed the previously selected asset not staying selected after closing and re-opening the find it panel.",
+          "Fixed changing display styles requiring two clicks to apply.",
+          "Various UI improvements.",
+          "Updated translations."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.0.10",
     "Date": "2024-10-29",
     "ChangeGroups": [

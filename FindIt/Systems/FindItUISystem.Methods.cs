@@ -6,6 +6,7 @@ using Game.Tools;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,7 +61,7 @@ namespace FindIt.Systems
 		{
 			// Activates a prefab using its index from PrefabIndexingSystem
 
-			if (FindItUtil.GetPrefabBase(id) is PrefabBase prefabBase)
+			if (FindItUtil.GetPrefabBase(id) is PrefabBase prefabBase && _toolSystem.activePrefab != prefabBase)
 			{
 				settingPrefab = true;
 				_toolSystem.ActivatePrefabTool(prefabBase);

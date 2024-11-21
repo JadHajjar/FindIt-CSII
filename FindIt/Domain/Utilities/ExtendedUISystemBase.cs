@@ -118,7 +118,8 @@ namespace FindIt.Domain.Utilities
 
 		public T Value
 		{
-			get => dirty ? valueToUpdate : Binding.value; set
+			get => dirty ? valueToUpdate : Binding.value;
+			set
 			{
 				dirty = true;
 				valueToUpdate = value;
@@ -143,13 +144,14 @@ namespace FindIt.Domain.Utilities
 
 		public void UpdateCallback(T value)
 		{
-			Binding.Update(value);
+			Value = value;
+
 			_updateCallBack?.Invoke(value);
 		}
 
 		public static implicit operator T(ValueBindingHelper<T> helper)
 		{
-			return helper.Binding.value;
+			return helper.Value;
 		}
 	}
 

@@ -7,12 +7,14 @@ import { PrefabSelectionComponent, ViewStyle$ } from "mods/PrefabSelection/Prefa
 import { useState, useRef, useEffect } from "react";
 import styles from "./mainContainer.module.scss";
 import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";
+import { OptionSection } from "domain/ContentViewType";
 
 const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const IsExpanded$ = bindValue<boolean>(mod.id, "IsExpanded");
 
 // This functions trigger an event on C# side and C# designates the method to implement.
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+const OptionsList$ = bindValue<OptionSection[]>(mod.id, "OptionsList");
 
 const GameMainScreneTheme: Theme | any = getModule("game-ui/game/components/game-main-screen.module.scss", "classes");
 
@@ -34,6 +36,7 @@ export const FindItMainContainerComponent = () => {
   const ShowFindItPanel = useValue(ShowFindItPanel$);
   const IsExpanded = useValue(IsExpanded$);
   const PanelWidth = useValue(PanelWidth$) + 15 + 20;
+  const OptionsList = useValue(OptionsList$);
 
   const optionsOverflow = () => window.innerWidth < containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
 
@@ -44,6 +47,10 @@ export const FindItMainContainerComponent = () => {
   });
 
   if (isPhotoMode || !ShowFindItPanel) return null;
+
+  function onOptionClicked(x: number, y: number, z: number): void {
+    trigger(mod.id, "OptionClicked", x, y, z);
+  }
 
   return (
     <>
@@ -56,7 +63,7 @@ export const FindItMainContainerComponent = () => {
                   <div style={{ position: "relative" }}>
                     <div className={styles.topPanel}>
                       <div>
-                        <OptionsPanelComponent></OptionsPanelComponent>
+                        <OptionsPanelComponent options={OptionsList} OnChange={onOptionClicked}></OptionsPanelComponent>
                       </div>
                     </div>
                   </div>
@@ -76,9 +83,9 @@ export const FindItMainContainerComponent = () => {
                 </div>
               </div>
               {optionsOpen && !optionsOverflow() && (
-                <div className={styles.rightPanel} style={{ left: PanelWidth + "rem" }}>
+                <div className={styles.rightPanel} style={{ left: PanelWidth + "rem", bottom: 0 }}>
                   <div>
-                    <OptionsPanelComponent></OptionsPanelComponent>
+                    <OptionsPanelComponent options={OptionsList} OnChange={onOptionClicked}></OptionsPanelComponent>
                   </div>
                 </div>
               )}

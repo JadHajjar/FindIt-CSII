@@ -16,6 +16,7 @@ namespace FindIt.Systems
 	{
 		private readonly Dictionary<int, IOptionSection> _sections = new();
 		private PrefabUISystem _prefabUISystem;
+		private PrefabSystem _prefabSystem;
 		private FindItUISystem _findItUISystem;
 		private ValueBindingHelper<OptionSectionUIEntry[]> _optionsList;
 
@@ -23,6 +24,7 @@ namespace FindIt.Systems
 		{
 			base.OnCreate();
 
+			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
 			_findItUISystem = World.GetOrCreateSystemManaged<FindItUISystem>();
 			_optionsList = CreateBinding("OptionsList", new OptionSectionUIEntry[0]);
@@ -85,7 +87,7 @@ namespace FindIt.Systems
 
 		public string GetAssetName(PrefabBase prefab)
 		{
-			_prefabUISystem.GetTitleAndDescription(prefab, out var titleId, out var _);
+			_prefabUISystem.GetTitleAndDescription(_prefabSystem.GetEntity(prefab), out var titleId, out var _);
 
 			if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
 			{

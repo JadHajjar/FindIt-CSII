@@ -9,23 +9,22 @@ using System.Linq;
 
 namespace FindIt.Domain.Options
 {
-	internal class ZoneTypeOption : IOptionSection
+	internal class BuilderCornerOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly Dictionary<ZoneTypeFilter, string> _styles;
+		private readonly Dictionary<BuildingCornerFilter, string> _styles;
 
-		public int Id { get; } = 15;
+		public int Id { get; } = 14;
 
-		public ZoneTypeOption(OptionsUISystem optionsUISystem)
+		public BuilderCornerOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
 			_styles = new()
 			{
-				[ZoneTypeFilter.Any] = "coui://uil/Standard/StarAll.svg",
-				[ZoneTypeFilter.Low] = "coui://uil/Standard/LowLevel.svg",
-				[ZoneTypeFilter.Row] = "coui://uil/Standard/Row.svg",
-				[ZoneTypeFilter.Medium] = "coui://uil/Standard/MediumLevel.svg",
-				[ZoneTypeFilter.High] = "coui://uil/Standard/HighLevel.svg",
+				[BuildingCornerFilter.Any] = "coui://uil/Standard/StarAll.svg",
+				[BuildingCornerFilter.Left] = "coui://uil/Standard/LowLevel.svg",
+				[BuildingCornerFilter.Front] = "coui://uil/Standard/Row.svg",
+				[BuildingCornerFilter.Right] = "coui://uil/Standard/MediumLevel.svg",
 			};
 		}
 
@@ -34,13 +33,13 @@ namespace FindIt.Domain.Options
 			return new OptionSectionUIEntry
 			{
 				Id = Id,
-				Name = LocaleHelper.Translate("Options.LABEL[FindIt.ZoneType]"),
+				Name = LocaleHelper.Translate("Options.LABEL[FindIt.BuilderCorner]"),
 				Options = _styles.Select(x => new OptionItemUIEntry
 				{
 					Id = (int)x.Key,
-					Name = LocaleHelper.GetTooltip(x.Key == ZoneTypeFilter.Any ? "Any" : $"Zone{x.Key}"),
+					Name = LocaleHelper.GetTooltip(x.Key == BuildingCornerFilter.Any ? "Any" : $"Corner{x.Key}"),
 					Icon = x.Value,
-					Selected = FindItUtil.Filters.SelectedZoneType == x.Key
+					Selected = FindItUtil.Filters.SelectedBuildingCorner == x.Key
 				}).ToArray()
 			};
 		}
@@ -53,19 +52,19 @@ namespace FindIt.Domain.Options
 
 		public void OnOptionClicked(int optionId, int value)
 		{
-			FindItUtil.Filters.SelectedZoneType = (ZoneTypeFilter)optionId;
+			FindItUtil.Filters.SelectedBuildingCorner = (BuildingCornerFilter)optionId;
 
 			_optionsUISystem.TriggerSearch();
 		}
 		
 		public void OnReset()
 		{
-			if (FindItUtil.Filters.SelectedZoneType == ZoneTypeFilter.Any)
+			if (FindItUtil.Filters.SelectedBuildingCorner == BuildingCornerFilter.Any)
 			{
 				return;
 			}
 
-			FindItUtil.Filters.SelectedZoneType = ZoneTypeFilter.Any;
+			FindItUtil.Filters.SelectedBuildingCorner = BuildingCornerFilter.Any;
 
 			_optionsUISystem.TriggerSearch();
 		}

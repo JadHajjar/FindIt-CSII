@@ -23,6 +23,7 @@ namespace FindIt.Domain
 		public bool HideRandoms { get; set; }
 		public bool HideVanilla { get; set; }
 		public int BuildingLevelFilter { get; set; }
+		public BuildingCornerFilter SelectedBuildingCorner { get; set; }
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
@@ -49,6 +50,11 @@ namespace FindIt.Domain
 			if (SelectedZoneType != ZoneTypeFilter.Any)
 			{
 				yield return DoZoneTypeFilter;
+			}
+
+			if (SelectedBuildingCorner !=  BuildingCornerFilter.Any)
+			{
+				yield return DoBuildingCornerFilter;
 			}
 
 			if (BuildingLevelFilter != 0)
@@ -108,6 +114,11 @@ namespace FindIt.Domain
 		private bool DoDlcFilter(PrefabIndex prefab)
 		{
 			return prefab.DlcId.id == SelectedDlc;
+		}
+
+		private bool DoBuildingCornerFilter(PrefabIndex prefab)
+		{
+			return (prefab.CornerType & SelectedBuildingCorner) == SelectedBuildingCorner;
 		}
 
 		private bool DoZoneTypeFilter(PrefabIndex prefab)

@@ -72,7 +72,7 @@ namespace FindIt.Systems
 
 				if (activatePrefab && Mod.Settings.SelectPrefabOnOpen)
 				{
-					TryActivatePrefabTool(prefab.Id);
+					TryActivatePrefabTool(_ActivePrefabId);
 				}
 			}
 

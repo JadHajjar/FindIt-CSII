@@ -6,6 +6,7 @@ import mod from "../../../mod.json";
 import { useLocalization } from "cs2/l10n";
 import { useEffect, useRef, useState } from "react";
 import { PrefabEntry } from "domain/prefabEntry";
+import classNames from "classnames";
 
 export interface PrefabButtonProps {
   prefab: PrefabEntry;
@@ -14,18 +15,10 @@ export interface PrefabButtonProps {
   width: string;
 }
 
-// These establishes the binding with C# side.
-
 export const PrefabItemComponent = (props: PrefabButtonProps) => {
-  // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
-  // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
-  const imgRef = useRef(null);
   const [favoriteFlip, setFavorited] = useState(false);
   const [thumbnailIndex, setThumbnailIndex] = useState(0);
-  //const [showRightClick, setShowRightclick] = useState(false);
-
-  var rightclickpos = { x: 0, y: 0 };
 
   const mouseOver = () => {
     setThumbnailIndex(Math.floor(Math.random() * props.prefab.thumbnails.length));
@@ -41,23 +34,14 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
     setFavorited(!favoriteFlip);
   }
 
-  function OnMouseUp(e: any) {
-    if (e.button === 2) {
-      rightclickpos = { x: e.clientX, y: e.clientY };
-      //setShowRightclick(true);
-    }
-  }
-
   if (thumbnailIndex >= props.prefab.thumbnails.length) setThumbnailIndex(0);
 
   return (
     <>
       <Button
-        className={VanillaComponentResolver.instance.assetGridTheme.item + " " + styles.gridItem}
-        selected={props.selected}
+        className={classNames(VanillaComponentResolver.instance.assetGridTheme.item, styles.gridItem, props.selected && styles.selected)}
         variant="icon"
         onSelect={() => SetCurrentPrefab(props.prefab.id)}
-        //onMouseUp={(e) => OnMouseUp(e)}
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
         style={{ width: props.width, height: props.width }}
         onMouseEnter={props.prefab.random ? mouseOver : undefined}
@@ -85,7 +69,6 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         </Tooltip>
 
         <img
-          ref={imgRef}
           src={props.prefab.thumbnails[thumbnailIndex]}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping

@@ -102,6 +102,15 @@
   height: 2em;
   margin-right: 0.25em;
   background-color: rgba(0, 0, 0, 0.15);
+
+  &.selected,
+  &:active {
+    background-color: var(--accentColorDark-focused) !important;
+
+    img {
+      filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5)) !important;
+    }
+  }
 }
 
 .toggleSection img {
@@ -133,6 +142,18 @@
   height: 2em;
   margin-right: 0.15em;
   background-color: rgba(0, 0, 0, 0.35);
+
+  &.selected {
+    pointer-events: none !important;
+  }
+  &.selected,
+  &:active {
+    background-color: var(--accentColorDark-focused) !important;
+
+    img {
+      filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5)) !important;
+    }
+  }
 }
 
 .categorySection img {
@@ -175,9 +196,21 @@
   margin: 2.5rem 0 5rem 20rem;
 }
 
-//.subCategoryContainer {
-//flex-wrap: wrap;
-//}
+.subCategoryContainer {
+  button {
+    &.selected {
+      pointer-events: none !important;
+    }
+    &.selected,
+    &:active {
+      background-color: var(--accentColorDark-focused) !important;
+
+      img {
+        filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5)) !important;
+      }
+    }
+  }
+}
 
 .tabButton {
   max-width: 3.75em;

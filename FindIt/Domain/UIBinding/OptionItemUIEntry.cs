@@ -1,18 +1,23 @@
 ﻿using Colossal.UI.Binding;
 
+using FindIt.Domain.Utilities;
+
 namespace FindIt.Domain.UIBinding
 {
-	public struct OptionItemUIEntry : IJsonWritable
+	public class OptionItemUIEntry : IJsonWritable
 	{
+		private string _name;
+
 		public int Id { get; set; }
-		public string Name { get; set; }
+		public string Name { get => _name; set => _name = LocaleHelper.Translate(value); }
 		public string Icon { get; set; }
 		public bool Selected { get; set; }
 		public bool IsValue { get; set; }
 		public string Value { get; set; }
 		public bool Hidden { get; set; }
+		public bool Disabled { get; set; }
 
-		public readonly void Write(IJsonWriter writer)
+		public void Write(IJsonWriter writer)
 		{
 			writer.TypeBegin(GetType().FullName);
 
@@ -33,6 +38,9 @@ namespace FindIt.Domain.UIBinding
 
 			writer.PropertyName("value");
 			writer.Write(Value);
+
+			writer.PropertyName("disabled");
+			writer.Write(Disabled);
 
 			writer.TypeEnd();
 		}

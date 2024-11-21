@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { PrefabCategory } from "../../domain/category";
 import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
+import classNames from "classnames";
 
 export interface TopBarProps {
   optionsOpen: boolean;
@@ -41,20 +42,11 @@ interface PropsTextInput {
   onMouseUp?: (value: Event) => void;
 }
 
-const TextInput = getModule(
-  "game-ui/common/input/text/text-input.tsx",
-  "TextInput"
-);
+const TextInput = getModule("game-ui/common/input/text/text-input.tsx", "TextInput");
 
-const TextInputTheme: Theme | any = getModule(
-  "game-ui/editor/widgets/item/editor-item.module.scss",
-  "classes"
-);
+const TextInputTheme: Theme | any = getModule("game-ui/editor/widgets/item/editor-item.module.scss", "classes");
 
-const FocusDisabled$: FocusKey = getModule(
-  "game-ui/common/focus/focus-key.ts",
-  "FOCUS_DISABLED"
-);
+const FocusDisabled$: FocusKey = getModule("game-ui/common/focus/focus-key.ts", "FOCUS_DISABLED");
 
 const AssetCategoryTabTheme: Theme | any = getModule(
   "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.module.scss",
@@ -69,10 +61,7 @@ const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
 const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
 const CategoryList$ = bindValue<PrefabCategory[]>(mod.id, "CategoryList");
-const SubCategoryList$ = bindValue<PrefabSubCategory[]>(
-  mod.id,
-  "SubCategoryList"
-);
+const SubCategoryList$ = bindValue<PrefabSubCategory[]>(mod.id, "SubCategoryList");
 
 export const TopBarComponent = (props: TopBarProps) => {
   // These get the value of the bindings. Or they will when we have bindings.
@@ -128,11 +117,10 @@ export const TopBarComponent = (props: TopBarProps) => {
         {CategoryList.map((element) => (
           <VanillaComponentResolver.instance.ToolButton
             tooltip={element.toolTip}
-            selected={element.id == CurrentCategory}
-            onSelect={() => setCurrentCategory(element.id)}
             src={element.icon}
             focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            className={VanillaComponentResolver.instance.toolButtonTheme.button}
+            onSelect={element.id == CurrentCategory ? undefined : () => setCurrentCategory(element.id)}
+            className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, element.id == CurrentCategory && styles.selected)}
           />
         ))}
       </div>
@@ -144,18 +132,8 @@ export const TopBarComponent = (props: TopBarProps) => {
       <div className={props.large && styles.large}>
         <div className={styles.topBar}>
           <div className={styles.topBarSection}>
-            {IsSearchLoading && (
-              <img
-                src="coui://uil/Standard/HalfCircleProgress.svg"
-                className={styles.loadingIcon}
-              ></img>
-            )}
-            {!IsSearchLoading && (
-              <img
-                src="coui://uil/Standard/MagnifierThin.svg"
-                className={styles.searchIcon}
-              ></img>
-            )}
+            {IsSearchLoading && <img src="coui://uil/Standard/HalfCircleProgress.svg" className={styles.loadingIcon}></img>}
+            {!IsSearchLoading && <img src="coui://uil/Standard/MagnifierThin.svg" className={styles.searchIcon}></img>}
             <div className={styles.searchArea}>
               <TextInput
                 ref={searchRef}
@@ -166,19 +144,12 @@ export const TopBarComponent = (props: TopBarProps) => {
                 className={TextInputTheme.input + " " + styles.textBox}
                 focusKey={FocusDisabled$}
                 onChange={handleInputChange}
-                placeholder={translate(
-                  "Editor.SEARCH_PLACEHOLDER",
-                  "Search..."
-                )}
+                placeholder={translate("Editor.SEARCH_PLACEHOLDER", "Search...")}
               ></TextInput>
 
               {CurrentSearch.trim() !== "" && (
                 <Button
-                  className={
-                    VanillaComponentResolver.instance.assetGridTheme.item +
-                    " " +
-                    styles.clearIcon
-                  }
+                  className={VanillaComponentResolver.instance.assetGridTheme.item + " " + styles.clearIcon}
                   variant="icon"
                   onSelect={() => {
                     setSearchText("");
@@ -192,41 +163,22 @@ export const TopBarComponent = (props: TopBarProps) => {
 
             <div className={styles.toggleSection}>
               <VanillaComponentResolver.instance.ToolButton
-                tooltip={translate(
-                  "Tooltip.LABEL[FindIt.FiltersSorting]",
-                  "Filters & Sorting"
-                )}
-                selected={props.optionsOpen}
+                tooltip={translate("Tooltip.LABEL[FindIt.FiltersSorting]", "Filters & Sorting")}
                 onSelect={props.toggleOptionsOpen}
                 src={"coui://uil/Standard/FunnelFilter.svg"}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                className={
-                  VanillaComponentResolver.instance.toolButtonTheme.button
-                }
+                className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, props.optionsOpen && styles.selected)}
               />
               <VanillaComponentResolver.instance.ToolButton
                 tooltip={
                   props.expanded
-                    ? translate(
-                        "Tooltip.LABEL[FindIt.Shrink]",
-                        "Filters & Sorting"
-                      )
-                    : translate(
-                        "Tooltip.LABEL[FindIt.Expand]",
-                        "Filters & Sorting"
-                      )
+                    ? translate("Tooltip.LABEL[FindIt.Shrink]", "Filters & Sorting")
+                    : translate("Tooltip.LABEL[FindIt.Expand]", "Filters & Sorting")
                 }
-                selected={props.expanded}
                 onSelect={props.toggleEnlarge}
-                src={
-                  props.expanded
-                    ? "coui://uil/Standard/ArrowsMinimize.svg"
-                    : "coui://uil/Standard/ArrowsExpand.svg"
-                }
+                src={props.expanded ? "coui://uil/Standard/ArrowsMinimize.svg" : "coui://uil/Standard/ArrowsExpand.svg"}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                className={
-                  VanillaComponentResolver.instance.toolButtonTheme.button
-                }
+                className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, props.expanded && styles.selected)}
               />
             </div>
           </div>
@@ -234,18 +186,9 @@ export const TopBarComponent = (props: TopBarProps) => {
           <div className={styles.topBarSection}>
             {!props.small && RenderCategoryList()}
 
-            <Tooltip
-              tooltip={translate(
-                "Tooltip.LABEL[FindIt.ClosePanel]",
-                "Close Panel"
-              )}
-            >
+            <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.ClosePanel]", "Close Panel")}>
               <Button
-                className={
-                  VanillaComponentResolver.instance.assetGridTheme.item +
-                  " " +
-                  styles.closeIcon
-                }
+                className={VanillaComponentResolver.instance.assetGridTheme.item + " " + styles.closeIcon}
                 variant="icon"
                 onSelect={() => trigger(mod.id, "FindItCloseToggled")}
                 focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
@@ -256,41 +199,23 @@ export const TopBarComponent = (props: TopBarProps) => {
           </div>
         </div>
 
-        {props.small && (
-          <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>
-        )}
+        {props.small && <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>}
 
-        <div
-          className={AssetCategoryTabTheme.assetCategoryTabBar}
-          style={{ paddingLeft: "10rem", paddingRight: "10rem" }}
-        >
-          <div
-            className={
-              AssetCategoryTabTheme.items + " " + styles.subCategoryContainer
-            }
-          >
+        <div className={AssetCategoryTabTheme.assetCategoryTabBar} style={{ paddingLeft: "10rem", paddingRight: "10rem" }}>
+          <div className={classNames(AssetCategoryTabTheme.items, styles.subCategoryContainer)}>
             {SubCategoryList.map((element) => (
               <Tooltip tooltip={element.toolTip}>
                 <Button
-                  className={
-                    VanillaComponentResolver.instance.assetGridTheme.item +
-                    " " +
-                    styles.tabButton
-                  }
-                  selected={element.id == CurrentSubCategory}
                   variant="icon"
-                  onSelect={() => setCurrentSubCategory(element.id)}
                   focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                  onSelect={element.id == CurrentSubCategory ? undefined : () => setCurrentSubCategory(element.id)}
+                  className={classNames(
+                    VanillaComponentResolver.instance.assetGridTheme.item,
+                    styles.tabButton,
+                    element.id == CurrentSubCategory && styles.selected
+                  )}
                 >
-                  <img
-                    src={element.icon}
-                    className={
-                      VanillaComponentResolver.instance.assetGridTheme
-                        .thumbnail +
-                      " " +
-                      styles.gridThumbnail
-                    }
-                  ></img>
+                  <img src={element.icon} className={VanillaComponentResolver.instance.assetGridTheme.thumbnail + " " + styles.gridThumbnail}></img>
                 </Button>
               </Tooltip>
             ))}

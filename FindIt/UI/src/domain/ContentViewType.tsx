@@ -1,14 +1,18 @@
-export interface optionSection {
+export interface OptionSection {
   id: number;
   name: string;
-  options: optionItem[];
+  isToggle: boolean;
+  isButton: boolean;
+  isCheckbox: boolean;
+  options: OptionItem[];
 }
 
-export interface optionItem {
+export interface OptionItem {
   id: number;
   name: string;
   icon: string;
   selected: boolean;
   isValue: boolean;
+  disabled: boolean;
   value: string;
 }
