@@ -25,7 +25,7 @@
   "Tooltip.LABEL[FindIt.CornerRight]": "Edificio de Esquina Derecha",
   "Options.LABEL[FindIt.ThemeFilter]": "Temática",
   "Options.LABEL[FindIt.AssetPackFilter]": "Paquete",
-  "Options.LABEL[FindIt.LotDepth]": "Profundidad de terreno",
+  "Options.LABEL[FindIt.LotDepth]": "Largo del terreno",
   "Options.LABEL[FindIt.LotWidth]": "Ancho de terreno",
   "Options.LABEL[FindIt.ZoneType]": "Tipo de zona",
   "Options.LABEL[FindIt.ExtraFilters]": "Filtros adicionales",
