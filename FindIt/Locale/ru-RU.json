@@ -98,6 +98,7 @@
   "Tooltip.LABEL[FindIt.Vehicles_Misc]": "Прочий Транспорт",
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "Center",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Right",
+  "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "View on PdxMods",
   "Options.SECTION[FindIt.FindIt.Mod]": "Найди Это",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Найди Это",
   "Options.TAB[FindIt.FindIt.Mod.Main]": "Общие настройки",
