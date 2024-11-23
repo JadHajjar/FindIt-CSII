@@ -1,3 +1,5 @@
+@use "../../base.scss" as _base;
+
 .GridWithText .gridItem {
   margin: 4rem !important;
   height: 90rem !important;
@@ -22,10 +24,14 @@
 .GridWithText .gridItemText {
   width: 95%;
   font-size: 12rem;
-  max-height: 4em;
   white-space: normal;
   overflow: hidden;
   text-shadow: 0px 0px 6rem rgb(0 0 0);
+
+  p {
+    max-height: 45rem;
+    coh-font-fit-mode: shrink;
+  }
 }
 
 .GridNoText .gridItem {
@@ -113,6 +119,11 @@
   flex-wrap: nowrap;
   position: relative;
   overflow: hidden;
+  background-color: rgba(0, 0, 0, 0);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .ListSimple .gridThumbnail {
@@ -132,22 +143,47 @@
   text-shadow: 0px 0px 6rem rgb(0 0 0);
 }
 
-.favoriteIcon {
-  background: none;
-  width: 1.5em;
-  height: 1.5em;
+.placedMarker {
+  @include _base.lightButton(false, true);
+
+  background: transparent;
+  backdrop-filter: none;
+  width: 24rem;
+  height: 24rem;
   z-index: 99;
+  position: absolute;
+  top: 0rem;
+  left: 0;
+  transition: top 0.15s;
+}
+
+.GridNoText .gridItem:hover .placedMarker,
+.GridSmall .gridItem:hover .placedMarker,
+.GridWithText .gridItem:hover .placedMarker,
+.placedMarker.favorited {
+  top: 24rem;
+}
+
+.favoriteIcon {
+  @include _base.lightButton(false, true);
+
+  background: transparent;
+  backdrop-filter: none;
+  width: 24rem;
+  height: 24rem;
+  z-index: 99;
+  transition: opacity 0.3s;
 }
 
 .GridSmall .favoriteIcon {
-  width: 1em;
-  height: 1em;
+  width: 18rem;
+  height: 18rem;
 }
 
 .GridNoText .favoriteIcon,
 .GridSmall .favoriteIcon,
 .GridWithText .favoriteIcon {
-  display: none;
+  opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
@@ -157,34 +193,25 @@
   opacity: 0;
 }
 
-.GridNoText .gridItem:hover .favoriteIcon,
-.GridSmall .gridItem:hover .favoriteIcon,
-.GridWithText .gridItem:hover .favoriteIcon,
-.GridNoText .gridItem .favoriteIcon.favorited,
-.GridSmall .gridItem .favoriteIcon.favorited,
-.GridWithText .gridItem .favoriteIcon.favorited {
-  display: flex;
-}
-
-.ListSimple .gridItem:hover .favoriteIcon,
-.ListSimple .favoriteIcon.favorited {
+.gridItem:hover .favoriteIcon,
+.favoriteIcon.favorited {
   opacity: 1;
 }
 
 .favoriteIcon img {
-  width: 0.9em;
-  height: 0.9em;
+  width: 14rem;
+  height: 14rem;
   filter: drop-shadow(0px 0px 1.5rem rgba(0, 0, 0, 0.5));
 }
 
 .GridSmall .favoriteIcon img {
-  width: 0.6em;
-  height: 0.6em;
+  width: 14rem;
+  height: 14rem;
 }
 
 .ListSimple .favoriteIcon img {
-  width: 15rem;
-  height: 15rem;
+  width: 14rem;
+  height: 14rem;
 }
 
 .gridItem:hover .favoriteIcon {
@@ -195,24 +222,24 @@
 .GridSmall .rightSideContainer,
 .GridNoText .rightSideContainer {
   position: absolute;
-  top: 0.15em;
-  right: 0.15em;
+  top: 2rem;
+  right: 2rem;
   display: flex;
   flex-direction: column;
 }
 
 .GridWithText .rightSideContainer > img,
 .GridNoText .rightSideContainer > img {
-  width: 1.15em;
-  height: 1.15em;
-  margin-bottom: 0.375em;
+  width: 18rem;
+  height: 18rem;
+  margin: 1.5rem 1.5rem 3rem 0;
   filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5));
 }
 
 .GridSmall .rightSideContainer > img {
-  width: 0.7em;
-  height: 0.7em;
-  margin-bottom: 0.15em;
+  width: 10rem;
+  height: 10rem;
+  margin: 0.75rem 0.75rem 1.5rem 0;
   filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5));
 }
 
@@ -227,9 +254,9 @@
 }
 
 .ListSimple .rightSideContainer > img {
-  width: 1em;
-  height: 1em;
-  margin-right: 0.375em;
+  width: 16rem;
+  height: 16rem;
+  margin-right: 3rem;
 }
 
 .GridWithText .gridItemText p,
@@ -238,9 +265,6 @@
 }
 
 .gridItem {
-  &.selected {
-    pointer-events: none !important;
-  }
   &.selected,
   &:active {
     background-color: var(--accentColorDark-focused) !important;

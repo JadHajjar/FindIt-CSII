@@ -60,14 +60,12 @@ namespace FindIt.Domain.Options
 		
 		public void OnReset()
 		{
-			if (FindItUtil.Filters.SelectedZoneType == ZoneTypeFilter.Any)
-			{
-				return;
-			}
-
 			FindItUtil.Filters.SelectedZoneType = ZoneTypeFilter.Any;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return FindItUtil.Filters.SelectedZoneType == ZoneTypeFilter.Any;
 		}
 	}
 }

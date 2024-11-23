@@ -43,7 +43,7 @@ $laneButtonSize: 64rem;
   }
 }
 
-@mixin baseButton($hasText: true) {
+@mixin baseButton($hasText: true, $coloredImage: false) {
   pointer-events: auto;
   padding: 8rem;
   border-radius: 4rem;
@@ -79,14 +79,17 @@ $laneButtonSize: 64rem;
       width: 24rem;
       height: 24rem;
     }
-    background-color: var(--menuText1Normal);
-    mask-size: contain;
-    mask-position: 50% 50%;
+
+    @if $coloredImage == false {
+      background-color: var(--menuText1Normal);
+      mask-size: contain;
+      mask-position: 50% 50%;
+    }
   }
 }
 
-@mixin basicButton($hasText: true) {
-  @include baseButton($hasText);
+@mixin basicButton($hasText: true, $coloredImage: false) {
+  @include baseButton($hasText, $coloredImage);
 
   filter: brightness(1.1) saturate(0.8);
   background-color: var(--panelColorDark);
@@ -100,8 +103,10 @@ $laneButtonSize: 64rem;
     background-color: var(--accentColorDark-focused) !important;
   }
 
-  img {
-    background-color: var(--menuText1Normal);
+  @if $coloredImage == false {
+    img {
+      background-color: var(--menuText1Normal);
+    }
   }
 
   &[disabled],
@@ -111,14 +116,16 @@ $laneButtonSize: 64rem;
     color: var(--normalTextColorLocked) !important;
     background-color: var(--panelColorDark) !important;
 
-    img {
-      background-color: var(--normalTextColorLocked) !important;
+    @if $coloredImage == false {
+      img {
+        background-color: var(--normalTextColorLocked) !important;
+      }
     }
   }
 }
 
-@mixin lightButton($hasText: true) {
-  @include baseButton($hasText);
+@mixin lightButton($hasText: true, $coloredImage: false) {
+  @include baseButton($hasText, $coloredImage);
 
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
@@ -131,8 +138,10 @@ $laneButtonSize: 64rem;
     background-color: var(--accentColorDark-focused) !important;
   }
 
-  img {
-    background-color: var(--menuText1Normal);
+  @if $coloredImage == false {
+    img {
+      background-color: var(--menuText1Normal);
+    }
   }
 
   &[disabled],
@@ -140,14 +149,16 @@ $laneButtonSize: 64rem;
     color: var(--normalTextColorLocked) !important;
     background-color: rgba(255, 255, 255, 0.1) !important;
 
-    img {
-      background-color: var(--normalTextColorLocked) !important;
+    @if $coloredImage == false {
+      img {
+        background-color: var(--normalTextColorLocked) !important;
+      }
     }
   }
 }
 
-@mixin blackButton($hasText: true) {
-  @include baseButton($hasText);
+@mixin blackButton($hasText: true, $coloredImage: false) {
+  @include baseButton($hasText, $coloredImage);
 
   background-color: rgba(15, 16, 19, 1);
   backdrop-filter: blur(4px);
@@ -160,8 +171,10 @@ $laneButtonSize: 64rem;
     background-color: var(--accentColorDark-focused) !important;
   }
 
-  img {
-    background-color: var(--menuText1Normal);
+  @if $coloredImage == false {
+    img {
+      background-color: var(--menuText1Normal);
+    }
   }
 
   &[disabled],
@@ -169,14 +182,16 @@ $laneButtonSize: 64rem;
     color: var(--normalTextColorLocked) !important;
     background-color: rgba(15, 16, 19, 1) !important;
 
-    img {
-      background-color: var(--normalTextColorLocked) !important;
+    @if $coloredImage == false {
+      img {
+        background-color: var(--normalTextColorLocked) !important;
+      }
     }
   }
 }
 
-@mixin transparentButton($hasText: true) {
-  @include baseButton($hasText);
+@mixin transparentButton($hasText: true, $coloredImage: false) {
+  @include baseButton($hasText, $coloredImage);
 
   background-color: transparent;
 
@@ -188,8 +203,10 @@ $laneButtonSize: 64rem;
     background-color: var(--accentColorDark-focused) !important;
   }
 
-  img {
-    background-color: var(--menuText1Normal);
+  @if $coloredImage == false {
+    img {
+      background-color: var(--menuText1Normal);
+    }
   }
 
   &[disabled],
@@ -198,8 +215,10 @@ $laneButtonSize: 64rem;
     background-color: transparent !important;
     opacity: 0.75;
 
-    img {
-      background-color: var(--normalTextColorLocked) !important;
+    @if $coloredImage == false {
+      img {
+        background-color: var(--normalTextColorLocked) !important;
+      }
     }
   }
 }

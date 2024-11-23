@@ -20,7 +20,7 @@ namespace FindIt.Systems
 	{
 		private static readonly List<int> _lastUsedPrefabs = new();
 		private static Dictionary<int, int> _mostUsedPrefabs = new();
-
+		private static Dictionary<int, List<Entity>> _usedPrefabs;
 		private ToolSystem _toolSystem;
 		private EntityQuery generalEntityQuery;
 		private Timer timer;
@@ -32,7 +32,7 @@ namespace FindIt.Systems
 			_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
 			_toolSystem.EventPrefabChanged += OnPrefabChanged;
 
-			generalEntityQuery = GetEntityQuery(ComponentType.ReadOnly<Game.Objects.Object>(), ComponentType.Exclude<Owner>());
+			generalEntityQuery = SystemAPI.QueryBuilder().WithAll<Game.Objects.Object, PrefabRef>().WithNone<Owner>().Build();
 
 			RequireForUpdate(generalEntityQuery);
 
@@ -45,7 +45,9 @@ namespace FindIt.Systems
 		{
 			var stopWatch = Stopwatch.StartNew();
 			var prefabRefs = generalEntityQuery.ToComponentDataArray<PrefabRef>(Allocator.Temp);
+			var entities = generalEntityQuery.ToEntityArray(Allocator.Temp);
 			var dictionary = new Dictionary<int, int>();
+			var entitiesDictionary = new Dictionary<int, List<Entity>>();
 
 			for (var i = 0; i < prefabRefs.Length; i++)
 			{
@@ -54,14 +56,17 @@ namespace FindIt.Systems
 				if (dictionary.TryGetValue(id, out var count))
 				{
 					dictionary[id] = count + 1;
+					entitiesDictionary[id].Add(entities[i]);
 				}
 				else
 				{
 					dictionary[id] = 1;
+					entitiesDictionary[id] = new List<Entity> { entities[i] };
 				}
 			}
 
 			_mostUsedPrefabs = dictionary;
+			_usedPrefabs = entitiesDictionary;
 
 			Enabled = false;
 
@@ -84,14 +89,19 @@ namespace FindIt.Systems
 			}
 		}
 
-		internal static int GetLastUsedIndex(PrefabIndex x)
+		internal static int GetLastUsedIndex(PrefabIndexBase prefab)
 		{
-			return _lastUsedPrefabs.IndexOf(x.Id);
+			return _lastUsedPrefabs.IndexOf(prefab.Id);
 		}
 
-		internal static int GetMostUsedCount(PrefabIndex x)
+		internal static int GetMostUsedCount(PrefabIndexBase prefab)
 		{
-			return _mostUsedPrefabs.TryGetValue(x.Id, out var count) ? count : 0;
+			return _mostUsedPrefabs.TryGetValue(prefab.Id, out var count) ? count : 0;
+		}
+
+		internal static List<Entity> GetPlacedEntities(int id)
+		{
+			return _usedPrefabs.TryGetValue(id, out var entities) ? entities : new();
 		}
 	}
 }

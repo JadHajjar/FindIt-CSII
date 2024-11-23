@@ -1,6 +1,6 @@
 import { trigger } from "cs2/api";
 import styles from "./prefabItem.module.scss";
-import { Button, Tooltip } from "cs2/ui";
+import { Button, FOCUS_DISABLED, Tooltip } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
 import { useLocalization } from "cs2/l10n";
@@ -21,7 +21,9 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   const [thumbnailIndex, setThumbnailIndex] = useState(0);
 
   const mouseOver = () => {
-    setThumbnailIndex(Math.floor(Math.random() * props.prefab.thumbnails.length));
+    const date = new Date();
+
+    setThumbnailIndex(Math.floor(date.getSeconds() * 10 + date.getMilliseconds() / 250) % props.prefab.thumbnails.length);
   };
 
   function SetCurrentPrefab(id: number) {
@@ -42,9 +44,9 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         className={classNames(VanillaComponentResolver.instance.assetGridTheme.item, styles.gridItem, props.selected && styles.selected)}
         variant="icon"
         onSelect={() => SetCurrentPrefab(props.prefab.id)}
-        focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
         style={{ width: props.width, height: props.width }}
-        onMouseEnter={props.prefab.random ? mouseOver : undefined}
+        focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+        onMouseMove={props.prefab.random ? mouseOver : undefined}
       >
         <Tooltip
           tooltip={
@@ -54,19 +56,27 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           }
         >
           <Button
-            className={
-              VanillaComponentResolver.instance.assetGridTheme.item +
-              " " +
-              styles.favoriteIcon +
-              (props.prefab.favorited ? " " + styles.favorited : "")
-            }
+            className={classNames(styles.favoriteIcon, props.prefab.favorited && styles.favorited)}
             variant="icon"
-            onSelect={() => ToggleFavorited(props.prefab.id)}
             focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+            onSelect={() => ToggleFavorited(props.prefab.id)}
           >
-            <img src={props.prefab.favorited ? "coui://uil/Colored/StarFilled.svg" : "coui://uil/Colored/StarOutline.svg"}></img>
+            <img src={props.prefab.favorited ? "coui://uil/Colored/StarFilled.svg" : "coui://uil/Colored/StarOutline.svg"} />
           </Button>
         </Tooltip>
+
+        {props.prefab.placed && (
+          <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.Locate]", "Locate")}>
+            <Button
+              className={classNames(styles.placedMarker, props.prefab.favorited && styles.favorited)}
+              variant="icon"
+              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+              onSelect={() => trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)}
+            >
+              <img src="Media/Game/Icons/MapMarker.svg" />
+            </Button>
+          </Tooltip>
+        )}
 
         <img
           src={props.prefab.thumbnails[thumbnailIndex]}
@@ -76,18 +86,22 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           }}
           className={VanillaComponentResolver.instance.assetGridTheme.thumbnail + " " + styles.gridThumbnail}
           onMouseEnter={props.prefab.random ? mouseOver : undefined}
-        ></img>
+        />
 
         <div className={styles.gridItemText}>
           <p>{props.prefab.name}</p>
         </div>
 
         <div className={styles.rightSideContainer}>
-          {props.showCategory && <img src={props.prefab.categoryThumbnail}></img>}
+          {props.showCategory && <img src={props.prefab.categoryThumbnail} />}
 
-          {props.prefab.dlcThumbnail && <img src={props.prefab.dlcThumbnail}></img>}
+          {props.prefab.dlcThumbnail && <img src={props.prefab.dlcThumbnail} />}
 
-          {props.prefab.random && <img src="coui://uil/Colored/Dice.svg"></img>}
+          {props.prefab.random && <img src="coui://uil/Colored/Dice.svg" />}
+
+          {props.prefab.themeThumbnail && <img src={props.prefab.themeThumbnail} />}
+
+          {props.prefab.packThumbnails && props.prefab.packThumbnails.map((x) => <img src={x} />)}
         </div>
       </Button>
     </>

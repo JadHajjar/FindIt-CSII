@@ -15,6 +15,8 @@ namespace FindIt.Domain
 		public bool IsFavorited { get; set; }
 		public bool IsRandom { get; set; }
 		public string[] RandomPrefabThumbnails { get; set; }
+		public string ThemeThumbnail { get; set; }
+		public string[] PackThumbnails { get; set; }
 
 		public PrefabIndexBase(PrefabBase prefabBase)
 		{

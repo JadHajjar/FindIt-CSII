@@ -11,13 +11,24 @@ import { PrefabCategory } from "../../domain/category";
 import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
 import classNames from "classnames";
+import { BasicButton } from "mods/BasicButton/BasicButton";
+import find from "images/find.svg";
+import random from "images/random.svg";
+import shrink from "images/shrink.svg";
+import expand from "images/expand.svg";
+import filter from "images/filter.svg";
+import filterX from "images/filterX.svg";
+import sort from "images/sort.svg";
+import { FOCUS_DISABLED } from "cs2/input";
 
 export interface TopBarProps {
+  sortingOpen: any;
   optionsOpen: boolean;
   expanded: boolean;
   small: boolean;
   large: boolean;
   toggleOptionsOpen: () => void;
+  toggleSortingOpen: () => void;
   toggleEnlarge: () => void;
 }
 
@@ -46,8 +57,6 @@ const TextInput = getModule("game-ui/common/input/text/text-input.tsx", "TextInp
 
 const TextInputTheme: Theme | any = getModule("game-ui/editor/widgets/item/editor-item.module.scss", "classes");
 
-const FocusDisabled$: FocusKey = getModule("game-ui/common/focus/focus-key.ts", "FOCUS_DISABLED");
-
 const AssetCategoryTabTheme: Theme | any = getModule(
   "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.module.scss",
   "classes"
@@ -57,6 +66,7 @@ const AssetCategoryTabTheme: Theme | any = getModule(
 const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
 const ClearSearchBar$ = bindValue<boolean>(mod.id, "ClearSearchBar");
 const FocusSearchBar$ = bindValue<boolean>(mod.id, "FocusSearchBar");
+const AreFiltersSet$ = bindValue<boolean>(mod.id, "AreFiltersSet");
 const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
 const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
@@ -70,6 +80,7 @@ export const TopBarComponent = (props: TopBarProps) => {
   const CategoryList = useValue(CategoryList$);
   const SubCategoryList = useValue(SubCategoryList$);
   const IsSearchLoading = useValue(IsSearchLoading$);
+  const AreFiltersSet = useValue(AreFiltersSet$);
   const CurrentSearch = useValue(CurrentSearch$);
   const ClearSearchBar = useValue(ClearSearchBar$);
   const FocusSearchBar = useValue(FocusSearchBar$);
@@ -115,13 +126,17 @@ export const TopBarComponent = (props: TopBarProps) => {
     return (
       <div className={styles.categorySection}>
         {CategoryList.map((element) => (
-          <VanillaComponentResolver.instance.ToolButton
-            tooltip={element.toolTip}
-            src={element.icon}
-            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            onSelect={element.id == CurrentCategory ? undefined : () => setCurrentCategory(element.id)}
-            className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, element.id == CurrentCategory && styles.selected)}
-          />
+          <>
+            {element.id == 0 && <span style={{ flex: 1 }} />}
+            <BasicButton
+              tooltip={element.toolTip}
+              src={element.icon}
+              onClick={element.id == CurrentCategory ? undefined : () => setCurrentCategory(element.id)}
+              className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, element.id == CurrentCategory && styles.selected)}
+            >
+              <span />
+            </BasicButton>
+          </>
         ))}
       </div>
     );
@@ -129,11 +144,11 @@ export const TopBarComponent = (props: TopBarProps) => {
 
   return (
     <>
-      <div className={props.large && styles.large}>
+      <div className={classNames(props.large && styles.large, props.small && styles.small)}>
         <div className={styles.topBar}>
           <div className={styles.topBarSection}>
-            {IsSearchLoading && <img src="coui://uil/Standard/HalfCircleProgress.svg" className={styles.loadingIcon}></img>}
-            {!IsSearchLoading && <img src="coui://uil/Standard/MagnifierThin.svg" className={styles.searchIcon}></img>}
+            {IsSearchLoading && <img style={{ maskImage: "url(coui://uil/Standard/HalfCircleProgress.svg)" }} className={styles.loadingIcon}></img>}
+            {!IsSearchLoading && <img style={{ maskImage: `url(${find})` }} className={styles.searchIcon}></img>}
             <div className={styles.searchArea}>
               <TextInput
                 ref={searchRef}
@@ -141,57 +156,70 @@ export const TopBarComponent = (props: TopBarProps) => {
                 value={CurrentSearch}
                 disabled={false}
                 type="text"
-                className={TextInputTheme.input + " " + styles.textBox}
-                focusKey={FocusDisabled$}
+                className={classNames(TextInputTheme.input, styles.textBox)}
+                focusKey={FOCUS_DISABLED}
                 onChange={handleInputChange}
                 placeholder={translate("Editor.SEARCH_PLACEHOLDER", "Search...")}
               ></TextInput>
 
               {CurrentSearch.trim() !== "" && (
                 <Button
-                  className={VanillaComponentResolver.instance.assetGridTheme.item + " " + styles.clearIcon}
+                  className={classNames(VanillaComponentResolver.instance.assetGridTheme.item, styles.clearIcon)}
                   variant="icon"
                   onSelect={() => {
                     setSearchText("");
                   }}
-                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
                 >
                   <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
                 </Button>
               )}
             </div>
 
-            <div className={styles.toggleSection}>
-              <VanillaComponentResolver.instance.ToolButton
-                tooltip={translate("Tooltip.LABEL[FindIt.FiltersSorting]", "Filters & Sorting")}
-                onSelect={props.toggleOptionsOpen}
-                src={"coui://uil/Standard/FunnelFilter.svg"}
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, props.optionsOpen && styles.selected)}
+            <div className={styles.buttonsSection}>
+              <BasicButton
+                tooltip={props.expanded ? translate("Tooltip.LABEL[FindIt.Shrink]", "Shrink") : translate("Tooltip.LABEL[FindIt.Expand]", "Expand")}
+                onClick={props.toggleEnlarge}
+                mask={props.expanded ? shrink : expand}
+                className={props.expanded && styles.selected}
               />
-              <VanillaComponentResolver.instance.ToolButton
-                tooltip={
-                  props.expanded
-                    ? translate("Tooltip.LABEL[FindIt.Shrink]", "Filters & Sorting")
-                    : translate("Tooltip.LABEL[FindIt.Expand]", "Filters & Sorting")
-                }
-                onSelect={props.toggleEnlarge}
-                src={props.expanded ? "coui://uil/Standard/ArrowsMinimize.svg" : "coui://uil/Standard/ArrowsExpand.svg"}
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, props.expanded && styles.selected)}
+
+              <BasicButton
+                tooltip={translate("Tooltip.LABEL[FindIt.ToggleSorting]", "Sorting")}
+                onClick={props.toggleSortingOpen}
+                mask={sort}
+                className={props.sortingOpen && styles.selected}
+              />
+
+              <BasicButton
+                tooltip={translate("Tooltip.LABEL[FindIt.ToggleFilters]", "Filters")}
+                onClick={props.toggleOptionsOpen}
+                mask={filter}
+                className={props.optionsOpen && styles.selected}
+              />
+
+              <div className={styles.seperator} />
+
+              <BasicButton
+                tooltip={translate("Tooltip.LABEL[FindIt.ClearFilter]", "Clear Filters")}
+                disabled={!AreFiltersSet}
+                onClick={() => trigger(mod.id, "ClearFilters")}
+                mask={filterX}
+              />
+
+              <BasicButton
+                tooltip={translate("Tooltip.LABEL[FindIt.Random]", "Random")}
+                onClick={() => trigger(mod.id, "OnRandomButtonClicked")}
+                mask={random}
               />
             </div>
           </div>
 
           <div className={styles.topBarSection}>
-            {!props.small && RenderCategoryList()}
-
             <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.ClosePanel]", "Close Panel")}>
               <Button
                 className={VanillaComponentResolver.instance.assetGridTheme.item + " " + styles.closeIcon}
                 variant="icon"
                 onSelect={() => trigger(mod.id, "FindItCloseToggled")}
-                focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
               >
                 <img src="coui://uil/Standard/XClose.svg"></img>
               </Button>
@@ -199,25 +227,22 @@ export const TopBarComponent = (props: TopBarProps) => {
           </div>
         </div>
 
-        {props.small && <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>}
+        <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>
 
-        <div className={AssetCategoryTabTheme.assetCategoryTabBar} style={{ paddingLeft: "10rem", paddingRight: "10rem" }}>
-          <div className={classNames(AssetCategoryTabTheme.items, styles.subCategoryContainer)}>
+        <div className={classNames(AssetCategoryTabTheme.assetCategoryTabBar, styles.subCategoryContainer)}>
+          <div className={AssetCategoryTabTheme.items}>
             {SubCategoryList.map((element) => (
-              <Tooltip tooltip={element.toolTip}>
-                <Button
-                  variant="icon"
-                  focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-                  onSelect={element.id == CurrentSubCategory ? undefined : () => setCurrentSubCategory(element.id)}
-                  className={classNames(
-                    VanillaComponentResolver.instance.assetGridTheme.item,
-                    styles.tabButton,
-                    element.id == CurrentSubCategory && styles.selected
-                  )}
-                >
-                  <img src={element.icon} className={VanillaComponentResolver.instance.assetGridTheme.thumbnail + " " + styles.gridThumbnail}></img>
-                </Button>
-              </Tooltip>
+              <BasicButton
+                tooltip={element.toolTip}
+                onClick={element.id == CurrentSubCategory ? undefined : () => setCurrentSubCategory(element.id)}
+                className={classNames(
+                  VanillaComponentResolver.instance.assetGridTheme.item,
+                  styles.tabButton,
+                  element.id == CurrentSubCategory && styles.selected
+                )}
+              >
+                <img src={element.icon} className={VanillaComponentResolver.instance.assetGridTheme.thumbnail + " " + styles.gridThumbnail}></img>
+              </BasicButton>
             ))}
           </div>
         </div>

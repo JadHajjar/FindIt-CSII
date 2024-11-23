@@ -20,12 +20,17 @@
   color: var(--accentColorNormal);
   border-top-left-radius: var(--panelRadius);
   border-top-right-radius: var(--panelRadius);
+  overflow: hidden;
 }
 
 .rightPanel {
   position: absolute;
   width: 300rem;
+  height: 100%;
   padding-left: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .topPanel {
@@ -35,9 +40,9 @@
   right: 0;
 }
 
-.rightPanel > div,
+.rightPanel > div:first-child,
 .topPanel > div {
-  padding: 10rem 0;
+  padding-bottom: 10rem;
   width: 100%;
   background-color: var(--panelColorDark);
   backdrop-filter: var(--panelBlur);
@@ -46,4 +51,17 @@
   border-bottom-right-radius: var(--panelRadius);
   border-top-left-radius: var(--panelRadius);
   border-top-right-radius: var(--panelRadius);
+}
+
+.rightPanel > div:last-child {
+  flex: 1;
+}
+
+.rightPanel .title,
+.topPanel .title {
+  color: var(--accentColorNormal);
+  text-transform: uppercase;
+  font-size: 12rem;
+  text-align: center;
+  margin: 5rem;
 }

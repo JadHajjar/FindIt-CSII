@@ -1,5 +1,6 @@
 ﻿using FindIt.Domain.Enums;
 using FindIt.Domain.Utilities;
+using FindIt.Systems;
 
 using Game.Prefabs;
 
@@ -24,6 +25,7 @@ namespace FindIt.Domain
 		public bool HideVanilla { get; set; }
 		public int BuildingLevelFilter { get; set; }
 		public BuildingCornerFilter SelectedBuildingCorner { get; set; }
+		public bool OnlyPlaced { get; set; }
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
@@ -40,6 +42,11 @@ namespace FindIt.Domain
 			if (HideVanilla)
 			{
 				yield return DoNoVanillaFilter;
+			}
+
+			if (OnlyPlaced)
+			{
+				yield return DoOnlyPlacedFilter;
 			}
 
 			if (SelectedDlc != int.MinValue)
@@ -154,6 +161,11 @@ namespace FindIt.Domain
 		private bool DoNoVanillaFilter(PrefabIndex prefab)
 		{
 			return !prefab.IsVanilla;
+		}
+
+		private bool DoOnlyPlacedFilter(PrefabIndex prefab)
+		{
+			return PrefabTrackingSystem.GetMostUsedCount(prefab) > 0;
 		}
 
 		private bool DoNoThemeFilter(PrefabIndex prefab)

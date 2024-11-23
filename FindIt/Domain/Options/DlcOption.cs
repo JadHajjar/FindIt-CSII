@@ -90,14 +90,12 @@ namespace FindIt.Domain.Options
 
 		public void OnReset()
 		{
-			if (FindItUtil.Filters.SelectedDlc == int.MinValue)
-			{
-				return;
-			}
-
 			FindItUtil.Filters.SelectedDlc = int.MinValue;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return FindItUtil.Filters.SelectedDlc == int.MinValue;
 		}
 	}
 }

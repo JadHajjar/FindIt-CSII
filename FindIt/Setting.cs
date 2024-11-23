@@ -15,6 +15,10 @@ namespace FindIt
 	[SettingsUIGroupOrder(BEHAVIOR, DISPLAY, OTHER)]
 	[SettingsUIShowGroupName(BEHAVIOR, DISPLAY, OTHER)]
 	[SettingsUIMouseAction(nameof(FindIt) + "Apply", "CustomUsage")]
+	[SettingsUIKeyboardAction(nameof(FindIt) + "LeftArrow", "CustomUsage")]
+	[SettingsUIKeyboardAction(nameof(FindIt) + "RightArrow", "CustomUsage")]
+	[SettingsUIKeyboardAction(nameof(FindIt) + "UpArrow", "CustomUsage")]
+	[SettingsUIKeyboardAction(nameof(FindIt) + "DownArrow", "CustomUsage")]
 	public class FindItSettings : ModSetting
 	{
 		public const string MAIN_SECTION = "Main";
@@ -30,6 +34,15 @@ namespace FindIt
 
 		[SettingsUIMouseBinding(nameof(FindIt) + "Apply"), SettingsUIHidden]
 		public ProxyBinding ApplyMimic { get; set; }
+
+		[SettingsUIKeyboardBinding(BindingKeyboard.LeftArrow, nameof(FindIt) + "LeftArrow"), SettingsUIHidden]
+		public ProxyBinding LeftArrow { get; set; }
+		[SettingsUIKeyboardBinding(BindingKeyboard.RightArrow, nameof(FindIt) + "RightArrow"), SettingsUIHidden]
+		public ProxyBinding RightArrow { get; set; }
+		[SettingsUIKeyboardBinding(BindingKeyboard.UpArrow, nameof(FindIt) + "UpArrow"), SettingsUIHidden]
+		public ProxyBinding UpArrow { get; set; }
+		[SettingsUIKeyboardBinding(BindingKeyboard.DownArrow, nameof(FindIt) + "DownArrow"), SettingsUIHidden]
+		public ProxyBinding DownArrow { get; set; }
 
 		[SettingsUIHidden]
 		public string DefaultViewStyle { get; set; } = "GridWithText";

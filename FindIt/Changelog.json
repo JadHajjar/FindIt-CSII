@@ -7,15 +7,19 @@
       {
         "Name": "Changes",
         "Changes": [
-          "Added a Building Corner filter, allowing you to search for Left and Right corner buildings, as well as Front-only buildings."
+          "Added a Building Corner filter, allowing you to search for Left and Right corner buildings, as well as Front-only buildings.",
+          "Added a 'Random' button to select a random asset from the list.",
+          "Added a 'Locate' button to find any placed asset of the currently selected asset.",
+          "Added theme and pack icons on the right side of assets."
         ]
       },
       {
         "Name": "UI and UX Improvements",
         "Changes": [
-          "Fixed the previously selected asset not staying selected after closing and re-opening the find it panel.",
+          "Arrow keys can now be used to navigate through the list of assets.",
+          "Fixed the previously selected asset not staying selected after closing and re-opening the find it panel. ",
           "Fixed changing display styles requiring two clicks to apply.",
-          "Various UI improvements.",
+          "Various UI improvements; including better scaling, readability, positioning, and active color fix.",
           "Updated translations."
         ]
       }

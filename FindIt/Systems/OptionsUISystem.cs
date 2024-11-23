@@ -19,6 +19,7 @@ namespace FindIt.Systems
 		private PrefabSystem _prefabSystem;
 		private FindItUISystem _findItUISystem;
 		private ValueBindingHelper<OptionSectionUIEntry[]> _optionsList;
+		private ValueBindingHelper<bool> _filtersSet;
 
 		protected override void OnCreate()
 		{
@@ -27,9 +28,12 @@ namespace FindIt.Systems
 			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			_prefabUISystem = World.GetOrCreateSystemManaged<PrefabUISystem>();
 			_findItUISystem = World.GetOrCreateSystemManaged<FindItUISystem>();
+
 			_optionsList = CreateBinding("OptionsList", new OptionSectionUIEntry[0]);
+			_filtersSet = CreateBinding("AreFiltersSet", false);
 
 			CreateTrigger<int, int, int>("OptionClicked", OptionClicked);
+			CreateTrigger("ClearFilters", ClearFilters);
 		}
 
 		internal void RefreshOptions()
@@ -56,20 +60,30 @@ namespace FindIt.Systems
 				.OrderBy(x => x.Id)
 				.Select(x => x.AsUIEntry())
 				.ToArray();
+
+			_filtersSet.Value = _sections.Values.Any(x => !x.IsDefault());
 		}
 
 		private IEnumerable<IOptionSection> GetVisibleSections()
 		{
+			var requireRefresh = false;
+
 			foreach (var section in _sections.Values)
 			{
 				if (section.IsVisible())
 				{
 					yield return section;
 				}
-				else
+				else				if (!section.IsDefault())
 				{
+				requireRefresh = true;
 					section.OnReset();
 				}
+			}
+
+			if (requireRefresh)
+			{
+				TriggerSearch();
 			}
 		}
 
@@ -85,9 +99,32 @@ namespace FindIt.Systems
 			RefreshOptions();
 		}
 
+		private void ClearFilters()
+		{
+			var requireRefresh = false;
+
+			foreach (var section in _sections.Values)
+			{
+				if (section.IsDefault())
+				{
+					continue;
+				}
+
+				requireRefresh = true;
+				section.OnReset();
+			}
+
+			if (requireRefresh)
+			{
+				TriggerSearch();
+			}
+
+			RefreshOptions();
+		}
+
 		public string GetAssetName(PrefabBase prefab)
 		{
-			_prefabUISystem.GetTitleAndDescription(_prefabSystem.GetEntity(prefab), out var titleId, out var _);
+			_prefabUISystem.GetTitleAndDescription(/*_prefabSystem.GetEntity(prefab)*/prefab, out var titleId, out var _);
 
 			if (GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name))
 			{

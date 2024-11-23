@@ -22,9 +22,9 @@ namespace FindIt.Domain.Options
 			_styles = new()
 			{
 				[BuildingCornerFilter.Any] = "coui://uil/Standard/StarAll.svg",
-				[BuildingCornerFilter.Left] = "coui://uil/Standard/LowLevel.svg",
-				[BuildingCornerFilter.Front] = "coui://uil/Standard/Row.svg",
-				[BuildingCornerFilter.Right] = "coui://uil/Standard/MediumLevel.svg",
+				[BuildingCornerFilter.Left] = "coui://uil/Standard/BuildingCornerLeft.svg",
+				[BuildingCornerFilter.Front] = "coui://uil/Standard/BuildingFront.svg",
+				[BuildingCornerFilter.Right] = "coui://uil/Standard/BuildingCornerRight.svg",
 			};
 		}
 
@@ -59,14 +59,12 @@ namespace FindIt.Domain.Options
 		
 		public void OnReset()
 		{
-			if (FindItUtil.Filters.SelectedBuildingCorner == BuildingCornerFilter.Any)
-			{
-				return;
-			}
-
 			FindItUtil.Filters.SelectedBuildingCorner = BuildingCornerFilter.Any;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return FindItUtil.Filters.SelectedBuildingCorner == BuildingCornerFilter.Any;
 		}
 	}
 }

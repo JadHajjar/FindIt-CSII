@@ -4,8 +4,10 @@ using FindIt.Domain.Utilities;
 
 using Game.Input;
 using Game.Prefabs;
+using Game.Rendering;
 using Game.Tools;
 
+using System;
 using System.Threading;
 
 namespace FindIt.Systems
@@ -23,7 +25,7 @@ namespace FindIt.Systems
 		private PrefabSystem _prefabSystem;
 		private OptionsUISystem _optionsUISystem;
 		private DefaultToolSystem _defaultToolSystem;
-
+		private CameraUpdateSystem _cameraUpdateSystem;
 		private ValueBindingHelper<bool> _IsSearchLoading;
 		private ValueBindingHelper<bool> _FocusSearchBar;
 		private ValueBindingHelper<bool> _ClearSearchBar;
@@ -35,6 +37,10 @@ namespace FindIt.Systems
 		private ValueBindingHelper<double> _RowCount;
 		private ValueBindingHelper<int> _ActivePrefabId;
 		private ProxyAction _searchKeyBinding;
+		private ProxyAction _arrowLeftBinding;
+		private ProxyAction _arrowUpBinding;
+		private ProxyAction _arrowRightBinding;
+		private ProxyAction _arrowDownBinding;
 		private ValueBindingHelper<int> _CurrentCategoryBinding;
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
 		private ValueBindingHelper<float> _PanelHeight;
@@ -66,6 +72,7 @@ namespace FindIt.Systems
 			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
 			_optionsUISystem = World.GetOrCreateSystemManaged<OptionsUISystem>();
 			_defaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
+			_cameraUpdateSystem = World.GetOrCreateSystemManaged<CameraUpdateSystem>();
 
 			// ToolSystem toolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<ToolSystem>(); // I don't know why vanilla game did this.
 			_toolSystem.EventPrefabChanged += OnPrefabChanged;
@@ -74,6 +81,11 @@ namespace FindIt.Systems
 			// Keybinding caching
 			_searchKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.SearchKeyBinding));
 			_searchKeyBinding.shouldBeEnabled = true;
+
+			_arrowLeftBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.LeftArrow));
+			_arrowUpBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.UpArrow));
+			_arrowRightBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.RightArrow));
+			_arrowDownBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.DownArrow));
 
 			// These establish the bindings for the categories
 			_CurrentCategoryBinding = CreateBinding("CurrentCategory", "SetCurrentCategory", (int)FindItUtil.CurrentCategory, SetCurrentCategory);
@@ -98,6 +110,7 @@ namespace FindIt.Systems
 			_PrefabListBinding = CreateBinding("PrefabList", new PrefabUIEntry[0]);
 			_ViewStyle = CreateBinding("ViewStyle", Mod.Settings.DefaultViewStyle);
 
+			// These establish UI actions triggering methods on the C# side.
 			CreateTrigger<string>("SearchChanged", t => SearchChanged(t));
 			CreateTrigger<int>("OnScroll", OnScroll);
 			CreateTrigger<double>("SetScrollIndex", SetScrollIndex);
@@ -107,10 +120,14 @@ namespace FindIt.Systems
 			CreateTrigger<int>("ToggleFavorited", FindItUtil.ToggleFavorited);
 			CreateTrigger("OnSearchFocused", () => _FocusSearchBar.Value = false);
 			CreateTrigger("OnSearchCleared", () => _ClearSearchBar.Value = false);
+			CreateTrigger("OnRandomButtonClicked", OnRandomButtonClicked);
+			CreateTrigger<int>("OnLocateButtonClicked", OnLocateButtonClicked);
 		}
 
 		protected override void OnUpdate()
 		{
+			_arrowLeftBinding.shouldBeEnabled = _arrowUpBinding.shouldBeEnabled = _arrowRightBinding.shouldBeEnabled = _arrowDownBinding.shouldBeEnabled = _ShowFindItPanel;
+
 			if (filterCompleted)
 			{
 				filterCompleted = false;
@@ -130,6 +147,29 @@ namespace FindIt.Systems
 			if (_searchKeyBinding.WasPerformedThisFrame())
 			{
 				OnSearchKeyPressed();
+			}
+
+			if (_ShowFindItPanel)
+			{
+				if (_arrowLeftBinding.WasPerformedThisFrame())
+				{
+					MoveSelectedItemGrid(-1, 0);
+				}
+
+				if (_arrowUpBinding.WasPerformedThisFrame())
+				{
+					MoveSelectedItemGrid(0, -1);
+				}
+
+				if (_arrowRightBinding.WasPerformedThisFrame())
+				{
+					MoveSelectedItemGrid(1, 0);
+				}
+
+				if (_arrowDownBinding.WasPerformedThisFrame())
+				{
+					MoveSelectedItemGrid(0, 1);
+				}
 			}
 
 			base.OnUpdate();

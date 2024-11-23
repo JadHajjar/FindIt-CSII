@@ -54,14 +54,12 @@ namespace FindIt.Domain.Options
 
 		public void OnReset()
 		{
-			if (FindItUtil.Filters.LotDepthFilter == 0)
-			{
-				return;
-			}
-
 			FindItUtil.Filters.LotDepthFilter = 0;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return FindItUtil.Filters.LotDepthFilter == 0;
 		}
 	}
 }

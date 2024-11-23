@@ -1,15 +1,21 @@
 ﻿using FindIt.Domain.Enums;
 using FindIt.Domain.Utilities;
 
+using Game.Rendering;
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using UnityEngine.InputSystem;
+using Unity.Entities;
 
 namespace FindIt.Systems
 {
 	internal partial class FindItUISystem : ExtendedUISystemBase
 	{
+		private int lastFindId;
+		private int lastFindIndex;
+
 		private void FindItIconClicked()
 		{
 			if (_ShowFindItPanel)
@@ -66,13 +72,20 @@ namespace FindIt.Systems
 
 				FindItUtil.SetSorting();
 
-				var prefab = UpdateCategoriesAndPrefabList();
+				UpdateCategoriesAndPrefabList();
 
 				_optionsUISystem.RefreshOptions();
 
 				if (activatePrefab && Mod.Settings.SelectPrefabOnOpen)
 				{
 					TryActivatePrefabTool(_ActivePrefabId);
+
+					var prefabs = FindItUtil.GetFilteredPrefabs();
+					var columns = GridUtil.GetCurrentColumnCount();
+					var rows = GridUtil.GetCurrentRowCount();
+					var index = prefabs.FindIndex(x => x.Id == _ActivePrefabId);
+
+					SetScrollIndex(Math.Max(0, Math.Floor(index / columns) - (rows / 4)));
 				}
 			}
 
@@ -102,7 +115,9 @@ namespace FindIt.Systems
 		private void SetScrollIndex(double index)
 		{
 			if (scrollIndex == index)
+			{
 				return;
+			}
 
 			scrollIndex = index;
 
@@ -155,6 +170,76 @@ namespace FindIt.Systems
 			_CurrentSearch.ForceUpdate();
 
 			TriggerSearch();
+		}
+
+		private void MoveSelectedItemGrid(int x, int y)
+		{
+			var prefabs = FindItUtil.GetFilteredPrefabs();
+			var columns = GridUtil.GetCurrentColumnCount();
+			var rows = GridUtil.GetCurrentRowCount();
+			var currentIndex = prefabs.FindIndex(x => x.Id == _ActivePrefabId);
+
+			if (prefabs.Count == 0)
+			{
+				return;
+			}
+
+			currentIndex += x + (y * (int)Math.Floor(columns));
+			currentIndex = Math.Min(Math.Max(0, currentIndex), prefabs.Count);
+
+			TryActivatePrefabTool(prefabs[currentIndex].Id);
+			SetScrollIndex(Math.Max(0, Math.Floor(currentIndex / columns) - (rows / 4)));
+		}
+
+		private void OnRandomButtonClicked()
+		{
+			var random = new Random(Guid.NewGuid().GetHashCode());
+			var prefabs = FindItUtil.GetFilteredPrefabs();
+			var columns = GridUtil.GetCurrentColumnCount();
+			var rows = GridUtil.GetCurrentRowCount();
+
+			if (prefabs.Count == 0)
+			{
+				return;
+			}
+
+			var index = random.Next(prefabs.Count);
+
+			TryActivatePrefabTool(prefabs[index].Id);
+			SetScrollIndex(Math.Max(0, Math.Floor(index / columns) - (rows / 4)));
+		}
+
+		private void OnLocateButtonClicked(int id)
+		{
+			var entities = PrefabTrackingSystem.GetPlacedEntities(id);
+
+			if (entities.Count == 0)
+			{
+				return;
+			}
+
+			if (lastFindId != id)
+			{
+				lastFindIndex = 0;
+			}
+			else
+			{
+				lastFindIndex = lastFindIndex == entities.Count - 1 ? 0 : (lastFindIndex + 1);
+			}
+
+			lastFindId = id;
+
+			JumpTo(entities[lastFindIndex]);
+		}
+
+		private void JumpTo(Entity entity)
+		{
+			if (_cameraUpdateSystem.orbitCameraController != null && entity != Entity.Null)
+			{
+				_cameraUpdateSystem.orbitCameraController.followedEntity = entity;
+				_cameraUpdateSystem.orbitCameraController.TryMatchPosition(_cameraUpdateSystem.activeCameraController);
+				_cameraUpdateSystem.activeCameraController = _cameraUpdateSystem.orbitCameraController;
+			}
 		}
 	}
 }

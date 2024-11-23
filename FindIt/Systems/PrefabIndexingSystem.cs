@@ -241,6 +241,8 @@ namespace FindIt.Systems
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.Theme ??= prefab.GetComponent<ThemeObject>()?.m_Theme;
 			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs;
+			prefabIndex.ThemeThumbnail ??= prefabIndex.Theme is null ? null : ImageSystem.GetThumbnail(prefabIndex.Theme);
+			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks?.Select(ImageSystem.GetThumbnail).ToArray();
 			prefabIndex.Tags ??= new();
 			prefabIndex.IsVanilla = prefab.builtin;
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
@@ -306,7 +308,7 @@ namespace FindIt.Systems
 
 		private string GetAssetName(PrefabBase prefab)
 		{
-			_prefabUISystem.GetTitleAndDescription(_prefabSystem.GetEntity(prefab), out var titleId, out var _);
+			_prefabUISystem.GetTitleAndDescription(/*_prefabSystem.GetEntity(prefab)*/prefab, out var titleId, out var _);
 
 			return GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name)
 				? name

@@ -95,8 +95,11 @@ namespace FindIt.Domain.Options
 		{
 			FindItUtil.Filters.SelectedTheme = null;
 			FindItUtil.Filters.SelectedThemeNone = false;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return FindItUtil.Filters.SelectedTheme == null && !FindItUtil.Filters.SelectedThemeNone;
 		}
 
 		private List<ThemePrefab> GetThemePrefabs()

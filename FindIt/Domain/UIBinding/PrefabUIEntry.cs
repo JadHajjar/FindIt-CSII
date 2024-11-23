@@ -1,8 +1,10 @@
 ﻿using Colossal.UI.Binding;
 
+using FindIt.Systems;
+
 namespace FindIt.Domain.UIBinding
 {
-	public struct PrefabUIEntry : IJsonWritable
+	public class PrefabUIEntry : IJsonWritable
 	{
 		public readonly int Id;
 		private readonly string Name;
@@ -12,6 +14,9 @@ namespace FindIt.Domain.UIBinding
 		private readonly string CategoryThumbnail;
 		private readonly bool Favorited;
 		private readonly bool Random;
+		private readonly bool Placed;
+		private readonly string ThemeThumbnail;
+		private readonly string[] PackThumbnails;
 
 		public PrefabUIEntry(PrefabIndexBase prefab)
 		{
@@ -20,8 +25,11 @@ namespace FindIt.Domain.UIBinding
 			FallbackThumbnail = prefab.FallbackThumbnail;
 			DlcThumbnail = prefab.DlcThumbnail;
 			CategoryThumbnail = prefab.CategoryThumbnail;
+			ThemeThumbnail = prefab.ThemeThumbnail;
+			PackThumbnails = prefab.PackThumbnails;
 			Favorited = prefab.IsFavorited;
 			Random = prefab.IsRandom;
+			Placed = PrefabTrackingSystem.GetMostUsedCount(prefab) > 0;
 
 			if (prefab.IsRandom && prefab.RandomPrefabThumbnails != null)
 			{
@@ -33,7 +41,7 @@ namespace FindIt.Domain.UIBinding
 			}
 		}
 
-		public readonly void Write(IJsonWriter writer)
+		public void Write(IJsonWriter writer)
 		{
 			writer.TypeBegin(GetType().FullName);
 
@@ -55,11 +63,20 @@ namespace FindIt.Domain.UIBinding
 			writer.PropertyName("categoryThumbnail");
 			writer.Write(CategoryThumbnail);
 
+			writer.PropertyName("themeThumbnail");
+			writer.Write(ThemeThumbnail);
+
+			writer.PropertyName("packThumbnails");
+			writer.Write(PackThumbnails);
+
 			writer.PropertyName("favorited");
 			writer.Write(Favorited);
 
 			writer.PropertyName("random");
 			writer.Write(Random);
+
+			writer.PropertyName("placed");
+			writer.Write(Placed);
 
 			writer.TypeEnd();
 		}

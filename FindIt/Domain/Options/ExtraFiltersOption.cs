@@ -36,8 +36,8 @@ namespace FindIt.Domain.Options
 					{
 						Id = 1,
 						Name = LocaleHelper.GetTooltip("RemoveRandoms"),
-						Icon = "coui://uil/Standard/Dice.svg",
-						Selected = !FindItUtil.Filters.HideRandoms,
+						Icon = "coui://uil/Standard/NoDice.svg",
+						Selected = FindItUtil.Filters.HideRandoms,
 						Hidden = Mod.Settings.HideRandomAssets
 					},
 					new OptionItemUIEntry
@@ -46,6 +46,13 @@ namespace FindIt.Domain.Options
 						Name = LocaleHelper.GetTooltip("CustomAssets"),
 						Icon = "coui://uil/Standard/PDXPlatypusHexagon.svg",
 						Selected = FindItUtil.Filters.HideVanilla
+					},
+					new OptionItemUIEntry
+					{
+						Id = 3,
+						Name = LocaleHelper.GetTooltip("OnlyPlaced"),
+						Icon = "coui://uil/Standard/MapMarker.svg",
+						Selected = FindItUtil.Filters.OnlyPlaced
 					}
 				}
 			};
@@ -69,6 +76,9 @@ namespace FindIt.Domain.Options
 				case 2:
 					FindItUtil.Filters.HideVanilla = !FindItUtil.Filters.HideVanilla;
 					break;
+				case 3:
+					FindItUtil.Filters.OnlyPlaced = !FindItUtil.Filters.OnlyPlaced;
+					break;
 				default:
 					return;
 			}
@@ -78,16 +88,15 @@ namespace FindIt.Domain.Options
 
 		public void OnReset()
 		{
-			if (!FindItUtil.Filters.HideAds && !FindItUtil.Filters.HideRandoms && !FindItUtil.Filters.HideVanilla)
-			{
-				return;
-			}
-
 			FindItUtil.Filters.HideAds = false;
 			FindItUtil.Filters.HideVanilla = false;
 			FindItUtil.Filters.HideRandoms = false;
+			FindItUtil.Filters.OnlyPlaced = false;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return !FindItUtil.Filters.HideAds && !FindItUtil.Filters.HideRandoms && !FindItUtil.Filters.HideVanilla && !FindItUtil.Filters.OnlyPlaced;
 		}
 	}
 }

@@ -15,7 +15,7 @@ namespace FindIt.Systems
 {
 	internal partial class FindItUISystem : ExtendedUISystemBase
 	{
-		internal PrefabUIEntry UpdateCategoriesAndPrefabList()
+		internal void UpdateCategoriesAndPrefabList()
 		{
 			_CategoryBinding.Value = FindItUtil.GetCategories().Select(x => new CategoryUIEntry(x)).ToArray();
 			_SubCategoryBinding.Value = FindItUtil.GetSubCategories().Select(x => new SubCategoryUIEntry(x)).ToArray();
@@ -23,8 +23,6 @@ namespace FindIt.Systems
 			var prefabs = GetDisplayedPrefabs();
 
 			_PrefabListBinding.Value = prefabs;
-
-			return prefabs.FirstOrDefault();
 		}
 
 		private PrefabUIEntry[] GetDisplayedPrefabs()

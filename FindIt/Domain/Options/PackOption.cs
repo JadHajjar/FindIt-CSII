@@ -81,8 +81,11 @@ namespace FindIt.Domain.Options
 		public void OnReset()
 		{
 			FindItUtil.Filters.SelectedAssetPack = null;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return FindItUtil.Filters.SelectedAssetPack == null;
 		}
 
 		private List<AssetPackPrefab> GetPackPrefabs()

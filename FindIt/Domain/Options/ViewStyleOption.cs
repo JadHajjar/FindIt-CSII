@@ -57,5 +57,10 @@ namespace FindIt.Domain.Options
 
 		public void OnReset()
 		{ }
+
+		public bool IsDefault()
+		{
+			return true;
+		}
 	}
 }

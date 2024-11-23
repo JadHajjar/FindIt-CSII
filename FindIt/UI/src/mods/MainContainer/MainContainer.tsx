@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./mainContainer.module.scss";
 import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";
 import { OptionSection } from "domain/ContentViewType";
+import { useLocalization } from "cs2/l10n";
 
 const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const IsExpanded$ = bindValue<boolean>(mod.id, "IsExpanded");
@@ -26,9 +27,11 @@ const DefaultMainTheme: Theme | any = getModule("game-ui/common/panel/themes/def
 
 export const FindItMainContainerComponent = () => {
   const isPhotoMode = useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
+  const { translate } = useLocalization();
 
   const containerRef = useRef(null);
 
+  const [sortingOpen, setSortingOpen] = useState(false);
   const [optionsOpen, setOptionsOpen] = useState(false);
   const [containerLeft, setContainerLeft] = useState(0);
 
@@ -52,6 +55,20 @@ export const FindItMainContainerComponent = () => {
     trigger(mod.id, "OptionClicked", x, y, z);
   }
 
+  function toggleSortingOpen(): void {
+    setSortingOpen(!sortingOpen);
+    setOptionsOpen(false);
+  }
+
+  function toggleOptionsOpen(): void {
+    setOptionsOpen(!optionsOpen);
+    setSortingOpen(false);
+  }
+
+  function toggleEnlarge(): void {
+    trigger(mod.id, "SetIsExpanded", !IsExpanded);
+  }
+
   return (
     <>
       <div className={styles.findItMainContainer}>
@@ -59,34 +76,51 @@ export const FindItMainContainerComponent = () => {
           <div className={GameMainScreneTheme.toolMainColumn} style={{ position: "relative" }}>
             <div className={GameMainScreneTheme.toolPanel} ref={containerRef} style={{ width: PanelWidth + "rem" }}>
               <div>
-                {optionsOpen && optionsOverflow() && (
+                {(optionsOpen || sortingOpen) && optionsOverflow() && (
                   <div style={{ position: "relative" }}>
                     <div className={styles.topPanel}>
                       <div>
-                        <OptionsPanelComponent options={OptionsList} OnChange={onOptionClicked}></OptionsPanelComponent>
+                        <div className={styles.title}>
+                          {optionsOpen
+                            ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters")
+                            : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
+                        </div>
+                        <OptionsPanelComponent
+                          options={optionsOpen ? OptionsList.slice(3) : OptionsList.slice(0, 3)}
+                          OnChange={onOptionClicked}
+                        ></OptionsPanelComponent>
                       </div>
                     </div>
                   </div>
                 )}
                 <div className={styles.topBar}>
                   <TopBarComponent
+                    sortingOpen={sortingOpen}
                     optionsOpen={optionsOpen}
                     expanded={IsExpanded}
                     small={PanelWidth <= 685}
                     large={PanelWidth >= 850}
-                    toggleOptionsOpen={() => setOptionsOpen(!optionsOpen)}
-                    toggleEnlarge={() => trigger(mod.id, "SetIsExpanded", !IsExpanded)}
+                    toggleSortingOpen={toggleSortingOpen}
+                    toggleOptionsOpen={toggleOptionsOpen}
+                    toggleEnlarge={toggleEnlarge}
                   ></TopBarComponent>
                 </div>
                 <div className={styles.content + " " + AssetMenuTheme.assetPanel}>
                   <PrefabSelectionComponent expanded={IsExpanded}></PrefabSelectionComponent>
                 </div>
               </div>
-              {optionsOpen && !optionsOverflow() && (
-                <div className={styles.rightPanel} style={{ left: PanelWidth + "rem", bottom: 0 }}>
+              {(optionsOpen || sortingOpen) && !optionsOverflow() && (
+                <div className={styles.rightPanel} style={{ left: PanelWidth + "rem" }}>
                   <div>
-                    <OptionsPanelComponent options={OptionsList} OnChange={onOptionClicked}></OptionsPanelComponent>
+                    <div className={styles.title}>
+                      {optionsOpen ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters") : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
+                    </div>
+                    <OptionsPanelComponent
+                      options={optionsOpen ? OptionsList.slice(3) : OptionsList.slice(0, 3)}
+                      OnChange={onOptionClicked}
+                    ></OptionsPanelComponent>
                   </div>
+                  <div />
                 </div>
               )}
             </div>

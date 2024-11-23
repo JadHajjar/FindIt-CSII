@@ -53,14 +53,12 @@ namespace FindIt.Domain.Options
 
 		public void OnReset()
 		{
-			if (FindItUtil.Filters.BuildingLevelFilter == 0)
-			{
-				return;
-			}
-
 			FindItUtil.Filters.BuildingLevelFilter = 0;
+		}
 
-			_optionsUISystem.TriggerSearch();
+		public bool IsDefault()
+		{
+			return FindItUtil.Filters.BuildingLevelFilter == 0;
 		}
 	}
 }

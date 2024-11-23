@@ -6,6 +6,7 @@ namespace FindIt.Domain.Interfaces
 	{
 		int Id { get; }
 
+		bool IsDefault();
 		bool IsVisible();
 		OptionSectionUIEntry AsUIEntry();
 		void OnOptionClicked(int optionId, int value);
