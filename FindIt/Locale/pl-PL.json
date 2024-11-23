@@ -98,6 +98,7 @@
   "Tooltip.LABEL[FindIt.Vehicles_Misc]": "Różne pojazdy",
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "Center",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Right",
+  "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "View on PdxMods",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Main]": "Ustawienia ogólne",
