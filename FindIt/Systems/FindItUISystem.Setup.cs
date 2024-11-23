@@ -7,7 +7,6 @@ using Game.Prefabs;
 using Game.Rendering;
 using Game.Tools;
 
-using System;
 using System.Threading;
 
 namespace FindIt.Systems
@@ -26,6 +25,14 @@ namespace FindIt.Systems
 		private OptionsUISystem _optionsUISystem;
 		private DefaultToolSystem _defaultToolSystem;
 		private CameraUpdateSystem _cameraUpdateSystem;
+
+		private ProxyAction _searchKeyBinding;
+		private ProxyAction _randomKeyBinding;
+		private ProxyAction _arrowLeftBinding;
+		private ProxyAction _arrowUpBinding;
+		private ProxyAction _arrowRightBinding;
+		private ProxyAction _arrowDownBinding;
+
 		private ValueBindingHelper<bool> _IsSearchLoading;
 		private ValueBindingHelper<bool> _FocusSearchBar;
 		private ValueBindingHelper<bool> _ClearSearchBar;
@@ -36,17 +43,13 @@ namespace FindIt.Systems
 		private ValueBindingHelper<double> _ColumnCount;
 		private ValueBindingHelper<double> _RowCount;
 		private ValueBindingHelper<int> _ActivePrefabId;
-		private ProxyAction _searchKeyBinding;
-		private ProxyAction _arrowLeftBinding;
-		private ProxyAction _arrowUpBinding;
-		private ProxyAction _arrowRightBinding;
-		private ProxyAction _arrowDownBinding;
 		private ValueBindingHelper<int> _CurrentCategoryBinding;
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
 		private ValueBindingHelper<float> _PanelHeight;
 		private ValueBindingHelper<float> _PanelWidth;
 		private ValueBindingHelper<string> _CurrentSearch;
 		private ValueBindingHelper<string> _ViewStyle;
+		private ValueBindingHelper<string> _AlignmentStyle;
 		private ValueBindingHelper<CategoryUIEntry[]> _CategoryBinding;
 		private ValueBindingHelper<SubCategoryUIEntry[]> _SubCategoryBinding;
 		private ValueBindingHelper<PrefabUIEntry[]> _PrefabListBinding;
@@ -60,6 +63,19 @@ namespace FindIt.Systems
 				Mod.Settings.DefaultViewStyle = _ViewStyle.Value = value;
 				Mod.Settings.ApplyAndSave();
 				UpdateCategoriesAndPrefabList();
+			}
+		}
+		public string AlignmentStyle
+		{
+			get => _AlignmentStyle;
+			set
+			{
+				_IsExpanded.Value = false;
+
+				Mod.Settings.DefaultAlignmentStyle = _AlignmentStyle.Value = value;
+				Mod.Settings.ApplyAndSave();
+
+				ExpandedToggled();
 			}
 		}
 
@@ -81,6 +97,8 @@ namespace FindIt.Systems
 			// Keybinding caching
 			_searchKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.SearchKeyBinding));
 			_searchKeyBinding.shouldBeEnabled = true;
+
+			_randomKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.RandomKeyBinding));
 
 			_arrowLeftBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.LeftArrow));
 			_arrowUpBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.UpArrow));
@@ -109,6 +127,7 @@ namespace FindIt.Systems
 			_SubCategoryBinding = CreateBinding("SubCategoryList", new SubCategoryUIEntry[] { new(PrefabSubCategory.Any) });
 			_PrefabListBinding = CreateBinding("PrefabList", new PrefabUIEntry[0]);
 			_ViewStyle = CreateBinding("ViewStyle", Mod.Settings.DefaultViewStyle);
+			_AlignmentStyle = CreateBinding("AlignmentStyle", Mod.Settings.DefaultAlignmentStyle);
 
 			// These establish UI actions triggering methods on the C# side.
 			CreateTrigger<string>("SearchChanged", t => SearchChanged(t));
@@ -126,7 +145,11 @@ namespace FindIt.Systems
 
 		protected override void OnUpdate()
 		{
-			_arrowLeftBinding.shouldBeEnabled = _arrowUpBinding.shouldBeEnabled = _arrowRightBinding.shouldBeEnabled = _arrowDownBinding.shouldBeEnabled = _ShowFindItPanel;
+			_randomKeyBinding.shouldBeEnabled =
+				_arrowLeftBinding.shouldBeEnabled =
+				_arrowUpBinding.shouldBeEnabled =
+				_arrowRightBinding.shouldBeEnabled =
+				_arrowDownBinding.shouldBeEnabled = _ShowFindItPanel;
 
 			if (filterCompleted)
 			{
@@ -151,6 +174,11 @@ namespace FindIt.Systems
 
 			if (_ShowFindItPanel)
 			{
+				if (_randomKeyBinding.WasPerformedThisFrame())
+				{
+					OnRandomButtonClicked();
+				}
+
 				if (_arrowLeftBinding.WasPerformedThisFrame())
 				{
 					MoveSelectedItemGrid(-1, 0);

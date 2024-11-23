@@ -9,11 +9,11 @@ import styles from "./mainContainer.module.scss";
 import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";
 import { OptionSection } from "domain/ContentViewType";
 import { useLocalization } from "cs2/l10n";
+import classNames from "classnames";
 
 const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const IsExpanded$ = bindValue<boolean>(mod.id, "IsExpanded");
-
-// This functions trigger an event on C# side and C# designates the method to implement.
+const AlignmentStyle$ = bindValue<string>(mod.id, "AlignmentStyle");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 const OptionsList$ = bindValue<OptionSection[]>(mod.id, "OptionsList");
 
@@ -40,8 +40,9 @@ export const FindItMainContainerComponent = () => {
   const IsExpanded = useValue(IsExpanded$);
   const PanelWidth = useValue(PanelWidth$) + 15 + 20;
   const OptionsList = useValue(OptionsList$);
+  const AlignmentStyle = useValue(AlignmentStyle$);
 
-  const optionsOverflow = () => window.innerWidth < containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
+  const optionsOverflow = () => AlignmentStyle == "Right" || window.innerWidth < containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
 
   useEffect(() => {
     var newLeft = (containerRef.current as any)?.getBoundingClientRect().left ?? 0;
@@ -70,63 +71,66 @@ export const FindItMainContainerComponent = () => {
   }
 
   return (
-    <>
-      <div className={styles.findItMainContainer}>
-        <div className={GameMainScreneTheme.toolLayout}>
-          <div className={GameMainScreneTheme.toolMainColumn} style={{ position: "relative" }}>
-            <div className={GameMainScreneTheme.toolPanel} ref={containerRef} style={{ width: PanelWidth + "rem" }}>
-              <div>
-                {(optionsOpen || sortingOpen) && optionsOverflow() && (
-                  <div style={{ position: "relative" }}>
-                    <div className={styles.topPanel}>
-                      <div>
-                        <div className={styles.title}>
-                          {optionsOpen
-                            ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters")
-                            : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
-                        </div>
-                        <OptionsPanelComponent
-                          options={optionsOpen ? OptionsList.slice(3) : OptionsList.slice(0, 3)}
-                          OnChange={onOptionClicked}
-                        ></OptionsPanelComponent>
+    <div className={classNames(styles.findItMainContainer, AlignmentStyle === "Right" ? styles.alignRight : styles.alignCenter)}>
+      <div className={styles.toolLayout}>
+        <div
+          className={AlignmentStyle === "Right" ? styles.toolMainColumn : GameMainScreneTheme.toolMainColumn}
+          style={AlignmentStyle !== "Right" ? undefined : { width: PanelWidth + "rem" }}
+        >
+          <div
+            className={GameMainScreneTheme.toolPanel}
+            ref={containerRef}
+            style={AlignmentStyle === "Right" ? undefined : { width: PanelWidth + "rem" }}
+          >
+            <div>
+              {(optionsOpen || sortingOpen) && optionsOverflow() && (
+                <div style={{ position: "relative" }}>
+                  <div className={styles.topPanel}>
+                    <div>
+                      <div className={styles.title}>
+                        {optionsOpen ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters") : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
                       </div>
+                      <OptionsPanelComponent
+                        options={OptionsList.filter((x) => x.id < 0 !== optionsOpen)}
+                        OnChange={onOptionClicked}
+                      ></OptionsPanelComponent>
                     </div>
                   </div>
-                )}
-                <div className={styles.topBar}>
-                  <TopBarComponent
-                    sortingOpen={sortingOpen}
-                    optionsOpen={optionsOpen}
-                    expanded={IsExpanded}
-                    small={PanelWidth <= 685}
-                    large={PanelWidth >= 850}
-                    toggleSortingOpen={toggleSortingOpen}
-                    toggleOptionsOpen={toggleOptionsOpen}
-                    toggleEnlarge={toggleEnlarge}
-                  ></TopBarComponent>
-                </div>
-                <div className={styles.content + " " + AssetMenuTheme.assetPanel}>
-                  <PrefabSelectionComponent expanded={IsExpanded}></PrefabSelectionComponent>
-                </div>
-              </div>
-              {(optionsOpen || sortingOpen) && !optionsOverflow() && (
-                <div className={styles.rightPanel} style={{ left: PanelWidth + "rem" }}>
-                  <div>
-                    <div className={styles.title}>
-                      {optionsOpen ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters") : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
-                    </div>
-                    <OptionsPanelComponent
-                      options={optionsOpen ? OptionsList.slice(3) : OptionsList.slice(0, 3)}
-                      OnChange={onOptionClicked}
-                    ></OptionsPanelComponent>
-                  </div>
-                  <div />
                 </div>
               )}
+              <div className={styles.topBar}>
+                <TopBarComponent
+                  sortingOpen={sortingOpen}
+                  optionsOpen={optionsOpen}
+                  expanded={IsExpanded}
+                  small={PanelWidth <= 685}
+                  large={PanelWidth >= 850}
+                  toggleSortingOpen={toggleSortingOpen}
+                  toggleOptionsOpen={toggleOptionsOpen}
+                  toggleEnlarge={toggleEnlarge}
+                ></TopBarComponent>
+              </div>
+              <div className={styles.content + " " + AssetMenuTheme.assetPanel}>
+                <PrefabSelectionComponent expanded={IsExpanded}></PrefabSelectionComponent>
+              </div>
             </div>
+            {(optionsOpen || sortingOpen) && !optionsOverflow() && (
+              <div className={styles.rightPanel} style={{ left: PanelWidth + "rem" }}>
+                <div>
+                  <div className={styles.title}>
+                    {optionsOpen ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters") : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
+                  </div>
+                  <OptionsPanelComponent
+                    options={OptionsList.filter((x) => x.id < 0 !== optionsOpen)}
+                    OnChange={onOptionClicked}
+                  ></OptionsPanelComponent>
+                </div>
+                <div />
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

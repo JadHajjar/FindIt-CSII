@@ -14,7 +14,7 @@ namespace FindIt.Domain.Options
 		private readonly OptionsUISystem _optionsUISystem;
 		private readonly Dictionary<PrefabSorting, string> _sortOptions;
 
-		public int Id { get; } = 3;
+		public int Id { get; } = -2;
 
 		public SortingOption(OptionsUISystem optionsUISystem)
 		{

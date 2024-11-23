@@ -2,6 +2,52 @@
   position: relative;
   bottom: 137rem;
   pointer-events: auto;
+
+  &.alignRight {
+    position: absolute;
+    right: 20rem;
+  }
+}
+
+.alignCenter {
+  .toolLayout {
+    position: absolute;
+    top: 10rem;
+    bottom: 6rem;
+    left: 10rem;
+    right: 10rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .toolMainColumn {
+    position: relative;
+    margin: 0 6rem;
+  }
+}
+
+.alignRight {
+  .toolLayout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .toolMainColumn {
+    position: relative;
+  }
+
+  .topPanel {
+    width: 300rem;
+    top: 0px;
+    left: -310rem;
+    right: unset;
+    bottom: auto;
+    right: auto;
+  }
 }
 
 .content {

@@ -3,8 +3,10 @@ using FindIt.Domain.Utilities;
 
 using Game;
 using Game.Common;
+using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
+using Game.Vehicles;
 
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,8 @@ using System.Timers;
 
 using Unity.Collections;
 using Unity.Entities;
+
+using Object = Game.Objects.Object;
 
 namespace FindIt.Systems
 {
@@ -32,7 +36,7 @@ namespace FindIt.Systems
 			_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
 			_toolSystem.EventPrefabChanged += OnPrefabChanged;
 
-			generalEntityQuery = SystemAPI.QueryBuilder().WithAll<Game.Objects.Object, PrefabRef>().WithNone<Owner>().Build();
+			generalEntityQuery = SystemAPI.QueryBuilder().WithAll<PrefabRef>().WithAny<Object, Edge>().WithNone<Owner, Controller, Overridden>().Build();
 
 			RequireForUpdate(generalEntityQuery);
 

@@ -18,6 +18,8 @@ import shrink from "images/shrink.svg";
 import expand from "images/expand.svg";
 import filter from "images/filter.svg";
 import filterX from "images/filterX.svg";
+import finditAlignCenter from "images/finditAlignCenter.svg";
+import finditAlignRight from "images/finditAlignRight.svg";
 import sort from "images/sort.svg";
 import { FOCUS_DISABLED } from "cs2/input";
 
@@ -30,27 +32,6 @@ export interface TopBarProps {
   toggleOptionsOpen: () => void;
   toggleSortingOpen: () => void;
   toggleEnlarge: () => void;
-}
-
-// In order to use forwardRef, don't wrap a layer of
-interface PropsTextInput {
-  focusKey?: FocusKey;
-  debugName?: string;
-  type?: "text" | "password";
-  value?: string;
-  selectAllOnFocus?: boolean;
-  placeholder?: string;
-  vkTitle?: string;
-  vkDescription?: string;
-  disabled?: boolean;
-  className?: string;
-  multiline: number;
-  ref?: any;
-  onFocus?: (value: Event) => void;
-  onBlur?: (value: Event) => void;
-  onKeyDown?: (value: Event) => void;
-  onChange?: (value: Event) => void;
-  onMouseUp?: (value: Event) => void;
 }
 
 const TextInput = getModule("game-ui/common/input/text/text-input.tsx", "TextInput");
@@ -72,6 +53,7 @@ const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
 const CategoryList$ = bindValue<PrefabCategory[]>(mod.id, "CategoryList");
 const SubCategoryList$ = bindValue<PrefabSubCategory[]>(mod.id, "SubCategoryList");
+const AlignmentStyle$ = bindValue<string>(mod.id, "AlignmentStyle");
 
 export const TopBarComponent = (props: TopBarProps) => {
   // These get the value of the bindings. Or they will when we have bindings.
@@ -84,9 +66,12 @@ export const TopBarComponent = (props: TopBarProps) => {
   const CurrentSearch = useValue(CurrentSearch$);
   const ClearSearchBar = useValue(ClearSearchBar$);
   const FocusSearchBar = useValue(FocusSearchBar$);
+  const AlignmentStyle = useValue(AlignmentStyle$);
   const searchRef = useRef(null);
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
+
+  finditAlignRight + finditAlignCenter;
 
   const handleInputChange = (value: Event) => {
     if (value?.target instanceof HTMLTextAreaElement) {
@@ -142,11 +127,55 @@ export const TopBarComponent = (props: TopBarProps) => {
     );
   }
 
+  function RenderButtonSection(): JSX.Element {
+    return (
+      <div className={styles.buttonsSection}>
+        {AlignmentStyle !== "Right" && (
+          <BasicButton
+            tooltip={props.expanded ? translate("Tooltip.LABEL[FindIt.Shrink]", "Shrink") : translate("Tooltip.LABEL[FindIt.Expand]", "Expand")}
+            onClick={props.toggleEnlarge}
+            mask={props.expanded ? shrink : expand}
+            className={props.expanded && styles.selected}
+          />
+        )}
+
+        <BasicButton
+          tooltip={translate("Tooltip.LABEL[FindIt.ToggleSorting]", "Sorting")}
+          onClick={props.toggleSortingOpen}
+          mask={sort}
+          className={props.sortingOpen && styles.selected}
+        />
+
+        <BasicButton
+          tooltip={translate("Tooltip.LABEL[FindIt.ToggleFilters]", "Filters")}
+          onClick={props.toggleOptionsOpen}
+          mask={filter}
+          className={props.optionsOpen && styles.selected}
+        />
+
+        <div className={styles.seperator} />
+
+        <BasicButton
+          tooltip={translate("Tooltip.LABEL[FindIt.ClearFilter]", "Clear Filters")}
+          disabled={!AreFiltersSet}
+          onClick={() => trigger(mod.id, "ClearFilters")}
+          mask={filterX}
+        />
+
+        <BasicButton
+          tooltip={translate("Tooltip.LABEL[FindIt.Random]", "Random")}
+          onClick={() => trigger(mod.id, "OnRandomButtonClicked")}
+          mask={random}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className={classNames(props.large && styles.large, props.small && styles.small)}>
         <div className={styles.topBar}>
-          <div className={styles.topBarSection}>
+          <div className={classNames(styles.topBarSection, AlignmentStyle === "Right" && styles.expandedSearchArea)}>
             {IsSearchLoading && <img style={{ maskImage: "url(coui://uil/Standard/HalfCircleProgress.svg)" }} className={styles.loadingIcon}></img>}
             {!IsSearchLoading && <img style={{ maskImage: `url(${find})` }} className={styles.searchIcon}></img>}
             <div className={styles.searchArea}>
@@ -175,43 +204,7 @@ export const TopBarComponent = (props: TopBarProps) => {
               )}
             </div>
 
-            <div className={styles.buttonsSection}>
-              <BasicButton
-                tooltip={props.expanded ? translate("Tooltip.LABEL[FindIt.Shrink]", "Shrink") : translate("Tooltip.LABEL[FindIt.Expand]", "Expand")}
-                onClick={props.toggleEnlarge}
-                mask={props.expanded ? shrink : expand}
-                className={props.expanded && styles.selected}
-              />
-
-              <BasicButton
-                tooltip={translate("Tooltip.LABEL[FindIt.ToggleSorting]", "Sorting")}
-                onClick={props.toggleSortingOpen}
-                mask={sort}
-                className={props.sortingOpen && styles.selected}
-              />
-
-              <BasicButton
-                tooltip={translate("Tooltip.LABEL[FindIt.ToggleFilters]", "Filters")}
-                onClick={props.toggleOptionsOpen}
-                mask={filter}
-                className={props.optionsOpen && styles.selected}
-              />
-
-              <div className={styles.seperator} />
-
-              <BasicButton
-                tooltip={translate("Tooltip.LABEL[FindIt.ClearFilter]", "Clear Filters")}
-                disabled={!AreFiltersSet}
-                onClick={() => trigger(mod.id, "ClearFilters")}
-                mask={filterX}
-              />
-
-              <BasicButton
-                tooltip={translate("Tooltip.LABEL[FindIt.Random]", "Random")}
-                onClick={() => trigger(mod.id, "OnRandomButtonClicked")}
-                mask={random}
-              />
-            </div>
+            {AlignmentStyle !== "Right" && RenderButtonSection()}
           </div>
 
           <div className={styles.topBarSection}>
@@ -226,6 +219,8 @@ export const TopBarComponent = (props: TopBarProps) => {
             </Tooltip>
           </div>
         </div>
+
+        {AlignmentStyle === "Right" && <div className={styles.lowerButtonSection}>{RenderButtonSection()}</div>}
 
         <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>
 

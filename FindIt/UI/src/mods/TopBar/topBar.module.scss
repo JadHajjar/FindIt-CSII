@@ -15,6 +15,19 @@
   padding: 5rem 5rem 2.5rem 5rem;
 }
 
+.expandedSearchArea {
+  flex: 1;
+
+  .searchArea {
+    flex: 1;
+
+    .textBox {
+      flex: 1;
+      width: auto;
+    }
+  }
+}
+
 .searchArea {
   position: relative;
   margin: 0 8rem;
@@ -106,6 +119,10 @@
     background-color: rgba(150, 150, 150, 0.1) !important;
   }
 
+  &:hover {
+    background-color: rgba(200, 200, 200, 0.15);
+  }
+
   &.selected,
   &:active {
     background-color: var(--accentColorDark-focused) !important;
@@ -118,6 +135,15 @@
   img {
     width: 22rem;
     height: 22rem;
+  }
+}
+
+.lowerButtonSection .buttonsSection {
+  margin: 2rem 55rem 2rem 10rem;
+
+  .seperator {
+    background-color: transparent;
+    flex: 1;
   }
 }
 
@@ -141,6 +167,7 @@
   margin: 0 4rem 4rem 0 !important;
   padding: 4rem !important;
   transition: background-color 0.4s !important;
+  backdrop-filter: none;
 
   span {
     width: 80%;

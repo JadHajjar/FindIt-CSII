@@ -41,7 +41,12 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   return (
     <>
       <Button
-        className={classNames(VanillaComponentResolver.instance.assetGridTheme.item, styles.gridItem, props.selected && styles.selected)}
+        className={classNames(
+          VanillaComponentResolver.instance.assetGridTheme.item,
+          styles.gridItem,
+          props.selected && styles.selected,
+          props.prefab.favorited && styles.favorited
+        )}
         variant="icon"
         onSelect={() => SetCurrentPrefab(props.prefab.id)}
         style={{ width: props.width, height: props.width }}
@@ -56,7 +61,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           }
         >
           <Button
-            className={classNames(styles.favoriteIcon, props.prefab.favorited && styles.favorited)}
+            className={styles.favoriteIcon}
             variant="icon"
             focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
             onSelect={() => ToggleFavorited(props.prefab.id)}
@@ -68,7 +73,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         {props.prefab.placed && (
           <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.Locate]", "Locate")}>
             <Button
-              className={classNames(styles.placedMarker, props.prefab.favorited && styles.favorited)}
+              className={styles.placedMarker}
               variant="icon"
               focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
               onSelect={() => trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)}

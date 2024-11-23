@@ -9,7 +9,7 @@ namespace FindIt.Domain.Options
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 
-		public int Id { get; } = 2;
+		public int Id { get; } = -1;
 
 		public SortingDirectionOption(OptionsUISystem optionsUISystem)
 		{

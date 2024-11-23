@@ -59,7 +59,7 @@ namespace FindIt.Domain
 				yield return DoZoneTypeFilter;
 			}
 
-			if (SelectedBuildingCorner !=  BuildingCornerFilter.Any)
+			if (SelectedBuildingCorner != BuildingCornerFilter.Any)
 			{
 				yield return DoBuildingCornerFilter;
 			}

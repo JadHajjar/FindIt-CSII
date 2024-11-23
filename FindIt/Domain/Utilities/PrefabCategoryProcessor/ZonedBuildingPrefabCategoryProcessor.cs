@@ -6,8 +6,6 @@ using FindIt.Domain.Interfaces;
 using Game.Prefabs;
 using Game.UI;
 
-using System;
-
 using Unity.Entities;
 
 namespace FindIt.Domain.Utilities

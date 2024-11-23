@@ -7,8 +7,6 @@ using Game.Modding;
 using Game.Settings;
 using Game.UI;
 
-using UnityEngine.InputSystem;
-
 namespace FindIt
 {
 	[FileLocation(nameof(FindIt))]
@@ -47,6 +45,9 @@ namespace FindIt
 		[SettingsUIHidden]
 		public string DefaultViewStyle { get; set; } = "GridWithText";
 
+		[SettingsUIHidden]
+		public string DefaultAlignmentStyle { get; set; } = "Center";
+
 		[SettingsUIButton]
 		[SettingsUIConfirmation]
 		[SettingsUISection(MAIN_SECTION, OTHER)]
@@ -59,6 +60,10 @@ namespace FindIt
 		[SettingsUIKeyboardBinding(BindingKeyboard.P, nameof(PickerKeyBinding), ctrl: true)]
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public ProxyBinding PickerKeyBinding { get; set; }
+
+		[SettingsUIKeyboardBinding(BindingKeyboard.R, nameof(RandomKeyBinding), ctrl: true)]
+		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
+		public ProxyBinding RandomKeyBinding { get; set; }
 
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool OpenPanelOnPicker { get; set; } = true;
@@ -78,25 +83,33 @@ namespace FindIt
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public bool SmoothScroll { get; set; }
 
-		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, scalarMultiplier = 1f, unit = Unit.kFloatSingleFraction)]
+		[SettingsUISlider(min = 0.2f, max = 2f, step = 0.1f, unit = Unit.kFloatSingleFraction)]
 		[SettingsUISection(MAIN_SECTION, BEHAVIOR)]
 		public float ScrollSpeed { get; set; } = 0.6f;
 
-		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
+		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
 		public float RowSize { get; set; } = 40f;
 
-		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
+		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public float ColumnSize { get; set; } = 40;
+		public float ColumnSize { get; set; } = 40f;
 
-		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
+		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public float ExpandedRowSize { get; set; } = 80;
+		public float ExpandedRowSize { get; set; } = 80f;
 
-		[SettingsUISlider(min = 0, max = 200, step = 1, scalarMultiplier = 1f, unit = Unit.kPercentage)]
+		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
 		[SettingsUISection(MAIN_SECTION, DISPLAY)]
-		public float ExpandedColumnSize { get; set; } = 80;
+		public float ExpandedColumnSize { get; set; } = 80f;
+
+		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
+		[SettingsUISection(MAIN_SECTION, DISPLAY)]
+		public float RightRowSize { get; set; } = 80f;
+
+		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
+		[SettingsUISection(MAIN_SECTION, DISPLAY)]
+		public float RightColumnSize { get; set; } = 30f;
 
 		public override void SetDefaults()
 		{

@@ -26,6 +26,11 @@ namespace FindIt.Domain.Utilities
 
 		internal static float GetWidth()
 		{
+			if (_findItUISystem.AlignmentStyle == "Right")
+			{
+				return 150 + (Mod.Settings.RightColumnSize * 8.5f);
+			}
+
 			return 325 + ((_findItUISystem.IsExpanded ? Mod.Settings.ExpandedColumnSize : Mod.Settings.ColumnSize) * 8.5f);
 		}
 
@@ -54,16 +59,18 @@ namespace FindIt.Domain.Utilities
 
 		internal static float GetHeight()
 		{
-			return 100 + ((_findItUISystem.IsExpanded ? Mod.Settings.ExpandedRowSize : Mod.Settings.RowSize) * 2.5f);
+			return 100 + ((_findItUISystem.AlignmentStyle == "Right" ? (Mod.Settings.RightRowSize * 2.5f) : _findItUISystem.IsExpanded ? Mod.Settings.ExpandedRowSize : Mod.Settings.RowSize) * 2.5f);
 		}
 
 		internal static float GetScrollMultiplier()
 		{
-			return _findItUISystem.ViewStyle switch
+			var multiplier = _findItUISystem.AlignmentStyle == "Right" ? 2.5f : 1f;
+
+			return multiplier * _findItUISystem.ViewStyle switch
 			{
-				"GridSmall" => 4f,
-				"ListSimple" => 12f,
-				_ => 2f
+				"GridSmall" => _findItUISystem.AlignmentStyle == "Right" ? 12f : 4f,
+				"ListSimple" => GetHeight() / 12f,
+				_ => _findItUISystem.AlignmentStyle == "Right" ? 5f : 2f
 			};
 		}
 	}

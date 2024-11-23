@@ -57,7 +57,7 @@ namespace FindIt.Domain.Options
 
 			_optionsUISystem.TriggerSearch();
 		}
-		
+
 		public void OnReset()
 		{
 			FindItUtil.Filters.SelectedZoneType = ZoneTypeFilter.Any;

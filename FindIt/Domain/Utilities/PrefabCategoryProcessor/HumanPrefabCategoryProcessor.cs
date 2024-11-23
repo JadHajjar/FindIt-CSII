@@ -1,11 +1,6 @@
 ﻿using FindIt.Domain.Interfaces;
-using Game.Prefabs;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Game.Prefabs;
 
 using Unity.Entities;
 

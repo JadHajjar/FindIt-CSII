@@ -7,20 +7,22 @@
       {
         "Name": "Changes",
         "Changes": [
+          "Added an Alignment style option, allowing you to position the find it panel on the right of your screen. This comes with its own column and row size option and is saved throughout sessions.",
           "Added a Building Corner filter, allowing you to search for Left and Right corner buildings, as well as Front-only buildings.",
-          "Added a 'Random' button to select a random asset from the list.",
-          "Added a 'Locate' button to find any placed asset of the currently selected asset.",
-          "Added theme and pack icons on the right side of assets."
+          "Added a 'Random' button to select a random asset from the list. This comes with its own hot-key as well, Ctrl+R by default.",
+          "Added a marker next to assets showing that they are placed on the map, you can click this 'Locate' button to find the asset in the map.",
+          "Added a 'Clear Filters' button to easily reset all filters.",
+          "Updated translations."
         ]
       },
       {
         "Name": "UI and UX Improvements",
         "Changes": [
           "Arrow keys can now be used to navigate through the list of assets.",
+          "Added theme and pack icons on the right side of assets.",
           "Fixed the previously selected asset not staying selected after closing and re-opening the find it panel. ",
           "Fixed changing display styles requiring two clicks to apply.",
           "Various UI improvements; including better scaling, readability, positioning, and active color fix.",
-          "Updated translations."
         ]
       }
     ]

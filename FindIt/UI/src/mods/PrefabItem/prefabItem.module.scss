@@ -109,7 +109,8 @@
 }
 
 .ListSimple .gridItem {
-  margin: 1.25rem !important;
+  margin: 0 !important;
+  padding: 1.5rem !important;
   width: 100% !important;
   height: 20rem !important;
   display: flex;
@@ -130,6 +131,12 @@
   width: 15rem !important;
   height: 15rem !important;
   margin-right: 10rem;
+  margin-left: -20rem;
+}
+
+.ListSimple .favorited .gridThumbnail,
+.ListSimple .gridItem:hover .gridThumbnail {
+  margin-left: 4rem;
 }
 
 .ListSimple .jpgThumb {
@@ -151,17 +158,39 @@
   width: 24rem;
   height: 24rem;
   z-index: 99;
+  transition: top 0.15s;
+}
+.GridNoText .placedMarker,
+.GridSmall .placedMarker,
+.GridWithText .placedMarker {
   position: absolute;
   top: 0rem;
-  left: 0;
-  transition: top 0.15s;
+  left: 0rem;
 }
 
 .GridNoText .gridItem:hover .placedMarker,
 .GridSmall .gridItem:hover .placedMarker,
 .GridWithText .gridItem:hover .placedMarker,
-.placedMarker.favorited {
+.GridNoText .favorited .placedMarker,
+.GridSmall .favorited .placedMarker,
+.GridWithText .favorited .placedMarker {
   top: 24rem;
+}
+
+.ListSimple .placedMarker {
+  margin-left: -24rem;
+  margin-right: 24rem;
+
+  img {
+    width: 20rem;
+    height: 20rem;
+  }
+}
+
+.ListSimple .gridItem:hover .placedMarker,
+.ListSimple .favorited .placedMarker {
+  margin-left: 0rem;
+  margin-right: 0rem;
 }
 
 .favoriteIcon {
@@ -194,7 +223,7 @@
 }
 
 .gridItem:hover .favoriteIcon,
-.favoriteIcon.favorited {
+.favorited .favoriteIcon {
   opacity: 1;
 }
 

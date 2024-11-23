@@ -1,8 +1,6 @@
 ﻿using FindIt.Domain.Enums;
 using FindIt.Domain.Utilities;
 
-using Game.Rendering;
-
 using System;
 using System.Linq;
 using System.Threading.Tasks;

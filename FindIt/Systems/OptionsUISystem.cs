@@ -74,9 +74,9 @@ namespace FindIt.Systems
 				{
 					yield return section;
 				}
-				else				if (!section.IsDefault())
+				else if (!section.IsDefault())
 				{
-				requireRefresh = true;
+					requireRefresh = true;
 					section.OnReset();
 				}
 			}

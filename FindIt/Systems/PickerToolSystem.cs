@@ -8,15 +8,11 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
 
-using System.Collections.Generic;
-using System;
 using System.Linq;
 
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-
-using UnityEngine.InputSystem;
 
 namespace FindIt.Systems
 {
@@ -41,13 +37,13 @@ namespace FindIt.Systems
 			_applyAction = Mod.Settings.GetAction(nameof(FindIt) + "Apply");
 
 			var builtInApplyAction = InputManager.instance.FindAction(InputManager.kToolMap, "Apply");
-            var mimicApplyBinding = _applyAction.bindings.FirstOrDefault(b => b.device == InputManager.DeviceType.Mouse);
+			var mimicApplyBinding = _applyAction.bindings.FirstOrDefault(b => b.device == InputManager.DeviceType.Mouse);
 			var builtInApplyBinding = builtInApplyAction.bindings.FirstOrDefault(b => b.device == InputManager.DeviceType.Mouse);
 
 			mimicApplyBinding.path = builtInApplyBinding.path;
 			mimicApplyBinding.modifiers = builtInApplyBinding.modifiers;
 
-            InputManager.instance.SetBinding(mimicApplyBinding, out _);
+			InputManager.instance.SetBinding(mimicApplyBinding, out _);
 
 			//ProxyBinding result = new ProxyBinding(Mod.Settings.id, nameof(FindIt) + "Apply", ActionComponent.Press, InputManager.CompositeComponentData.defaultData.m_BindingName, new CompositeInstance(nameof(Mouse)));
 			//result.group = nameof(Mouse);

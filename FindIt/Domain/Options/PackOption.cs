@@ -65,16 +65,11 @@ namespace FindIt.Domain.Options
 
 		public void OnOptionClicked(int optionId, int value)
 		{
-			switch (optionId)
+			FindItUtil.Filters.SelectedAssetPack = optionId switch
 			{
-				case -2:
-					FindItUtil.Filters.SelectedAssetPack = null;
-					break;
-				default:
-					FindItUtil.Filters.SelectedAssetPack = _themeList[optionId];
-					break;
-			}
-
+				-2 => null,
+				_ => _themeList[optionId],
+			};
 			_optionsUISystem.TriggerSearch();
 		}
 
