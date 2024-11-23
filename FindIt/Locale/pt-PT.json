@@ -128,7 +128,7 @@
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "Open Search",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Abrir o Find It / Focar na barra de pesquisa",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determina a tecla de atalho para abrir o painel do Find It, ou focar na barra de pesquisa caso o painel já esteja visível.",
-  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Picker",
+  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Seletor",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Seletor",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Determina a tecla de atalho para ativar a ferramenta Seletor.",
   "Options.OPTION[FindIt.FindIt.Mod/RandomKeyBinding/binding]": "Select Random Asset",
