@@ -98,6 +98,7 @@
   "Tooltip.LABEL[FindIt.Vehicles_Misc]": "기타 차량들",
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "Center",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Right",
+  "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "View on PdxMods",
   "Options.SECTION[FindIt.FindIt.Mod]": "에셋/프롭 탐색기(Find It)",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "에셋/프롭 탐색기(Find It)",
   "Options.TAB[FindIt.FindIt.Mod.Main]": "일반 설정",
