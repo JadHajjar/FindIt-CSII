@@ -7,6 +7,7 @@ import { useLocalization } from "cs2/l10n";
 import { useEffect, useRef, useState } from "react";
 import { PrefabEntry } from "domain/prefabEntry";
 import classNames from "classnames";
+import { BasicButton } from "mods/BasicButton/BasicButton";
 
 export interface PrefabButtonProps {
   prefab: PrefabEntry;
@@ -53,35 +54,40 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
         onMouseMove={props.prefab.random ? mouseOver : undefined}
       >
-        <Tooltip
-          tooltip={
-            props.prefab.favorited
-              ? translate("Tooltip.LABEL[FindIt.RemoveFavorite]", "Remove from favorites")
-              : translate("Tooltip.LABEL[FindIt.AddFavorite]", "Favorite this asset")
-          }
-        >
-          <Button
+        <div className={styles.buttonsSection}>
+          <BasicButton
+            tooltip={
+              props.prefab.favorited
+                ? translate("Tooltip.LABEL[FindIt.RemoveFavorite]", "Remove from favorites")
+                : translate("Tooltip.LABEL[FindIt.AddFavorite]", "Favorite this asset")
+            }
             className={styles.favoriteIcon}
-            variant="icon"
-            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-            onSelect={() => ToggleFavorited(props.prefab.id)}
-          >
-            <img src={props.prefab.favorited ? "coui://uil/Colored/StarFilled.svg" : "coui://uil/Colored/StarOutline.svg"} />
-          </Button>
-        </Tooltip>
+            onClick={() => ToggleFavorited(props.prefab.id)}
+            src={props.prefab.favorited ? "coui://uil/Colored/StarFilled.svg" : "coui://uil/Colored/StarOutline.svg"}
+          />
 
-        {props.prefab.placed && (
-          <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.Locate]", "Locate")}>
-            <Button
+          {props.prefab.placed ? (
+            <BasicButton
+              tooltip={translate("Tooltip.LABEL[FindIt.Locate]", "Locate")}
               className={styles.placedMarker}
-              variant="icon"
-              focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-              onSelect={() => trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)}
-            >
-              <img src="Media/Game/Icons/MapMarker.svg" />
-            </Button>
-          </Tooltip>
-        )}
+              onClick={() => trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)}
+              src="Media/Game/Icons/MapMarker.svg"
+            />
+          ) : (
+            <div />
+          )}
+
+          {props.prefab.pdxId > 0 ? (
+            <BasicButton
+              tooltip={translate("Tooltip.LABEL[FindIt.ViewOnPdxMods]", "View on PdxMods")}
+              className={styles.pdxModsButton}
+              onClick={() => trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)}
+              src="Media/Game/Icons/MapMarker.svg"
+            />
+          ) : (
+            <div />
+          )}
+        </div>
 
         <img
           src={props.prefab.thumbnails[thumbnailIndex]}

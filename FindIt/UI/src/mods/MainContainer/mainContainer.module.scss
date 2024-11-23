@@ -1,7 +1,19 @@
+@keyframes entry {
+  0% {
+    bottom: 137rem - 20rem;
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .findItMainContainer {
   position: relative;
   bottom: 137rem;
   pointer-events: auto;
+
+  animation: entry 0.3s ease-in-out;
 
   &.alignRight {
     position: absolute;

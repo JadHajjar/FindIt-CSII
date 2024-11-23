@@ -8,6 +8,7 @@ namespace FindIt.Domain
 		public int Id { get; set; }
 		public string PrefabName { get; set; }
 		public string Name { get; set; }
+		public int PdxModsId { get; set; }
 		public string Thumbnail { get; set; }
 		public string FallbackThumbnail { get; set; }
 		public string DlcThumbnail { get; set; }

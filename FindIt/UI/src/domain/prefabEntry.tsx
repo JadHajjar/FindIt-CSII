@@ -10,4 +10,5 @@ export interface PrefabEntry {
   favorited: boolean;
   random: boolean;
   placed: boolean;
+  pdxId: number;
 }
