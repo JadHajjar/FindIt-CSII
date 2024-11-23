@@ -128,7 +128,7 @@
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "Open Search",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Otwórz panel Find It / skup się na polu wyszukiwania",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Określa jaki klawisz wyświetla panel Find It, lub skupuje się na polu wyszukiwania, gdy panel jest już widoczny.",
-  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Picker",
+  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Próbnik",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Próbnik",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Określa jaki klawisz aktywuje narzędzie próbnika.",
   "Options.OPTION[FindIt.FindIt.Mod/RandomKeyBinding/binding]": "Select Random Asset",
