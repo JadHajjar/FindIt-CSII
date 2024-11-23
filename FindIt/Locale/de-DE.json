@@ -128,7 +128,7 @@
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "Open Search",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Find It öffnen/ Suchleiste fokussieren",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Bestimmt die Tastenkombination, um das Find It-Panel zu öffnen oder die Suchleiste in den Fokus zu rücken, falls das Panel bereits sichtbar ist.",
-  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Picker",
+  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Pipette",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Pipette",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Legt die Taste fest, um die Pipette zu aktivieren.",
   "Options.OPTION[FindIt.FindIt.Mod/RandomKeyBinding/binding]": "Select Random Asset",
