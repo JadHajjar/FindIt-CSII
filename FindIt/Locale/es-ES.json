@@ -128,7 +128,7 @@
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "Open Search",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Abrir Find It / Enfocar barra de búsqueda",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determina la tecla de acceso rápido para que aparezca el panel de Find It o enfocar la barra de búsqueda en caso de que el panel ya sea visible.",
-  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Picker",
+  "Options.OPTION[FindIt.FindIt.Mod/PickerKeyBinding/binding]": "Selector",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Selector",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.PickerKeyBinding]": "Determina la tecla de acceso rápido para activar el selector.",
   "Options.OPTION[FindIt.FindIt.Mod/RandomKeyBinding/binding]": "Select Random Asset",
