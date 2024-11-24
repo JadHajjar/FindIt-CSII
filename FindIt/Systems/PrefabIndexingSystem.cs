@@ -15,7 +15,6 @@ using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI;
 using Game.UI.InGame;
-using Game.UI.Localization;
 
 using System;
 using System.Collections.Generic;
@@ -249,10 +248,11 @@ namespace FindIt.Systems
 			prefabIndex.IsVanilla = prefab.builtin;
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
 
-			var meta = prefab.asset.GetMeta();
-			if (prefab.asset.database == AssetDatabase<ParadoxMods>.instance)
+			if (prefab.asset?.database == AssetDatabase<ParadoxMods>.instance)
 			{
-				prefabIndex.PdxModsId = meta.platformID;
+				var meta = prefab.asset.GetMeta();
+
+				prefabIndex.PdxModsId = prefab.asset.GetMeta().platformID;
 			}
 #if DEBUG
 			if (prefabIndex.SubCategory != PrefabSubCategory.Props_Branding && !prefabIndex.IsRandom && ImageSystem.GetIcon(prefab) is null or "")

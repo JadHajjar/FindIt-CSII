@@ -22,7 +22,7 @@
           "Added theme and pack icons on the right side of assets.",
           "Fixed the previously selected asset not staying selected after closing and re-opening the find it panel. ",
           "Fixed changing display styles requiring two clicks to apply.",
-          "Various UI improvements; including better scaling, readability, positioning, and active color fix.",
+          "Various UI improvements; including better scaling, readability, positioning, and active color fix."
         ]
       }
     ]

@@ -44,17 +44,27 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.0.10" />
+  <ModVersion Value="1.1.0" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.0.10
-## Hotfix
-* Fixed French Region Pack's office buildings showing up in specialized industries.
-* Fixed the filters not showing lot type.
+# v1.1.0
+## Changes
+* Added an Alignment style option, allowing you to position the find it panel on the right of your screen. This comes with its own column and row size option and is saved throughout sessions.
+* Added a Building Corner filter, allowing you to search for Left and Right corner buildings, as well as Front-only buildings.
+* Added a 'Random' button to select a random asset from the list. This comes with its own hot-key as well, Ctrl+R by default.
+* Added a marker next to assets showing that they are placed on the map, you can click this 'Locate' button to find the asset in the map.
+* Added a 'Clear Filters' button to easily reset all filters.
+* Updated translations.
+
+## UI and UX Improvements
+* Arrow keys can now be used to navigate through the list of assets.
+* Added theme and pack icons on the right side of assets.
+* Fixed the previously selected asset not staying selected after closing and re-opening the find it panel. 
+* Fixed changing display styles requiring two clicks to apply.
+* Various UI improvements; including better scaling, readability, positioning, and active color fix.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
-	<!--<ExternalLink Type="buymeacoffee" Url="https://www.buymeacoffee.com/tdwsvillage" />-->
   <ExternalLink Type="crowdin" Url="https://crowdin.com/project/find-it-csii" />
   <Dependency Id="74417" />
   <Dependency Id="79634" />

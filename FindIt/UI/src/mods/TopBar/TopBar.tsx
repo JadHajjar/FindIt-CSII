@@ -18,8 +18,6 @@ import shrink from "images/shrink.svg";
 import expand from "images/expand.svg";
 import filter from "images/filter.svg";
 import filterX from "images/filterX.svg";
-import finditAlignCenter from "images/finditAlignCenter.svg";
-import finditAlignRight from "images/finditAlignRight.svg";
 import sort from "images/sort.svg";
 import { FOCUS_DISABLED } from "cs2/input";
 
@@ -70,8 +68,6 @@ export const TopBarComponent = (props: TopBarProps) => {
   const searchRef = useRef(null);
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
-
-  finditAlignRight + finditAlignCenter;
 
   const handleInputChange = (value: Event) => {
     if (value?.target instanceof HTMLTextAreaElement) {

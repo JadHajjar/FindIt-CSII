@@ -2,6 +2,7 @@
 using FindIt.Domain.Utilities;
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -81,10 +82,14 @@ namespace FindIt.Systems
 					var prefabs = FindItUtil.GetFilteredPrefabs();
 					var columns = GridUtil.GetCurrentColumnCount();
 					var rows = GridUtil.GetCurrentRowCount();
-					var index = prefabs.FindIndex(x => x.Id == _ActivePrefabId);
+					var index = prefabs.IndexOf(FindItUtil.GetPrefabIndex(_ActivePrefabId));
 
 					SetScrollIndex(Math.Max(0, Math.Floor(index / columns) - (rows / 4)));
 				}
+			}
+			else
+			{
+				Mod.Log.Info(new StackTrace());
 			}
 
 			_ShowFindItPanel.Value = visible;
@@ -175,7 +180,7 @@ namespace FindIt.Systems
 			var prefabs = FindItUtil.GetFilteredPrefabs();
 			var columns = GridUtil.GetCurrentColumnCount();
 			var rows = GridUtil.GetCurrentRowCount();
-			var currentIndex = prefabs.FindIndex(x => x.Id == _ActivePrefabId);
+			var currentIndex = prefabs.IndexOf(FindItUtil.GetPrefabIndex(_ActivePrefabId));
 
 			if (prefabs.Count == 0)
 			{
@@ -228,6 +233,16 @@ namespace FindIt.Systems
 			lastFindId = id;
 
 			JumpTo(entities[lastFindIndex]);
+		}
+
+		private void OnPdxModsButtonClicked(int id)
+		{
+			try
+			//{ Process.Start($"skyve://mods/{FindItUtil.GetPrefabIndex(id).PdxModsId}"); }
+			{
+				Process.Start($"https://mods.paradoxplaza.com/mods/{FindItUtil.GetPrefabIndex(id).PdxModsId}/Windows");
+			}
+			catch { }
 		}
 
 		private void JumpTo(Entity entity)

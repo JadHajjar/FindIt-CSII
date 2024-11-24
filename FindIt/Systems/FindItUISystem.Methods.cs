@@ -157,6 +157,8 @@ namespace FindIt.Systems
 
 			if (prefab == null)
 			{
+				_ActivePrefabId.Value = 0;
+
 				return;
 			}
 

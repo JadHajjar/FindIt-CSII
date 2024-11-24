@@ -28,6 +28,7 @@ namespace FindIt.Systems
 
 		private ProxyAction _searchKeyBinding;
 		private ProxyAction _randomKeyBinding;
+		private readonly ProxyAction _cancelAction;
 		private ProxyAction _arrowLeftBinding;
 		private ProxyAction _arrowUpBinding;
 		private ProxyAction _arrowRightBinding;
@@ -141,15 +142,16 @@ namespace FindIt.Systems
 			CreateTrigger("OnSearchCleared", () => _ClearSearchBar.Value = false);
 			CreateTrigger("OnRandomButtonClicked", OnRandomButtonClicked);
 			CreateTrigger<int>("OnLocateButtonClicked", OnLocateButtonClicked);
+			CreateTrigger<int>("OnPdxModsButtonClicked", OnPdxModsButtonClicked);
 		}
 
 		protected override void OnUpdate()
 		{
 			_randomKeyBinding.shouldBeEnabled =
-				_arrowLeftBinding.shouldBeEnabled =
-				_arrowUpBinding.shouldBeEnabled =
-				_arrowRightBinding.shouldBeEnabled =
-				_arrowDownBinding.shouldBeEnabled = _ShowFindItPanel;
+			_arrowLeftBinding.shouldBeEnabled =
+			_arrowUpBinding.shouldBeEnabled =
+			_arrowRightBinding.shouldBeEnabled =
+			_arrowDownBinding.shouldBeEnabled = _ShowFindItPanel;
 
 			if (filterCompleted)
 			{

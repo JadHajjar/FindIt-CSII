@@ -82,6 +82,16 @@ namespace FindIt.Domain.Utilities
 			return null;
 		}
 
+		public static PrefabIndex GetPrefabIndex(int id)
+		{
+			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
+			{
+				return prefabIndex;
+			}
+
+			return null;
+		}
+
 		public static void SetSorting(bool? descending = null, PrefabSorting? sorting = null)
 		{
 			IndexedPrefabList.Sorting = sorting ?? IndexedPrefabList.Sorting;

@@ -21,11 +21,7 @@ const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const PanelHeight$ = bindValue<number>(mod.id, "PanelHeight");
 const RowCount$ = bindValue<number>(mod.id, "RowCount");
 const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
-export const ViewStyle$ = bindValue<string>(
-  mod.id,
-  "ViewStyle",
-  "GridWithText"
-);
+export const ViewStyle$ = bindValue<string>(mod.id, "ViewStyle", "GridWithText");
 
 export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
@@ -70,10 +66,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [initialDivPos, setInitialDivPos] = useState(0);
 
-  const scrollBarHeight = Math.max(
-    30,
-    (PanelHeight * RowCount) / (MaxScrollIndex + RowCount)
-  );
+  const scrollBarHeight = Math.max(30, (PanelHeight * RowCount) / (MaxScrollIndex + RowCount));
 
   function OnWheel(obj: any) {
     trigger(mod.id, "OnScroll", obj.deltaY);
@@ -90,9 +83,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
 
   function handleMouseDown(event: any) {
     setIsDragging(true);
-    setInitialDivPos(
-      event.clientY - (thumbRef.current as any).getBoundingClientRect().y
-    );
+    setInitialDivPos(event.clientY - (thumbRef.current as any).getBoundingClientRect().y);
   }
 
   function handleMouseMove(event: any) {
@@ -101,9 +92,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
     const thumbRect = (scrollBarRef.current as any).getBoundingClientRect();
 
     const diffY = event.clientY - thumbRect.y - initialDivPos;
-    const scrollPerc =
-      diffY /
-      Number(thumbRect.height - (scrollBarHeight * window.innerHeight) / 1080);
+    const scrollPerc = diffY / Number(thumbRect.height - (scrollBarHeight * window.innerHeight) / 1080);
     const index = scrollPerc * MaxScrollIndex;
 
     trigger(mod.id, "SetScrollIndex", index);
@@ -115,18 +104,8 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
 
   return (
     <>
-      {isDragging && (
-        <div
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          className={styles.scrollBlocker}
-        ></div>
-      )}
-      <div
-        onWheel={OnWheel}
-        className={styles.scrollableContainer}
-        style={{ height: PanelHeight + "rem" }}
-      >
+      {isDragging && <div onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} className={styles.scrollBlocker}></div>}
+      <div onWheel={OnWheel} className={styles.scrollableContainer} style={{ height: PanelHeight + "rem" }}>
         <div
           className={styles.panelSection + " " + PrefabItemStyles[ViewStyle]}
           style={{
@@ -157,10 +136,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
               className={styles.scrollBar}
               ref={thumbRef}
               style={{
-                top:
-                  (ScrollIndex / MaxScrollIndex) *
-                    (PanelHeight - 20 - scrollBarHeight) +
-                  "rem",
+                top: (ScrollIndex / MaxScrollIndex) * (PanelHeight - 20 - scrollBarHeight) + "rem",
                 height: scrollBarHeight + "rem",
               }}
             ></div>

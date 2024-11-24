@@ -9,7 +9,6 @@ namespace FindIt.Domain.UIBinding
 	public class PrefabUIEntry : IJsonWritable
 	{
 		private readonly PrefabIndexBase _prefab;
-		private readonly string[] _thumbnails;
 		private readonly bool _placed;
 
 		public PrefabUIEntry(PrefabIndexBase prefab)
