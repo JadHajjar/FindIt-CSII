@@ -315,7 +315,7 @@ namespace FindIt.Systems
 
 		private string GetAssetName(PrefabBase prefab)
 		{
-			_prefabUISystem.GetTitleAndDescription(/*_prefabSystem.GetEntity(prefab)*/prefab, out var titleId, out var _);
+			_prefabUISystem.GetTitleAndDescription(_prefabSystem.GetEntity(prefab), out var titleId, out var _);
 
 			return GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name)
 				? name

@@ -6,8 +6,13 @@
   <LongDescription>
 # Find It for Cities: Skylines II
 Quickly browse and search through all of the assets inside of the game.
+
 Use **Ctrl+F** to quickly open the Find It panel, or click on the magnifier icon in your toolbar.
+
 Use **Ctrl+P** to enable the Picker tool, or click on the picker icon in your toolbar.
+
+Use **Ctrl+R** to select a random asset from the list, or click on the random button in the Find It panel.
+
 
 Huge thanks to **YenYang** for their help on the UI.
 
@@ -17,17 +22,18 @@ Thank you to **Chameleon** for providing the Icons.
 
 And thank you to **Baka-gourd** (NullPinter) for their help with focus.
 
+
 ## Features
 * Quick and intelligent search methods.
+* Extensive sorting and filtering options.
 * Extensive and comprehensive asset categories.
+* Align the panel to the right to have unobstructed view of what you're working on.
 * Panel stays open while placing assets, no jumping between different tabs.
 * Tool options like Tree Controller and Line Tool are fully supported and can be used while the panel is open.
 * Favorite your most used assets.
 * Integrated Picker
-* Extensive sorting and filtering options.
 
 ## Planned Features
-* Mutli-tab support, to have multiple instances open at the same time
 * Custom tagging, add your own tags to assets. Will also come with cross compatibility with Skyve.
 * Asset information when hovering over an item.
 
@@ -37,11 +43,13 @@ Find It should automatically support any mods that add or alter the vanilla asse
 If you're having any issues, please report them on my discord as it's easier to help you that way.
 </LongDescription>
   <Thumbnail Value="Properties/Thumbnail.png" />
-  <Screenshot Value="Properties/Screenshot_01.png" />
-  <Screenshot Value="Properties/Screenshot_02.png" />
-  <Screenshot Value="Properties/Screenshot_03.png" />
-  <Screenshot Value="Properties/Screenshot_04.png" />
-  <Screenshot Value="Properties/Screenshot_05.png" />
+  <Screenshot Value="Properties/Screenshot_01.jpg" />
+  <Screenshot Value="Properties/Screenshot_02.jpg" />
+  <Screenshot Value="Properties/Screenshot_03.jpg" />
+  <Screenshot Value="Properties/Screenshot_04.jpg" />
+  <Screenshot Value="Properties/Screenshot_05.jpg" />
+  <Screenshot Value="Properties/Screenshot_06.jpg" />
+  <Screenshot Value="Properties/Screenshot_07.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
   <ModVersion Value="1.1.0" />

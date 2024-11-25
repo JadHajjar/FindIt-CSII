@@ -28,7 +28,6 @@ namespace FindIt.Systems
 
 		private ProxyAction _searchKeyBinding;
 		private ProxyAction _randomKeyBinding;
-		private readonly ProxyAction _cancelAction;
 		private ProxyAction _arrowLeftBinding;
 		private ProxyAction _arrowUpBinding;
 		private ProxyAction _arrowRightBinding;
@@ -101,10 +100,10 @@ namespace FindIt.Systems
 
 			_randomKeyBinding = Mod.Settings.GetAction(nameof(FindItSettings.RandomKeyBinding));
 
-			_arrowLeftBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.LeftArrow));
-			_arrowUpBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.UpArrow));
-			_arrowRightBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.RightArrow));
-			_arrowDownBinding = Mod.Settings.GetAction(nameof(FindIt) + nameof(FindItSettings.DownArrow));
+			_arrowLeftBinding = Mod.Settings.GetAction(nameof(FindItSettings.LeftArrow));
+			_arrowUpBinding = Mod.Settings.GetAction(nameof(FindItSettings.UpArrow));
+			_arrowRightBinding = Mod.Settings.GetAction(nameof(FindItSettings.RightArrow));
+			_arrowDownBinding = Mod.Settings.GetAction(nameof(FindItSettings.DownArrow));
 
 			// These establish the bindings for the categories
 			_CurrentCategoryBinding = CreateBinding("CurrentCategory", "SetCurrentCategory", (int)FindItUtil.CurrentCategory, SetCurrentCategory);
