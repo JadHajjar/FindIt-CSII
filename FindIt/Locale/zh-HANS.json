@@ -98,7 +98,7 @@
   "Tooltip.LABEL[FindIt.Vehicles_Misc]": "其他载具",
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "Center",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Right",
-  "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "View on PdxMods",
+  "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "在 PDX Mods 上查看",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Main]": "常规设置",
