@@ -1,8 +1,23 @@
 [
   {
     "Stable": true,
+    "Version": "1.1.1",
+    "Date": "2024-11-26",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Added key-binding settings for the navigation keys.",
+          "Re-organized the options page.",
+          "Compatibility with patch 1.1.12f1."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.1.0",
-    "Date": "2024-11-21",
+    "Date": "2024-11-24",
     "ChangeGroups": [
       {
         "Name": "Changes",

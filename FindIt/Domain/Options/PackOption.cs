@@ -11,42 +11,46 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 
+using UnityEngine;
+
 namespace FindIt.Domain.Options
 {
 	internal class PackOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly List<AssetPackPrefab> _themeList;
+		private readonly List<AssetPackPrefab> _packList;
 
 		public int Id { get; } = 94;
 
 		public PackOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-			_themeList = GetPackPrefabs();
+			_packList = GetPackPrefabs();
+
+			FindItUtil.Filters.SelectedAssetPacks = new(_packList, null, true);
 		}
 
 		public OptionSectionUIEntry AsUIEntry()
 		{
-			var themes = new List<OptionItemUIEntry>
+			var packs = new List<OptionItemUIEntry>
 			{
 				new()
 				{
-					Id = -2,
+					Id = int.MinValue,
 					Name = LocaleHelper.GetTooltip("Any"),
 					Icon = "coui://uil/Standard/StarAll.svg",
-					Selected = FindItUtil.Filters.SelectedAssetPack == null
+					Selected = FindItUtil.Filters.SelectedAssetPacks .IsDefault()
 				},
 			};
 
-			for (var i = 0; i < _themeList.Count; i++)
+			for (var i = 0; i < _packList.Count; i++)
 			{
-				themes.Add(new OptionItemUIEntry
+				packs.Add(new OptionItemUIEntry
 				{
 					Id = i,
-					Name = _optionsUISystem.GetAssetName(_themeList[i]),
-					Icon = ImageSystem.GetThumbnail(_themeList[i]),
-					Selected = FindItUtil.Filters.SelectedAssetPack == _themeList[i]
+					Name = i ==0 ?LocaleHelper.GetTooltip("NoPack") : _optionsUISystem.GetAssetName(_packList[i]),
+					Icon = ImageSystem.GetThumbnail(_packList[i]),
+					Selected = FindItUtil.Filters.SelectedAssetPacks.IsSelected(_packList[i])
 				});
 			}
 
@@ -54,7 +58,7 @@ namespace FindIt.Domain.Options
 			{
 				Id = Id,
 				Name = LocaleHelper.Translate("Options.LABEL[FindIt.AssetPackFilter]"),
-				Options = themes.ToArray()
+				Options = packs.ToArray()
 			};
 		}
 
@@ -65,22 +69,19 @@ namespace FindIt.Domain.Options
 
 		public void OnOptionClicked(int optionId, int value)
 		{
-			FindItUtil.Filters.SelectedAssetPack = optionId switch
-			{
-				-2 => null,
-				_ => _themeList[optionId],
-			};
+			FindItUtil.Filters.SelectedAssetPacks.Toggle(optionId < 0 ? null : _packList[optionId]);
+
 			_optionsUISystem.TriggerSearch();
 		}
 
 		public void OnReset()
 		{
-			FindItUtil.Filters.SelectedAssetPack = null;
+			FindItUtil.Filters.SelectedAssetPacks.Reset();
 		}
 
 		public bool IsDefault()
 		{
-			return FindItUtil.Filters.SelectedAssetPack == null;
+			return FindItUtil.Filters.SelectedAssetPacks.IsDefault();
 		}
 
 		private List<AssetPackPrefab> GetPackPrefabs()
@@ -89,6 +90,13 @@ namespace FindIt.Domain.Options
 			var entities = query.ToEntityArray(Allocator.Temp);
 			var prefabSystem = _optionsUISystem.World.GetOrCreateSystemManaged<PrefabSystem>();
 			var list = new List<AssetPackPrefab>();
+
+			var none = ScriptableObject.CreateInstance<AssetPackPrefab>();
+			var uiObject = ScriptableObject.CreateInstance<UIObject>();
+			none.name = "FindIt_NoPack";
+			none.AddComponent<UIObject>().m_Icon = "";
+
+			list.Add(none);
 
 			for (var i = 0; i < entities.Length; i++)
 			{

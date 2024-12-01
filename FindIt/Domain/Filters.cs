@@ -18,7 +18,7 @@ namespace FindIt.Domain
 		public int LotWidthFilter { get; set; }
 		public int LotDepthFilter { get; set; }
 		public ThemePrefab SelectedTheme { get; set; }
-		public AssetPackPrefab SelectedAssetPack { get; set; }
+		public OptionListHelper<AssetPackPrefab> SelectedAssetPacks { get; set; }
 		public bool SelectedThemeNone { get; set; }
 		public bool HideAds { get; set; }
 		public bool HideRandoms { get; set; }
@@ -88,8 +88,12 @@ namespace FindIt.Domain
 				yield return DoThemeFilter;
 			}
 
-			if (SelectedAssetPack != null)
+			if (SelectedAssetPacks != null && SelectedAssetPacks.IsDefault())
 			{
+				foreach (var item in SelectedAssetPacks.SelectedValues)
+				{
+					Mod.Log.Info(item.name);
+				}
 				yield return DoAssetPackFilter;
 			}
 
@@ -180,7 +184,15 @@ namespace FindIt.Domain
 
 		private bool DoAssetPackFilter(PrefabIndex prefab)
 		{
-			return prefab.AssetPacks?.Any(x => x == SelectedAssetPack) ?? false;
+			foreach (var item in SelectedAssetPacks.SelectedValues)
+			{
+				if (item.name == "FindIt_NoPack" ? prefab.AssetPacks.Length > 0 : !prefab.AssetPacks.Contains(item))
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 	}
 }

@@ -51,6 +51,8 @@ namespace FindIt.Systems
 					{
 						var section = (IOptionSection)Activator.CreateInstance(type, this);
 
+						section.OnReset();
+
 						_sections.Add(section.Id, section);
 					}
 				}

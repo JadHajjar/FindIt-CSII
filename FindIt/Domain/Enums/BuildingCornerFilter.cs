@@ -5,7 +5,7 @@ namespace FindIt.Domain.Enums
 	[Flags]
 	public enum BuildingCornerFilter
 	{
-		Any = 0,
+		Any = Left | Front | Right,
 		Left = 1,
 		Front = 2,
 		Right = 4

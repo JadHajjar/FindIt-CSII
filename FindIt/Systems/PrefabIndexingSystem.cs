@@ -170,21 +170,26 @@ namespace FindIt.Systems
 					{
 						var entity = entities[i];
 
-						if (_prefabSystem.TryGetPrefab<PrefabBase>(entity, out var prefab) && prefab?.name is not null)
+						if (!_prefabSystem.TryGetPrefab<PrefabBase>(entity, out var prefab) || prefab?.name is null)
 						{
-							if (_blackList.Contains(prefab.name))
-							{
-								continue;
-							}
+							continue;
+						}
 
-							if (full && Mod.Log.isLevelEnabled(Level.Debug))
-							{
-								Mod.Log.Debug($"\tProcessing: {prefab.name}");
+						if (_blackList.Contains(prefab.name))
+						{
+							continue;
+						}
+
+						if (full && Mod.Log.isLevelEnabled(Level.Debug))
+						{
+							Mod.Log.Debug($"\tProcessing: {prefab.name}");
 #if DEBUG
-								Mod.Log.Debug($"\t\t> {prefab.GetType().Name} - {string.Join(", ", EntityManager.GetComponentTypes(entity).Select(x => x.GetManagedType()?.Name ?? string.Empty))}");
+							Mod.Log.Debug($"\t\t> {prefab.GetType().Name} - {string.Join(", ", EntityManager.GetComponentTypes(entity).Select(x => x.GetManagedType()?.Name ?? string.Empty))}");
 #endif
-							}
+						}
 
+						try
+						{
 							if (roadBuilderDiscarded.HasValue && EntityManager.HasComponent(entity, roadBuilderDiscarded.Value))
 							{
 								FindItUtil.RemoveItem(entity);
@@ -205,6 +210,10 @@ namespace FindIt.Systems
 							{
 								Mod.Log.Debug($"\t\tSkipped: {prefab.name}");
 							}
+						}
+						catch (Exception ex) 
+						{
+							throw new Exception("Prefab failed: " + prefab.name, ex);
 						}
 					}
 				}
@@ -241,9 +250,9 @@ namespace FindIt.Systems
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.Theme ??= prefab.GetComponent<ThemeObject>()?.m_Theme;
-			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs;
+			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs ?? new AssetPackPrefab[0];
 			prefabIndex.ThemeThumbnail ??= prefabIndex.Theme is null ? null : ImageSystem.GetThumbnail(prefabIndex.Theme);
-			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks?.Select(ImageSystem.GetThumbnail).ToArray();
+			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks.Select(ImageSystem.GetThumbnail).ToArray();
 			prefabIndex.Tags ??= new();
 			prefabIndex.IsVanilla = prefab.builtin;
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);

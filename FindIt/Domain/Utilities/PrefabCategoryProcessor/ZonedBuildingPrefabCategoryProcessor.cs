@@ -75,7 +75,7 @@ namespace FindIt.Domain.Utilities
 			{
 				prefabIndex.ZoneType = GetZoneType(_zonePrefab);
 				prefabIndex.Theme = _zonePrefab.GetComponent<ThemeObject>()?.m_Theme;
-				prefabIndex.AssetPacks = _zonePrefab.GetComponent<AssetPackItem>()?.m_Packs;
+				prefabIndex.AssetPacks = _zonePrefab.GetComponent<AssetPackItem>()?.m_Packs ?? new AssetPackPrefab[0];
 			}
 
 			var zoneData = _entityManager.GetComponentData<ZoneData>(zonePrefab);
