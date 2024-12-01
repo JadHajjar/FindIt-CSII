@@ -99,6 +99,7 @@
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "Centro",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Direita",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "Ver nos PdxMods",
+  "Tooltip.LABEL[FindIt.NoPack]": "No Pack",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "General Settings",
