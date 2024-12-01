@@ -99,6 +99,7 @@
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "El panel principal se abrirá en el centro de la pantalla",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "El panel principal se abrirá a la derecha de la pantalla",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "Ver en PDX Mods",
+  "Tooltip.LABEL[FindIt.NoPack]": "No Pack",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "Ajustes generales",
