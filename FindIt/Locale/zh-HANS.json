@@ -99,7 +99,7 @@
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "居中",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "靠右侧",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "在 PDX Mods 上查看",
-  "Tooltip.LABEL[FindIt.NoPack]": "No Pack",
+  "Tooltip.LABEL[FindIt.NoPack]": "无数据包",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "常规设置",
