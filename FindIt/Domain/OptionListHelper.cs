@@ -30,11 +30,24 @@ namespace FindIt.Domain
 			return _selectedValues.Contains(value);
 		}
 
-		public bool Contains(IEnumerable<T> values)
+		public bool ContainsAny(IEnumerable<T> values)
 		{
 			foreach (var item in values)
 			{
 				if (!_selectedValues.Contains(item))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public bool ContainsAll(IEnumerable<T> values)
+		{
+			foreach (var item in _selectedValues)
+			{
+				if (!values.Contains(item))
 				{
 					return false;
 				}
@@ -78,7 +91,7 @@ namespace FindIt.Domain
 					_selectedValues.Clear();
 					_selectedValues.Add(value);
 				}
-				if (Contains(value))
+				else if (Contains(value))
 				{
 					_selectedValues.Remove(value);
 				}

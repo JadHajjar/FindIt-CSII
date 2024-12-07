@@ -8,6 +8,7 @@ import mod from "../../../mod.json";
 
 const PickerIconSrc = "coui://uil/Standard/PickerPipette.svg"; // Your tool's icon source
 const FindItIconSrc = "coui://uil/Standard/Magnifier.svg"; // Your tool's icon source
+const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel"); // Binding to get if your tool is active
 const PickerEnabled$ = bindValue<boolean>(mod.id, "PickerEnabled"); // Binding to get if your tool is active
 
@@ -31,6 +32,7 @@ function HandlePickerClick() {
 export const ToolbarIconComponent: ModuleRegistryExtend = (Component) => {
   return (props) => {
     const { children, ...otherProps } = props || {};
+    const IsWindowLocked = useValue(IsWindowLocked$); // Get if your tool is active
     const ShowFindItPanel = useValue(ShowFindItPanel$); // Get if your tool is active
     const PickerEnabled = useValue(PickerEnabled$); // Get if your tool is active
 
@@ -52,7 +54,7 @@ export const ToolbarIconComponent: ModuleRegistryExtend = (Component) => {
           className={ToolBarButtonTheme.button + " " + style.ToolbarIcon}
           variant="icon"
           focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-          selected={ShowFindItPanel}
+          selected={ShowFindItPanel || IsWindowLocked}
           onSelect={HandleFindItClick}
         ></Button>
 

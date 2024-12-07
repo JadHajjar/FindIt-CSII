@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="LandmarkBuildings">
+        <g id="Group_2620" transform="matrix(1,0,0,1,35.092,40)">
+            <path id="Path_3383" d="M1.908,-40L-32.092,-40C-33.738,-40 -35.092,-38.646 -35.092,-37L-35.092,-3C-35.092,-1.354 -33.738,0 -32.092,0L1.908,0C3.554,-0 4.908,-1.354 4.908,-3L4.908,-37C4.908,-38.646 3.554,-40 1.908,-40Z" style="fill:rgb(223,223,223);fill-rule:nonzero;"/>
+        </g>
+        <g id="Group_2621" transform="matrix(1,0,0,1,33.812,1.342)">
+            <path id="Path_3384" d="M0,37.316L-27.625,37.316C-30.283,37.316 -32.47,35.129 -32.47,32.471C-32.47,32.471 -32.47,32.47 -32.47,32.47L-32.47,4.846C-32.47,4.846 -32.47,4.845 -32.47,4.845C-32.47,2.187 -30.283,-0 -27.625,-0L-1.97,0L4.846,6.816L4.846,32.47C4.846,35.128 2.658,37.316 0,37.316" style="fill:rgb(0,22,38);fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(0.737612,0.576858,-0.576858,0.737612,16.8635,-6.13538)">
+            <rect x="8.283" y="18.437" width="23.035" height="3.518" style="fill:rgb(202,202,202);"/>
+        </g>
+        <g transform="matrix(0.936396,0,0,0.936396,1.27714,1.27208)">
+            <path d="M20.079,6.495C27.533,6.495 33.585,12.546 33.585,20C33.585,27.454 27.533,33.505 20.079,33.505C12.626,33.505 6.574,27.454 6.574,20C6.574,12.546 12.626,6.495 20.079,6.495ZM20.079,9.716C25.755,9.716 30.364,14.324 30.364,20C30.364,25.676 25.755,30.284 20.079,30.284C14.404,30.284 9.795,25.676 9.795,20C9.795,14.324 14.404,9.716 20.079,9.716Z" style="fill:rgb(202,202,202);"/>
+        </g>
+    </g>
+</svg>

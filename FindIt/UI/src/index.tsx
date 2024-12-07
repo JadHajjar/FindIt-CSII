@@ -28,9 +28,6 @@ const register: ModRegistrar = (moduleRegistry) => {
   moduleRegistry.append("Editor", FindItMainContainerComponent);
 
   //moduleRegistry.append("Game", RightClickMenuComponent);
-
-  // This is just to verify using UI console that all the component registriations was completed.
-  console.log(mod.id + " UI module registrations completed.");
 };
 
 export default register;

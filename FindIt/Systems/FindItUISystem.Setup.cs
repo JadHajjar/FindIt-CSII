@@ -34,6 +34,7 @@ namespace FindIt.Systems
 		private ProxyAction _arrowDownBinding;
 
 		private ValueBindingHelper<bool> _IsSearchLoading;
+		private ValueBindingHelper<bool> _IsWindowLocked;
 		private ValueBindingHelper<bool> _FocusSearchBar;
 		private ValueBindingHelper<bool> _ClearSearchBar;
 		private ValueBindingHelper<bool> _ShowFindItPanel;
@@ -114,6 +115,7 @@ namespace FindIt.Systems
 			_ClearSearchBar = CreateBinding("ClearSearchBar", false);
 			_ShowFindItPanel = CreateBinding("ShowFindItPanel", false);
 			_IsSearchLoading = CreateBinding("IsSearchLoading", false);
+			_IsWindowLocked = CreateBinding("IsWindowLocked", false);
 			_IsExpanded = CreateBinding("IsExpanded", "SetIsExpanded", false, _ => ExpandedToggled());
 			_ActivePrefabId = CreateBinding("ActivePrefabId", 0);
 			_PanelHeight = CreateBinding("PanelHeight", 0f);
@@ -137,6 +139,7 @@ namespace FindIt.Systems
 			CreateTrigger("FindItIconToggled", FindItIconClicked);
 			CreateTrigger<int>("SetCurrentPrefab", TryActivatePrefabTool);
 			CreateTrigger<int>("ToggleFavorited", FindItUtil.ToggleFavorited);
+			CreateTrigger("ToggleLock", ToggleLock);
 			CreateTrigger("OnSearchFocused", () => _FocusSearchBar.Value = false);
 			CreateTrigger("OnSearchCleared", () => _ClearSearchBar.Value = false);
 			CreateTrigger("OnRandomButtonClicked", OnRandomButtonClicked);
@@ -150,7 +153,7 @@ namespace FindIt.Systems
 			_arrowLeftBinding.shouldBeEnabled =
 			_arrowUpBinding.shouldBeEnabled =
 			_arrowRightBinding.shouldBeEnabled =
-			_arrowDownBinding.shouldBeEnabled = _ShowFindItPanel;
+			_arrowDownBinding.shouldBeEnabled = _ShowFindItPanel || _IsWindowLocked;
 
 			if (filterCompleted)
 			{
@@ -173,7 +176,7 @@ namespace FindIt.Systems
 				OnSearchKeyPressed();
 			}
 
-			if (_ShowFindItPanel)
+			if (_ShowFindItPanel || _IsWindowLocked)
 			{
 				if (_randomKeyBinding.WasPerformedThisFrame())
 				{

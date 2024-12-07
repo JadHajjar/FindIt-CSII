@@ -46,6 +46,22 @@
 
 .selected {
   background-color: var(--accentColorNormal) !important;
+
+  .border {
+    position: absolute;
+    opacity: 0.65;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4rem;
+    border-width: 3rem;
+    border-style: solid;
+    border-left-color: var(--accentColorNormal);
+    border-right-color: var(--accentColorNormal);
+    border-top-color: var(--accentColorNormal);
+    border-bottom-color: var(--accentColorNormal);
+  }
 }
 
 .disabled {

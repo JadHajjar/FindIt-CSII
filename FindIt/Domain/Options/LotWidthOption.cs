@@ -42,7 +42,7 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return FindItUtil.CurrentCategory == Enums.PrefabCategory.Buildings;
+			return FindItUtil.CurrentCategory is Enums.PrefabCategory.Buildings or Enums.PrefabCategory.ServiceBuildings;
 		}
 
 		public void OnOptionClicked(int optionId, int value)

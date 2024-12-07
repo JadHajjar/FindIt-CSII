@@ -15,6 +15,7 @@ const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const IsExpanded$ = bindValue<boolean>(mod.id, "IsExpanded");
 const AlignmentStyle$ = bindValue<string>(mod.id, "AlignmentStyle");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const OptionsList$ = bindValue<OptionSection[]>(mod.id, "OptionsList");
 
 const GameMainScreneTheme: Theme | any = getModule("game-ui/game/components/game-main-screen.module.scss", "classes");
@@ -37,6 +38,7 @@ export const FindItMainContainerComponent = () => {
 
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$);
+  const IsWindowLocked = useValue(IsWindowLocked$);
   const IsExpanded = useValue(IsExpanded$);
   const PanelWidth = useValue(PanelWidth$) + 15 + 20;
   const OptionsList = useValue(OptionsList$);
@@ -50,7 +52,7 @@ export const FindItMainContainerComponent = () => {
     if (newLeft !== 0) setContainerLeft(newLeft);
   });
 
-  if (isPhotoMode || !ShowFindItPanel) return null;
+  if (isPhotoMode || !(ShowFindItPanel || IsWindowLocked)) return null;
 
   function onOptionClicked(x: number, y: number, z: number): void {
     trigger(mod.id, "OptionClicked", x, y, z);

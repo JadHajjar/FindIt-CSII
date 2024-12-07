@@ -8,6 +8,16 @@
   }
 }
 
+@keyframes entryTranslate {
+  0% {
+    transform: translateY(10rem);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .findItMainContainer {
   position: relative;
   bottom: 137rem;
@@ -53,9 +63,9 @@
   }
 
   .topPanel {
-    width: 300rem;
+    width: 400rem;
     top: 0px;
-    left: -310rem;
+    left: -410rem;
     right: unset;
     bottom: auto;
     right: auto;
@@ -79,6 +89,11 @@
   border-top-left-radius: var(--panelRadius);
   border-top-right-radius: var(--panelRadius);
   overflow: hidden;
+}
+
+.rightPanel,
+.topPanel {
+  animation: entryTranslate 0.2s ease-in-out;
 }
 
 .rightPanel {

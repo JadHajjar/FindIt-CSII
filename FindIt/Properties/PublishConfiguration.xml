@@ -52,14 +52,21 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_07.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.1.1" />
+  <ModVersion Value="1.2.0" />
   <GameVersion Value="1.1.*" />
   <ChangeLog>
-# v1.1.1
-## Hotfix
-* Added key-binding settings for the navigation keys.
-* Re-organized the options page.
-* Compatibility with patch 1.1.12f1.
+# v1.2.0
+## New &amp; Changed
+* Added a 'lock' toggle to keep Find It open all the time, until you unlock it back.
+* Moved Service Buildings into their own category and added sub-categories per service type.
+* Added a no-pack filter to only show assets that do not have a pack.
+* You can now select multiple asset packs at a time.
+* Zone-type icons on assets no longer gets hidden when going into a specific zoning sub-category.
+* Made selected options easier to distinguish for large icons like region packs and CCPs.
+
+## Fixes
+* Fixed tool options size taking the whole screen if using mods that add a slider.
+* Fixed the 'Base Game' dlc filter counting PDX Mods assets as base-game too.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />

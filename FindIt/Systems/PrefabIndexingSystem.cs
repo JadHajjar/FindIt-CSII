@@ -211,7 +211,7 @@ namespace FindIt.Systems
 								Mod.Log.Debug($"\t\tSkipped: {prefab.name}");
 							}
 						}
-						catch (Exception ex) 
+						catch (Exception ex)
 						{
 							throw new Exception("Prefab failed: " + prefab.name, ex);
 						}
@@ -264,9 +264,15 @@ namespace FindIt.Systems
 				prefabIndex.PdxModsId = prefab.asset.GetMeta().platformID;
 			}
 #if DEBUG
-			if (prefabIndex.SubCategory != PrefabSubCategory.Props_Branding && !prefabIndex.IsRandom && ImageSystem.GetIcon(prefab) is null or "")
+			if (prefabIndex.SubCategory != PrefabSubCategory.Props_Branding && !prefabIndex.IsRandom && ImageSystem.GetIcon(prefab) is null or "" && !prefab.Has<ServiceUpgrade>())
 			{
-				Mod.Log.Info("MISSINGICON: " + prefab.name);
+				if (!prefab.TryGet<UIObject>(out var uIObject)
+					|| uIObject.m_Group is null
+					|| !prefab.builtin
+					|| !uIObject.m_Group.builtin)
+				{
+					Mod.Log.Info("MISSINGICON: " + prefab.name);
+				}
 			}
 #endif
 
@@ -290,6 +296,10 @@ namespace FindIt.Systems
 			{
 				prefabIndex.DlcId = dlcRequirements.m_Dlc;
 				prefabIndex.DlcThumbnail = $"Media/DLC/{PlatformManager.instance.GetDlcName(dlcRequirements.m_Dlc)}.svg";
+			}
+			else if (prefab.builtin)
+			{
+				prefabIndex.DlcId = DlcId.BaseGame;
 			}
 			else
 			{

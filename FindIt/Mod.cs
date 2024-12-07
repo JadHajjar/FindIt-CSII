@@ -1,6 +1,7 @@
 ﻿using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Colossal.PSI.Environment;
+using Colossal.UI;
 
 using FindIt.Domain.Utilities;
 using FindIt.Systems;
@@ -35,6 +36,11 @@ namespace FindIt
 			Settings = new FindItSettings(this);
 			Settings.RegisterInOptionsUI();
 			Settings.RegisterKeyBindings();
+
+			if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
+			{
+				UIManager.defaultUISystem.AddHostLocation($"findit", Path.Combine(Path.GetDirectoryName(asset.path), "images"), false);
+			}
 
 			foreach (var item in new LocaleHelper("FindIt.Locale.json").GetAvailableLanguages())
 			{

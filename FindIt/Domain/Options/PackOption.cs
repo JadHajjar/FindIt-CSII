@@ -48,7 +48,7 @@ namespace FindIt.Domain.Options
 				packs.Add(new OptionItemUIEntry
 				{
 					Id = i,
-					Name = i ==0 ?LocaleHelper.GetTooltip("NoPack") : _optionsUISystem.GetAssetName(_packList[i]),
+					Name = i == 0 ? LocaleHelper.GetTooltip("NoPack") : _optionsUISystem.GetAssetName(_packList[i]),
 					Icon = ImageSystem.GetThumbnail(_packList[i]),
 					Selected = FindItUtil.Filters.SelectedAssetPacks.IsSelected(_packList[i])
 				});
@@ -94,7 +94,7 @@ namespace FindIt.Domain.Options
 			var none = ScriptableObject.CreateInstance<AssetPackPrefab>();
 			var uiObject = ScriptableObject.CreateInstance<UIObject>();
 			none.name = "FindIt_NoPack";
-			none.AddComponent<UIObject>().m_Icon = "";
+			none.AddComponent<UIObject>().m_Icon = "coui://findit/noPack.svg";
 
 			list.Add(none);
 
@@ -106,7 +106,20 @@ namespace FindIt.Domain.Options
 				}
 			}
 
+			list.Sort((x, y) => Comparer<int>.Default.Compare(GetOrder(x), GetOrder(y)));
+
 			return list;
+		}
+
+		private int GetOrder(AssetPackPrefab pack)
+		{
+			if (pack.name == "FindIt_NoPack")
+				return 0;
+
+			if (pack.Has<DlcRequirement>())
+				return 1;
+
+			return 2;
 		}
 	}
 }

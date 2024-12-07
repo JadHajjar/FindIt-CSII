@@ -11,9 +11,10 @@ export interface PrefabSelectionProps {
 }
 
 // These establishes the binding with C# side.
-const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
+const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const PrefabList$ = bindValue<PrefabEntry[]>(mod.id, "PrefabList");
 const ActivePrefabId$ = bindValue<number>(mod.id, "ActivePrefabId");
+const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
 const ScrollIndex$ = bindValue<number>(mod.id, "ScrollIndex");
 const MaxScrollIndex$ = bindValue<number>(mod.id, "MaxScrollIndex");
@@ -27,6 +28,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const PrefabList = useValue(PrefabList$);
   const ActivePrefabId = useValue(ActivePrefabId$);
+  const CurrentCategory = useValue(CurrentCategory$);
   const CurrentSubCategory = useValue(CurrentSubCategory$);
   const ScrollIndex = useValue(ScrollIndex$);
   const MaxScrollIndex = useValue(MaxScrollIndex$);
@@ -117,7 +119,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
             <PrefabItemComponent
               prefab={prefab}
               selected={prefab.id == ActivePrefabId}
-              showCategory={CurrentSubCategory === -1}
+              showCategory={CurrentSubCategory === -1 || CurrentCategory === 100}
               width={PanelItemWidth}
             ></PrefabItemComponent>
           ))}

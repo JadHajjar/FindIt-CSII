@@ -32,6 +32,7 @@ namespace FindIt.Domain.Utilities
 				PrefabCategory.Any,
 				PrefabCategory.Networks,
 				PrefabCategory.Buildings,
+				PrefabCategory.ServiceBuildings,
 				PrefabCategory.Trees,
 				PrefabCategory.Props,
 				PrefabCategory.Vehicles,
@@ -248,8 +249,19 @@ namespace FindIt.Domain.Utilities
 				}
 
 				var prefab = prefabList[index];
+				var allFiltersPass = true;
 
-				if (filterList.All(filter => filter(prefab)))
+				for (var i = 0; i < filterList.Count; i++)
+				{
+					if (!filterList[i](prefab))
+					{
+						allFiltersPass = false;
+
+						break;
+					}
+				}
+
+				if (allFiltersPass)
 				{
 					index++;
 				}

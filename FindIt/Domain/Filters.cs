@@ -88,13 +88,16 @@ namespace FindIt.Domain
 				yield return DoThemeFilter;
 			}
 
-			if (SelectedAssetPacks != null && SelectedAssetPacks.IsDefault())
+			if (SelectedAssetPacks != null && !SelectedAssetPacks.IsDefault())
 			{
-				foreach (var item in SelectedAssetPacks.SelectedValues)
+				if (SelectedAssetPacks.SelectedValues.Any(x => x.name == "FindIt_NoPack"))
 				{
-					Mod.Log.Info(item.name);
+					yield return DoNoAssetPackFilter;
 				}
-				yield return DoAssetPackFilter;
+				else
+				{
+					yield return DoAssetPackFilter;
+				}
 			}
 
 			if (!string.IsNullOrWhiteSpace(CurrentSearch))
@@ -182,17 +185,14 @@ namespace FindIt.Domain
 			return prefab.Theme == SelectedTheme;
 		}
 
+		private bool DoNoAssetPackFilter(PrefabIndex prefab)
+		{
+			return prefab.AssetPacks.Length == 0;
+		}
+
 		private bool DoAssetPackFilter(PrefabIndex prefab)
 		{
-			foreach (var item in SelectedAssetPacks.SelectedValues)
-			{
-				if (item.name == "FindIt_NoPack" ? prefab.AssetPacks.Length > 0 : !prefab.AssetPacks.Contains(item))
-				{
-					return false;
-				}
-			}
-
-			return true;
+			return prefab.AssetPacks.Length > 0 && SelectedAssetPacks.ContainsAny(prefab.AssetPacks);
 		}
 	}
 }

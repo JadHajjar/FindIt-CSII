@@ -30,7 +30,7 @@ namespace FindIt.Domain.Options
 				},
 				new()
 				{
-					Id = -1,
+					Id = DlcId.BaseGame.id,
 					Name = LocaleHelper.GetTooltip("BaseGame"),
 					Icon = "coui://uil/Colored/BaseGame.svg",
 				}
@@ -40,14 +40,18 @@ namespace FindIt.Domain.Options
 			{
 				if (item.DlcId.id >= 0 && !_dlcs.Any(x => x.Id == item.DlcId.id))
 				{
+					var name = PlatformManager.instance.GetDlcName(item.DlcId);
+
 					_dlcs.Add(new OptionItemUIEntry
 					{
 						Id = item.DlcId.id,
-						Name = LocaleHelper.Translate($"Common.DLC_TITLE[{PlatformManager.instance.GetDlcName(item.DlcId)}]"),
-						Icon = $"Media/DLC/{PlatformManager.instance.GetDlcName(item.DlcId)}.svg",
+						Name = LocaleHelper.Translate($"Common.DLC_TITLE[{name}]", LocaleHelper.Translate($"Assets.NAME[{name}]", name)),
+						Icon = $"Media/DLC/{name}.svg",
 					});
 				}
 			}
+
+			_dlcs.Sort((x, y) => Comparer<int>.Default.Compare(x.Id, y.Id));
 		}
 
 		public OptionSectionUIEntry AsUIEntry()

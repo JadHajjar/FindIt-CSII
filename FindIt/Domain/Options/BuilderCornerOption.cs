@@ -46,8 +46,7 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return FindItUtil.CurrentCategory is PrefabCategory.Buildings
-				&& (FindItUtil.CurrentSubCategory is PrefabSubCategory.Any or PrefabSubCategory.Buildings_Residential or PrefabSubCategory.Buildings_Mixed or PrefabSubCategory.Buildings_Commercial or PrefabSubCategory.Buildings_Office or PrefabSubCategory.Buildings_Industrial);
+			return FindItUtil.CurrentCategory is Enums.PrefabCategory.Buildings or Enums.PrefabCategory.ServiceBuildings;
 		}
 
 		public void OnOptionClicked(int optionId, int value)

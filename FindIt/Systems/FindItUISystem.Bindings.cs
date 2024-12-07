@@ -59,40 +59,43 @@ namespace FindIt.Systems
 
 		internal void ToggleFindItPanel(bool visible, bool activatePrefab = true)
 		{
-			if (_ShowFindItPanel == visible)
+			if (_ShowFindItPanel == visible || (_IsWindowLocked && _ShowFindItPanel))
 			{
 				return;
 			}
 
-			if (visible)
-			{
-				_PanelWidth.Value = GridUtil.GetWidth();
-				_PanelHeight.Value = GridUtil.GetHeight();
-
-				FindItUtil.SetSorting();
-
-				UpdateCategoriesAndPrefabList();
-
-				_optionsUISystem.RefreshOptions();
-
-				if (activatePrefab && Mod.Settings.SelectPrefabOnOpen)
-				{
-					TryActivatePrefabTool(_ActivePrefabId);
-
-					var prefabs = FindItUtil.GetFilteredPrefabs();
-					var columns = GridUtil.GetCurrentColumnCount();
-					var rows = GridUtil.GetCurrentRowCount();
-					var index = prefabs.IndexOf(FindItUtil.GetPrefabIndex(_ActivePrefabId));
-
-					SetScrollIndex(Math.Max(0, Math.Floor(index / columns) - (rows / 4)));
-				}
-			}
-			else
-			{
-				Mod.Log.Info(new StackTrace());
-			}
-
 			_ShowFindItPanel.Value = visible;
+
+			if (!visible)
+			{
+				return;
+			}
+
+			_PanelWidth.Value = GridUtil.GetWidth();
+			_PanelHeight.Value = GridUtil.GetHeight();
+
+			FindItUtil.SetSorting();
+
+			UpdateCategoriesAndPrefabList();
+
+			_optionsUISystem.RefreshOptions();
+
+			if (activatePrefab && Mod.Settings.SelectPrefabOnOpen)
+			{
+				TryActivatePrefabTool(_ActivePrefabId);
+
+				var prefabs = FindItUtil.GetFilteredPrefabs();
+				var columns = GridUtil.GetCurrentColumnCount();
+				var rows = GridUtil.GetCurrentRowCount();
+				var index = prefabs.IndexOf(FindItUtil.GetPrefabIndex(_ActivePrefabId));
+
+				SetScrollIndex(Math.Max(0, Math.Floor(index / columns) - (rows / 4)));
+			}
+		}
+
+		private void ToggleLock()
+		{
+			_IsWindowLocked.Value = !_IsWindowLocked;
 		}
 
 		private void ExpandedToggled()
@@ -105,7 +108,7 @@ namespace FindIt.Systems
 
 		private void OnSearchKeyPressed()
 		{
-			if (_ShowFindItPanel)
+			if (_ShowFindItPanel || _IsWindowLocked)
 			{
 				_FocusSearchBar.Value = true;
 			}

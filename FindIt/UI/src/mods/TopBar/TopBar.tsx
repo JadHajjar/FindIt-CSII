@@ -18,6 +18,8 @@ import shrink from "images/shrink.svg";
 import expand from "images/expand.svg";
 import filter from "images/filter.svg";
 import filterX from "images/filterX.svg";
+import lock from "images/lock.svg";
+import unlock from "images/unlock.svg";
 import sort from "images/sort.svg";
 import { FOCUS_DISABLED } from "cs2/input";
 
@@ -42,6 +44,7 @@ const AssetCategoryTabTheme: Theme | any = getModule(
 );
 
 // These establishes the binding with C# side.
+const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
 const ClearSearchBar$ = bindValue<boolean>(mod.id, "ClearSearchBar");
 const FocusSearchBar$ = bindValue<boolean>(mod.id, "FocusSearchBar");
@@ -55,6 +58,7 @@ const AlignmentStyle$ = bindValue<string>(mod.id, "AlignmentStyle");
 
 export const TopBarComponent = (props: TopBarProps) => {
   // These get the value of the bindings. Or they will when we have bindings.
+  const IsWindowLocked = useValue(IsWindowLocked$);
   const CurrentCategory = useValue(CurrentCategory$);
   const CurrentSubCategory = useValue(CurrentSubCategory$);
   const CategoryList = useValue(CategoryList$);
@@ -134,6 +138,13 @@ export const TopBarComponent = (props: TopBarProps) => {
             className={props.expanded && styles.selected}
           />
         )}
+
+        <BasicButton
+          tooltip={translate("Tooltip.LABEL[FindIt.LockWindow]", "Lock Window Open")}
+          onClick={() => trigger(mod.id, "ToggleLock")}
+          mask={!IsWindowLocked ? unlock : lock}
+          className={IsWindowLocked && styles.selected}
+        />
 
         <BasicButton
           tooltip={translate("Tooltip.LABEL[FindIt.ToggleSorting]", "Sorting")}

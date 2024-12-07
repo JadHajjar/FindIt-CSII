@@ -1,6 +1,9 @@
-﻿using FindIt.Domain.Interfaces;
+﻿using FindIt.Domain.Enums;
+using FindIt.Domain.Interfaces;
 
 using Game.Prefabs;
+
+using System.Linq;
 
 using Unity.Entities;
 
@@ -74,10 +77,32 @@ namespace FindIt.Domain.Utilities
 
 			//var isExtension = _entityManager.HasComponent<BuildingExtensionData>(entity);
 
+			var subCategory = PrefabSubCategory.ServiceBuildings_Misc;
+		
+			if (prefab.TryGet<ServiceObject>(out var serviceObject) || (prefab.TryGet<ServiceUpgrade>(out var serviceUpgrade) && (serviceUpgrade.m_Buildings.FirstOrDefault()?.TryGet(out serviceObject) ?? false)))
+			{
+				subCategory = serviceObject.m_Service.name switch
+				{
+					"Roads" => PrefabSubCategory.ServiceBuildings_Roads,
+					"Electricity" => PrefabSubCategory.ServiceBuildings_Electricity,
+					"Water & Sewage" => PrefabSubCategory.ServiceBuildings_Water,
+					"Communications" => PrefabSubCategory.ServiceBuildings_Communications,
+					"Health & Deathcare" => PrefabSubCategory.ServiceBuildings_Health,
+					"Police & Administration" => PrefabSubCategory.ServiceBuildings_Police,
+					"Fire & Rescue" => PrefabSubCategory.ServiceBuildings_Fire,
+					"Education & Research" => PrefabSubCategory.ServiceBuildings_EducationResearch,
+					"Garbage Management" => PrefabSubCategory.ServiceBuildings_Garbage,
+					"Transportation" => PrefabSubCategory.ServiceBuildings_Transportation,
+					"Landscaping" => PrefabSubCategory.ServiceBuildings_Landscaping,
+					"Parks & Recreation" => PrefabSubCategory.ServiceBuildings_Parks,
+					_ => PrefabSubCategory.ServiceBuildings_Misc
+				};
+			}
+
 			prefabIndex = new PrefabIndex(prefab)
 			{
-				Category = Enums.PrefabCategory.Buildings,
-				SubCategory = Enums.PrefabSubCategory.Buildings_Services
+				Category = PrefabCategory.ServiceBuildings,
+				SubCategory = subCategory
 			};
 
 			return true;

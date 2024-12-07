@@ -96,7 +96,9 @@ export const OptionsPanelComponent = (props: _Props) => {
                         option.selected && !option.disabled && styles.selected,
                         option.disabled && styles.disabled
                       )}
-                    />
+                    >
+                      {option.selected && !option.disabled ? <div className={styles.border} /> : undefined}
+                    </VanillaComponentResolver.instance.ToolButton>
                   )
                 )
               )}

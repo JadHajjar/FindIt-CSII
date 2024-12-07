@@ -1,6 +1,31 @@
 [
   {
     "Stable": true,
+    "Version": "1.2.0",
+    "Date": "2024-11-26",
+    "ChangeGroups": [
+      {
+        "Name": "New & Changed",
+        "Changes": [
+          "Added a 'lock' toggle to keep Find It open all the time, until you unlock it back.",
+          "Moved Service Buildings into their own category and added sub-categories per service type.",
+          "Added a no-pack filter to only show assets that do not have a pack.",
+          "You can now select multiple asset packs at a time.",
+          "Zone-type icons on assets no longer gets hidden when going into a specific zoning sub-category.",
+          "Made selected options easier to distinguish for large icons like region packs and CCPs.",
+        ]
+      },
+      {
+        "Name": "Fixes",
+        "Changes": [
+          "Fixed tool options size taking the whole screen if using mods that add a slider.",
+          "Fixed the 'Base Game' dlc filter counting PDX Mods assets as base-game too."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.1.1",
     "Date": "2024-11-26",
     "ChangeGroups": [

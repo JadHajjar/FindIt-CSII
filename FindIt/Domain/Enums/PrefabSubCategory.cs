@@ -14,7 +14,7 @@ namespace FindIt.Domain.Enums
 		Buildings = PrefabCategory.Buildings,
 		[CategoryIcon("Media/Game/Icons/ZoneResidential.svg")]
 		Buildings_Residential,
-		[CategoryIcon("Media/Game/Icons/ZoneResidentialMixed.svg")]
+		[CategoryIcon("coui://findit/ZoneResidentialMixed.svg")]
 		Buildings_Mixed,
 		[CategoryIcon("Media/Game/Icons/ZoneCommercial.svg")]
 		Buildings_Commercial,
@@ -28,6 +28,35 @@ namespace FindIt.Domain.Enums
 		Buildings_Services,
 		[CategoryIcon("coui://uil/Colored/HouseAlternative.svg")]
 		Buildings_Miscellaneous,
+
+		[Obsolete("Use PrefabCategory", true)]
+		ServiceBuildings = PrefabCategory.ServiceBuildings,
+		[CategoryIcon("Media/Game/Icons/Parking.svg")]
+		ServiceBuildings_Roads,
+		[CategoryIcon("Media/Game/Icons/Electricity.svg")]
+		ServiceBuildings_Electricity,
+		[CategoryIcon("Media/Game/Icons/Water.svg")]
+		ServiceBuildings_Water,
+		[CategoryIcon("Media/Game/Icons/Healthcare.svg")]
+		ServiceBuildings_Health,
+		[CategoryIcon("Media/Game/Icons/Police.svg")]
+		ServiceBuildings_Police,
+		[CategoryIcon("Media/Game/Icons/FireSafety.svg")]
+		ServiceBuildings_Fire,
+		[CategoryIcon("Media/Game/Icons/Education.svg")]
+		ServiceBuildings_EducationResearch,
+		[CategoryIcon("Media/Game/Icons/Communications.svg")]
+		ServiceBuildings_Communications,
+		[CategoryIcon("Media/Game/Icons/Garbage.svg")]
+		ServiceBuildings_Garbage,
+		[CategoryIcon("Media/Game/Icons/Transportation.svg")]
+		ServiceBuildings_Transportation,
+		[CategoryIcon("Media/Game/Icons/Landscaping.svg")]
+		ServiceBuildings_Landscaping,
+		[CategoryIcon("Media/Game/Icons/ParksAndRecreation.svg")]
+		ServiceBuildings_Parks,
+		[CategoryIcon("coui://uil/Standard/StarAll.svg")]
+		ServiceBuildings_Misc,
 
 		[Obsolete("Use PrefabCategory", true)]
 		Networks = PrefabCategory.Networks,
