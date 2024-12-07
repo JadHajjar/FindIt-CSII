@@ -99,6 +99,7 @@
   "Tooltip.LABEL[FindIt.AlignmentCenter]": "По центру",
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Справа",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "Показать в PDX Mods",
+  "Tooltip.LABEL[FindIt.NoPack]": "No Pack",
   "Options.SECTION[FindIt.FindIt.Mod]": "Найди Это",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Найди Это",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "Общие",
