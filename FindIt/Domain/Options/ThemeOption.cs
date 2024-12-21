@@ -8,22 +8,18 @@ using Game.UI;
 
 using System.Collections.Generic;
 
-using Unity.Collections;
-using Unity.Entities;
-
 namespace FindIt.Domain.Options
 {
 	internal class ThemeOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly List<ThemePrefab> _themeList;
+		private List<ThemePrefab> _themeList = new();
 
 		public int Id { get; } = 95;
 
 		public ThemeOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-			_themeList = GetThemePrefabs();
 		}
 
 		public OptionSectionUIEntry AsUIEntry()
@@ -67,7 +63,9 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return true;
+			_themeList = GetThemePrefabs();
+
+			return _themeList.Count > 0;
 		}
 
 		public void OnOptionClicked(int optionId, int value)
@@ -104,18 +102,17 @@ namespace FindIt.Domain.Options
 
 		private List<ThemePrefab> GetThemePrefabs()
 		{
-			var query = _optionsUISystem.GetEntityQuery(new EntityQueryBuilder(Allocator.Temp).WithAll<ThemeData>());
-			var entities = query.ToEntityArray(Allocator.Temp);
-			var prefabSystem = _optionsUISystem.World.GetOrCreateSystemManaged<PrefabSystem>();
 			var list = new List<ThemePrefab>();
 
-			for (var i = 0; i < entities.Length; i++)
+			foreach (var prefab in FindItUtil.GetUnfilteredPrefabs())
 			{
-				if (prefabSystem.TryGetPrefab<ThemePrefab>(entities[i], out var prefab))
+				if (prefab.Theme != null && !list.Contains(prefab.Theme))
 				{
-					list.Add(prefab);
+					list.Add(prefab.Theme);
 				}
 			}
+
+			list.Sort((x, y) => Comparer<string>.Default.Compare(x.name, y.name));
 
 			return list;
 		}

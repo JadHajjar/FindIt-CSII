@@ -19,13 +19,14 @@ namespace FindIt.Domain
 		public int LotDepthFilter { get; set; }
 		public ThemePrefab SelectedTheme { get; set; }
 		public OptionListHelper<AssetPackPrefab> SelectedAssetPacks { get; set; }
+		public BuildingCornerFilter SelectedBuildingCorner { get; set; }
 		public bool SelectedThemeNone { get; set; }
 		public bool HideAds { get; set; }
 		public bool HideRandoms { get; set; }
 		public bool HideVanilla { get; set; }
 		public int BuildingLevelFilter { get; set; }
-		public BuildingCornerFilter SelectedBuildingCorner { get; set; }
 		public bool OnlyPlaced { get; set; }
+		public bool UniqueMesh { get; set; }
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
@@ -42,6 +43,11 @@ namespace FindIt.Domain
 			if (HideVanilla)
 			{
 				yield return DoNoVanillaFilter;
+			}
+
+			if (UniqueMesh)
+			{
+				yield return DoUniqueMeshFilter;
 			}
 
 			if (OnlyPlaced)
@@ -168,6 +174,11 @@ namespace FindIt.Domain
 		private bool DoNoVanillaFilter(PrefabIndex prefab)
 		{
 			return !prefab.IsVanilla;
+		}
+
+		private bool DoUniqueMeshFilter(PrefabIndex prefab)
+		{
+			return prefab.IsUniqueMesh;
 		}
 
 		private bool DoOnlyPlacedFilter(PrefabIndex prefab)

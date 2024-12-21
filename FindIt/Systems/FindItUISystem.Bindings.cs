@@ -191,7 +191,7 @@ namespace FindIt.Systems
 			}
 
 			currentIndex += x + (y * (int)Math.Floor(columns));
-			currentIndex = Math.Min(Math.Max(0, currentIndex), prefabs.Count);
+			currentIndex = Math.Min(Math.Max(0, currentIndex), prefabs.Count - 1);
 
 			TryActivatePrefabTool(prefabs[currentIndex].Id);
 			SetScrollIndex(Math.Max(0, Math.Floor(currentIndex / columns) - (rows / 4)));

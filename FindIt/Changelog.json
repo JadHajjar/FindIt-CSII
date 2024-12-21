@@ -1,6 +1,60 @@
 [
   {
     "Stable": true,
+    "Version": "1.2.4",
+    "Date": "2024-11-26",
+    "ChangeGroups": [
+      {
+        "Name": "Filter Changes",
+        "Changes": [
+          "Added a 'Unique Mesh' extra filter to only show one asset when there's multiple ones reusing the same mesh.",
+          "Added a 'Signature Building' zone type filter option to differentiate zoned buildings from them.",
+          "Pack, DLC, and Theme filters now only show available options based on which category you're viewing to reduce clutter."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.2.3",
+    "Date": "2024-11-26",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Small bandaid to fix faulty custom assets breaking a whole category of assets in Find It."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.2.2",
+    "Date": "2024-11-26",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Compatibility with patch 1.2.0f1."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.2.1",
+    "Date": "2024-11-26",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Fixed assets not showing after the 1.2.0 update."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.2.0",
     "Date": "2024-11-26",
     "ChangeGroups": [
@@ -12,7 +66,7 @@
           "Added a no-pack filter to only show assets that do not have a pack.",
           "You can now select multiple asset packs at a time.",
           "Zone-type icons on assets no longer gets hidden when going into a specific zoning sub-category.",
-          "Made selected options easier to distinguish for large icons like region packs and CCPs.",
+          "Made selected options easier to distinguish for large icons like region packs and CCPs."
         ]
       },
       {

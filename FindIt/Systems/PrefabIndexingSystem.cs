@@ -117,6 +117,7 @@ namespace FindIt.Systems
 		private void RunIndex(bool full)
 		{
 			var stopWatch = Stopwatch.StartNew();
+			var existingMeshes = new List<string>();
 
 			if (full)
 			{
@@ -204,6 +205,17 @@ namespace FindIt.Systems
 
 							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
 							{
+								if (full && prefab is ObjectGeometryPrefab geometryPrefab && geometryPrefab.m_Meshes.Length > 0)
+								{
+									var meshName = geometryPrefab.m_Meshes[0].m_Mesh.name;
+
+									if (!existingMeshes.Contains(meshName))
+									{
+										prefabIndex.IsUniqueMesh = true;
+										existingMeshes.Add(meshName);
+									}
+								}
+
 								AddPrefab(prefab, entity, prefabIndex);
 							}
 							else
@@ -250,7 +262,7 @@ namespace FindIt.Systems
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.Theme ??= prefab.GetComponent<ThemeObject>()?.m_Theme;
-			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs ?? new AssetPackPrefab[0];
+			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs.Where(x => x != null).ToArray() ?? new AssetPackPrefab[0];
 			prefabIndex.ThemeThumbnail ??= prefabIndex.Theme is null ? null : ImageSystem.GetThumbnail(prefabIndex.Theme);
 			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks.Select(ImageSystem.GetThumbnail).ToArray();
 			prefabIndex.Tags ??= new();
@@ -299,7 +311,7 @@ namespace FindIt.Systems
 			}
 			else if (prefab.builtin)
 			{
-				prefabIndex.DlcId = DlcId.BaseGame;
+				prefabIndex.DlcId = new DlcId(-2009);
 			}
 			else
 			{

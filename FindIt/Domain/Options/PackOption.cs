@@ -8,9 +8,6 @@ using Game.UI;
 
 using System.Collections.Generic;
 
-using Unity.Collections;
-using Unity.Entities;
-
 using UnityEngine;
 
 namespace FindIt.Domain.Options
@@ -18,14 +15,13 @@ namespace FindIt.Domain.Options
 	internal class PackOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly List<AssetPackPrefab> _packList;
+		private List<AssetPackPrefab> _packList = new();
 
 		public int Id { get; } = 94;
 
 		public PackOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-			_packList = GetPackPrefabs();
 
 			FindItUtil.Filters.SelectedAssetPacks = new(_packList, null, true);
 		}
@@ -64,7 +60,9 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return true;
+			_packList = GetPackPrefabs();
+
+			return _packList.Count > 1;
 		}
 
 		public void OnOptionClicked(int optionId, int value)
@@ -86,9 +84,9 @@ namespace FindIt.Domain.Options
 
 		private List<AssetPackPrefab> GetPackPrefabs()
 		{
-			var query = _optionsUISystem.GetEntityQuery(new EntityQueryBuilder(Allocator.Temp).WithAll<AssetPackData>());
-			var entities = query.ToEntityArray(Allocator.Temp);
-			var prefabSystem = _optionsUISystem.World.GetOrCreateSystemManaged<PrefabSystem>();
+			//var query = _optionsUISystem.GetEntityQuery(new EntityQueryBuilder(Allocator.Temp).WithAll<AssetPackData>());
+			//var entities = query.ToEntityArray(Allocator.Temp);
+			//var prefabSystem = _optionsUISystem.World.GetOrCreateSystemManaged<PrefabSystem>();
 			var list = new List<AssetPackPrefab>();
 
 			var none = ScriptableObject.CreateInstance<AssetPackPrefab>();
@@ -98,11 +96,14 @@ namespace FindIt.Domain.Options
 
 			list.Add(none);
 
-			for (var i = 0; i < entities.Length; i++)
+			foreach (var item in FindItUtil.GetUnfilteredPrefabs())
 			{
-				if (prefabSystem.TryGetPrefab<AssetPackPrefab>(entities[i], out var prefab))
+				foreach (var pack in item.AssetPacks)
 				{
-					list.Add(prefab);
+					if (!list.Contains(pack))
+					{
+						list.Add(pack);
+					}
 				}
 			}
 
@@ -114,10 +115,14 @@ namespace FindIt.Domain.Options
 		private int GetOrder(AssetPackPrefab pack)
 		{
 			if (pack.name == "FindIt_NoPack")
+			{
 				return 0;
+			}
 
 			if (pack.Has<DlcRequirement>())
+			{
 				return 1;
+			}
 
 			return 2;
 		}

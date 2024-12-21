@@ -73,7 +73,7 @@ namespace FindIt.Domain.Utilities
 
 			if (_prefabSystem.TryGetPrefab<ZonePrefab>(zonePrefab, out var _zonePrefab))
 			{
-				prefabIndex.ZoneType = GetZoneType(_zonePrefab);
+				prefabIndex.ZoneType = GetZoneType(prefab, _zonePrefab);
 				prefabIndex.Theme = _zonePrefab.GetComponent<ThemeObject>()?.m_Theme;
 				prefabIndex.AssetPacks = _zonePrefab.GetComponent<AssetPackItem>()?.m_Packs ?? new AssetPackPrefab[0];
 			}
@@ -142,9 +142,13 @@ namespace FindIt.Domain.Utilities
 			return Entity.Null;
 		}
 
-		private static ZoneTypeFilter GetZoneType(ZonePrefab zonePrefab)
+		private static ZoneTypeFilter GetZoneType(PrefabBase prefab, ZonePrefab zonePrefab)
 		{
-			if (zonePrefab.name.Contains(" Row"))
+			if (prefab.Has<SignatureBuilding>())
+			{
+				return ZoneTypeFilter.Signature;
+			}
+			else if (zonePrefab.name.Contains(" Row"))
 			{
 				return ZoneTypeFilter.Row;
 			}

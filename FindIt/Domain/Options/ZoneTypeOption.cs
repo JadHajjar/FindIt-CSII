@@ -26,6 +26,7 @@ namespace FindIt.Domain.Options
 				[ZoneTypeFilter.Row] = "coui://uil/Standard/Row.svg",
 				[ZoneTypeFilter.Medium] = "coui://uil/Standard/MediumLevel.svg",
 				[ZoneTypeFilter.High] = "coui://uil/Standard/HighLevel.svg",
+				[ZoneTypeFilter.Signature] = "coui://findit/signature.svg",
 			};
 		}
 

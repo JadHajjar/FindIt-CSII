@@ -7,5 +7,6 @@
 		Row = 2,
 		Medium = 4,
 		High = 8,
+		Signature = 16,
 	}
 }

@@ -7,8 +7,6 @@ using Game.Modding;
 using Game.Settings;
 using Game.UI;
 
-using static System.Net.Mime.MediaTypeNames;
-
 namespace FindIt
 {
 	[FileLocation(nameof(FindIt))]

@@ -13,14 +13,18 @@ namespace FindIt.Domain.Options
 	internal class DlcOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
-		private readonly List<OptionItemUIEntry> _dlcs;
+		private List<OptionItemUIEntry> _dlcs = new();
 
 		public int Id { get; } = 100;
 
 		public DlcOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
-			_dlcs = new List<OptionItemUIEntry>
+		}
+
+		private List<OptionItemUIEntry> GetDlcs()
+		{
+			var dlcs = new List<OptionItemUIEntry>
 			{
 				new()
 				{
@@ -30,19 +34,19 @@ namespace FindIt.Domain.Options
 				},
 				new()
 				{
-					Id = DlcId.BaseGame.id,
+					Id = -2009,
 					Name = LocaleHelper.GetTooltip("BaseGame"),
 					Icon = "coui://uil/Colored/BaseGame.svg",
 				}
 			};
 
-			foreach (var item in FindItUtil.CategorizedPrefabs[Enums.PrefabCategory.Any][Enums.PrefabSubCategory.Any])
+			foreach (var item in FindItUtil.GetUnfilteredPrefabs())
 			{
-				if (item.DlcId.id >= 0 && !_dlcs.Any(x => x.Id == item.DlcId.id))
+				if (item.DlcId.id >= 0 && !dlcs.Any(x => x.Id == item.DlcId.id))
 				{
 					var name = PlatformManager.instance.GetDlcName(item.DlcId);
 
-					_dlcs.Add(new OptionItemUIEntry
+					dlcs.Add(new OptionItemUIEntry
 					{
 						Id = item.DlcId.id,
 						Name = LocaleHelper.Translate($"Common.DLC_TITLE[{name}]", LocaleHelper.Translate($"Assets.NAME[{name}]", name)),
@@ -51,7 +55,9 @@ namespace FindIt.Domain.Options
 				}
 			}
 
-			_dlcs.Sort((x, y) => Comparer<int>.Default.Compare(x.Id, y.Id));
+			dlcs.Sort((x, y) => Comparer<int>.Default.Compare(x.Id, y.Id));
+
+			return dlcs;
 		}
 
 		public OptionSectionUIEntry AsUIEntry()
@@ -75,6 +81,8 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
+			_dlcs = GetDlcs();
+
 			return _dlcs.Count > 2;
 		}
 

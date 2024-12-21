@@ -53,6 +53,13 @@ namespace FindIt.Domain.Options
 						Name = LocaleHelper.GetTooltip("OnlyPlaced"),
 						Icon = "coui://uil/Standard/MapMarker.svg",
 						Selected = FindItUtil.Filters.OnlyPlaced
+					},
+					new OptionItemUIEntry
+					{
+						Id = 4,
+						Name = LocaleHelper.GetTooltip("UniqueBuildingMeshes"),
+						Icon = "coui://findit/city.svg",
+						Selected = FindItUtil.Filters.UniqueMesh
 					}
 				}
 			};
@@ -79,6 +86,9 @@ namespace FindIt.Domain.Options
 				case 3:
 					FindItUtil.Filters.OnlyPlaced = !FindItUtil.Filters.OnlyPlaced;
 					break;
+				case 4:
+					FindItUtil.Filters.UniqueMesh = !FindItUtil.Filters.UniqueMesh;
+					break;
 				default:
 					return;
 			}
@@ -92,11 +102,16 @@ namespace FindIt.Domain.Options
 			FindItUtil.Filters.HideVanilla = false;
 			FindItUtil.Filters.HideRandoms = false;
 			FindItUtil.Filters.OnlyPlaced = false;
+			FindItUtil.Filters.UniqueMesh = false;
 		}
 
 		public bool IsDefault()
 		{
-			return !FindItUtil.Filters.HideAds && !FindItUtil.Filters.HideRandoms && !FindItUtil.Filters.HideVanilla && !FindItUtil.Filters.OnlyPlaced;
+			return !FindItUtil.Filters.HideAds
+				&& !FindItUtil.Filters.HideRandoms
+				&& !FindItUtil.Filters.HideVanilla
+				&& !FindItUtil.Filters.OnlyPlaced
+				&& !FindItUtil.Filters.UniqueMesh;
 		}
 	}
 }
