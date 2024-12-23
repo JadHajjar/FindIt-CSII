@@ -51,7 +51,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
       break;
   }
 
-  const PanelItemWidth = (PanelWidth - 15) / ColumnCount - itemMargin + "rem";
+  const PanelItemWidth = Math.round((PanelWidth - 15) / ColumnCount - itemMargin) + "rem";
 
   switch (ViewStyle) {
     case "ListSimple":
@@ -61,14 +61,14 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
       PanelItemHeight = 98;
       break;
     default:
-      PanelItemHeight = (PanelWidth - 15) / ColumnCount;
+      PanelItemHeight = Math.round((PanelWidth - 15) / ColumnCount);
       break;
   }
 
   const [isDragging, setIsDragging] = useState(false);
   const [initialDivPos, setInitialDivPos] = useState(0);
 
-  const scrollBarHeight = Math.max(30, (PanelHeight * RowCount) / (MaxScrollIndex + RowCount));
+  const scrollBarHeight = Math.round(Math.max(30, (PanelHeight * RowCount) / (MaxScrollIndex + RowCount)));
 
   function OnWheel(obj: any) {
     trigger(mod.id, "OnScroll", obj.deltaY);
@@ -111,7 +111,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
         <div
           className={styles.panelSection + " " + PrefabItemStyles[ViewStyle]}
           style={{
-            margin: `${(ScrollIndex % 1) * -PanelItemHeight}rem 0 0 0`,
+            margin: `${Math.round((ScrollIndex % 1) * -PanelItemHeight)}rem 0 0 0`,
             width: PanelWidth + "rem",
           }}
         >
@@ -138,7 +138,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
               className={styles.scrollBar}
               ref={thumbRef}
               style={{
-                top: (ScrollIndex / MaxScrollIndex) * (PanelHeight - 20 - scrollBarHeight) + "rem",
+                top: Math.round((ScrollIndex / MaxScrollIndex) * (PanelHeight - 20 - scrollBarHeight)) + "rem",
                 height: scrollBarHeight + "rem",
               }}
             ></div>

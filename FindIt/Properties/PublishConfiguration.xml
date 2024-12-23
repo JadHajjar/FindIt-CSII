@@ -52,14 +52,12 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_07.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.2.4" />
+  <ModVersion Value="1.2.5" />
   <GameVersion Value="1.2.*" />
   <ChangeLog>
-# v1.2.4
-## Filter Changes
-* Added a 'Unique Mesh' extra filter to only show one asset when there's multiple ones reusing the same mesh.
-* Added a 'Signature Building' zone type filter option to differentiate zoned buildings from them.
-* Pack, DLC, and Theme filters now only show available options based on which category you're viewing to reduce clutter.
+# v1.2.5
+## Bugfix
+* Small UI change, testing for rare crash cause.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />

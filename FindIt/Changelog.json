@@ -1,6 +1,19 @@
 [
   {
     "Stable": true,
+    "Version": "1.2.5",
+    "Date": "2024-11-26",
+    "ChangeGroups": [
+      {
+        "Name": "Bugfix",
+        "Changes": [
+          "Small UI change, testing for rare crash cause."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.2.4",
     "Date": "2024-11-26",
     "ChangeGroups": [
