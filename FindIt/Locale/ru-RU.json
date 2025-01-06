@@ -7,6 +7,7 @@
   "Tooltip.LABEL[FindIt.SortingName]": "Сортировать по имени",
   "Tooltip.LABEL[FindIt.SortingMostUsed]": "Сортировать по наиболее часто используемым",
   "Tooltip.LABEL[FindIt.SortingLastUsed]": "Сортировать по последним выбранным",
+  "Tooltip.LABEL[FindIt.SortingUIOrder]": "Sort by the default asset UI order",
   "Tooltip.LABEL[FindIt.ViewGridWithText]": "Сетка с названиями",
   "Tooltip.LABEL[FindIt.ViewGridNoText]": "Сетка без названий",
   "Tooltip.LABEL[FindIt.ViewGridSmall]": "Маленькая сетка без названий",
@@ -116,6 +117,11 @@
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Справа",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "Показать в PDX Mods",
   "Tooltip.LABEL[FindIt.NoPack]": "No Pack",
+  "Tooltip.LABEL[FindIt.PickerSubObjects]": "Sub-Objects",
+  "Tooltip.LABEL[FindIt.PickerBuildings]": "Здания",
+  "Tooltip.LABEL[FindIt.PickerProps]": "Объекты",
+  "Tooltip.LABEL[FindIt.PickerNetworks]": "Сети",
+  "Tooltip.LABEL[FindIt.PickerSurfaces]": "Surfaces",
   "Options.SECTION[FindIt.FindIt.Mod]": "Найди Это",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Найди Это",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "Общие",
@@ -154,6 +160,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Скрывает \"Брендовые\" объекты из вкладки \"Любые\". Они также будут показываться во вкладке \"Брендинг и Билборды\". Требует перезагрузить сохранение чтобы применить изменения.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Быстрая и плавная прокрутка",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Увеличивает скорость обновления прокрутки. Это может привести к вылетам на некоторых компьютерах.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Disable Asset Icons",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Uses the category icons for assets instead of their individual icons. This is to help with excessive crashing because of excessive image loads. Asset icons are loaded when hovering an asset.",
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "Открыть поиск",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Открыть панель поиска",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Определяет горячую клавишу для вызова панели \"Найди Это\" или для выбора строки поиска в случае, если панель уже видна.",
@@ -174,5 +182,7 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Переместится вверх в списке объектов.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Навигация вниз",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Навигация вниз",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Переместится вниз в списке объектов."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Переместится вниз в списке объектов.",
+  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
+  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
 }
