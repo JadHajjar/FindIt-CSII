@@ -24,6 +24,7 @@ namespace FindIt.Domain.Options
 				[PrefabSorting.Name] = "coui://uil/Standard/NameSort.svg",
 				[PrefabSorting.MostUsed] = "coui://uil/Standard/Statistics.svg",
 				[PrefabSorting.LastUsed] = "coui://uil/Standard/ClockArrowBackward.svg",
+				[PrefabSorting.UIOrder] = "coui://findit/numbers.svg",
 			};
 		}
 

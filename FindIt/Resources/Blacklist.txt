@@ -1,11 +1,4 @@
 Agriculture Extractor Placeholder
-CoalTruck01
-EU_DeliveryVan01
-EU_TruckTractor01
-MotorbikeDelivery01
-NA_DeliveryVan01
-NA_TruckTractor01
-OilTruck01
 LogPileLarge01
 LogPileLarge02
 LogPileLarge03

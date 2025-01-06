@@ -39,6 +39,9 @@ namespace FindIt
 		[SettingsUIHidden]
 		public string DefaultAlignmentStyle { get; set; } = "Center";
 
+		[SettingsUIHidden]
+		public bool VehicleWarningShown { get; set; }
+
 		[SettingsUIButton]
 		[SettingsUIConfirmation]
 		[SettingsUISection(SETTINGS, OTHER)]
@@ -86,6 +89,9 @@ namespace FindIt
 
 		[SettingsUISection(SETTINGS, UIUX)]
 		public bool StrictSearch { get; set; }
+
+		[SettingsUISection(SETTINGS, UIUX)]
+		public bool NoAssetImage { get; set; }
 
 		[SettingsUISection(SETTINGS, UIUX)]
 		public bool SmoothScroll { get; set; }

@@ -8,21 +8,22 @@ import { useEffect, useRef, useState } from "react";
 import { PrefabEntry } from "domain/prefabEntry";
 import classNames from "classnames";
 import { BasicButton } from "mods/BasicButton/BasicButton";
+import shuffle from "images/shuffle.svg";
 
 export interface PrefabButtonProps {
+  noAssetImage: any;
+  listView: any;
   prefab: PrefabEntry;
   selected: boolean;
   showCategory: boolean;
   width: string;
 }
 
-export const ViewStyle$ = bindValue<string>(mod.id, "ViewStyle", "GridWithText");
-
 export const PrefabItemComponent = (props: PrefabButtonProps) => {
   const { translate } = useLocalization();
   const [favoriteFlip, setFavorited] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [thumbnailIndex, setThumbnailIndex] = useState(0);
-  const ViewStyle = useValue(ViewStyle$);
 
   const mouseOver = () => {
     const date = new Date();
@@ -51,24 +52,33 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         style={{ width: props.width, height: props.width }}
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
         onMouseMove={props.prefab.random ? mouseOver : undefined}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
-        {ViewStyle !== "ListSimple" && renderLeftSection(false)}
+        {!props.listView && renderLeftSection(false)}
 
-        <img
-          src={props.prefab.thumbnails[thumbnailIndex]}
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = null; // prevents looping
-            currentTarget.src = props.prefab.fallbackThumbnail;
-          }}
-          className={VanillaComponentResolver.instance.assetGridTheme.thumbnail + " " + styles.gridThumbnail}
-          onMouseMove={props.prefab.random ? mouseOver : undefined}
-        />
+        <div className={styles.gridThumbnail}>
+          {props.noAssetImage && !hovered ? (
+            <img src={props.prefab.fallbackThumbnail} />
+          ) : (
+            <img
+              src={props.prefab.thumbnails[thumbnailIndex]}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = props.prefab.fallbackThumbnail;
+              }}
+              className={styles.gridThumbnail}
+              onMouseMove={props.prefab.random ? mouseOver : undefined}
+            />
+          )}
+          {props.prefab.random && <img className={styles.shuffle} src={shuffle} />}
+        </div>
 
         <div className={styles.gridItemText}>
           <p>{props.prefab.name}</p>
         </div>
 
-        {ViewStyle === "ListSimple" && renderLeftSection(true)}
+        {props.listView && renderLeftSection(true)}
 
         {renderRightSection()}
       </Button>
@@ -78,11 +88,9 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   function renderRightSection() {
     return (
       <div className={classNames(styles.rightSideContainer, styles.buttonsSection)}>
-        {props.showCategory && <img src={props.prefab.categoryThumbnail} />}
+        {props.showCategory && !props.noAssetImage && <img src={props.prefab.categoryThumbnail} />}
 
         {props.prefab.dlcThumbnail && <img src={props.prefab.dlcThumbnail} />}
-
-        {props.prefab.random && <img src="coui://uil/Colored/Dice.svg" />}
 
         {props.prefab.themeThumbnail && <img src={props.prefab.themeThumbnail} />}
 

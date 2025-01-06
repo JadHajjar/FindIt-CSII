@@ -72,20 +72,37 @@ namespace FindIt.Domain
 			{
 				return Sorting switch
 				{
-					PrefabSorting.MostUsed => values.OrderBy(PrefabTrackingSystem.GetMostUsedCount).OrderByDescending(x => x.Name),
-					PrefabSorting.LastUsed => values.OrderBy(PrefabTrackingSystem.GetLastUsedIndex).OrderByDescending(x => x.Name),
-					_ => values.OrderByDescending(x => x.Name),
+					PrefabSorting.MostUsed => values.OrderBy(PrefabTrackingSystem.GetMostUsedCount).ThenByDescending(PrefabName),
+					PrefabSorting.LastUsed => values.OrderBy(PrefabTrackingSystem.GetLastUsedIndex).ThenByDescending(PrefabName),
+					PrefabSorting.UIOrder => values.OrderByDescending(PrefabGroupIndex).ThenByDescending(PrefabUIOrder).ThenByDescending(PrefabName),
+					_ => values.OrderByDescending(PrefabName),
 				};
 			}
 			else
 			{
 				return Sorting switch
 				{
-					PrefabSorting.MostUsed => values.OrderByDescending(PrefabTrackingSystem.GetMostUsedCount).ThenBy(x => x.Name),
-					PrefabSorting.LastUsed => values.OrderByDescending(PrefabTrackingSystem.GetLastUsedIndex).ThenBy(x => x.Name),
-					_ => values.OrderBy(x => x.Name),
+					PrefabSorting.MostUsed => values.OrderByDescending(PrefabTrackingSystem.GetMostUsedCount).ThenBy(PrefabName),
+					PrefabSorting.LastUsed => values.OrderByDescending(PrefabTrackingSystem.GetLastUsedIndex).ThenBy(PrefabName),
+					PrefabSorting.UIOrder => values.OrderBy(PrefabGroupIndex).ThenBy(PrefabUIOrder).ThenBy(PrefabName),
+					_ => values.OrderBy(PrefabName),
 				};
 			}
+		}
+
+		private static int PrefabGroupIndex(PrefabIndex prefabIndex)
+		{
+			return (int)prefabIndex.SubCategory;
+		}
+
+		private static int PrefabUIOrder(PrefabIndex prefabIndex)
+		{
+			return prefabIndex.UIOrder;
+		}
+
+		private static string PrefabName(PrefabIndex prefabIndex)
+		{
+			return prefabIndex.Name;
 		}
 
 		public static implicit operator List<PrefabIndex>(IndexedPrefabList prefabs)

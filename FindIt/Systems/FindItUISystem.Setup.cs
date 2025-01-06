@@ -22,7 +22,7 @@ namespace FindIt.Systems
 
 		private ToolSystem _toolSystem;
 		private PrefabSystem _prefabSystem;
-		private OptionsUISystem _optionsUISystem;
+		private FindItOptionsUISystem _optionsUISystem;
 		private DefaultToolSystem _defaultToolSystem;
 		private CameraUpdateSystem _cameraUpdateSystem;
 
@@ -51,6 +51,7 @@ namespace FindIt.Systems
 		private ValueBindingHelper<string> _CurrentSearch;
 		private ValueBindingHelper<string> _ViewStyle;
 		private ValueBindingHelper<string> _AlignmentStyle;
+		private ValueBindingHelper<string[]> _AllThumbnails;
 		private ValueBindingHelper<CategoryUIEntry[]> _CategoryBinding;
 		private ValueBindingHelper<SubCategoryUIEntry[]> _SubCategoryBinding;
 		private ValueBindingHelper<PrefabUIEntry[]> _PrefabListBinding;
@@ -87,7 +88,7 @@ namespace FindIt.Systems
 			// Instantiating systems 
 			_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
 			_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
-			_optionsUISystem = World.GetOrCreateSystemManaged<OptionsUISystem>();
+			_optionsUISystem = World.GetOrCreateSystemManaged<FindItOptionsUISystem>();
 			_defaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
 			_cameraUpdateSystem = World.GetOrCreateSystemManaged<CameraUpdateSystem>();
 
@@ -130,6 +131,9 @@ namespace FindIt.Systems
 			_PrefabListBinding = CreateBinding("PrefabList", new PrefabUIEntry[0]);
 			_ViewStyle = CreateBinding("ViewStyle", Mod.Settings.DefaultViewStyle);
 			_AlignmentStyle = CreateBinding("AlignmentStyle", Mod.Settings.DefaultAlignmentStyle);
+			_AllThumbnails = CreateBinding("AllThumbnails", new string[0]);
+
+			CreateBinding("NoAssetImage", () => Mod.Settings.NoAssetImage);
 
 			// These establish UI actions triggering methods on the C# side.
 			CreateTrigger<string>("SearchChanged", t => SearchChanged(t));
@@ -145,6 +149,7 @@ namespace FindIt.Systems
 			CreateTrigger("OnRandomButtonClicked", OnRandomButtonClicked);
 			CreateTrigger<int>("OnLocateButtonClicked", OnLocateButtonClicked);
 			CreateTrigger<int>("OnPdxModsButtonClicked", OnPdxModsButtonClicked);
+			CreateTrigger("ClearThumbnails", () => _AllThumbnails.Value = new string[0]);
 		}
 
 		protected override void OnUpdate()

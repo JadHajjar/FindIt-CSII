@@ -4,6 +4,7 @@
 	{
 		Name,
 		MostUsed,
-		LastUsed
+		LastUsed,
+		UIOrder
 	}
 }

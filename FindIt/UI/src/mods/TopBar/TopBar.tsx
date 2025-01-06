@@ -235,6 +235,7 @@ export const TopBarComponent = (props: TopBarProps) => {
           <div className={AssetCategoryTabTheme.items}>
             {SubCategoryList.map((element) => (
               <BasicButton
+                key={element.id}
                 tooltip={element.toolTip}
                 onClick={element.id == CurrentSubCategory ? undefined : () => setCurrentSubCategory(element.id)}
                 className={classNames(

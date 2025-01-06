@@ -3,7 +3,7 @@ import { game, Theme } from "cs2/bindings";
 import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
 import { TopBarComponent } from "mods/TopBar/TopBar";
-import { PrefabSelectionComponent, ViewStyle$ } from "mods/PrefabSelection/PrefabSelection";
+import { PrefabSelectionComponent } from "mods/PrefabSelection/PrefabSelection";
 import { useState, useRef, useEffect } from "react";
 import styles from "./mainContainer.module.scss";
 import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";

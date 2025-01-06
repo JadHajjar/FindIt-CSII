@@ -105,6 +105,9 @@ namespace FindIt.Systems
 			{
 				RunIndex(true);
 
+				//World.GetExistingSystemManaged<FindItUISystem>()
+				//	.SetAllThumbnails(FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Select(x => x.Thumbnail));
+
 				Enabled = true;
 			}
 		}
@@ -205,7 +208,7 @@ namespace FindIt.Systems
 
 							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
 							{
-								if (full && prefab is ObjectGeometryPrefab geometryPrefab && geometryPrefab.m_Meshes.Length > 0)
+								if (full && prefab is ObjectGeometryPrefab geometryPrefab && geometryPrefab.m_Meshes?.Length > 0)
 								{
 									var meshName = geometryPrefab.m_Meshes[0].m_Mesh.name;
 
@@ -266,6 +269,7 @@ namespace FindIt.Systems
 			prefabIndex.ThemeThumbnail ??= prefabIndex.Theme is null ? null : ImageSystem.GetThumbnail(prefabIndex.Theme);
 			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks.Select(ImageSystem.GetThumbnail).ToArray();
 			prefabIndex.Tags ??= new();
+			prefabIndex.UIOrder = prefab.TryGet<UIObject>(out var uIObject) ? uIObject.m_Priority : int.MaxValue;
 			prefabIndex.IsVanilla = prefab.builtin;
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
 
@@ -278,7 +282,7 @@ namespace FindIt.Systems
 #if DEBUG
 			if (prefabIndex.SubCategory != PrefabSubCategory.Props_Branding && !prefabIndex.IsRandom && ImageSystem.GetIcon(prefab) is null or "" && !prefab.Has<ServiceUpgrade>())
 			{
-				if (!prefab.TryGet<UIObject>(out var uIObject)
+				if (uIObject is null
 					|| uIObject.m_Group is null
 					|| !prefab.builtin
 					|| !uIObject.m_Group.builtin)
@@ -326,8 +330,9 @@ namespace FindIt.Systems
 			if (!Mod.Settings.HideBrandsFromAny || prefabIndex.SubCategory is not PrefabSubCategory.Props_Branding)
 			{
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
-				FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 			}
+			
+			FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 

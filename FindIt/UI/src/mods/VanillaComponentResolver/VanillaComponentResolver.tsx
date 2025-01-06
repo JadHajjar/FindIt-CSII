@@ -9,78 +9,99 @@ import { PrefabRequirement } from "cs2/bindings";
 // Search for the tsx or scss files. Look at the function referenced and then find the properties for the component you're interested in.
 // As far as I know the types of properties are just guessed.
 type PropsToolButton = {
-    focusKey?: UniqueFocusKey | null
-    src: string
-    selected? : boolean
-    multiSelect? : boolean
-    disabled?: boolean
-    tooltip?: string | null
-    selectSound?: any
-    uiTag?: string
-    className?: string
-    children?: string | JSX.Element | JSX.Element[]
-    onSelect?: (x: any) => any,
-} & HTMLAttributes<any>
+  focusKey?: UniqueFocusKey | null;
+  src: string;
+  selected?: boolean;
+  multiSelect?: boolean;
+  disabled?: boolean;
+  tooltip?: string | ReactNode | null;
+  selectSound?: any;
+  uiTag?: string;
+  className?: string;
+  children?: string | JSX.Element | JSX.Element[];
+  onSelect?: (x: any) => any;
+} & HTMLAttributes<any>;
 
 type PropsStepToolButton = {
-    focusKey?: UniqueFocusKey | null
-    selectedValue: number
-    values : number[]
-    tooltip?: string | null
-    uiTag?: string
-    onSelect?: (x: any) => any,
-} & HTMLAttributes<any>
+  focusKey?: UniqueFocusKey | null;
+  selectedValue: number;
+  values: number[];
+  tooltip?: string | null;
+  uiTag?: string;
+  onSelect?: (x: any) => any;
+} & HTMLAttributes<any>;
 
 type PropsSection = {
-    title?: string | null
-    uiTag?: string
-    children: string | JSX.Element | JSX.Element[]
-}
+  title?: string | null;
+  uiTag?: string;
+  children: string | JSX.Element | JSX.Element[];
+};
 
 // This is an array of the different components and sass themes that are appropriate for your UI. You need to figure out which ones you need from the registry.
 const registryIndex = {
-    Section: ["game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.tsx", "Section"],
-    ToolButton: ["game-ui/game/components/tool-options/tool-button/tool-button.tsx", "ToolButton"],
-    StepToolButton: ["game-ui/game/components/tool-options/tool-button/tool-button.tsx", "StepToolButton"],
-    toolButtonTheme: ["game-ui/game/components/tool-options/tool-button/tool-button.module.scss", "classes"],
-    mouseToolOptionsTheme: ["game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.module.scss", "classes"],
-    FOCUS_DISABLED: ["game-ui/common/focus/focus-key.ts", "FOCUS_DISABLED"],
-    FOCUS_AUTO: ["game-ui/common/focus/focus-key.ts", "FOCUS_AUTO"],
-    useUniqueFocusKey: ["game-ui/common/focus/focus-key.ts", "useUniqueFocusKey"],
-    assetGridTheme: ["game-ui/game/components/asset-menu/asset-grid/asset-grid.module.scss", "classes"],
-}
+  Section: ["game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.tsx", "Section"],
+  ToolButton: ["game-ui/game/components/tool-options/tool-button/tool-button.tsx", "ToolButton"],
+  StepToolButton: ["game-ui/game/components/tool-options/tool-button/tool-button.tsx", "StepToolButton"],
+  toolButtonTheme: ["game-ui/game/components/tool-options/tool-button/tool-button.module.scss", "classes"],
+  mouseToolOptionsTheme: ["game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.module.scss", "classes"],
+  FOCUS_DISABLED: ["game-ui/common/focus/focus-key.ts", "FOCUS_DISABLED"],
+  FOCUS_AUTO: ["game-ui/common/focus/focus-key.ts", "FOCUS_AUTO"],
+  useUniqueFocusKey: ["game-ui/common/focus/focus-key.ts", "useUniqueFocusKey"],
+  assetGridTheme: ["game-ui/game/components/asset-menu/asset-grid/asset-grid.module.scss", "classes"],
+};
 
 export class VanillaComponentResolver {
-    // As far as I know you should not need to edit this portion here. 
-    // This was written by Klyte for his mod's UI but I didn't have to make any edits to it at all. 
-    public static get instance(): VanillaComponentResolver { return this._instance!! }
-    private static _instance?: VanillaComponentResolver
+  // As far as I know you should not need to edit this portion here.
+  // This was written by Klyte for his mod's UI but I didn't have to make any edits to it at all.
+  public static get instance(): VanillaComponentResolver {
+    return this._instance!!;
+  }
+  private static _instance?: VanillaComponentResolver;
 
-    public static setRegistry(in_registry: ModuleRegistry) { this._instance = new VanillaComponentResolver(in_registry); }
-    private registryData: ModuleRegistry;
+  public static setRegistry(in_registry: ModuleRegistry) {
+    this._instance = new VanillaComponentResolver(in_registry);
+  }
+  private registryData: ModuleRegistry;
 
-    constructor(in_registry: ModuleRegistry) {
-        this.registryData = in_registry;
-    }
+  constructor(in_registry: ModuleRegistry) {
+    this.registryData = in_registry;
+  }
 
-    private cachedData: Partial<Record<keyof typeof registryIndex, any>> = {}
-    private updateCache(entry: keyof typeof registryIndex) {
-        const entryData = registryIndex[entry];
-        return this.cachedData[entry] = this.registryData.registry.get(entryData[0])!![entryData[1]]
-    }
+  private cachedData: Partial<Record<keyof typeof registryIndex, any>> = {};
+  private updateCache(entry: keyof typeof registryIndex) {
+    const entryData = registryIndex[entry];
+    return (this.cachedData[entry] = this.registryData.registry.get(entryData[0])!![entryData[1]]);
+  }
 
-    // This section defines your components and themes in a way that you can access via the singleton in your components.
-    // Replace the names, props, and strings as needed for your mod.
-    public get Section(): (props: PropsSection) => JSX.Element { return this.cachedData["Section"] ?? this.updateCache("Section") }
-    public get ToolButton(): (props: PropsToolButton) => JSX.Element { return this.cachedData["ToolButton"] ?? this.updateCache("ToolButton") }
-    public get StepToolButton(): (props: PropsStepToolButton) => JSX.Element { return this.cachedData["StepToolButton"] ?? this.updateCache("StepToolButton") }
+  // This section defines your components and themes in a way that you can access via the singleton in your components.
+  // Replace the names, props, and strings as needed for your mod.
+  public get Section(): (props: PropsSection) => JSX.Element {
+    return this.cachedData["Section"] ?? this.updateCache("Section");
+  }
+  public get ToolButton(): (props: PropsToolButton) => JSX.Element {
+    return this.cachedData["ToolButton"] ?? this.updateCache("ToolButton");
+  }
+  public get StepToolButton(): (props: PropsStepToolButton) => JSX.Element {
+    return this.cachedData["StepToolButton"] ?? this.updateCache("StepToolButton");
+  }
 
-    public get toolButtonTheme(): Theme | any { return this.cachedData["toolButtonTheme"] ?? this.updateCache("toolButtonTheme") }
-    public get mouseToolOptionsTheme(): Theme | any { return this.cachedData["mouseToolOptionsTheme"] ?? this.updateCache("mouseToolOptionsTheme") }
-    public get assetGridTheme(): Theme | any { return this.cachedData["assetGridTheme"] ?? this.updateCache("assetGridTheme") }
+  public get toolButtonTheme(): Theme | any {
+    return this.cachedData["toolButtonTheme"] ?? this.updateCache("toolButtonTheme");
+  }
+  public get mouseToolOptionsTheme(): Theme | any {
+    return this.cachedData["mouseToolOptionsTheme"] ?? this.updateCache("mouseToolOptionsTheme");
+  }
+  public get assetGridTheme(): Theme | any {
+    return this.cachedData["assetGridTheme"] ?? this.updateCache("assetGridTheme");
+  }
 
-    public get FOCUS_DISABLED(): UniqueFocusKey { return this.cachedData["FOCUS_DISABLED"] ?? this.updateCache("FOCUS_DISABLED") }
-    public get FOCUS_AUTO(): UniqueFocusKey { return this.cachedData["FOCUS_AUTO"] ?? this.updateCache("FOCUS_AUTO") }
-    public get useUniqueFocusKey(): (focusKey: FocusKey, debugName: string) => UniqueFocusKey | null { return this.cachedData["useUniqueFocusKey"] ?? this.updateCache("useUniqueFocusKey") }
-
-} 
+  public get FOCUS_DISABLED(): UniqueFocusKey {
+    return this.cachedData["FOCUS_DISABLED"] ?? this.updateCache("FOCUS_DISABLED");
+  }
+  public get FOCUS_AUTO(): UniqueFocusKey {
+    return this.cachedData["FOCUS_AUTO"] ?? this.updateCache("FOCUS_AUTO");
+  }
+  public get useUniqueFocusKey(): (focusKey: FocusKey, debugName: string) => UniqueFocusKey | null {
+    return this.cachedData["useUniqueFocusKey"] ?? this.updateCache("useUniqueFocusKey");
+  }
+}

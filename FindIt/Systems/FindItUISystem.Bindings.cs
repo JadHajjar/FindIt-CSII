@@ -37,6 +37,11 @@ namespace FindIt.Systems
 			_CurrentSubCategoryBinding.Value = (int)PrefabSubCategory.Any;
 
 			SetCurrentSubCategory((int)PrefabSubCategory.Any);
+
+			if (FindItUtil.CurrentCategory == PrefabCategory.Vehicles && !Mod.Settings.VehicleWarningShown)
+			{
+				ShowVehiclePopup();
+			}
 		}
 
 		private void SetCurrentSubCategory(int category)

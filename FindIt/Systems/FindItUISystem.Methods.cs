@@ -2,13 +2,17 @@
 using FindIt.Domain.Utilities;
 
 using Game.Prefabs;
+using Game.SceneFlow;
 using Game.Tools;
+using Game.UI;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Unity.Entities;
 
 namespace FindIt.Systems
 {
@@ -77,7 +81,9 @@ namespace FindIt.Systems
 			if (index > -1)
 			{
 				var columns = (float)GridUtil.GetCurrentColumnCount();
-				scrollIndex = Math.Floor(index / columns);
+				var rows = GridUtil.GetCurrentRowCount();
+
+				scrollIndex = Math.Max(0, Math.Floor(index / columns) - (rows / 4));
 			}
 		}
 
@@ -142,13 +148,6 @@ namespace FindIt.Systems
 
 		private void OnPrefabChanged(PrefabBase prefab)
 		{
-#if DEBUG
-			if (prefab?.name is not null)
-			{
-				File.WriteAllText(Path.Combine(FolderUtil.ContentFolder, "Prefab.txt"), prefab.name);
-			}
-#endif
-
 			if (!settingPrefab)
 			{
 				ToggleFindItPanel(false);
@@ -174,6 +173,27 @@ namespace FindIt.Systems
 			{
 				ToggleFindItPanel(false);
 			}
+		}
+
+		public void SetAllThumbnails(IEnumerable<string> thumbnails)
+		{
+			_AllThumbnails.Value = thumbnails.ToArray();
+		}
+
+		private void ShowVehiclePopup()
+		{
+			var message = new MessageDialog(
+				"Options.SECTION[FindIt.FindIt.Mod]",
+				"FindIt.DIALOG_MESSAGE[VehiclesWarning]",
+				"FindIt.DIALOG_MESSAGE[Understand]");
+
+			GameManager.instance.userInterface.appBindings.ShowMessageDialog(message, (val) =>
+			{
+				if (val == 0)
+				{
+					Mod.Settings.VehicleWarningShown = true;
+				}
+			});
 		}
 	}
 }

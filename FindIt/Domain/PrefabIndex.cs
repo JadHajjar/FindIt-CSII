@@ -25,6 +25,7 @@ namespace FindIt.Domain
 		public AssetPackPrefab[] AssetPacks { get; set; }
 		public int[] RandomPrefabs { get; set; }
 		public List<string> Tags { get; set; }
+		public int UIOrder { get; set; }
 
 		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{

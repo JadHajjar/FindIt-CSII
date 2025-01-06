@@ -16,8 +16,8 @@ namespace FindIt.Domain.Utilities
 			var itemWidth = _findItUISystem.ViewStyle switch
 			{
 				"GridWithText" => 113f,
-				"GridNoText" => 90f,
-				"GridSmall" => 54f,
+				"GridNoText" => 100f,
+				"GridSmall" => 64f,
 				_ => float.MaxValue
 			};
 

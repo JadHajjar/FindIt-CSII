@@ -10,6 +10,8 @@ import { FindItMainContainerComponent } from "mods/MainContainer/MainContainer";
 import { RightClickMenuComponent } from "mods/RightClickMenu/RightClickMenu";
 import { WrapToolOptionsPanel } from "mods/WrapToolOptionsPanel/WrapToolOptionsPanel";
 import { RemoveVanillaRightToolbar } from "mods/RemoveVanillaAssetMenu/RemoveVanillaRightToolbar";
+import { PickerComponent } from "mods/PickerComponent/PickerComponent";
+import { ToolOptionsVisibility } from "mods/PickerComponent/ToolOptionsVisibility";
 
 const register: ModRegistrar = (moduleRegistry) => {
   // The vanilla component resolver is a singleton that helps extrant and maintain components from game that were not specifically exposed.
@@ -23,9 +25,14 @@ const register: ModRegistrar = (moduleRegistry) => {
   // This adds the fint it and picker icons to the toolbar
   moduleRegistry.extend("game-ui/game/components/toolbar/top/toggles.tsx", "PhotoModeToggle", ToolbarIconComponent);
 
+  // Add picker UI
+  moduleRegistry.extend("game-ui/game/components/tool-options/mouse-tool-options/mouse-tool-options.tsx", "MouseToolOptions", PickerComponent);
+  moduleRegistry.extend("game-ui/game/components/tool-options/tool-options-panel.tsx", "useToolOptionsVisible", ToolOptionsVisibility);
+
   // This wraps prefab selection and top bar components.
   moduleRegistry.append("Game", FindItMainContainerComponent);
   moduleRegistry.append("Editor", FindItMainContainerComponent);
+  //moduleRegistry.append("Game", AllThumbnailsComponent);
 
   //moduleRegistry.append("Game", RightClickMenuComponent);
 };

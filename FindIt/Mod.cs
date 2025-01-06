@@ -8,6 +8,7 @@ using FindIt.Systems;
 
 using Game;
 using Game.Modding;
+using Game.Rendering;
 using Game.SceneFlow;
 
 using System.IO;
@@ -57,6 +58,8 @@ namespace FindIt
 			updateSystem.UpdateAt<PickerToolSystem>(SystemUpdatePhase.ToolUpdate);
 			updateSystem.UpdateAt<PickerUISystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<PrefabTrackingSystem>(SystemUpdatePhase.PrefabUpdate);
+			updateSystem.UpdateAt<CustomAreaBorderRenderSystem>(SystemUpdatePhase.Rendering);
+			updateSystem.UpdateAt<PickerTooltipSystem>(SystemUpdatePhase.UITooltip);
 
 			GameManager.instance.RegisterUpdater(ClearGooee);
 		}

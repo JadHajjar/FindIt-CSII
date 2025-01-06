@@ -5,13 +5,14 @@ import PrefabItemStyles from "../PrefabItem/prefabItem.module.scss";
 import { useRef, useState } from "react";
 import { PrefabEntry } from "../../domain/prefabEntry";
 import { PrefabItemComponent } from "../PrefabItem/PrefabItem";
+import classNames from "classnames";
 
 export interface PrefabSelectionProps {
   expanded: boolean;
 }
 
 // These establishes the binding with C# side.
-const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
+const NoAssetImage$ = bindValue<boolean>(mod.id, "NoAssetImage");
 const PrefabList$ = bindValue<PrefabEntry[]>(mod.id, "PrefabList");
 const ActivePrefabId$ = bindValue<number>(mod.id, "ActivePrefabId");
 const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
@@ -22,7 +23,7 @@ const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const PanelHeight$ = bindValue<number>(mod.id, "PanelHeight");
 const RowCount$ = bindValue<number>(mod.id, "RowCount");
 const ColumnCount$ = bindValue<number>(mod.id, "ColumnCount");
-export const ViewStyle$ = bindValue<string>(mod.id, "ViewStyle", "GridWithText");
+const ViewStyle$ = bindValue<string>(mod.id, "ViewStyle", "GridWithText");
 
 export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
@@ -32,6 +33,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   const CurrentSubCategory = useValue(CurrentSubCategory$);
   const ScrollIndex = useValue(ScrollIndex$);
   const MaxScrollIndex = useValue(MaxScrollIndex$);
+  const NoAssetImage = useValue(NoAssetImage$);
   const ViewStyle = useValue(ViewStyle$);
   const RowCount = useValue(RowCount$);
   const ColumnCount = useValue(ColumnCount$);
@@ -39,6 +41,7 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
   const PanelHeight = useValue(PanelHeight$) + 9;
   const scrollBarRef = useRef(null);
   const thumbRef = useRef(null);
+  const list = ViewStyle === "ListSimple";
   var itemMargin = 8;
   var PanelItemHeight = 0;
 
@@ -109,18 +112,21 @@ export const PrefabSelectionComponent = (props: PrefabSelectionProps) => {
       {isDragging && <div onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} className={styles.scrollBlocker}></div>}
       <div onWheel={OnWheel} className={styles.scrollableContainer} style={{ height: PanelHeight + "rem" }}>
         <div
-          className={styles.panelSection + " " + PrefabItemStyles[ViewStyle]}
+          className={classNames(styles.panelSection, PrefabItemStyles[ViewStyle])}
           style={{
             margin: `${Math.round((ScrollIndex % 1) * -PanelItemHeight)}rem 0 0 0`,
-            width: PanelWidth + "rem",
+            width: PanelWidth + 2 + "rem",
           }}
         >
           {PrefabList.map((prefab) => (
             <PrefabItemComponent
+              key={prefab.id}
               prefab={prefab}
               selected={prefab.id == ActivePrefabId}
               showCategory={CurrentSubCategory === -1 || CurrentCategory === 100}
               width={PanelItemWidth}
+              listView={list}
+              noAssetImage={NoAssetImage}
             ></PrefabItemComponent>
           ))}
         </div>

@@ -1,6 +1,8 @@
 ﻿using Colossal.Reflection;
 using Colossal.UI.Binding;
 
+using FindIt.Domain.Utilities;
+
 using Game.UI;
 
 using System;
@@ -15,6 +17,7 @@ using UnityEngine;
 
 namespace FindIt.Domain.Utilities
 {
+#nullable enable
 	public abstract partial class ExtendedUISystemBase : UISystemBase
 	{
 		private readonly List<Action> _updateCallbacks = new();
@@ -31,7 +34,7 @@ namespace FindIt.Domain.Utilities
 
 		public ValueBindingHelper<T> CreateBinding<T>(string key, T initialValue)
 		{
-			var helper = new ValueBindingHelper<T>(new(Mod.Id, key, initialValue, new GenericUIWriter<T>()));
+			var helper = new ValueBindingHelper<T>(new(Mod.Id, key, initialValue, new GenericUIWriter<T?>()));
 
 			AddBinding(helper.Binding);
 
@@ -40,9 +43,22 @@ namespace FindIt.Domain.Utilities
 			return helper;
 		}
 
-		public ValueBindingHelper<T> CreateBinding<T>(string key, string setterKey, T initialValue, Action<T> updateCallBack = null)
+		public ValueBindingHelper<T> CreateBinding<T>(string key, string setterKey, T initialValue, Action<T>? updateCallBack = null)
 		{
-			var helper = new ValueBindingHelper<T>(new(Mod.Id, key, initialValue, new GenericUIWriter<T>()), updateCallBack);
+			var helper = new ValueBindingHelper<T>(new(Mod.Id, key, initialValue, new GenericUIWriter<T?>()), updateCallBack);
+			var trigger = new TriggerBinding<T>(Mod.Id, setterKey, helper.UpdateCallback, GenericUIReader<T>.Create());
+
+			AddBinding(helper.Binding);
+			AddBinding(trigger);
+
+			_updateCallbacks.Add(helper.ForceUpdate);
+
+			return helper;
+		}
+
+		public ValueBindingHelper<T> CreateBinding<T>(string key, string setterKey, T initialValue, Action? updateCallBack = null)
+		{
+			var helper = new ValueBindingHelper<T>(new(Mod.Id, key, initialValue, new GenericUIWriter<T?>()), updateCallBack is null ? null : _ => updateCallBack());
 			var trigger = new TriggerBinding<T>(Mod.Id, setterKey, helper.UpdateCallback, GenericUIReader<T>.Create());
 
 			AddBinding(helper.Binding);
@@ -110,13 +126,13 @@ namespace FindIt.Domain.Utilities
 
 	public class ValueBindingHelper<T>
 	{
-		private readonly Action<T> _updateCallBack;
-		private T valueToUpdate;
+		private readonly Action<T>? _updateCallBack;
+		private T? valueToUpdate;
 		private bool dirty;
 
-		public ValueBinding<T> Binding { get; }
+		public ValueBinding<T?> Binding { get; }
 
-		public T Value
+		public T? Value
 		{
 			get => dirty ? valueToUpdate : Binding.value;
 			set
@@ -126,7 +142,7 @@ namespace FindIt.Domain.Utilities
 			}
 		}
 
-		public ValueBindingHelper(ValueBinding<T> binding, Action<T> updateCallBack = null)
+		public ValueBindingHelper(ValueBinding<T?> binding, Action<T>? updateCallBack = null)
 		{
 			Binding = binding;
 			_updateCallBack = updateCallBack;
@@ -149,7 +165,7 @@ namespace FindIt.Domain.Utilities
 			_updateCallBack?.Invoke(value);
 		}
 
-		public static implicit operator T(ValueBindingHelper<T> helper)
+		public static implicit operator T?(ValueBindingHelper<T> helper)
 		{
 			return helper.Value;
 		}
@@ -184,7 +200,7 @@ namespace FindIt.Domain.Utilities
 			writer.TypeEnd();
 		}
 
-		private static void WriteGeneric(IJsonWriter writer, object obj)
+		private static void WriteGeneric(IJsonWriter writer, object? obj)
 		{
 			if (obj == null)
 			{
@@ -281,9 +297,15 @@ namespace FindIt.Domain.Utilities
 
 		private static void WriteEnumerable(IJsonWriter writer, object obj)
 		{
+			if (obj is not IEnumerable enumerable)
+			{
+				writer.WriteEmptyArray();
+				return;
+			}
+
 			var list = new List<object>();
 
-			foreach (var item in obj as IEnumerable)
+			foreach (var item in enumerable)
 			{
 				list.Add(item);
 			}
@@ -474,4 +496,5 @@ namespace FindIt.Domain.Utilities
 
 	public class ReaderIgnoreAttribute : Attribute { }
 	public class WriterIgnoreAttribute : Attribute { }
+#nullable disable
 }

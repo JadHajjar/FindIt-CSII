@@ -1,6 +1,6 @@
 import style from "./ToolbarIcon.module.scss";
 import { useValue, trigger, bindValue } from "cs2/api";
-import { Theme } from "cs2/bindings";
+import { Theme, tool } from "cs2/bindings";
 import { getModule, ModuleRegistryExtend } from "cs2/modding";
 import { Button } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
@@ -9,8 +9,8 @@ import mod from "../../../mod.json";
 const PickerIconSrc = "coui://uil/Standard/PickerPipette.svg"; // Your tool's icon source
 const FindItIconSrc = "coui://uil/Standard/Magnifier.svg"; // Your tool's icon source
 const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
+const PickerActive$ = bindValue<boolean>(mod.id, "PickerActive");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel"); // Binding to get if your tool is active
-const PickerEnabled$ = bindValue<boolean>(mod.id, "PickerEnabled"); // Binding to get if your tool is active
 
 // Getting the vanilla theme css for compatibility
 const ToolBarButtonTheme: Theme | any = getModule(
@@ -33,8 +33,8 @@ export const ToolbarIconComponent: ModuleRegistryExtend = (Component) => {
   return (props) => {
     const { children, ...otherProps } = props || {};
     const IsWindowLocked = useValue(IsWindowLocked$); // Get if your tool is active
+    const PickerActive = useValue(PickerActive$); // Get if your tool is active
     const ShowFindItPanel = useValue(ShowFindItPanel$); // Get if your tool is active
-    const PickerEnabled = useValue(PickerEnabled$); // Get if your tool is active
 
     return (
       <>
@@ -43,7 +43,7 @@ export const ToolbarIconComponent: ModuleRegistryExtend = (Component) => {
           className={ToolBarButtonTheme.button}
           variant="icon"
           focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
-          selected={PickerEnabled}
+          selected={PickerActive}
           onSelect={HandlePickerClick}
         ></Button>
 
