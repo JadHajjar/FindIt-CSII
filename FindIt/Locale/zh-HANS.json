@@ -7,6 +7,7 @@
   "Tooltip.LABEL[FindIt.SortingName]": "按名称排序",
   "Tooltip.LABEL[FindIt.SortingMostUsed]": "按最多使用排序",
   "Tooltip.LABEL[FindIt.SortingLastUsed]": "按最近使用排序",
+  "Tooltip.LABEL[FindIt.SortingUIOrder]": "Sort by the default asset UI order",
   "Tooltip.LABEL[FindIt.ViewGridWithText]": "网格视图（带资产名称）",
   "Tooltip.LABEL[FindIt.ViewGridNoText]": "网格视图（无资产名称）",
   "Tooltip.LABEL[FindIt.ViewGridSmall]": "较小的网格视图（无资产名称）",
@@ -116,6 +117,11 @@
   "Tooltip.LABEL[FindIt.AlignmentRight]": "靠右侧",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "在 PDX Mods 上查看",
   "Tooltip.LABEL[FindIt.NoPack]": "无数据包",
+  "Tooltip.LABEL[FindIt.PickerSubObjects]": "Sub-Objects",
+  "Tooltip.LABEL[FindIt.PickerBuildings]": "建筑",
+  "Tooltip.LABEL[FindIt.PickerProps]": "摆件",
+  "Tooltip.LABEL[FindIt.PickerNetworks]": "网络",
+  "Tooltip.LABEL[FindIt.PickerSurfaces]": "Surfaces",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "常规设置",
@@ -154,6 +160,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "隐藏“任何”类别中的广告牌资产，这样它们只会在“品牌与广告牌”类别中显示。需要重新加载存档才能应用更改。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速和平滑的滚动",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "增加滚动的刷新频率。这可能会导致某些计算机崩溃。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Disable Asset Icons",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Uses the category icons for assets instead of their individual icons. This is to help with excessive crashing because of excessive image loads. Asset icons are loaded when hovering an asset.",
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "打开搜索框",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "打开 Find It / 聚焦搜索栏",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "开启 Find It 面板或聚焦到搜索框的快捷键。",
@@ -174,5 +182,7 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "在资产列表中向上移动选择的快捷键。",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "向下选择",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "向下选择",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "在资产列表中向下移动选择的快捷键。"
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "在资产列表中向下移动选择的快捷键。",
+  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
+  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
 }
