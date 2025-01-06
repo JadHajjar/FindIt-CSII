@@ -7,6 +7,7 @@
   "Tooltip.LABEL[FindIt.SortingName]": "Ordenar por nombre",
   "Tooltip.LABEL[FindIt.SortingMostUsed]": "Ordenar por más utilizado",
   "Tooltip.LABEL[FindIt.SortingLastUsed]": "Ordenar por selección más reciente",
+  "Tooltip.LABEL[FindIt.SortingUIOrder]": "Sort by the default asset UI order",
   "Tooltip.LABEL[FindIt.ViewGridWithText]": "Cuadrícula con nombre de asset",
   "Tooltip.LABEL[FindIt.ViewGridNoText]": "Cuadrícula sin nombre de asset",
   "Tooltip.LABEL[FindIt.ViewGridSmall]": "Cuadrícula pequeña sin nombre de asset",
@@ -116,6 +117,11 @@
   "Tooltip.LABEL[FindIt.AlignmentRight]": "El panel principal se abrirá a la derecha de la pantalla",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "Ver en PDX Mods",
   "Tooltip.LABEL[FindIt.NoPack]": "Sin Pack",
+  "Tooltip.LABEL[FindIt.PickerSubObjects]": "Sub-Objects",
+  "Tooltip.LABEL[FindIt.PickerBuildings]": "Edificios",
+  "Tooltip.LABEL[FindIt.PickerProps]": "Decoraciones",
+  "Tooltip.LABEL[FindIt.PickerNetworks]": "Redes",
+  "Tooltip.LABEL[FindIt.PickerSurfaces]": "Surfaces",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "Ajustes generales",
@@ -154,6 +160,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Oculta decoraciones de marcas en la categoría de \"Todos\". Se mostrarán únicamente en la sub categoría de \"Vallas Comerciales\". Requiere cargar de nuevo el juego para aplicar los cambios.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Desplazamiento rápido y suave",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Aumenta la velocidad de actualización del desplazamiento. Esto puede causar que el juego se cierre de forma inesperada en algunas computadoras.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Disable Asset Icons",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Uses the category icons for assets instead of their individual icons. This is to help with excessive crashing because of excessive image loads. Asset icons are loaded when hovering an asset.",
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "Abrir Búsqueda",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Abrir Find It / Enfocar barra de búsqueda",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determina la tecla de acceso rápido para que aparezca el panel de Find It o enfocar la barra de búsqueda en caso de que el panel ya sea visible.",
@@ -174,5 +182,7 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Asignación de tecla para moverse hacia arriba en la lista de activos.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Navegación hacia abajo",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Navegación hacia abajo",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Asignación de tecla para moverse hacia abajo en la lista de activos."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Asignación de tecla para moverse hacia abajo en la lista de activos.",
+  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
+  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
 }
