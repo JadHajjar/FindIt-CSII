@@ -7,6 +7,7 @@
   "Tooltip.LABEL[FindIt.SortingName]": "Ordina per nome",
   "Tooltip.LABEL[FindIt.SortingMostUsed]": "Ordina per più utilizzato",
   "Tooltip.LABEL[FindIt.SortingLastUsed]": "Ordina per selezione più recente",
+  "Tooltip.LABEL[FindIt.SortingUIOrder]": "Sort by the default asset UI order",
   "Tooltip.LABEL[FindIt.ViewGridWithText]": "Griglia con la visualizzazione del testo",
   "Tooltip.LABEL[FindIt.ViewGridNoText]": "Griglia senza la visualizzazione del testo",
   "Tooltip.LABEL[FindIt.ViewGridSmall]": "Griglia piccola senza la visualizzazione del testo",
@@ -116,6 +117,11 @@
   "Tooltip.LABEL[FindIt.AlignmentRight]": "Destra",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "Visualizza su PdxMods",
   "Tooltip.LABEL[FindIt.NoPack]": "No Pack",
+  "Tooltip.LABEL[FindIt.PickerSubObjects]": "Sub-Objects",
+  "Tooltip.LABEL[FindIt.PickerBuildings]": "Edifici",
+  "Tooltip.LABEL[FindIt.PickerProps]": "Decorazioni",
+  "Tooltip.LABEL[FindIt.PickerNetworks]": "Reti",
+  "Tooltip.LABEL[FindIt.PickerSurfaces]": "Surfaces",
   "Options.SECTION[FindIt.FindIt.Mod]": "Trova",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Trova",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "Impostazioni generali",
@@ -154,6 +160,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Nasconde gli oggetti con brand commerciale dalla categoria \"Qualsiasi\" in modo che vengano visualizzati solo se si trovino specificatamente nella sottocategoria \"Brand commerciali e cartelloni pubblicitari\". Richiede il riavvio del salvataggio per applicare le modifiche.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Scorrimento Veloce",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Aumenta la velocità di aggiornamento dello scorrimento. Questo potrebbe causare crash su alcuni computer.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Disable Asset Icons",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Uses the category icons for assets instead of their individual icons. This is to help with excessive crashing because of excessive image loads. Asset icons are loaded when hovering an asset.",
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "Open Search",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Apri Trova / Focus barra di ricerca",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "Determina il tasto di scelta rapida per far apparire il pannello Trova, oppure mette a fuoco la barra di ricerca nel caso in cui il pannello sia già visibile.",
@@ -174,5 +182,7 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Tasto rapido per spostarsi in alto nella lista degli asset.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Navigazione in basso",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Navigazione in basso",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Tasto rapido per spostarsi in basso nella lista degli asset."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Tasto rapido per spostarsi in basso nella lista degli asset.",
+  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
+  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
 }
