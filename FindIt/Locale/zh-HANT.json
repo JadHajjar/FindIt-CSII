@@ -7,6 +7,7 @@
   "Tooltip.LABEL[FindIt.SortingName]": "依名稱排序",
   "Tooltip.LABEL[FindIt.SortingMostUsed]": "依使用次數排序",
   "Tooltip.LABEL[FindIt.SortingLastUsed]": "依最近的選擇排序",
+  "Tooltip.LABEL[FindIt.SortingUIOrder]": "Sort by the default asset UI order",
   "Tooltip.LABEL[FindIt.ViewGridWithText]": "具有文字檢視的網格",
   "Tooltip.LABEL[FindIt.ViewGridNoText]": "無文字檢視的網格",
   "Tooltip.LABEL[FindIt.ViewGridSmall]": "無文字檢視的小網格",
@@ -116,6 +117,11 @@
   "Tooltip.LABEL[FindIt.AlignmentRight]": "右邊",
   "Tooltip.LABEL[FindIt.ViewOnPdxMods]": "在 PdxMods 上檢視",
   "Tooltip.LABEL[FindIt.NoPack]": "No Pack",
+  "Tooltip.LABEL[FindIt.PickerSubObjects]": "Sub-Objects",
+  "Tooltip.LABEL[FindIt.PickerBuildings]": "建築",
+  "Tooltip.LABEL[FindIt.PickerProps]": "擺件",
+  "Tooltip.LABEL[FindIt.PickerNetworks]": "Networks",
+  "Tooltip.LABEL[FindIt.PickerSurfaces]": "Surfaces",
   "Options.SECTION[FindIt.FindIt.Mod]": "Find It",
   "Options.INPUT_MAP[FindIt.FindIt.Mod]": "Find It",
   "Options.TAB[FindIt.FindIt.Mod.Settings]": "General Settings",
@@ -154,6 +160,8 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "將品牌道具從「任何」類別中隱藏，這樣它們只會在您進入「品牌與廣告牌」子類別時顯示。需要重新載入您的存檔以套用更改。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速流暢的捲動",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "提高滾動的刷新率。這可能會導致某些電腦崩潰。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Disable Asset Icons",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.NoAssetImage]": "Uses the category icons for assets instead of their individual icons. This is to help with excessive crashing because of excessive image loads. Asset icons are loaded when hovering an asset.",
   "Options.OPTION[FindIt.FindIt.Mod/SearchKeyBinding/binding]": "打開搜索",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "打開 Find It / 聚焦搜尋欄。",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.SearchKeyBinding]": "設定快捷鍵，用於調出 Find It 面板，或在面板已顯示時聚焦到搜尋欄。",
@@ -174,5 +182,7 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Hot-key for moving up in the asset list.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Down Navigation",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Down Navigation",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Hot-key for moving down in the asset list."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Hot-key for moving down in the asset list.",
+  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
+  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
 }
