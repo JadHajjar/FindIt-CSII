@@ -36,6 +36,7 @@ namespace FindIt.Systems
 		private FindItUISystem _finditUISystem;
 		private HashSet<string> _blackList;
 		private ComponentType? roadBuilderDiscarded;
+		private static Dictionary<Entity, ZoneTypeFilter> _zoneTypeCache;
 		private readonly List<IPrefabCategoryProcessor> _prefabCategoryProcessors = new();
 
 		protected override void OnCreate()
@@ -127,6 +128,8 @@ namespace FindIt.Systems
 				FindItUtil.CategorizedPrefabs.Clear();
 
 				AddAllCategories();
+
+				IndexZones();
 			}
 
 			foreach (var processor in _prefabCategoryProcessors)
@@ -331,7 +334,7 @@ namespace FindIt.Systems
 			{
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 			}
-			
+
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
 
 			FindItUtil.CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
@@ -432,6 +435,69 @@ namespace FindIt.Systems
 					}
 				}
 			}
+		}
+
+		private void IndexZones()
+		{
+			var zonesQuery = SystemAPI.QueryBuilder().WithAll<ZoneData, ZonePropertiesData, PrefabData>().Build();
+			var zones = zonesQuery.ToEntityArray(Allocator.Temp);
+			var propertiesData = zonesQuery.ToComponentDataArray<ZonePropertiesData>(Allocator.Temp);
+
+			var buildingsQuery = SystemAPI.QueryBuilder().WithAll<BuildingData, SpawnableBuildingData, PrefabData>().WithNone<SignatureBuildingData>().Build();
+			var buildingsData = buildingsQuery.ToComponentDataArray<BuildingData>(Allocator.Temp);
+			var spawnableBuildings = buildingsQuery.ToComponentDataArray<SpawnableBuildingData>(Allocator.Temp);
+
+			var dictionary = new Dictionary<Entity, ZoneTypeFilter>();
+
+			for (var i = 0; i < zones.Length; i++)
+			{
+				var zone = zones[i];
+				var info = propertiesData[i];
+
+				if (info.m_ResidentialProperties <= 0f)
+				{
+					dictionary[zone] = ZoneTypeFilter.Any;
+					continue;
+				}
+
+				var ratio = info.m_ResidentialProperties / info.m_SpaceMultiplier;
+
+				if (!info.m_ScaleResidentials)
+				{
+					dictionary[zone] = ZoneTypeFilter.Low;
+				}
+				else if (ratio < 1f)
+				{
+					var isRowHousing = true;
+
+					for (var j = 0; j < spawnableBuildings.Length; j++)
+					{
+						if (spawnableBuildings[j].m_ZonePrefab == zone && buildingsData[j].m_LotSize.x > 2)
+						{
+							isRowHousing = false;
+							break;
+						}
+					}
+
+					dictionary[zone] = isRowHousing ? ZoneTypeFilter.Row : ZoneTypeFilter.Medium;
+				}
+				else
+				{
+					dictionary[zone] = ZoneTypeFilter.High;
+				}
+			}
+
+			_zoneTypeCache = dictionary;
+		}
+
+		public static ZoneTypeFilter GetZoneType(Entity zonePrefab)
+		{
+			if (_zoneTypeCache != null && _zoneTypeCache.TryGetValue(zonePrefab, out var type))
+			{
+				return type;
+			}
+
+			return ZoneTypeFilter.Any;
 		}
 	}
 }

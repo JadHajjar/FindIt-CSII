@@ -2,6 +2,7 @@
 
 using FindIt.Domain.Enums;
 using FindIt.Domain.Interfaces;
+using FindIt.Systems;
 
 using Game.Prefabs;
 using Game.UI;
@@ -73,7 +74,7 @@ namespace FindIt.Domain.Utilities
 
 			if (_prefabSystem.TryGetPrefab<ZonePrefab>(zonePrefab, out var _zonePrefab))
 			{
-				prefabIndex.ZoneType = GetZoneType(prefab, _zonePrefab);
+				prefabIndex.ZoneType = GetZoneType(entity, zonePrefab);
 				prefabIndex.Theme = _zonePrefab.GetComponent<ThemeObject>()?.m_Theme;
 				prefabIndex.AssetPacks = _zonePrefab.GetComponent<AssetPackItem>()?.m_Packs ?? new AssetPackPrefab[0];
 			}
@@ -142,30 +143,14 @@ namespace FindIt.Domain.Utilities
 			return Entity.Null;
 		}
 
-		private static ZoneTypeFilter GetZoneType(PrefabBase prefab, ZonePrefab zonePrefab)
+		private ZoneTypeFilter GetZoneType(Entity entity, Entity zonePrefab)
 		{
-			if (prefab.Has<SignatureBuilding>())
+			if (_entityManager.HasComponent<SignatureBuildingData>(entity))
 			{
 				return ZoneTypeFilter.Signature;
 			}
-			else if (zonePrefab.name.Contains(" Row"))
-			{
-				return ZoneTypeFilter.Row;
-			}
-			else if (zonePrefab.name.Contains(" Medium") || zonePrefab.name.Contains(" Mixed"))
-			{
-				return ZoneTypeFilter.Medium;
-			}
-			else if (zonePrefab.name.Contains(" High") || zonePrefab.name.Contains(" LowRent"))
-			{
-				return ZoneTypeFilter.High;
-			}
-			else if (zonePrefab.name.Contains(" Low"))
-			{
-				return ZoneTypeFilter.Low;
-			}
 
-			return ZoneTypeFilter.Any;
+			return PrefabIndexingSystem.GetZoneType(zonePrefab);
 		}
 	}
 }

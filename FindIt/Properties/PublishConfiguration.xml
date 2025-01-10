@@ -52,26 +52,12 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_07.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.3.0" />
+  <ModVersion Value="1.3.1" />
   <GameVersion Value="1.2.*" />
   <ChangeLog>
-# v1.3.0
-## Picker Improvements
-* Added filter options when using Picker to more easily pick what you intend.
-* Added the ability to pick surfaces and areas.
-* Added a tooltip showing the asset that you're hovering over while picking.
-* Improved the highlight visual when selecting a building.
-* Fixed cases where picking an asset does not correctly select its categories and scroll to the asset.
-
-## New Additions
-* Added a 'No Asset Icons' option that only shows assets' icons while hovering one. This is aimed to improve performance and lower chances of crashing.
-* Added a new sorting option that sorts assets based on their category and UI order specified by their creators.
-* Added a warning when opening the vehicles tab for the first time, explaining the dangers of using these assets.
-
-## Other Changes
-* Increased the size of buttons in the Large and Small grid views without text.
-* Added a few missing vehicle assets that were hidden previously.
-* Added a shadow around asset icons.
+# v1.3.1
+## Changes
+* Updated the Low/Medium/Row/High residential filter's detection method to match the game's calculations.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
