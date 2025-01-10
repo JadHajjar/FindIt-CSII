@@ -60,8 +60,6 @@ namespace FindIt.Systems
 		{
 			base.InitializeRaycast();
 
-			Mod.Log.Info("InitializeRaycast");
-
 			m_ToolRaycastSystem.areaTypeMask = default;
 			m_ToolRaycastSystem.typeMask = default;
 			m_ToolRaycastSystem.raycastFlags = default;
@@ -101,16 +99,6 @@ namespace FindIt.Systems
 			{
 				m_ToolRaycastSystem.raycastFlags |= RaycastFlags.SubElements | RaycastFlags.SubBuildings;
 			}
-
-			//m_ToolRaycastSystem.typeMask = TypeMask.Areas;
-			//m_ToolRaycastSystem.raycastFlags = RaycastFlags.SubElements | RaycastFlags.EditorContainers;
-			//m_ToolRaycastSystem.netLayerMask = Layer.None;
-			//m_ToolRaycastSystem.iconLayerMask = IconLayerMask.None;
-			//m_ToolRaycastSystem.utilityTypeMask = UtilityTypes.None;
-			//m_ToolRaycastSystem.netLayerMask = Layer.All;
-			//m_ToolRaycastSystem.typeMask = TypeMask.StaticObjects | TypeMask.Net | TypeMask.MovingObjects | TypeMask.Areas;
-			//m_ToolRaycastSystem.raycastFlags = RaycastFlags.Placeholders | RaycastFlags.SubElements | RaycastFlags.Decals | RaycastFlags.Markers | RaycastFlags.PartialSurface | RaycastFlags.SubBuildings | RaycastFlags.BuildingLots;
-			//m_ToolRaycastSystem.collisionMask = CollisionMask.Overground | CollisionMask.OnGround | CollisionMask.Underground;
 		}
 
 		protected override void OnStartRunning()
