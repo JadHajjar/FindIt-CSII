@@ -27,7 +27,7 @@
   "Tooltip.LABEL[FindIt.ClearFilter]": "Filter zurücksetzen",
   "Tooltip.LABEL[FindIt.Random]": "Wähle ein zufälliges Asset aus der folgenden Liste",
   "Tooltip.LABEL[FindIt.Locate]": "Lokalisieren",
-  "Tooltip.LABEL[FindIt.UniqueBuildingMeshes]": "Hide assets that re-use an existing mesh, like building levels 2 & 4",
+  "Tooltip.LABEL[FindIt.UniqueBuildingMeshes]": "Verstecke Assets die ein bestehendes Mesh wiederverwenden, wie die Gebäudelevel 2 & 4",
   "Tooltip.LABEL[FindIt.No Theme]": "Kein Thema",
   "Tooltip.LABEL[FindIt.CornerLeft]": "Linkes Eckgebäude",
   "Tooltip.LABEL[FindIt.CornerFront]": "Mittel-Gebäude",
