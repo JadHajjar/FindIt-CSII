@@ -184,5 +184,5 @@
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Navigation unten",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Taste zum Bewegen nach unten in der Asset-Liste.",
   "FindIt.DIALOG_MESSAGE[Understand]": "Ich verstehe",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
+  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Fahrzeuge können verschiedene Probleme verursachen, wenn sie platziert werden. Die meisten können nicht entfernt werden oder benötigen die 'Better Bulldozer'-Mod um sie zu entfernen.\n\nBenutze sie nur, wenn Du weißt, was Du tust und speichere Deine Stadt vor dem Benutzen."
 }
