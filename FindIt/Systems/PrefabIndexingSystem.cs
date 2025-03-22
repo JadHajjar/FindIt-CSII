@@ -7,8 +7,7 @@ using Colossal.Serialization.Entities;
 using FindIt.Domain;
 using FindIt.Domain.Enums;
 using FindIt.Domain.Interfaces;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game;
 using Game.Common;
 using Game.Prefabs;
@@ -28,7 +27,7 @@ using Unity.Entities;
 
 namespace FindIt.Systems
 {
-	public partial class PrefabIndexingSystem : GameSystemBase
+    public partial class PrefabIndexingSystem : GameSystemBase
 	{
 		private PrefabSystem _prefabSystem;
 		private ImageSystem _imageSystem;
@@ -268,7 +267,7 @@ namespace FindIt.Systems
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.Theme ??= prefab.GetComponent<ThemeObject>()?.m_Theme;
-			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs.Where(x => x != null).ToArray() ?? new AssetPackPrefab[0];
+			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs?.Where(x => x is not null).ToArray() ?? new AssetPackPrefab[0];
 			prefabIndex.ThemeThumbnail ??= prefabIndex.Theme is null ? null : ImageSystem.GetThumbnail(prefabIndex.Theme);
 			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks.Select(ImageSystem.GetThumbnail).ToArray();
 			prefabIndex.Tags ??= new();

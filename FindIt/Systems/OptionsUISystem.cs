@@ -1,5 +1,4 @@
-﻿using FindIt.Domain.Utilities;
-
+﻿using FindIt.Utilities;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI.InGame;
@@ -8,7 +7,7 @@ using System;
 
 namespace FindIt.Systems
 {
-	internal abstract partial class OptionsUISystem : ExtendedUISystemBase
+    internal abstract partial class OptionsUISystem : ExtendedUISystemBase
 	{
 		private PrefabSystem _prefabSystem;
 		private PrefabUISystem _prefabUISystem;

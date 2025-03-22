@@ -1,7 +1,6 @@
 ﻿using FindIt.Domain.Enums;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using Game.Prefabs;
 
 using System;
@@ -10,7 +9,7 @@ using System.Linq;
 
 namespace FindIt.Domain
 {
-	public class Filters
+    public class Filters
 	{
 		public string CurrentSearch { get; set; }
 		public int SelectedDlc { get; set; } = int.MinValue;
@@ -27,6 +26,9 @@ namespace FindIt.Domain
 		public int BuildingLevelFilter { get; set; }
 		public bool OnlyPlaced { get; set; }
 		public bool UniqueMesh { get; set; }
+		public ValueSign LotWidthSign { get; set; } = ValueSign.Equal;
+		public ValueSign LotDepthSign { get; set; } = ValueSign.Equal;
+		public ValueSign BuildingLevelSign { get; set; } = ValueSign.Equal;
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
@@ -148,17 +150,38 @@ namespace FindIt.Domain
 
 		private bool DoBuildingLevelFilter(PrefabIndex prefab)
 		{
-			return prefab.BuildingLevel == BuildingLevelFilter;
+			return BuildingLevelSign switch
+			{
+				ValueSign.LessThan => prefab.BuildingLevel < BuildingLevelFilter,
+				ValueSign.GreaterThan => prefab.BuildingLevel > BuildingLevelFilter,
+				ValueSign.NotEqual => prefab.BuildingLevel != BuildingLevelFilter,
+				ValueSign.Equal => prefab.BuildingLevel == BuildingLevelFilter,
+				_ => true,
+			};
 		}
 
 		private bool DoLotWidthFilter(PrefabIndex prefab)
 		{
-			return (LotWidthFilter == 10 && prefab.LotSize.x >= 10) || prefab.LotSize.x == LotWidthFilter;
+			return LotWidthSign switch
+			{
+				ValueSign.LessThan => prefab.LotSize.x < LotWidthFilter,
+				ValueSign.GreaterThan => prefab.LotSize.x > LotWidthFilter,
+				ValueSign.NotEqual => (LotWidthFilter != 10 || prefab.LotSize.x < 10) && prefab.LotSize.x != LotWidthFilter,
+				ValueSign.Equal => (LotWidthFilter == 10 && prefab.LotSize.x >= 10) || prefab.LotSize.x == LotWidthFilter,
+				_ => true,
+			};
 		}
 
 		private bool DoLotDepthFilter(PrefabIndex prefab)
 		{
-			return (LotDepthFilter == 10 && prefab.LotSize.y >= 10) || prefab.LotSize.y == LotDepthFilter;
+			return LotDepthSign switch
+			{
+				ValueSign.LessThan => prefab.LotSize.y < LotDepthFilter,
+				ValueSign.GreaterThan => prefab.LotSize.y > LotDepthFilter,
+				ValueSign.NotEqual => (LotDepthFilter != 10 || prefab.LotSize.y < 10) && prefab.LotSize.y != LotDepthFilter,
+				ValueSign.Equal => (LotDepthFilter == 10 && prefab.LotSize.y >= 10) || prefab.LotSize.y == LotDepthFilter,
+				_ => true,
+			};
 		}
 
 		private bool DoAdFilter(PrefabIndex prefab)

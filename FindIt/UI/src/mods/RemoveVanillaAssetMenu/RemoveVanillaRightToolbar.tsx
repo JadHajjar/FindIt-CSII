@@ -14,7 +14,7 @@ export const RemoveVanillaRightToolbar: ModuleRegistryExtend = (Component) => {
     const ShowFindItPanel = useValue(ShowFindItPanel$);
     const AlignmentStyle = useValue(AlignmentStyle$);
 
-    if (!(ShowFindItPanel || IsWindowLocked) || AlignmentStyle != "Right") {
+    if (!(ShowFindItPanel || IsWindowLocked) || AlignmentStyle === "Center") {
       return <Component {...otherProps}>{children}</Component>;
     }
 

@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { PrefabEntry } from "domain/prefabEntry";
 import classNames from "classnames";
 import { BasicButton } from "mods/BasicButton/BasicButton";
-import shuffle from "images/shuffle.svg";
+import shuffle from "images/findit_shuffle.svg";
 
 export interface PrefabButtonProps {
   noAssetImage: any;
@@ -109,7 +109,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
             tooltip={translate("Tooltip.LABEL[FindIt.ViewOnPdxMods]", "View on PdxMods")}
             className={styles.pdxModsButton}
             onClick={() => trigger(mod.id, "OnPdxModsButtonClicked", props.prefab.id)}
-            src="coui://gameui/Media/Glyphs/ParadoxModsCloud.svg"
+            src="assetdb://gameui/Media/Glyphs/ParadoxModsCloud.svg"
           />
         )}
 

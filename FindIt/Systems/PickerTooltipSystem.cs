@@ -38,7 +38,7 @@ namespace FindIt.Systems
 		{
 			if (m_ToolSystem.activeTool == m_PickerToolSystem && m_PickerToolSystem.HoveredPrefab is not null)
 			{
-				m_Tooltip.icon = m_PickerToolSystem.HoveredPrefab.TryGet<UIObject>(out var icon) ? icon.m_Icon : string.Empty;
+				//m_Tooltip.icon = Mod.Settings.NoAssetImage ? string.Empty : m_PickerToolSystem.HoveredPrefab.TryGet<UIObject>(out var icon) ? icon.m_Icon : string.Empty;
 				m_Tooltip.value = m_PickerUISystem.GetAssetName(m_PickerToolSystem.HoveredPrefab);
 
 				AddMouseTooltip(m_Tooltip);

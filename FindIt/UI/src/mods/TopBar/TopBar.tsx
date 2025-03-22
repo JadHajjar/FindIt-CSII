@@ -12,15 +12,15 @@ import { PrefabSubCategory } from "../../domain/subCategory";
 import { VanillaComponentResolver } from "../VanillaComponentResolver/VanillaComponentResolver";
 import classNames from "classnames";
 import { BasicButton } from "mods/BasicButton/BasicButton";
-import find from "images/find.svg";
-import random from "images/random.svg";
-import shrink from "images/shrink.svg";
-import expand from "images/expand.svg";
-import filter from "images/filter.svg";
-import filterX from "images/filterX.svg";
-import lock from "images/lock.svg";
-import unlock from "images/unlock.svg";
-import sort from "images/sort.svg";
+import find from "images/findit_find.svg";
+import random from "images/findit_random.svg";
+import shrink from "images/findit_shrink.svg";
+import expand from "images/findit_expand.svg";
+import filter from "images/findit_filter.svg";
+import filterX from "images/findit_filterX.svg";
+import lock from "images/findit_lock.svg";
+import unlock from "images/findit_unlock.svg";
+import sort from "images/findit_sort.svg";
 import { FOCUS_DISABLED } from "cs2/input";
 
 export interface TopBarProps {
@@ -50,6 +50,7 @@ const ClearSearchBar$ = bindValue<boolean>(mod.id, "ClearSearchBar");
 const FocusSearchBar$ = bindValue<boolean>(mod.id, "FocusSearchBar");
 const AreFiltersSet$ = bindValue<boolean>(mod.id, "AreFiltersSet");
 const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
+const PrefabCount$ = bindValue<string>(mod.id, "PrefabCount");
 const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
 const CategoryList$ = bindValue<PrefabCategory[]>(mod.id, "CategoryList");
@@ -60,6 +61,7 @@ export const TopBarComponent = (props: TopBarProps) => {
   // These get the value of the bindings. Or they will when we have bindings.
   const IsWindowLocked = useValue(IsWindowLocked$);
   const CurrentCategory = useValue(CurrentCategory$);
+  const PrefabCount = useValue(PrefabCount$);
   const CurrentSubCategory = useValue(CurrentSubCategory$);
   const CategoryList = useValue(CategoryList$);
   const SubCategoryList = useValue(SubCategoryList$);
@@ -130,7 +132,7 @@ export const TopBarComponent = (props: TopBarProps) => {
   function RenderButtonSection(): JSX.Element {
     return (
       <div className={styles.buttonsSection}>
-        {AlignmentStyle !== "Right" && (
+        {AlignmentStyle === "Center" && (
           <BasicButton
             tooltip={props.expanded ? translate("Tooltip.LABEL[FindIt.Shrink]", "Shrink") : translate("Tooltip.LABEL[FindIt.Expand]", "Expand")}
             onClick={props.toggleEnlarge}
@@ -174,6 +176,12 @@ export const TopBarComponent = (props: TopBarProps) => {
           onClick={() => trigger(mod.id, "OnRandomButtonClicked")}
           mask={random}
         />
+
+        {AlignmentStyle === "Center" && <div className={styles.seperator} />}
+
+        <div className={styles.itemCount}>
+          <span>{PrefabCount}</span>
+        </div>
       </div>
     );
   }
@@ -182,7 +190,7 @@ export const TopBarComponent = (props: TopBarProps) => {
     <>
       <div className={classNames(props.large && styles.large, props.small && styles.small)}>
         <div className={styles.topBar}>
-          <div className={classNames(styles.topBarSection, AlignmentStyle === "Right" && styles.expandedSearchArea)}>
+          <div className={classNames(styles.topBarSection, AlignmentStyle !== "Center" && styles.expandedSearchArea)}>
             {IsSearchLoading && <img style={{ maskImage: "url(coui://uil/Standard/HalfCircleProgress.svg)" }} className={styles.loadingIcon}></img>}
             {!IsSearchLoading && <img style={{ maskImage: `url(${find})` }} className={styles.searchIcon}></img>}
             <div className={styles.searchArea}>
@@ -211,7 +219,7 @@ export const TopBarComponent = (props: TopBarProps) => {
               )}
             </div>
 
-            {AlignmentStyle !== "Right" && RenderButtonSection()}
+            {AlignmentStyle === "Center" && RenderButtonSection()}
           </div>
 
           <div className={styles.topBarSection}>
@@ -227,7 +235,7 @@ export const TopBarComponent = (props: TopBarProps) => {
           </div>
         </div>
 
-        {AlignmentStyle === "Right" && <div className={styles.lowerButtonSection}>{RenderButtonSection()}</div>}
+        {AlignmentStyle !== "Center" && <div className={styles.lowerButtonSection}>{RenderButtonSection()}</div>}
 
         <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>
 

@@ -2,8 +2,7 @@
 
 using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI.InGame;
@@ -14,7 +13,7 @@ using System.Linq;
 
 namespace FindIt.Systems
 {
-	internal partial class FindItOptionsUISystem : OptionsUISystem
+    internal partial class FindItOptionsUISystem : OptionsUISystem
 	{
 		private readonly Dictionary<int, IOptionSection> _sections = new();
 		private PrefabUISystem _prefabUISystem;

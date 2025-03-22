@@ -1,6 +1,5 @@
 ﻿using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.Tools;
@@ -16,7 +15,7 @@ using Unity.Entities;
 
 namespace FindIt.Systems
 {
-	internal partial class FindItUISystem : ExtendedUISystemBase
+    internal partial class FindItUISystem : ExtendedUISystemBase
 	{
 		internal void UpdateCategoriesAndPrefabList()
 		{
@@ -45,6 +44,7 @@ namespace FindIt.Systems
 			_MaxScrollIndex.Value = rows - displayedRows;
 			_ColumnCount.Value = columns;
 			_RowCount.Value = displayedRows;
+			_PrefabCountBinding.Value = string.Format(LocaleHelper.GetTooltip("ItemCount"), list.Count.ToString("N0"));
 
 			var uiEntries = new List<PrefabUIEntry>();
 			var startIndex = (int)(Math.Floor(scrollIndex) * columns);

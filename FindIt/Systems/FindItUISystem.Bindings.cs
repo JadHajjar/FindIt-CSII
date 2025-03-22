@@ -1,6 +1,5 @@
 ﻿using FindIt.Domain.Enums;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -10,7 +9,7 @@ using Unity.Entities;
 
 namespace FindIt.Systems
 {
-	internal partial class FindItUISystem : ExtendedUISystemBase
+    internal partial class FindItUISystem : ExtendedUISystemBase
 	{
 		private int lastFindId;
 		private int lastFindIndex;

@@ -21,12 +21,19 @@ export const WrapToolOptionsPanel: ModuleRegistryExtend = (Component) => {
     const PanelWidth = useValue(PanelWidth$) + 15 + 20 + 20 + 15;
 
     // Do not put any Hooks (i.e. UseXXXX) after this point.
-    if (!(ShowFindItPanel || IsWindowLocked) || AlignmentStyle != "Right") {
+    if (!(ShowFindItPanel || IsWindowLocked) || AlignmentStyle === "Center") {
       return <Component {...otherProps}>{children}</Component>;
     }
 
     return (
-      <div className={styles.wrapper} style={{ paddingRight: PanelWidth + "rem" }}>
+      <div
+        className={styles.wrapper}
+        style={
+          AlignmentStyle === "Right"
+            ? { alignItems: "flex-end", paddingRight: PanelWidth + "rem" }
+            : { alignItems: "flex-start", paddingLeft: PanelWidth - 20 + "rem" }
+        }
+      >
         <Component {...otherProps}>{children}</Component>
       </div>
     );

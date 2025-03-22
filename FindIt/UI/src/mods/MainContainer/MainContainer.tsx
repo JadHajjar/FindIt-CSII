@@ -44,7 +44,7 @@ export const FindItMainContainerComponent = () => {
   const OptionsList = useValue(OptionsList$);
   const AlignmentStyle = useValue(AlignmentStyle$);
 
-  const optionsOverflow = () => AlignmentStyle == "Right" || window.innerWidth < containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
+  const optionsOverflow = () => AlignmentStyle !== "Center" || window.innerWidth < containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
 
   useEffect(() => {
     var newLeft = (containerRef.current as any)?.getBoundingClientRect().left ?? 0;
@@ -73,16 +73,16 @@ export const FindItMainContainerComponent = () => {
   }
 
   return (
-    <div className={classNames(styles.findItMainContainer, AlignmentStyle === "Right" ? styles.alignRight : styles.alignCenter)}>
+    <div className={classNames(styles.findItMainContainer, styles["align" + AlignmentStyle])}>
       <div className={styles.toolLayout}>
         <div
-          className={AlignmentStyle === "Right" ? styles.toolMainColumn : GameMainScreneTheme.toolMainColumn}
-          style={AlignmentStyle !== "Right" ? undefined : { width: PanelWidth + "rem" }}
+          className={AlignmentStyle !== "Center" ? styles.toolMainColumn : GameMainScreneTheme.toolMainColumn}
+          style={AlignmentStyle === "Center" ? undefined : { width: PanelWidth + "rem" }}
         >
           <div
             className={GameMainScreneTheme.toolPanel}
             ref={containerRef}
-            style={AlignmentStyle === "Right" ? undefined : { width: PanelWidth + "rem" }}
+            style={AlignmentStyle !== "Center" ? undefined : { width: PanelWidth + "rem" }}
           >
             <div>
               {(optionsOpen || sortingOpen) && optionsOverflow() && (

@@ -4,6 +4,7 @@ export interface OptionSection {
   isToggle: boolean;
   isButton: boolean;
   isCheckbox: boolean;
+  valueSign: number;
   options: OptionItem[];
 }
 

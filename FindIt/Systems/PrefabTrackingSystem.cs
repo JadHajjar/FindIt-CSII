@@ -1,6 +1,5 @@
 ﻿using FindIt.Domain;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game;
 using Game.Common;
 using Game.Net;
@@ -20,7 +19,7 @@ using Object = Game.Objects.Object;
 
 namespace FindIt.Systems
 {
-	internal partial class PrefabTrackingSystem : GameSystemBase
+    internal partial class PrefabTrackingSystem : GameSystemBase
 	{
 		private static readonly List<int> _lastUsedPrefabs = new();
 		private static Dictionary<int, int> _mostUsedPrefabs = new();

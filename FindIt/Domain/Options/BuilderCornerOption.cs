@@ -1,15 +1,14 @@
 ﻿using FindIt.Domain.Enums;
 using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FindIt.Domain.Options
 {
-	internal class BuilderCornerOption : IOptionSection
+    internal class BuilderCornerOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 		private readonly Dictionary<BuildingCornerFilter, string> _styles;
@@ -46,7 +45,7 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return FindItUtil.CurrentCategory is Enums.PrefabCategory.Buildings or Enums.PrefabCategory.ServiceBuildings;
+			return FindItUtil.CurrentCategory is Domain.Enums.PrefabCategory.Buildings or Domain.Enums.PrefabCategory.ServiceBuildings;
 		}
 
 		public void OnOptionClicked(int optionId, int value)

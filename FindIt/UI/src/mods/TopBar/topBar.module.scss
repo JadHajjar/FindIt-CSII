@@ -121,6 +121,19 @@
     height: 24rem;
     margin: 0 10rem 0 6rem;
   }
+
+  .itemCount {
+    flex: 1;
+    text-align: right;
+
+    & > span {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 3rem 6rem;
+      border-radius: 3rem;
+      color: var(--menuText2Normal);
+      font-size: 12rem;
+    }
+  }
 }
 
 .buttonsSection button {
@@ -155,12 +168,7 @@
 }
 
 .lowerButtonSection .buttonsSection {
-  margin: 2rem 55rem 2rem 10rem;
-
-  .seperator {
-    background-color: transparent;
-    flex: 1;
-  }
+  margin: 2rem 15rem 2rem 10rem;
 }
 
 .rowCategoryBar {

@@ -1,8 +1,7 @@
 ﻿using Colossal.Entities;
 
 using FindIt.Domain.Enums;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game.Areas;
 using Game.Buildings;
 using Game.Common;
@@ -20,7 +19,7 @@ using Unity.Jobs;
 
 namespace FindIt.Systems
 {
-	public partial class PickerToolSystem : ToolBaseSystem
+    public partial class PickerToolSystem : ToolBaseSystem
 	{
 		private PrefabSystem _prefabSystem;
 		private FindItUISystem _findItUISystem;

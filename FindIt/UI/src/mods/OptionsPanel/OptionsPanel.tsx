@@ -3,6 +3,10 @@ import { Button, Tooltip } from "cs2/ui";
 import classNames from "classnames";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import { OptionSection } from "domain/ContentViewType";
+import equal from "images/findit_equal.svg";
+import notequal from "images/findit_notequal.svg";
+import greaterthan from "images/findit_greaterthan.svg";
+import lessthan from "images/findit_lessthan.svg";
 
 type _Props = {
   options: OptionSection[];
@@ -10,6 +14,21 @@ type _Props = {
 };
 
 export const OptionsPanelComponent = (props: _Props) => {
+  function getSignImage(valueSign: number): string {
+    switch (valueSign) {
+      case 4:
+        return equal;
+      case 3:
+        return notequal;
+      case 2:
+        return greaterthan;
+      case 1:
+        return lessthan;
+      default:
+        return "";
+    }
+  }
+
   return (
     <>
       {props.options?.map((section) => (
@@ -58,6 +77,25 @@ export const OptionsPanelComponent = (props: _Props) => {
                 section.options?.map((option) =>
                   option.isValue ? (
                     <>
+                      {section.valueSign > 0 && (
+                        <VanillaComponentResolver.instance.ToolButton
+                          selected={option.selected && !option.disabled}
+                          tooltip={option.name}
+                          disabled={option.disabled}
+                          onSelect={() => props.OnChange(section.id, option.id, 0)}
+                          src={getSignImage(section.valueSign)}
+                          focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+                          className={classNames(
+                            VanillaComponentResolver.instance.toolButtonTheme.button,
+                            styles.singleButton,
+                            option.selected && !option.disabled && styles.selected,
+                            option.disabled && styles.disabled
+                          )}
+                        >
+                          {option.selected && !option.disabled ? <div className={styles.border} /> : undefined}
+                        </VanillaComponentResolver.instance.ToolButton>
+                      )}
+
                       <VanillaComponentResolver.instance.ToolButton
                         onSelect={() => props.OnChange(section.id, option.id, -1)}
                         src="Media/Glyphs/ThickStrokeArrowDown.svg"

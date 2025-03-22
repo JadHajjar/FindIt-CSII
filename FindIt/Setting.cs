@@ -1,7 +1,5 @@
 ﻿using Colossal.IO.AssetDatabase;
-
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game.Input;
 using Game.Modding;
 using Game.Settings;
@@ -9,7 +7,7 @@ using Game.UI;
 
 namespace FindIt
 {
-	[FileLocation(nameof(FindIt))]
+    [FileLocation(nameof(FindIt))]
 	[SettingsUITabOrder(SETTINGS, KEYBINDINGS)]
 	[SettingsUIGroupOrder(BEHAVIOR, UIUX,DISPLAY, OTHER, ACTIONS, NAVIGATION)]
 	[SettingsUIShowGroupName(BEHAVIOR, UIUX,DISPLAY, OTHER, ACTIONS, NAVIGATION)]

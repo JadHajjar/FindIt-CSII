@@ -1,5 +1,4 @@
-﻿using FindIt.Domain.Utilities;
-
+﻿using FindIt.Utilities;
 using Game;
 using Game.Common;
 using Game.Prefabs;
@@ -11,7 +10,7 @@ using Unity.Entities;
 
 namespace FindIt.Systems
 {
-	public partial class DiscardEntitySystem : GameSystemBase
+    public partial class DiscardEntitySystem : GameSystemBase
 	{
 		private EntityQuery query;
 		private ComponentType? roadBuilderDiscarded;

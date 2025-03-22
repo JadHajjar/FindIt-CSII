@@ -5,9 +5,9 @@ import { getModule, ModuleRegistryExtend } from "cs2/modding";
 import { Button } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 import mod from "../../../mod.json";
+import PickerIconSrc from "images/PickerPicker.svg";
+import FindItIconSrc from "images/Magnifier.svg";
 
-const PickerIconSrc = "coui://uil/Standard/PickerPipette.svg"; // Your tool's icon source
-const FindItIconSrc = "coui://uil/Standard/Magnifier.svg"; // Your tool's icon source
 const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const PickerActive$ = bindValue<boolean>(mod.id, "PickerActive");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel"); // Binding to get if your tool is active
@@ -40,7 +40,7 @@ export const ToolbarIconComponent: ModuleRegistryExtend = (Component) => {
       <>
         <Button
           src={PickerIconSrc}
-          className={ToolBarButtonTheme.button}
+          className={ToolBarButtonTheme.button + " " + style.ToolbarIcon}
           variant="icon"
           focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
           selected={PickerActive}

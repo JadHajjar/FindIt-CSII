@@ -1,11 +1,11 @@
 ﻿using Colossal.UI.Binding;
 
 using FindIt.Domain.Enums;
-using FindIt.Domain.Utilities;
+using FindIt.Utilities;
 
 namespace FindIt.Domain.UIBinding
 {
-	public struct SubCategoryUIEntry : IJsonWritable
+    public struct SubCategoryUIEntry : IJsonWritable
 	{
 		public int Id { get; set; }
 		public string Icon { get; set; }

@@ -1,7 +1,6 @@
 ﻿using FindIt.Domain.Enums;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game.Input;
 using Game.Prefabs;
 using Game.Rendering;
@@ -11,7 +10,7 @@ using System.Threading;
 
 namespace FindIt.Systems
 {
-	internal partial class FindItUISystem : ExtendedUISystemBase
+    internal partial class FindItUISystem : ExtendedUISystemBase
 	{
 		private bool filterCompleted;
 		private bool scrollCompleted;
@@ -51,6 +50,7 @@ namespace FindIt.Systems
 		private ValueBindingHelper<string> _CurrentSearch;
 		private ValueBindingHelper<string> _ViewStyle;
 		private ValueBindingHelper<string> _AlignmentStyle;
+		private ValueBindingHelper<string> _PrefabCountBinding;
 		private ValueBindingHelper<string[]> _AllThumbnails;
 		private ValueBindingHelper<CategoryUIEntry[]> _CategoryBinding;
 		private ValueBindingHelper<SubCategoryUIEntry[]> _SubCategoryBinding;
@@ -129,6 +129,7 @@ namespace FindIt.Systems
 			_CategoryBinding = CreateBinding("CategoryList", new CategoryUIEntry[] { new(PrefabCategory.Any) });
 			_SubCategoryBinding = CreateBinding("SubCategoryList", new SubCategoryUIEntry[] { new(PrefabSubCategory.Any) });
 			_PrefabListBinding = CreateBinding("PrefabList", new PrefabUIEntry[0]);
+			_PrefabCountBinding = CreateBinding("PrefabCount", string.Empty);
 			_ViewStyle = CreateBinding("ViewStyle", Mod.Settings.DefaultViewStyle);
 			_AlignmentStyle = CreateBinding("AlignmentStyle", Mod.Settings.DefaultAlignmentStyle);
 			_AllThumbnails = CreateBinding("AllThumbnails", new string[0]);

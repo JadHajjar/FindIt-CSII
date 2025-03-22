@@ -29,6 +29,11 @@
     position: absolute;
     right: 20rem;
   }
+
+  &.alignLeft {
+    position: absolute;
+    left: 20rem;
+  }
 }
 
 .alignCenter {
@@ -68,6 +73,27 @@
     left: -410rem;
     bottom: auto;
     right: auto;
+  }
+}
+
+.alignLeft {
+  .toolLayout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .toolMainColumn {
+    position: relative;
+  }
+
+  .topPanel {
+    width: 400rem;
+    top: 0px;
+    right: -410rem;
+    bottom: auto;
+    left: auto;
   }
 }
 

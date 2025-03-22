@@ -116,7 +116,7 @@ namespace FindIt.Domain.Enums
 		Props_Lights,
 		[CategoryIcon("coui://uil/Colored/Billboard.svg")]
 		Props_Branding,
-		[CategoryIcon("Media/game/Icons/Lighting.svg")]
+		[CategoryIcon("Media/Game/Icons/Lighting.svg")]
 		Props_Road,
 
 		[Obsolete("Use PrefabCategory", true)]

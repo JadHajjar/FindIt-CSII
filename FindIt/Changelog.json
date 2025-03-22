@@ -1,6 +1,52 @@
 [
   {
     "Stable": true,
+    "Version": "1.3.4",
+    "Date": "2025-03-22",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Added a 'Left' alignment option to make the Find It window snap to the left of the screen.",
+          "Added an asset count label showing how many assets are available.",
+          "Updated the prop asset search, making it easier for custom props to show in Find It.",
+          "Updated the signature and unique building filter icons.",
+          "Fixed a rare case where assets without a proper asset pack would not show up in Find It.",
+          "Removed the image preview when hovering over assets with Picker until further notice."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.3.3",
+    "Date": "2025-03-18",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Added operators to building level and lot size filters.",
+          "Updated the toolbar icons to match the new 3D icons in the new game update.",
+          "Compatibility with patch 1.2.4f1."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.3.2",
+    "Date": "2025-02-07",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Removed the asset icon from Picker's tooltip when 'Disable Asset Icons' is enabled in the options. It is suggested to turn this option ON if you regularly experience crashes while using Picker / Find It."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.3.1",
     "Date": "2025-01-10",
     "ChangeGroups": [

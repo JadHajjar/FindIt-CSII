@@ -1,13 +1,12 @@
 ﻿using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using System;
 
 namespace FindIt.Domain.Options
 {
-	internal class LotWidthOption : IOptionSection
+    internal class LotWidthOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 
@@ -23,6 +22,7 @@ namespace FindIt.Domain.Options
 			return new OptionSectionUIEntry
 			{
 				Id = Id,
+				ValueSign = FindItUtil.Filters.LotWidthFilter == 0 ? default : FindItUtil.Filters.LotWidthSign,
 				Name = LocaleHelper.Translate("Options.LABEL[FindIt.LotWidth]"),
 				Options = new[]
 				{
@@ -42,12 +42,21 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return FindItUtil.CurrentCategory is Enums.PrefabCategory.Buildings or Enums.PrefabCategory.ServiceBuildings;
+			return FindItUtil.CurrentCategory is Domain.Enums.PrefabCategory.Buildings or Domain.Enums.PrefabCategory.ServiceBuildings;
 		}
 
 		public void OnOptionClicked(int optionId, int value)
 		{
-			FindItUtil.Filters.LotWidthFilter = Math.Max(0, Math.Min(10, FindItUtil.Filters.LotWidthFilter + value));
+			if (value == 0)
+			{
+				var newSign = (Enums.ValueSign)((int)FindItUtil.Filters.LotWidthSign - 1);
+
+				FindItUtil.Filters.LotWidthSign = newSign is Enums.ValueSign.None ? Enums.ValueSign.Equal : newSign;
+			}
+			else
+			{
+				FindItUtil.Filters.LotWidthFilter = Math.Max(0, Math.Min(10, FindItUtil.Filters.LotWidthFilter + value));
+			}
 
 			_optionsUISystem.TriggerSearch();
 		}

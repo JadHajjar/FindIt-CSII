@@ -1,7 +1,6 @@
 ﻿using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
-
+using FindIt.Utilities;
 using Game.Input;
 using Game.Tools;
 using Game.UI.Tooltip;
@@ -12,7 +11,7 @@ using System.Linq;
 
 namespace FindIt.Systems
 {
-	internal partial class PickerUISystem : OptionsUISystem
+    internal partial class PickerUISystem : OptionsUISystem
 	{
 		private readonly Dictionary<int, IOptionSection> _sections = new();
 

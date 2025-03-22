@@ -95,3 +95,50 @@ GreenBushWildTeen01
 GarageSignRandom01
 GarageSignRandom02
 GarageSignRandom03
+ShipCargo01_Containers01
+ForestForwarderTrailer01_LogPile01
+ForestForwarderTrailer01_LogPile02
+ForestForwarderTrailer01_LogPile03
+TruckTrailer02_Container01
+TruckTrailer03_LogPile01
+TruckTrailer03_LogPile02
+TruckTrailer03_LogPile03
+TrainOreCar01_OrePile01
+TrainForestryCar01_LogPile01
+TrainForestryCar01_LogPile02
+TrainForestryCar01_LogPile03
+TrainCargoCar01_Container01
+CoalTruck01_CoalPile01
+CoalTruck01_GarbagePile01
+CoalTruck01_OrePile01
+CoalTruck01_StonePile01
+TruckTrailer03_LogPile01-1
+TruckTrailer03_LogPile01-2
+TruckTrailer03_LogPile02-1
+TruckTrailer03_LogPile02-2
+TruckTrailer03_LogPile03-1
+TruckTrailer03_LogPile03-2
+ForestForwarderTrailer01_LogPile01-1
+ForestForwarderTrailer01_LogPile01-2
+ForestForwarderTrailer01_LogPile02-1
+ForestForwarderTrailer01_LogPile02-2
+ForestForwarderTrailer01_LogPile03-1
+ForestForwarderTrailer01_LogPile03-2
+TrainForestryCar01_LogPile03-2
+TrainForestryCar01_LogPile03-1
+TrainForestryCar01_LogPile02-2
+TrainForestryCar01_LogPile02-1
+TrainForestryCar01_LogPile01-2
+TrainForestryCar01_LogPile01-1
+Ground Cable Node 1
+Sewage Pipe Node 1.5
+Water Pipe Node 1
+Ground Cable Node 1.5
+Sewage Pipe Node 2
+Water Pipe Node 1.5
+Water Pipe Node 2
+Sewage Pipe Node 3
+Ground Cable Node 2
+Ground Cable Node 10
+Sewage Pipe Node 5
+Water Pipe Node 4

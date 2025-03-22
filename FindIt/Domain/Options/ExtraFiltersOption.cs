@@ -1,11 +1,11 @@
 ﻿using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
+using FindIt.Utilities;
 
 namespace FindIt.Domain.Options
 {
-	internal class ExtraFiltersOption : IOptionSection
+    internal class ExtraFiltersOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 

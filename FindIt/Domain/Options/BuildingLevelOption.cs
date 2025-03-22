@@ -1,13 +1,12 @@
 ﻿using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using System;
 
 namespace FindIt.Domain.Options
 {
-	internal class BuildingLevelOption : IOptionSection
+    internal class BuildingLevelOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 
@@ -23,6 +22,7 @@ namespace FindIt.Domain.Options
 			return new OptionSectionUIEntry
 			{
 				Id = Id,
+				ValueSign = FindItUtil.Filters.BuildingLevelFilter == 0 ? default : FindItUtil.Filters.BuildingLevelSign,
 				Name = LocaleHelper.Translate("Options.LABEL[FindIt.BuildingLevel]"),
 				Options = new[]
 				{
@@ -41,12 +41,21 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			return FindItUtil.CurrentCategory == Enums.PrefabCategory.Buildings;
+			return FindItUtil.CurrentCategory == Domain.Enums.PrefabCategory.Buildings;
 		}
 
 		public void OnOptionClicked(int optionId, int value)
 		{
-			FindItUtil.Filters.BuildingLevelFilter = Math.Max(0, Math.Min(5, FindItUtil.Filters.BuildingLevelFilter + value));
+			if (value == 0)
+			{
+				var newSign = (Enums.ValueSign)((int)FindItUtil.Filters.BuildingLevelSign - 1);
+
+				FindItUtil.Filters.BuildingLevelSign = newSign is Enums.ValueSign.None ? Enums.ValueSign.Equal : newSign;
+			}
+			else
+			{
+				FindItUtil.Filters.BuildingLevelFilter = Math.Max(0, Math.Min(5, FindItUtil.Filters.BuildingLevelFilter + value));
+			}
 
 			_optionsUISystem.TriggerSearch();
 		}

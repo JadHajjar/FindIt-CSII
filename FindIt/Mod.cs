@@ -3,9 +3,8 @@ using Colossal.Logging;
 using Colossal.PSI.Environment;
 using Colossal.UI;
 
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using Game;
 using Game.Modding;
 using Game.Rendering;
@@ -16,7 +15,7 @@ using System.Linq;
 
 namespace FindIt
 {
-	public class Mod : IMod
+    public class Mod : IMod
 	{
 		public const string Id = "FindIt";
 		private static bool? isExtraDetailingEnabled;

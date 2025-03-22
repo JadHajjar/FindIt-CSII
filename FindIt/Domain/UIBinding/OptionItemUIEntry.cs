@@ -1,10 +1,9 @@
 ﻿using Colossal.UI.Binding;
-
-using FindIt.Domain.Utilities;
+using FindIt.Utilities;
 
 namespace FindIt.Domain.UIBinding
 {
-	public class OptionItemUIEntry : IJsonWritable
+    public class OptionItemUIEntry : IJsonWritable
 	{
 		private string _name;
 

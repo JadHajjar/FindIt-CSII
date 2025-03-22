@@ -2,15 +2,14 @@
 
 using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FindIt.Domain.Options
 {
-	internal class DlcOption : IOptionSection
+    internal class DlcOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 		private List<OptionItemUIEntry> _dlcs = new();

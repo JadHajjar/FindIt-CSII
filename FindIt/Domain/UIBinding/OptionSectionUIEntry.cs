@@ -1,5 +1,7 @@
 ﻿using Colossal.UI.Binding;
 
+using FindIt.Domain.Enums;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +16,7 @@ namespace FindIt.Domain.UIBinding
 		public bool IsToggle { get; set; }
 		public bool IsButton { get; set; }
 		public bool IsCheckbox { get; set; }
+		public ValueSign ValueSign { get; set; }
 		public IEnumerable<OptionItemUIEntry> Options
 		{
 			get => _options;
@@ -38,6 +41,9 @@ namespace FindIt.Domain.UIBinding
 
 			writer.PropertyName("isCheckbox");
 			writer.Write(IsCheckbox);
+
+			writer.PropertyName("valueSign");
+			writer.Write((int)ValueSign);
 
 			writer.PropertyName("options");
 			writer.ArrayBegin(_options.Length);

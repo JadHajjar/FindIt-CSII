@@ -1,8 +1,7 @@
 ﻿using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using Game.Prefabs;
 using Game.UI;
 
@@ -12,7 +11,7 @@ using UnityEngine;
 
 namespace FindIt.Domain.Options
 {
-	internal class PackOption : IOptionSection
+    internal class PackOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 		private List<AssetPackPrefab> _packList = new();

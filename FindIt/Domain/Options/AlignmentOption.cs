@@ -1,14 +1,13 @@
 ﻿using FindIt.Domain.Interfaces;
 using FindIt.Domain.UIBinding;
-using FindIt.Domain.Utilities;
 using FindIt.Systems;
-
+using FindIt.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FindIt.Domain.Options
 {
-	internal class AlignmentOption : IOptionSection
+    internal class AlignmentOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 		private readonly FindItUISystem _findItUISystem;
@@ -22,8 +21,9 @@ namespace FindIt.Domain.Options
 			_findItUISystem = optionsUISystem.World.GetOrCreateSystemManaged<FindItUISystem>();
 			_styles = new()
 			{
-				[1] = ("Center", "coui://uil/Standard/AlignCenter.svg"),
-				[2] = ("Right", "coui://uil/Standard/AlignRight.svg"),
+				[1] = ("Left", "coui://uil/Standard/AlignLeft.svg"),
+				[2] = ("Center", "coui://uil/Standard/AlignCenter.svg"),
+				[3] = ("Right", "coui://uil/Standard/AlignRight.svg"),
 			};
 		}
 
