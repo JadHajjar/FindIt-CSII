@@ -7,7 +7,7 @@ using Unity.Entities;
 
 namespace FindIt.Utilities.PrefabCategoryProcessor
 {
-    public class VehiclePrefabCategoryProcessor : IPrefabCategoryProcessor
+    public class VehiclePrefabCategoryProcessor //: IPrefabCategoryProcessor
     {
         private readonly EntityManager _entityManager;
 

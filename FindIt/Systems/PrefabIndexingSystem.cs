@@ -8,6 +8,7 @@ using FindIt.Domain;
 using FindIt.Domain.Enums;
 using FindIt.Domain.Interfaces;
 using FindIt.Utilities;
+
 using Game;
 using Game.Common;
 using Game.Prefabs;
@@ -27,7 +28,7 @@ using Unity.Entities;
 
 namespace FindIt.Systems
 {
-    public partial class PrefabIndexingSystem : GameSystemBase
+	public partial class PrefabIndexingSystem : GameSystemBase
 	{
 		private PrefabSystem _prefabSystem;
 		private ImageSystem _imageSystem;
@@ -218,6 +219,23 @@ namespace FindIt.Systems
 									{
 										prefabIndex.IsUniqueMesh = true;
 										existingMeshes.Add(meshName);
+									}
+								}
+
+								if (prefab.TryGet<EditorAssetCategoryOverride>(out var overrides) && (overrides?.m_IncludeCategories?.Any() ?? false))
+								{
+									for (var ind = 0; ind < overrides.m_IncludeCategories.Length; ind++)
+									{
+										if (overrides.m_IncludeCategories[ind].StartsWith("FindIt/"))
+										{
+											var split = overrides.m_IncludeCategories[ind].Split('/');
+
+											if (split.Length == 3 && int.TryParse(split[1], out var categeory) && int.TryParse(split[2], out var subCategeory))
+											{
+												prefabIndex.Category = (PrefabCategory)categeory;
+												prefabIndex.SubCategory = (PrefabSubCategory)subCategeory;
+											}
+										}
 									}
 								}
 

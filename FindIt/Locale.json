@@ -185,6 +185,4 @@
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Down Navigation",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Down Navigation",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Hot-key for moving down in the asset list.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
 }

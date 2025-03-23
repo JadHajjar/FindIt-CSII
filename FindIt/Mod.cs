@@ -5,17 +5,18 @@ using Colossal.UI;
 
 using FindIt.Systems;
 using FindIt.Utilities;
+
 using Game;
 using Game.Modding;
-using Game.Rendering;
 using Game.SceneFlow;
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace FindIt
 {
-    public class Mod : IMod
+	public class Mod : IMod
 	{
 		public const string Id = "FindIt";
 		private static bool? isExtraDetailingEnabled;
@@ -59,8 +60,14 @@ namespace FindIt
 			updateSystem.UpdateAt<PrefabTrackingSystem>(SystemUpdatePhase.PrefabUpdate);
 			updateSystem.UpdateAt<CustomAreaBorderRenderSystem>(SystemUpdatePhase.Rendering);
 			updateSystem.UpdateAt<PickerTooltipSystem>(SystemUpdatePhase.UITooltip);
+			updateSystem.UpdateAt<AutoVehiclePropGeneratorSystem>(SystemUpdatePhase.MainLoop);
 
 			GameManager.instance.RegisterUpdater(ClearGooee);
+		}
+
+		public static Dictionary<string, string> GetIconsMap()
+		{
+			return AutoVehiclePropGeneratorSystem.AssetReferenceMap;
 		}
 
 		private void ClearGooee()

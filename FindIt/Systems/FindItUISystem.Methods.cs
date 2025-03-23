@@ -179,21 +179,5 @@ namespace FindIt.Systems
 		{
 			_AllThumbnails.Value = thumbnails.ToArray();
 		}
-
-		private void ShowVehiclePopup()
-		{
-			var message = new MessageDialog(
-				"Options.SECTION[FindIt.FindIt.Mod]",
-				"FindIt.DIALOG_MESSAGE[VehiclesWarning]",
-				"FindIt.DIALOG_MESSAGE[Understand]");
-
-			GameManager.instance.userInterface.appBindings.ShowMessageDialog(message, (val) =>
-			{
-				if (val == 0)
-				{
-					Mod.Settings.VehicleWarningShown = true;
-				}
-			});
-		}
 	}
 }

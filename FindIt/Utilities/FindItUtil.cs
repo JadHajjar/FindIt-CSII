@@ -210,7 +210,8 @@ namespace FindIt.Utilities
 
         public static bool Find(PrefabBase prefab, bool setCategory, out int id)
         {
-            var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => prefab.name == x.PrefabName);
+            var name = prefab is MovingObjectPrefab ? $"Prop_{prefab.name}" : prefab.name;
+			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => name == x.PrefabName);
 
             if (prefabIndex is null)
             {

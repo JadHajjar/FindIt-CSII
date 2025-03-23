@@ -1,6 +1,25 @@
 [
   {
     "Stable": true,
+    "Version": "1.3.5",
+    "Date": "2025-03-23",
+    "ChangeGroups": [
+      {
+        "Name": "Vehicle Props",
+        "Changes": [
+          "Added automatic vehicle to prop conversions.",
+          "Moving vehicles have been removed from the Find It panel.",
+          "All vehicles are now available as props, generated automatically by Find It.",
+          "Added the 'Kick Scooter', 'Bicycle', 'Skateboard', and 'Casket Trolley' to the vehicle props.",
+          "Picking a normal vehicle will automatically select the prop variant instead.",
+          "Vehicle props placed by previous 'vehicle asset packs' will be automatically converted to the new system.",
+          "Improved the categorization of vehicle props."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.3.4",
     "Date": "2025-03-22",
     "ChangeGroups": [

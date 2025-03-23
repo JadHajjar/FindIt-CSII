@@ -37,9 +37,6 @@ namespace FindIt
 		[SettingsUIHidden]
 		public string DefaultAlignmentStyle { get; set; } = "Center";
 
-		[SettingsUIHidden]
-		public bool VehicleWarningShown { get; set; }
-
 		[SettingsUIButton]
 		[SettingsUIConfirmation]
 		[SettingsUISection(SETTINGS, OTHER)]
