@@ -230,10 +230,15 @@ namespace FindIt.Systems
 										{
 											var split = overrides.m_IncludeCategories[ind].Split('/');
 
-											if (split.Length == 3 && int.TryParse(split[1], out var categeory) && int.TryParse(split[2], out var subCategeory))
+											if (split.Length >= 3 && int.TryParse(split[1], out var categeory) && int.TryParse(split[2], out var subCategeory))
 											{
 												prefabIndex.Category = (PrefabCategory)categeory;
 												prefabIndex.SubCategory = (PrefabSubCategory)subCategeory;
+											}
+
+											if (split.Length >= 4 && int.TryParse(split[3], out var pdxModsId))
+											{
+												prefabIndex.PdxModsId = pdxModsId;
 											}
 										}
 									}
