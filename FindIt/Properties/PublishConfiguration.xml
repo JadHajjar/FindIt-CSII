@@ -52,14 +52,13 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_07.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.3.6" />
+  <ModVersion Value="1.3.7" />
   <GameVersion Value="1.2.*" />
   <ChangeLog>
-# v1.3.6
-## Vehicle Props
-* Added paramedic cot prop.
-* Added a way for asset creators to specify a vehicle should not be converted to a prop.
-* Fixed converted vehicle props not having the correct Paradox Mods ID.
+# v1.3.7
+## Quantitative Props
+* Added automatic generation of 'Quantative Props' like industrial piles, mail boxes, trash bags, etc.
+* Find It will automatically generate individual props for every variant of the quantative assets.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />

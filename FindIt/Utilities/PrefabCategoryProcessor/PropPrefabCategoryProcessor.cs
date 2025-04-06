@@ -1,4 +1,5 @@
 ﻿using FindIt.Domain;
+using FindIt.Domain.Enums;
 using FindIt.Domain.Interfaces;
 using FindIt.Utilities;
 using Game.Prefabs;
@@ -38,6 +39,7 @@ namespace FindIt.Utilities.PrefabCategoryProcessor
 						ComponentType.ReadOnly<TrafficSignData>(),
 						ComponentType.ReadOnly<LaneDirectionData>(),
 						ComponentType.ReadOnly<TrafficLightData>(),
+						ComponentType.ReadOnly<QuantityObjectData>(),
 					},
                 },
             };
@@ -45,107 +47,109 @@ namespace FindIt.Utilities.PrefabCategoryProcessor
 
         public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
         {
-            prefabIndex = new PrefabIndex(prefab)
-            {
-                Category = Domain.Enums.PrefabCategory.Props,
-            };
+            if (TryGetSubCategory(prefab, entity, _entityManager, out var subCategory))
+			{
+				prefabIndex = new PrefabIndex(prefab)
+				{
+					Category = (PrefabCategory)((int)subCategory - ((int)subCategory%100)),
+					SubCategory = subCategory,
+				};
 
-            if (_entityManager.HasComponent<LightEffectData>(entity) && _entityManager.HasComponent<EffectData>(entity))
-            {
-                prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Lights;
-                return true;
-            }
+				return true;
+			}
 
-            if (_entityManager.IsBrandEntity(entity))
-            {
-                prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Branding;
-                return true;
-            }
+            prefabIndex = null;
+            return false;
+        }
 
-            var assetCategoryOverride = prefab.GetComponent<EditorAssetCategoryOverride>();
+        public static bool TryGetSubCategory(PrefabBase prefab, Entity entity, EntityManager entityManager, out PrefabSubCategory subCategory)
+        {
+			if (entityManager.HasComponent<LightEffectData>(entity) && entityManager.HasComponent<EffectData>(entity))
+			{
+				subCategory = PrefabSubCategory.Props_Lights;
+				return true;
+			}
 
-            for (var i = 0; i < (assetCategoryOverride?.m_IncludeCategories?.Length ?? 0); i++)
-            {
-                switch (assetCategoryOverride.m_IncludeCategories[i])
-                {
-                    case "Props/Props/Brand Graphics":
-                    case "Props/Decorations/Brand Graphics":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Branding;
-                        return true;
+			if (entityManager.IsBrandEntity(entity))
+			{
+				subCategory = PrefabSubCategory.Props_Branding;
+				return true;
+			}
 
-                    case "Props/Nature Decorations/Boulders":
-                    case "Props/Nature Decorations":
-                        prefabIndex.Category = Domain.Enums.PrefabCategory.Trees;
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Trees_Rocks;
-                        return true;
+			var assetCategoryOverride = prefab.GetComponent<EditorAssetCategoryOverride>();
 
-                    case "Props/Decorations/Industrial Manufacturing":
-                    case "Props/Decorations/Industrial":
-                    case "Props/Decorations/Industrial Extractor":
-                    case "Props/Props/Industrial":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Industrial;
-                        return true;
+			for (var i = 0; i < (assetCategoryOverride?.m_IncludeCategories?.Length ?? 0); i++)
+			{
+				switch (assetCategoryOverride.m_IncludeCategories[i])
+				{
+					case "Props/Props/Brand Graphics":
+					case "Props/Decorations/Brand Graphics":
+						subCategory = PrefabSubCategory.Props_Branding;
+						return true;
 
-                    case "Props/Props/Commercial":
-                    case "Props/Decorations/Commercial":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Commercial;
-                        return true;
+					case "Props/Nature Decorations/Boulders":
+					case "Props/Nature Decorations":
+						subCategory = PrefabSubCategory.Trees_Rocks;
+						return true;
 
-                    case "Props/Decorations/Residential":
-                    case "Props/Props/Residential":
-                    case "Props/Props/Residential Plants":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Residential;
-                        return true;
+					case "Props/Decorations/Industrial Manufacturing":
+					case "Props/Decorations/Industrial":
+					case "Props/Decorations/Industrial Extractor":
+					case "Props/Props/Industrial":
+						subCategory = PrefabSubCategory.Props_Industrial;
+						return true;
 
-                    case "Props/Decorations/Service":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Service;
-                        return true;
+					case "Props/Props/Commercial":
+					case "Props/Decorations/Commercial":
+						subCategory = PrefabSubCategory.Props_Commercial;
+						return true;
 
-                    case "Props/Decorations/Net":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Fences;
-                        return true;
+					case "Props/Decorations/Residential":
+					case "Props/Props/Residential":
+					case "Props/Props/Residential Plants":
+						subCategory = PrefabSubCategory.Props_Residential;
+						return true;
 
-                    case "Props/Props/Dynamic":
-                    case "Props/Props/Park":
-                    case "Props/Decorations/Park":
-                    case "Props/Decorations/Dynamic":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Park;
-                        return true;
+					case "Props/Decorations/Service":
+						subCategory = PrefabSubCategory.Props_Service;
+						return true;
 
-                    case "Props/Road Decorations":
-                        prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Road;
-                        return true;
+					case "Props/Decorations/Net":
+						subCategory = PrefabSubCategory.Props_Fences;
+						return true;
+
+					case "Props/Props/Dynamic":
+					case "Props/Props/Park":
+					case "Props/Decorations/Park":
+					case "Props/Decorations/Dynamic":
+						subCategory = PrefabSubCategory.Props_Park;
+						return true;
+
+					case "Props/Road Decorations":
+						subCategory = PrefabSubCategory.Props_Road;
+						return true;
 
 					case "Lights":
-						prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Lights;
-						return true;
-
-					case "Vehicles":
-                        prefabIndex.Category = Domain.Enums.PrefabCategory.Vehicles;
-						prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Vehicles_Misc;
+						subCategory = PrefabSubCategory.Props_Lights;
 						return true;
 				}
-            }
+			}
 
-            if (_entityManager.IsDecal(entity))
-            {
-                return false;
-            }
+			if (entityManager.IsDecal(entity))
+			{
+                subCategory = default;
+				return false;
+			}
 
-            if (prefab.builtin && prefab.name.StartsWith("NotreDame"))
-            {
-                prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Misc;
-                return true;
-            }
+			if (prefab.builtin && prefab.name.StartsWith("NotreDame"))
+			{
+				subCategory = PrefabSubCategory.Props_Misc;
+				return true;
+			}
 
-            if (!_entityManager.HasComponent<SpawnableObjectData>(entity) && !_entityManager.HasComponent<PlaceholderObjectData>(entity))
-            {
-                //return false;
-            }
+			subCategory = PrefabSubCategory.Props_Misc;
 
-            prefabIndex.SubCategory = Domain.Enums.PrefabSubCategory.Props_Misc;
-
-            return true;
-        }
+			return true;
+		}
     }
 }

@@ -372,6 +372,8 @@ namespace FindIt.Systems
 
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 			}
+
+			//FindItUtil.UpdateFavoritesPack(prefabIndex);
 		}
 
 		private string GetAssetName(PrefabBase prefab)

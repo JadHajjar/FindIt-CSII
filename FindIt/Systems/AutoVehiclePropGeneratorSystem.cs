@@ -70,19 +70,19 @@ namespace FindIt.Systems
 					continue;
 				}
 
-				CreatePrefab("Prop_" + prefab.name, GetCategory(vehicleEntities[i]), prefab);
+				CreatePrefab("Prop_" + prefab.name, (int)GetCategory(vehicleEntities[i]), prefab);
 			}
 
-			CreatePrefab("Prop_KickScooter01", PrefabSubCategory.Vehicles_Bikes, mesh: "KickScooter01_Prop Mesh");
-			CreatePrefab("Prop_CasketTrolley01", PrefabSubCategory.Vehicles_Services, mesh: "Service_Hearse_CasketTrolley01_Prop Mesh");
-			CreatePrefab("Prop_ParamedicAmbulanceCot01", PrefabSubCategory.Vehicles_Services, mesh: "Service_Paramedic_AmbulanceCot01_Prop Mesh");
-			CreatePrefab("Prop_Bicycle01", PrefabSubCategory.Vehicles_Bikes, mesh: "Bicycle01_Prop Mesh");
-			CreatePrefab("Prop_SkateBoard01", PrefabSubCategory.Vehicles_Bikes, mesh: "SkateBoard01_Prop Mesh");
+			CreatePrefab("Prop_KickScooter01", (int)PrefabSubCategory.Vehicles_Bikes, mesh: "KickScooter01_Prop Mesh");
+			CreatePrefab("Prop_CasketTrolley01", (int)PrefabSubCategory.Vehicles_Services, mesh: "Service_Hearse_CasketTrolley01_Prop Mesh");
+			CreatePrefab("Prop_ParamedicAmbulanceCot01", (int)PrefabSubCategory.Vehicles_Services, mesh: "Service_Paramedic_AmbulanceCot01_Prop Mesh");
+			CreatePrefab("Prop_Bicycle01", (int)PrefabSubCategory.Vehicles_Bikes, mesh: "Bicycle01_Prop Mesh");
+			CreatePrefab("Prop_SkateBoard01", (int)PrefabSubCategory.Vehicles_Bikes, mesh: "SkateBoard01_Prop Mesh");
 
-			Mod.Log.Info("Generated Vehicle Prop Assets");
+			Mod.Log.InfoFormat("Generated Vehicle Prop Assets ({0})", AssetReferenceMap.Count);
 		}
 
-		private void CreatePrefab(string name, PrefabSubCategory subCategory, ObjectGeometryPrefab original = null, string mesh = null)
+		private void CreatePrefab(string name, int subCategory, ObjectGeometryPrefab original = null, string mesh = null)
 		{
 			var newPrefab = ScriptableObject.CreateInstance<StaticObjectPrefab>();
 
@@ -90,7 +90,7 @@ namespace FindIt.Systems
 
 			var overrides = newPrefab.AddComponent<EditorAssetCategoryOverride>();
 			overrides.m_ExcludeCategories = new string[0];
-			overrides.m_IncludeCategories = new[] { $"FindIt/{(int)PrefabCategory.Vehicles}/{(int)subCategory}" };
+			overrides.m_IncludeCategories = new[] { $"FindIt/{subCategory - (subCategory % 100)}/{subCategory}" };
 
 			if (original != null)
 			{
@@ -124,12 +124,12 @@ namespace FindIt.Systems
 				}
 				else
 				{
-					GameManager.instance.localizationManager.activeDictionary.Add("Assets.NAME[" + name + "]", name.Replace('_', ' ').FormatWords() + " Prop");
+					GameManager.instance.localizationManager.activeDictionary.Add("Assets.NAME[" + name + "]", name.Substring(5).Replace('_', ' ').FormatWords() + " Prop");
 				}
 
 				if (original.asset?.database == AssetDatabase<ParadoxMods>.instance)
 				{
-					overrides.m_IncludeCategories = new[] { $"FindIt/{(int)PrefabCategory.Vehicles}/{(int)subCategory}/{original.asset.GetMeta().platformID}" };
+					overrides.m_IncludeCategories = new[] { $"FindIt/{subCategory - (subCategory % 100)}/{subCategory}/{original.asset.GetMeta().platformID}" };
 				}
 			}
 			else if (mesh != null)

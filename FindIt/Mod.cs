@@ -61,6 +61,7 @@ namespace FindIt
 			updateSystem.UpdateAt<CustomAreaBorderRenderSystem>(SystemUpdatePhase.Rendering);
 			updateSystem.UpdateAt<PickerTooltipSystem>(SystemUpdatePhase.UITooltip);
 			updateSystem.UpdateAt<AutoVehiclePropGeneratorSystem>(SystemUpdatePhase.MainLoop);
+			updateSystem.UpdateAt<AutoQuantityPropGeneratorSystem>(SystemUpdatePhase.MainLoop);
 
 			GameManager.instance.RegisterUpdater(ClearGooee);
 		}

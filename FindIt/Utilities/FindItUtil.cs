@@ -1,6 +1,8 @@
 ﻿using Colossal.Json;
+
 using FindIt.Domain;
 using FindIt.Domain.Enums;
+
 using Game.Prefabs;
 
 using System;
@@ -11,291 +13,319 @@ using System.Threading;
 
 using Unity.Entities;
 
+using UnityEngine;
+
 namespace FindIt.Utilities
 {
-    public static class FindItUtil
-    {
-        private static List<PrefabIndex> _cachedSearch = new();
-        private static Dictionary<string, CustomPrefabData> customPrefabsData = new();
+	public static class FindItUtil
+	{
+		private static List<PrefabIndex> _cachedSearch = new();
+		private static Dictionary<string, CustomPrefabData> customPrefabsData = new();
 
-        public static Dictionary<PrefabCategory, Dictionary<PrefabSubCategory, IndexedPrefabList>> CategorizedPrefabs { get; } = new();
-        public static PrefabCategory CurrentCategory { get; set; } = PrefabCategory.Any;
-        public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
-        public static bool IsReady { get; set; }
-        public static Filters Filters { get; } = new();
+		public static Dictionary<PrefabCategory, Dictionary<PrefabSubCategory, IndexedPrefabList>> CategorizedPrefabs { get; } = new();
+		public static PrefabCategory CurrentCategory { get; set; } = PrefabCategory.Any;
+		public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
+		public static bool IsReady { get; set; }
+		public static Filters Filters { get; } = new();
+		public static AssetPackPrefab FavoritePack { get; private set; }
 
-        public static IEnumerable<PrefabCategory> GetCategories()
-        {
-            return new[]
-            {
-                PrefabCategory.Any,
-                PrefabCategory.Networks,
-                PrefabCategory.Buildings,
-                PrefabCategory.ServiceBuildings,
-                PrefabCategory.Trees,
-                PrefabCategory.Props,
-                PrefabCategory.Vehicles,
-                PrefabCategory.Favorite,
-            };
-        }
+		public static IEnumerable<PrefabCategory> GetCategories()
+		{
+			return new[]
+			{
+				PrefabCategory.Any,
+				PrefabCategory.Networks,
+				PrefabCategory.Buildings,
+				PrefabCategory.ServiceBuildings,
+				PrefabCategory.Trees,
+				PrefabCategory.Props,
+				PrefabCategory.Vehicles,
+				PrefabCategory.Favorite,
+			};
+		}
 
-        public static IEnumerable<PrefabSubCategory> GetSubCategories()
-        {
-            return CategorizedPrefabs[CurrentCategory]
-                .Where(x => x.Value.Count > 0)
-                .Select(x => x.Key)
-                .OrderBy(x => (int)x);
-        }
+		public static IEnumerable<PrefabSubCategory> GetSubCategories()
+		{
+			return CategorizedPrefabs[CurrentCategory]
+				.Where(x => x.Value.Count > 0)
+				.Select(x => x.Key)
+				.OrderBy(x => (int)x);
+		}
 
-        public static List<PrefabIndex> GetFilteredPrefabs()
-        {
-            if (!IsReady)
-            {
-                return new();
-            }
+		public static List<PrefabIndex> GetFilteredPrefabs()
+		{
+			if (!IsReady)
+			{
+				return new();
+			}
 
-            if (!Filters.GetFilterList().Any())
-            {
-                return _cachedSearch = CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
-            }
+			if (!Filters.GetFilterList().Any())
+			{
+				return _cachedSearch = CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
+			}
 
-            return _cachedSearch;
-        }
+			return _cachedSearch;
+		}
 
-        public static List<PrefabIndex> GetUnfilteredPrefabs()
-        {
-            if (!IsReady)
-            {
-                return new();
-            }
+		public static List<PrefabIndex> GetUnfilteredPrefabs()
+		{
+			if (!IsReady)
+			{
+				return new();
+			}
 
-            return CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
-        }
+			return CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
+		}
 
-        public static PrefabBase GetPrefabBase(int id)
-        {
-            if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
-            {
-                return prefabIndex.Prefab;
-            }
+		public static PrefabBase GetPrefabBase(int id)
+		{
+			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
+			{
+				return prefabIndex.Prefab;
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public static PrefabIndex GetPrefabIndex(int id)
-        {
-            if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
-            {
-                return prefabIndex;
-            }
+		public static PrefabIndex GetPrefabIndex(int id)
+		{
+			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
+			{
+				return prefabIndex;
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public static void SetSorting(bool? descending = null, PrefabSorting? sorting = null)
-        {
-            IndexedPrefabList.Sorting = sorting ?? IndexedPrefabList.Sorting;
-            IndexedPrefabList.SortingDescending = descending ?? IndexedPrefabList.SortingDescending;
+		public static void SetSorting(bool? descending = null, PrefabSorting? sorting = null)
+		{
+			IndexedPrefabList.Sorting = sorting ?? IndexedPrefabList.Sorting;
+			IndexedPrefabList.SortingDescending = descending ?? IndexedPrefabList.SortingDescending;
 
-            foreach (var item in CategorizedPrefabs)
-            {
-                foreach (var list in item.Value.Values)
-                {
-                    list.ResetOrder();
-                }
-            }
-        }
+			foreach (var item in CategorizedPrefabs)
+			{
+				foreach (var list in item.Value.Values)
+				{
+					list.ResetOrder();
+				}
+			}
+		}
 
-        public static bool IsFavorited(string prefab)
-        {
-            return customPrefabsData.TryGetValue(prefab, out var data) && data.IsFavorited;
-        }
+		public static bool IsFavorited(string prefab)
+		{
+			return customPrefabsData.TryGetValue(prefab, out var data) && data.IsFavorited;
+		}
 
-        public static void ToggleFavorited(int id)
-        {
-            if (!CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
-            {
-                return;
-            }
+		public static void ToggleFavorited(int id)
+		{
+			if (!CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
+			{
+				return;
+			}
 
-            if (customPrefabsData.TryGetValue(prefabIndex.PrefabName, out var data))
-            {
-                data.IsFavorited = !data.IsFavorited;
+			if (customPrefabsData.TryGetValue(prefabIndex.PrefabName, out var data))
+			{
+				data.IsFavorited = !data.IsFavorited;
 
-                prefabIndex.IsFavorited = data.IsFavorited;
-            }
-            else
-            {
-                customPrefabsData[prefabIndex.PrefabName] = new CustomPrefabData
-                {
-                    IsFavorited = true
-                };
+				prefabIndex.IsFavorited = data.IsFavorited;
+			}
+			else
+			{
+				customPrefabsData[prefabIndex.PrefabName] = new CustomPrefabData
+				{
+					IsFavorited = true
+				};
 
-                prefabIndex.IsFavorited = true;
-            }
+				prefabIndex.IsFavorited = true;
+			}
 
-            UpdateFavoritesList(prefabIndex);
+			UpdateFavoritesList(prefabIndex);
 
-            SaveCustomPrefabData();
-        }
+			SaveCustomPrefabData();
+		}
 
-        private static void UpdateFavoritesList(PrefabIndex prefabIndex)
-        {
-            if (!prefabIndex.IsFavorited)
-            {
-                if (CategorizedPrefabs[PrefabCategory.Favorite].ContainsKey(prefabIndex.SubCategory))
-                {
-                    CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory].Remove(prefabIndex);
+		private static void UpdateFavoritesList(PrefabIndex prefabIndex)
+		{
+			//UpdateFavoritesPack(prefabIndex);
 
-                    if (CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory].Count == 0)
-                    {
-                        CategorizedPrefabs[PrefabCategory.Favorite].Remove(prefabIndex.SubCategory);
-                    }
-                }
+			if (!prefabIndex.IsFavorited)
+			{
+				if (CategorizedPrefabs[PrefabCategory.Favorite].ContainsKey(prefabIndex.SubCategory))
+				{
+					CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory].Remove(prefabIndex);
 
-                CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any].Remove(prefabIndex);
+					if (CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory].Count == 0)
+					{
+						CategorizedPrefabs[PrefabCategory.Favorite].Remove(prefabIndex.SubCategory);
+					}
+				}
 
-                return;
-            }
+				CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any].Remove(prefabIndex);
 
-            if (!CategorizedPrefabs[PrefabCategory.Favorite].ContainsKey(prefabIndex.SubCategory))
-            {
-                CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory] = new();
-            }
+				return;
+			}
 
-            CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
-            CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
-        }
+			if (!CategorizedPrefabs[PrefabCategory.Favorite].ContainsKey(prefabIndex.SubCategory))
+			{
+				CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory] = new();
+			}
 
-        public static void ResetFavorites()
-        {
-            CategorizedPrefabs[PrefabCategory.Favorite] = new()
-            {
-                [PrefabSubCategory.Any] = new()
-            };
+			CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
+			CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
+		}
 
-            foreach (var item in customPrefabsData.Values)
-            {
-                item.IsFavorited = false;
-            }
+		//public static void UpdateFavoritesPack(PrefabIndex prefabIndex)
+		//{
+		//	if (!prefabIndex.Prefab.TryGet<AssetPackItem>(out var component))
+		//	{
+		//		component = prefabIndex.Prefab.AddComponent<AssetPackItem>();
+		//	}
 
-            SaveCustomPrefabData();
-        }
+		//	if (prefabIndex.IsFavorited)
+		//	{
+		//		component.m_Packs = component.m_Packs is null ? new[] { FavoritePack } : component.m_Packs.Append(FavoritePack).ToArray();
+		//	}
+		//	else if (component.m_Packs is not null)
+		//	{
+		//		component.m_Packs = component.m_Packs.Where(x => x != FavoritePack).ToArray();
+		//	}
+		//}
 
-        public static void SaveCustomPrefabData()
-        {
-            var path = Path.Combine(FolderUtil.ContentFolder, "CustomPrefabData.json");
+		public static void ResetFavorites()
+		{
+			CategorizedPrefabs[PrefabCategory.Favorite] = new()
+			{
+				[PrefabSubCategory.Any] = new()
+			};
 
-            File.WriteAllText(path, JSON.Dump(customPrefabsData));
-        }
+			foreach (var item in customPrefabsData.Values)
+			{
+				item.IsFavorited = false;
+			}
 
-        public static void LoadCustomPrefabData()
-        {
-            var path = Path.Combine(FolderUtil.ContentFolder, "CustomPrefabData.json");
+			SaveCustomPrefabData();
+		}
 
-            if (!File.Exists(path))
-            {
-                return;
-            }
+		public static void SaveCustomPrefabData()
+		{
+			var path = Path.Combine(FolderUtil.ContentFolder, "CustomPrefabData.json");
 
-            try
-            {
-                customPrefabsData = JSON.MakeInto<Dictionary<string, CustomPrefabData>>(JSON.Load(File.ReadAllText(path))) ?? new();
-            }
-            catch (Exception ex)
-            {
-                Mod.Log.Error(ex, "Failed to load custom prefab data");
-            }
-        }
+			File.WriteAllText(path, JSON.Dump(customPrefabsData));
+		}
 
-        public static bool Find(PrefabBase prefab, bool setCategory, out int id)
-        {
-            var name = prefab is MovingObjectPrefab ? $"Prop_{prefab.name}" : prefab.name;
+		public static void LoadCustomPrefabData()
+		{
+			//FavoritePack = ScriptableObject.CreateInstance<AssetPackPrefab>();
+			//FavoritePack.name = "FindItFavoritesFilter";
+			//FavoritePack.AddComponent<UIObject>().m_Icon = "coui://findit/starFavorite.svg";
+
+			//World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>().AddPrefab(FavoritePack);
+
+			var path = Path.Combine(FolderUtil.ContentFolder, "CustomPrefabData.json");
+
+			if (!File.Exists(path))
+			{
+				return;
+			}
+
+			try
+			{
+				customPrefabsData = JSON.MakeInto<Dictionary<string, CustomPrefabData>>(JSON.Load(File.ReadAllText(path))) ?? new();
+			}
+			catch (Exception ex)
+			{
+				Mod.Log.Error(ex, "Failed to load custom prefab data");
+			}
+		}
+
+		public static bool Find(PrefabBase prefab, bool setCategory, out int id)
+		{
+			var name = prefab is MovingObjectPrefab ? $"Prop_{prefab.name}" : prefab.name;
 			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => name == x.PrefabName);
 
-            if (prefabIndex is null)
-            {
-                id = 0;
-                return false;
-            }
+			if (prefabIndex is null)
+			{
+				id = 0;
+				return false;
+			}
 
-            if (setCategory)
-            {
-                CurrentCategory = prefabIndex.Category;
-                CurrentSubCategory = prefabIndex.SubCategory;
-            }
+			if (setCategory)
+			{
+				CurrentCategory = prefabIndex.Category;
+				CurrentSubCategory = prefabIndex.SubCategory;
+			}
 
-            id = prefabIndex.Id;
-            return true;
-        }
+			id = prefabIndex.Id;
+			return true;
+		}
 
-        public static void ProcessSearch(CancellationToken token)
-        {
-            var filterList = Filters.GetFilterList().ToList();
+		public static void ProcessSearch(CancellationToken token)
+		{
+			var filterList = Filters.GetFilterList().ToList();
 
-            if (filterList.Count == 0)
-            {
-                return;
-            }
+			if (filterList.Count == 0)
+			{
+				return;
+			}
 
-            var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].ToList();
-            var index = 0;
+			var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].ToList();
+			var index = 0;
 
-            while (index < prefabList.Count)
-            {
-                if (token.IsCancellationRequested)
-                {
-                    return;
-                }
+			while (index < prefabList.Count)
+			{
+				if (token.IsCancellationRequested)
+				{
+					return;
+				}
 
-                var prefab = prefabList[index];
-                var allFiltersPass = true;
+				var prefab = prefabList[index];
+				var allFiltersPass = true;
 
-                for (var i = 0; i < filterList.Count; i++)
-                {
-                    if (!filterList[i](prefab))
-                    {
-                        allFiltersPass = false;
+				for (var i = 0; i < filterList.Count; i++)
+				{
+					if (!filterList[i](prefab))
+					{
+						allFiltersPass = false;
 
-                        break;
-                    }
-                }
+						break;
+					}
+				}
 
-                if (allFiltersPass)
-                {
-                    index++;
-                }
-                else
-                {
-                    prefabList.RemoveAt(index);
-                }
-            }
+				if (allFiltersPass)
+				{
+					index++;
+				}
+				else
+				{
+					prefabList.RemoveAt(index);
+				}
+			}
 
-            if (token.IsCancellationRequested)
-            {
-                return;
-            }
+			if (token.IsCancellationRequested)
+			{
+				return;
+			}
 
-            _cachedSearch = prefabList;
-        }
+			_cachedSearch = prefabList;
+		}
 
-        public static void RemoveItem(Entity entity)
-        {
-            RemoveItem(entity.Index);
-        }
+		public static void RemoveItem(Entity entity)
+		{
+			RemoveItem(entity.Index);
+		}
 
-        public static void RemoveItem(int index)
-        {
-            if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(index, out var prefabIndex))
-            {
-                if (IsFavorited(prefabIndex.PrefabName))
-                {
-                    ToggleFavorited(index);
-                }
+		public static void RemoveItem(int index)
+		{
+			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(index, out var prefabIndex))
+			{
+				if (IsFavorited(prefabIndex.PrefabName))
+				{
+					ToggleFavorited(index);
+				}
 
-                CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Remove(prefabIndex);
-                CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory].Remove(prefabIndex);
-            }
-        }
-    }
+				CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Remove(prefabIndex);
+				CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory].Remove(prefabIndex);
+			}
+		}
+	}
 }

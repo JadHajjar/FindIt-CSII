@@ -83,9 +83,6 @@ namespace FindIt.Domain.Options
 
 		private List<AssetPackPrefab> GetPackPrefabs()
 		{
-			//var query = _optionsUISystem.GetEntityQuery(new EntityQueryBuilder(Allocator.Temp).WithAll<AssetPackData>());
-			//var entities = query.ToEntityArray(Allocator.Temp);
-			//var prefabSystem = _optionsUISystem.World.GetOrCreateSystemManaged<PrefabSystem>();
 			var list = new List<AssetPackPrefab>();
 
 			var none = ScriptableObject.CreateInstance<AssetPackPrefab>();
