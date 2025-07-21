@@ -10,7 +10,6 @@ using Game.Objects;
 using Game.Prefabs;
 using Game.SceneFlow;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,7 +53,8 @@ namespace FindIt.Systems
 		private void GenerateProps()
 		{
 			var quantityEntities = SystemAPI.QueryBuilder().WithAll<QuantityObjectData>().WithNone<PlaceholderObjectData>().Build().ToEntityArray(Allocator.Temp);
-			var count = 0;
+			var prefabs = new List<string>();
+			var localeDictionary = new Dictionary<string, string>();
 
 			for (var i = 0; i < quantityEntities.Length; i++)
 			{
@@ -68,18 +68,32 @@ namespace FindIt.Systems
 					continue;
 				}
 
-				foreach (var item in prefab.m_Meshes)
+				foreach (var item in prefab.m_Meshes.OrderBy(x => x.m_RequireState))
 				{
-					CreatePrefab($"Prop_{prefab.name}_{item.m_RequireState}", $" {GetName(item.m_RequireState)} Props", (int)GetCategory(prefab, quantityEntities[i]), prefab, item);
+					if (prefabs.Contains(item.m_Mesh.name))
+					{
+						continue;
+					}
 
-					count++;
+					var newPrefabName = $"Prop_{prefab.name}_{item.m_RequireState}";
+
+					CreatePrefab(newPrefabName, $" {GetName(item.m_RequireState)} Prop", (int)GetCategory(prefab, quantityEntities[i]), prefab, item, localeDictionary);
+
+					prefabs.Add(item.m_Mesh.name);
+
+					FindItUtil.AssetMap[prefab.name] = newPrefabName;
 				}
 			}
 
-			Mod.Log.InfoFormat("Generated Quantity Prop Assets ({0})", count);
+			foreach (var item in new LocaleHelper(localeDictionary).GetAvailableLanguages())
+			{
+				GameManager.instance.localizationManager.AddSource(item.LocaleId, item);
+			}
+
+			Mod.Log.InfoFormat("Generated Quantity Prop Assets ({0})", prefabs.Count);
 		}
 
-		private void CreatePrefab(string name, string typeName, int subCategory, ObjectGeometryPrefab original, ObjectMeshInfo mesh)
+		private void CreatePrefab(string name, string typeName, int subCategory, ObjectGeometryPrefab original, ObjectMeshInfo mesh, Dictionary<string, string> localeDictionary)
 		{
 			var newPrefab = ScriptableObject.CreateInstance<StaticObjectPrefab>();
 
@@ -96,14 +110,14 @@ namespace FindIt.Systems
 					new ObjectMeshInfo
 					{
 						m_Mesh = mesh.m_Mesh,
-						m_Position = mesh.m_Position + new Unity.Mathematics.float3(0, 10, 0),
+						m_Position = mesh.m_Position,
 						m_Rotation = mesh.m_Rotation,
 					}
 				};
 
 				if (original.TryGet<UIObject>(out var uIObject))
 				{
-					newPrefab.AddComponentFrom(uIObject);
+					newPrefab.AddComponentFrom(uIObject).m_Group = null;
 				}
 
 				if (original.TryGet<ThemeObject>(out var themeObject))
@@ -123,11 +137,11 @@ namespace FindIt.Systems
 
 				if (GameManager.instance.localizationManager.activeDictionary.TryGetValue("Assets.NAME[" + original.name + "]", out var localeName))
 				{
-					GameManager.instance.localizationManager.activeDictionary.Add("Assets.NAME[" + name + "]", localeName + typeName);
+					localeDictionary.Add("Assets.NAME[" + name + "]", localeName + typeName);
 				}
 				else
 				{
-					GameManager.instance.localizationManager.activeDictionary.Add("Assets.NAME[" + name + "]", original.name.Replace('_', ' ').FormatWords() + typeName);
+					localeDictionary.Add("Assets.NAME[" + name + "]", original.name.Replace('_', ' ').FormatWords() + typeName);
 				}
 
 				if (original.asset?.database == AssetDatabase<ParadoxMods>.instance)

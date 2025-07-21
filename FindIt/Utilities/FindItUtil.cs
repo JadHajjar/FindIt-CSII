@@ -13,8 +13,6 @@ using System.Threading;
 
 using Unity.Entities;
 
-using UnityEngine;
-
 namespace FindIt.Utilities
 {
 	public static class FindItUtil
@@ -23,6 +21,7 @@ namespace FindIt.Utilities
 		private static Dictionary<string, CustomPrefabData> customPrefabsData = new();
 
 		public static Dictionary<PrefabCategory, Dictionary<PrefabSubCategory, IndexedPrefabList>> CategorizedPrefabs { get; } = new();
+		public static Dictionary<string, string> AssetMap { get; } = new();
 		public static PrefabCategory CurrentCategory { get; set; } = PrefabCategory.Any;
 		public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
 		public static bool IsReady { get; set; }
@@ -241,6 +240,12 @@ namespace FindIt.Utilities
 		public static bool Find(PrefabBase prefab, bool setCategory, out int id)
 		{
 			var name = prefab is MovingObjectPrefab ? $"Prop_{prefab.name}" : prefab.name;
+
+			if (AssetMap.TryGetValue(name, out var newName))
+			{
+				name = newName;
+			}
+
 			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => name == x.PrefabName);
 
 			if (prefabIndex is null)

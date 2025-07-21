@@ -12,6 +12,14 @@ namespace FindIt.Utilities
     {
         private readonly Dictionary<string, Dictionary<string, string>> _locale;
 
+        public LocaleHelper(Dictionary<string, string> dictionary)
+        {
+			_locale = new Dictionary<string, Dictionary<string, string>>
+			{
+				[string.Empty] = dictionary
+			};
+		}
+
         public LocaleHelper(string dictionaryResourceName)
         {
             var assembly = GetType().Assembly;

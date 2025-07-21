@@ -84,10 +84,10 @@ export const FindItMainContainerComponent = () => {
             ref={containerRef}
             style={AlignmentStyle !== "Center" ? undefined : { width: PanelWidth + "rem" }}
           >
-            <div>
+            <div className={styles.toolContainer}>
               {(optionsOpen || sortingOpen) && optionsOverflow() && (
-                <div style={{ position: "relative" }}>
-                  <div className={styles.topPanel}>
+                <div className={styles.topPanel}>
+                  <div>
                     <div>
                       <div className={styles.title}>
                         {optionsOpen ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters") : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
@@ -127,7 +127,6 @@ export const FindItMainContainerComponent = () => {
                     OnChange={onOptionClicked}
                   ></OptionsPanelComponent>
                 </div>
-                <div />
               </div>
             )}
           </div>

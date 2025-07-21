@@ -47,7 +47,7 @@ const registryIndex = {
   FOCUS_DISABLED: ["game-ui/common/focus/focus-key.ts", "FOCUS_DISABLED"],
   FOCUS_AUTO: ["game-ui/common/focus/focus-key.ts", "FOCUS_AUTO"],
   useUniqueFocusKey: ["game-ui/common/focus/focus-key.ts", "useUniqueFocusKey"],
-  assetGridTheme: ["game-ui/game/components/asset-menu/asset-grid/asset-grid.module.scss", "classes"],
+  assetGridTheme: ["game-ui/game/components/item-grid/item-grid.module.scss", "classes"],
 };
 
 export class VanillaComponentResolver {

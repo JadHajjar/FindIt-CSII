@@ -19,9 +19,12 @@
 }
 
 .findItMainContainer {
-  position: relative;
-  bottom: 137rem;
-  pointer-events: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 122rem;
+  pointer-events: none;
 
   animation: entry 0.3s ease-in-out;
 
@@ -57,6 +60,10 @@
 
 .alignRight {
   .toolLayout {
+    position: absolute;
+    top: 10rem;
+    bottom: 6rem;
+    right: -10rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -65,9 +72,14 @@
 
   .toolMainColumn {
     position: relative;
+    pointer-events: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
-  .topPanel {
+  .topPanel > div {
     width: 400rem;
     top: 0px;
     left: -410rem;
@@ -78,6 +90,10 @@
 
 .alignLeft {
   .toolLayout {
+    position: absolute;
+    top: 10rem;
+    bottom: 6rem;
+    left: -10rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -86,9 +102,14 @@
 
   .toolMainColumn {
     position: relative;
+    pointer-events: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
-  .topPanel {
+  .topPanel > div {
     width: 400rem;
     top: 0px;
     right: -410rem;
@@ -97,13 +118,24 @@
   }
 }
 
+.topPanel {
+  position: relative;
+  pointer-events: auto;
+}
+
+.toolContainer {
+  position: relative;
+  pointer-events: auto;
+  animation: entryTranslate 0.2s ease-in-out;
+}
+
 .content {
   border-bottom-left-radius: var(--panelRadius);
   border-bottom-right-radius: var(--panelRadius);
   background-color: var(--panelColorNormal);
   backdrop-filter: var(--panelBlur);
   color: rgba(255, 255, 255, 1);
-  flex: 1;
+  flex-grow: 1;
   position: relative;
 }
 
@@ -116,8 +148,7 @@
   overflow: hidden;
 }
 
-.rightPanel,
-.topPanel {
+.rightPanel {
   animation: entryTranslate 0.2s ease-in-out;
 }
 
@@ -131,7 +162,7 @@
   justify-content: flex-end;
 }
 
-.topPanel {
+.topPanel > div {
   position: absolute;
   width: 350rem;
   bottom: 10rem;
@@ -139,7 +170,8 @@
 }
 
 .rightPanel > div:first-child,
-.topPanel > div {
+.topPanel > div > div {
+  pointer-events: auto;
   padding-bottom: 10rem;
   width: 100%;
   background-color: var(--panelColorDark);
@@ -152,7 +184,7 @@
 }
 
 .rightPanel > div:last-child {
-  flex: 1;
+  flex-shrink: 1;
 }
 
 .rightPanel .title,

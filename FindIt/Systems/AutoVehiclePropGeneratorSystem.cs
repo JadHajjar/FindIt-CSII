@@ -57,6 +57,7 @@ namespace FindIt.Systems
 		private void GenerateProps()
 		{
 			var vehicleEntities = SystemAPI.QueryBuilder().WithAll<VehicleData>().Build().ToEntityArray(Allocator.Temp);
+			var localeDictionary = new Dictionary<string, string>();
 
 			for (var i = 0; i < vehicleEntities.Length; i++)
 			{
@@ -70,19 +71,24 @@ namespace FindIt.Systems
 					continue;
 				}
 
-				CreatePrefab("Prop_" + prefab.name, (int)GetCategory(vehicleEntities[i]), prefab);
+				CreatePrefab("Prop_" + prefab.name, (int)GetCategory(vehicleEntities[i]), localeDictionary, prefab);
 			}
 
-			CreatePrefab("Prop_KickScooter01", (int)PrefabSubCategory.Vehicles_Bikes, mesh: "KickScooter01_Prop Mesh");
-			CreatePrefab("Prop_CasketTrolley01", (int)PrefabSubCategory.Vehicles_Services, mesh: "Service_Hearse_CasketTrolley01_Prop Mesh");
-			CreatePrefab("Prop_ParamedicAmbulanceCot01", (int)PrefabSubCategory.Vehicles_Services, mesh: "Service_Paramedic_AmbulanceCot01_Prop Mesh");
-			CreatePrefab("Prop_Bicycle01", (int)PrefabSubCategory.Vehicles_Bikes, mesh: "Bicycle01_Prop Mesh");
-			CreatePrefab("Prop_SkateBoard01", (int)PrefabSubCategory.Vehicles_Bikes, mesh: "SkateBoard01_Prop Mesh");
+			CreatePrefab("Prop_KickScooter01", (int)PrefabSubCategory.Vehicles_Bikes, localeDictionary, mesh: "KickScooter01_Prop Mesh");
+			CreatePrefab("Prop_CasketTrolley01", (int)PrefabSubCategory.Vehicles_Services, localeDictionary, mesh: "Service_Hearse_CasketTrolley01_Prop Mesh");
+			CreatePrefab("Prop_ParamedicAmbulanceCot01", (int)PrefabSubCategory.Vehicles_Services, localeDictionary, mesh: "Service_Paramedic_AmbulanceCot01_Prop Mesh");
+			CreatePrefab("Prop_Bicycle01", (int)PrefabSubCategory.Vehicles_Bikes, localeDictionary, mesh: "Bicycle01_Prop Mesh");
+			CreatePrefab("Prop_SkateBoard01", (int)PrefabSubCategory.Vehicles_Bikes, localeDictionary, mesh: "SkateBoard01_Prop Mesh");
+
+			foreach (var item in new LocaleHelper(localeDictionary).GetAvailableLanguages())
+			{
+				GameManager.instance.localizationManager.AddSource(item.LocaleId, item);
+			}
 
 			Mod.Log.InfoFormat("Generated Vehicle Prop Assets ({0})", AssetReferenceMap.Count);
 		}
 
-		private void CreatePrefab(string name, int subCategory, ObjectGeometryPrefab original = null, string mesh = null)
+		private void CreatePrefab(string name, int subCategory, Dictionary<string, string> localeDictionary, ObjectGeometryPrefab original = null, string mesh = null)
 		{
 			var newPrefab = ScriptableObject.CreateInstance<StaticObjectPrefab>();
 
@@ -100,7 +106,7 @@ namespace FindIt.Systems
 
 				if (original.TryGet<UIObject>(out var uIObject))
 				{
-					newPrefab.AddComponentFrom(uIObject);
+					newPrefab.AddComponentFrom(uIObject).m_Group = null;
 				}
 
 				if (original.TryGet<ThemeObject>(out var themeObject))
@@ -120,11 +126,11 @@ namespace FindIt.Systems
 
 				if (GameManager.instance.localizationManager.activeDictionary.TryGetValue("Assets.NAME[" + original.name + "]", out var localeName))
 				{
-					GameManager.instance.localizationManager.activeDictionary.Add("Assets.NAME[" + name + "]", localeName + " Prop");
+					localeDictionary.Add("Assets.NAME[" + name + "]", localeName + " Prop");
 				}
 				else
 				{
-					GameManager.instance.localizationManager.activeDictionary.Add("Assets.NAME[" + name + "]", name.Substring(5).Replace('_', ' ').FormatWords() + " Prop");
+					localeDictionary.Add("Assets.NAME[" + name + "]", name.Substring(5).Replace('_', ' ').FormatWords() + " Prop");
 				}
 
 				if (original.asset?.database == AssetDatabase<ParadoxMods>.instance)
