@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "Nascondi gli asset \"Brand commerciale\"",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "Nascondi asset \"Casuali\"",
   "Tooltip.LABEL[FindIt.CustomAssets]": "Mostra solo gli asset personalizzati",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "Ordine crescente",
   "Tooltip.LABEL[FindIt.Descending]": "Ordine decrescente",
   "Tooltip.LABEL[FindIt.SortingName]": "Ordina per nome",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Tasto rapido per spostarsi in alto nella lista degli asset.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Navigazione in basso",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Navigazione in basso",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Tasto rapido per spostarsi in basso nella lista degli asset.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Tasto rapido per spostarsi in basso nella lista degli asset."
 }
