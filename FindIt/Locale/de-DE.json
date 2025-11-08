@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "\"Werbung\" Assets ausblenden",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "\"Zufällig\" Assets ausblenden",
   "Tooltip.LABEL[FindIt.CustomAssets]": "Nur benutzerdefinierte Assets anzeigen",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "Reihenfolge aufsteigend",
   "Tooltip.LABEL[FindIt.Descending]": "Reihenfolge absteigend",
   "Tooltip.LABEL[FindIt.SortingName]": "Nach Namen sortieren",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Taste zum Bewegen nach oben in der Asset-Liste.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Navigation unten",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Navigation unten",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Taste zum Bewegen nach unten in der Asset-Liste.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "Ich verstehe",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Fahrzeuge können verschiedene Probleme verursachen, wenn sie platziert werden. Die meisten können nicht entfernt werden oder benötigen die 'Better Bulldozer'-Mod um sie zu entfernen.\n\nBenutze sie nur, wenn Du weißt, was Du tust und speichere Deine Stadt vor dem Benutzen."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Taste zum Bewegen nach unten in der Asset-Liste."
 }
