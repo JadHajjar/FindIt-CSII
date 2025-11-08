@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "Скрыть \"Брендовые\" Объекты",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "Скрыть \"Случайные\" Объекты",
   "Tooltip.LABEL[FindIt.CustomAssets]": "Показывать только пользовательские объекты",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "По возрастанию",
   "Tooltip.LABEL[FindIt.Descending]": "По убыванию",
   "Tooltip.LABEL[FindIt.SortingName]": "Сортировать по имени",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Переместится вверх в списке объектов.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Навигация вниз",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Навигация вниз",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Переместится вниз в списке объектов.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Переместится вниз в списке объектов."
 }
