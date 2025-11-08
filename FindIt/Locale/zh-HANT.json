@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "隱藏「品牌」資產",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "隱藏「隨機」資產",
   "Tooltip.LABEL[FindIt.CustomAssets]": "只顯示自訂資產",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "升序排列",
   "Tooltip.LABEL[FindIt.Descending]": "降序排列",
   "Tooltip.LABEL[FindIt.SortingName]": "依名稱排序",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Hot-key for moving up in the asset list.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Down Navigation",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Down Navigation",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Hot-key for moving down in the asset list.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Hot-key for moving down in the asset list."
 }
