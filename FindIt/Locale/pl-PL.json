@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "Ukryj obiekty \"Markowe\"",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "Ukryj \"Losowe\" obiekty",
   "Tooltip.LABEL[FindIt.CustomAssets]": "Pokaż tylko niestandardowe obiekty",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "Rosnąco",
   "Tooltip.LABEL[FindIt.Descending]": "Malejąco",
   "Tooltip.LABEL[FindIt.SortingName]": "Sortuj wg nazwy",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Skrót klawiszowy do przejścia w górę na liście obiektów.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Nawigacja w dół",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Nawigacja w dół",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Skrót klawiszowy do przejścia w dół na liście obiektów.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "Rozumiem",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Pojazdy mogą powodować różne problemy. Większość z nich nie może zostać usunięta lub wymaga moda \"Better Bulldozer\" żeby je usunąć.\n\nUżywaj ich tylko wtedy, gdy wiesz, co robisz. Zapisz grę przed ich użyciem."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Skrót klawiszowy do przejścia w dół na liście obiektów."
 }
