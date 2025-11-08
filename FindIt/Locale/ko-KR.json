@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "\"광고\" 에셋 감추기\",",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "\"랜덤\" 에셋 숨기기",
   "Tooltip.LABEL[FindIt.CustomAssets]": "커스텀 에셋만 보이기",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "A와 가부터 정렬",
   "Tooltip.LABEL[FindIt.Descending]": "Z와 하부터 정렬",
   "Tooltip.LABEL[FindIt.SortingName]": "이름 순으로",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Hot-key for moving up in the asset list.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Down Navigation",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Down Navigation",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Hot-key for moving down in the asset list.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "I understand",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Vehicles can cause various issues when placed. Most can not be removed or require the 'Better Bulldozer' mod to remove them.\r\n\r\nOnly use them if you know what you're doing, and save before using them."
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Hot-key for moving down in the asset list."
 }
