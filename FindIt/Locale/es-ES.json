@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "Ocultar assets de \"Marcas\"",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "Ocultar assets aleatorios",
   "Tooltip.LABEL[FindIt.CustomAssets]": "Mostrar únicamente assets personalizados",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "Orden ascendente",
   "Tooltip.LABEL[FindIt.Descending]": "Orden descendente",
   "Tooltip.LABEL[FindIt.SortingName]": "Ordenar por nombre",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "Asignación de tecla para moverse hacia arriba en la lista de activos.",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "Navegación hacia abajo",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Navegación hacia abajo",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Asignación de tecla para moverse hacia abajo en la lista de activos.",
-  "FindIt.DIALOG_MESSAGE[Understand]": "Lo he entendido",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "Los vehículos pueden causar varios inconvenientes al ser colocados. La mayoría no pueden ser removidos o requieren el mod \"Better Bulldozer\" para hacerlo.\n\nUtilízalos solo si sabes los que estás haciendo, y guarda el juego previamente a utilizarlos. "
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "Asignación de tecla para moverse hacia abajo en la lista de activos."
 }
