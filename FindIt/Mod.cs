@@ -1,8 +1,10 @@
 ﻿using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Colossal.PSI.Environment;
+using Colossal.Reflection;
 using Colossal.UI;
 
+using FindIt.Domain;
 using FindIt.Systems;
 using FindIt.Utilities;
 
@@ -10,9 +12,13 @@ using Game;
 using Game.Modding;
 using Game.SceneFlow;
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+
+using Unity.Entities;
 
 namespace FindIt
 {
@@ -63,8 +69,42 @@ namespace FindIt
 			updateSystem.UpdateAt<AutoVehiclePropGeneratorSystem>(SystemUpdatePhase.MainLoop);
 			updateSystem.UpdateAt<AutoQuantityPropGeneratorSystem>(SystemUpdatePhase.MainLoop);
 
+			GameManager.instance.RegisterUpdater(RegisterAPIs);
 			GameManager.instance.RegisterUpdater(ClearGooee);
 		}
+
+		private void RegisterAPIs()
+		{
+			foreach (var item in GameManager.instance.modManager)
+			{
+				if (item.asset.assembly?.GetTypesDerivedFrom<IMod>().FirstOrDefault()?.GetMethod("GetFindItSearchMethod", BindingFlags.Static | BindingFlags.Public) is MethodInfo methodInfo)
+				{
+					if (methodInfo.GetParameters().Length == 1
+						&& methodInfo.GetParameters()[0].ParameterType == typeof(string)
+						&& methodInfo.ReturnType == typeof(Func<string, bool>))
+					{
+						Filters.GetCustomSearchFunction = wrapFunction(methodInfo);
+
+						Log.Info($"Registered search API from {item.name}");
+					}
+				}
+			}
+
+			static Func<string, Func<PrefabIndex, bool>> wrapFunction(MethodInfo method) => searchTerm =>
+			{
+				var searchMethod = (Func<string, bool>)method.Invoke(null, new object[] { searchTerm });
+
+				return prefab => searchMethod(prefab.Name) || searchMethod(prefab.PrefabName);
+			};
+		}
+
+		//public static Func<string, bool> GetFindItSearchMethod(string searchText)
+		//{
+		//	_cachedMatcher?.Dispose();
+		//	_cachedMatcher = new IbMatcher.Net.IbMatcher(CurrentSearch, IbMatcherConfig.WithPinyin());
+
+		//	return name => _cachedMatcher.IsMatch(name);
+		//}
 
 		public static Dictionary<string, string> GetIconsMap()
 		{

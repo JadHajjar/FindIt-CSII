@@ -211,11 +211,9 @@ namespace FindIt.Systems
 
 							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
 							{
-								if (full && prefab is ObjectGeometryPrefab geometryPrefab && geometryPrefab.m_Meshes?.Length > 0)
+								if (full && prefab is ObjectGeometryPrefab geometryPrefab && geometryPrefab.m_Meshes?.FirstOrDefault()?.m_Mesh?.name is string meshName)
 								{
-									var meshName = geometryPrefab.m_Meshes[0].m_Mesh.name;
-
-									if (!existingMeshes.Contains(meshName))
+									if (meshName is not null or "" && !existingMeshes.Contains(meshName))
 									{
 										prefabIndex.IsUniqueMesh = true;
 										existingMeshes.Add(meshName);
@@ -296,6 +294,7 @@ namespace FindIt.Systems
 			prefabIndex.Tags ??= new();
 			prefabIndex.UIOrder = prefab.TryGet<UIObject>(out var uIObject) ? uIObject.m_Priority : int.MaxValue;
 			prefabIndex.IsVanilla = prefab.builtin;
+			prefabIndex.HasParking = prefabIndex.Category is PrefabCategory.Buildings or PrefabCategory.ServiceBuildings && HasParking(prefab);
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
 
 			if (prefab.asset?.database == AssetDatabase<ParadoxMods>.instance)
@@ -335,6 +334,8 @@ namespace FindIt.Systems
 
 			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites) && contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
 			{
+				prefabIndex.AssetPacks = new AssetPackPrefab[0];
+				prefabIndex.PackThumbnails = new string[0];
 				prefabIndex.DlcId = dlcRequirements.m_Dlc;
 				prefabIndex.DlcThumbnail = $"Media/DLC/{PlatformManager.instance.GetDlcName(dlcRequirements.m_Dlc)}.svg";
 			}
@@ -522,6 +523,38 @@ namespace FindIt.Systems
 			}
 
 			return ZoneTypeFilter.Any;
+		}
+
+		private bool HasParking(PrefabBase prefab)
+		{
+			if (prefab.TryGet<SpawnLocation>(out var spawnLocation) && spawnLocation.m_ConnectionType == RouteConnectionType.Parking)
+			{
+				return true;
+			}
+
+			if (prefab.TryGet<ObjectSubLanes>(out var subLanes))
+			{
+				foreach (var lane in subLanes.m_SubLanes)
+				{
+					if (lane.m_LanePrefab.Has<Game.Prefabs.ParkingLane>())
+					{
+						return true;
+					}
+				}
+			}
+
+			if (prefab.TryGet<ObjectSubObjects>(out var subObjects))
+			{
+				foreach (var obj in subObjects.m_SubObjects)
+				{
+					if (HasParking(obj.m_Object))
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
 		}
 	}
 }

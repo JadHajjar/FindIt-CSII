@@ -78,7 +78,7 @@ namespace FindIt.Systems
 			CreatePrefab("Prop_CasketTrolley01", (int)PrefabSubCategory.Vehicles_Services, localeDictionary, mesh: "Service_Hearse_CasketTrolley01_Prop Mesh");
 			CreatePrefab("Prop_ParamedicAmbulanceCot01", (int)PrefabSubCategory.Vehicles_Services, localeDictionary, mesh: "Service_Paramedic_AmbulanceCot01_Prop Mesh");
 			CreatePrefab("Prop_Bicycle01", (int)PrefabSubCategory.Vehicles_Bikes, localeDictionary, mesh: "Bicycle01_Prop Mesh");
-			CreatePrefab("Prop_SkateBoard01", (int)PrefabSubCategory.Vehicles_Bikes, localeDictionary, mesh: "SkateBoard01_Prop Mesh");
+			//CreatePrefab("Prop_SkateBoard01", (int)PrefabSubCategory.Vehicles_Bikes, localeDictionary, mesh: "SkateBoard01_Prop Mesh");
 
 			foreach (var item in new LocaleHelper(localeDictionary).GetAvailableLanguages())
 			{
@@ -122,6 +122,11 @@ namespace FindIt.Systems
 				if (original.TryGet<ContentPrerequisite>(out var contentPrerequisite))
 				{
 					newPrefab.AddComponentFrom(contentPrerequisite);
+				}
+
+				if (original is WatercraftPrefab)
+				{
+					newPrefab.AddComponent<FloatingObject>().m_AllowDryland = true;
 				}
 
 				if (GameManager.instance.localizationManager.activeDictionary.TryGetValue("Assets.NAME[" + original.name + "]", out var localeName))

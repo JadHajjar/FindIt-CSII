@@ -142,3 +142,11 @@ Ground Cable Node 2
 Ground Cable Node 10
 Sewage Pipe Node 5
 Water Pipe Node 4
+Oil Pipe Node
+Inland Fish Farm Lot
+Inland Fish Farm Lot - Navigation
+Offshore Oil Industry Area
+Openwater Fish Farm
+Openwater Fish Farm - Navigation
+Openwater Fishing Area
+Ferry Pier Berth

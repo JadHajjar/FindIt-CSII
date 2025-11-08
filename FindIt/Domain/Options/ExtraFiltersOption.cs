@@ -26,6 +26,22 @@ namespace FindIt.Domain.Options
 				{
 					new OptionItemUIEntry
 					{
+						Id = 5,
+						Name = LocaleHelper.GetTooltip("WithParking"),
+						Icon = "coui://findit/YesParking.svg",
+						Selected = FindItUtil.Filters.WithParking,
+						Hidden = !(FindItUtil.CurrentCategory is Domain.Enums.PrefabCategory.Buildings or Domain.Enums.PrefabCategory.ServiceBuildings)
+					},
+					new OptionItemUIEntry
+					{
+						Id = 6,
+						Name = LocaleHelper.GetTooltip("WithoutParking"),
+						Icon = "coui://findit/NoParking.svg",
+						Selected = FindItUtil.Filters.WithoutParking,
+						Hidden = !(FindItUtil.CurrentCategory is Domain.Enums.PrefabCategory.Buildings or Domain.Enums.PrefabCategory.ServiceBuildings)
+					},
+					new OptionItemUIEntry
+					{
 						Id = 0,
 						Name = LocaleHelper.GetTooltip("RemoveAds"),
 						Icon = "coui://uil/Standard/NoAds.svg",
@@ -88,6 +104,14 @@ namespace FindIt.Domain.Options
 					break;
 				case 4:
 					FindItUtil.Filters.UniqueMesh = !FindItUtil.Filters.UniqueMesh;
+					break;
+				case 5:
+					FindItUtil.Filters.WithParking = !FindItUtil.Filters.WithParking;
+					FindItUtil.Filters.WithoutParking = false;
+					break;
+				case 6:
+					FindItUtil.Filters.WithoutParking = !FindItUtil.Filters.WithoutParking;
+					FindItUtil.Filters.WithParking = false;
 					break;
 				default:
 					return;

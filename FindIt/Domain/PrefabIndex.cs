@@ -26,6 +26,7 @@ namespace FindIt.Domain
 		public int[] RandomPrefabs { get; set; }
 		public List<string> Tags { get; set; }
 		public int UIOrder { get; set; }
+		public bool HasParking { get; set; }
 
 		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{

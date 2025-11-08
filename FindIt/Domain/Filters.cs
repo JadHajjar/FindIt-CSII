@@ -26,9 +26,13 @@ namespace FindIt.Domain
 		public int BuildingLevelFilter { get; set; }
 		public bool OnlyPlaced { get; set; }
 		public bool UniqueMesh { get; set; }
+		public bool WithParking { get; set; }
+		public bool WithoutParking { get; set; }
 		public ValueSign LotWidthSign { get; set; } = ValueSign.Equal;
 		public ValueSign LotDepthSign { get; set; } = ValueSign.Equal;
 		public ValueSign BuildingLevelSign { get; set; } = ValueSign.Equal;
+
+		public static Func<string, Func<PrefabIndex, bool>> GetCustomSearchFunction { get; set; }
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
@@ -60,6 +64,15 @@ namespace FindIt.Domain
 			if (SelectedDlc != int.MinValue)
 			{
 				yield return DoDlcFilter;
+			}
+
+			if (WithParking)
+			{
+				yield return DoWithParking;
+			}
+			else if (WithoutParking)
+			{
+				yield return DoWithoutParking;
 			}
 
 			if (SelectedZoneType != ZoneTypeFilter.Any)
@@ -110,7 +123,10 @@ namespace FindIt.Domain
 
 			if (!string.IsNullOrWhiteSpace(CurrentSearch))
 			{
-				yield return Mod.Settings.StrictSearch ? DoStrictSearchFilter : DoSearchFilter;
+				if (GetCustomSearchFunction is null)
+					yield return Mod.Settings.StrictSearch ? DoStrictSearchFilter : DoSearchFilter;
+				else
+					yield return GetCustomSearchFunction(CurrentSearch);
 			}
 		}
 
@@ -146,6 +162,16 @@ namespace FindIt.Domain
 		private bool DoZoneTypeFilter(PrefabIndex prefab)
 		{
 			return prefab.ZoneType == SelectedZoneType;
+		}
+
+		private bool DoWithParking(PrefabIndex prefab)
+		{
+			return prefab.HasParking;
+		}
+
+		private bool DoWithoutParking(PrefabIndex prefab)
+		{
+			return !prefab.HasParking;
 		}
 
 		private bool DoBuildingLevelFilter(PrefabIndex prefab)
