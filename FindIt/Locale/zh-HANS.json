@@ -2,6 +2,8 @@
   "Tooltip.LABEL[FindIt.RemoveAds]": "隐藏“品牌”资产",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "隐藏“随机”资产",
   "Tooltip.LABEL[FindIt.CustomAssets]": "仅显示自定义资产",
+  "Tooltip.LABEL[FindIt.WithParking]": "Only show buildings with parking",
+  "Tooltip.LABEL[FindIt.WithoutParking]": "Only show buildings with no parking",
   "Tooltip.LABEL[FindIt.Ascending]": "升序",
   "Tooltip.LABEL[FindIt.Descending]": "降序",
   "Tooltip.LABEL[FindIt.SortingName]": "按名称排序",
@@ -184,7 +186,5 @@
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.UpArrow]": "在资产列表中向上移动选择的快捷键。",
   "Options.OPTION[FindIt.FindIt.Mod/DownArrow/binding]": "向下选择",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "向下选择",
-  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "在资产列表中向下移动选择的快捷键。",
-  "FindIt.DIALOG_MESSAGE[Understand]": "我已知晓",
-  "FindIt.DIALOG_MESSAGE[VehiclesWarning]": "放置载具可能会导致各种问题。大多数载具无法拆除，或者需要使用 Better Bulldozer 模组才能拆除。\n\n仅当您知道自己正在做什么时才放置它们，并且在使用前保存存档。"
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.DownArrow]": "在资产列表中向下移动选择的快捷键。"
 }
