@@ -14,6 +14,7 @@ using Game.Common;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI;
+using Game.UI.Editor;
 using Game.UI.InGame;
 
 using System;
@@ -22,6 +23,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Unity.Collections;
 using Unity.Entities;
@@ -263,6 +265,8 @@ namespace FindIt.Systems
 
 			if (full)
 			{
+				FillPdxModsData();
+
 				AddNumberToDuplicatePrefabNames();
 
 				CleanupBrandPrefabs();
@@ -293,9 +297,10 @@ namespace FindIt.Systems
 			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks.Select(ImageSystem.GetThumbnail).ToArray();
 			prefabIndex.Tags ??= new();
 			prefabIndex.UIOrder = prefab.TryGet<UIObject>(out var uIObject) ? uIObject.m_Priority : int.MaxValue;
-			prefabIndex.IsVanilla = prefab.builtin;
+			prefabIndex.IsVanilla = prefab.isBuiltin || prefab.Has<FindItGenerated>();
 			prefabIndex.HasParking = prefabIndex.Category is PrefabCategory.Buildings or PrefabCategory.ServiceBuildings && HasParking(prefab);
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
+			prefabIndex.IsResourceIntensive = CheckIfResourceItensive(prefab);
 
 			if (prefab.asset?.database == AssetDatabase<ParadoxMods>.instance)
 			{
@@ -303,13 +308,14 @@ namespace FindIt.Systems
 
 				prefabIndex.PdxModsId = prefab.asset.GetMeta().platformID;
 			}
+
 #if DEBUG
 			if (prefabIndex.SubCategory != PrefabSubCategory.Props_Branding && !prefabIndex.IsRandom && ImageSystem.GetIcon(prefab) is null or "" && !prefab.Has<ServiceUpgrade>())
 			{
 				if (uIObject is null
 					|| uIObject.m_Group is null
-					|| !prefab.builtin
-					|| !uIObject.m_Group.builtin)
+					|| !prefab.isBuiltin
+					|| !uIObject.m_Group.isBuiltin)
 				{
 					Mod.Log.Info("MISSINGICON: " + prefab.name);
 				}
@@ -332,16 +338,17 @@ namespace FindIt.Systems
 				}
 			}
 
-			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites) && contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
+			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites)
+				&& contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
 			{
 				prefabIndex.AssetPacks = new AssetPackPrefab[0];
 				prefabIndex.PackThumbnails = new string[0];
 				prefabIndex.DlcId = dlcRequirements.m_Dlc;
 				prefabIndex.DlcThumbnail = $"Media/DLC/{PlatformManager.instance.GetDlcName(dlcRequirements.m_Dlc)}.svg";
 			}
-			else if (prefab.builtin)
+			else if (prefabIndex.IsVanilla)
 			{
-				prefabIndex.DlcId = new DlcId(-2009);
+				prefabIndex.DlcId = DlcId.BaseGame;
 			}
 			else
 			{
@@ -377,6 +384,42 @@ namespace FindIt.Systems
 			//FindItUtil.UpdateFavoritesPack(prefabIndex);
 		}
 
+		private bool CheckIfResourceItensive(PrefabBase prefab)
+		{
+			if (prefab is not ObjectGeometryPrefab geometryPrefab || prefab.Has<TreeObject>())
+			{
+				return false;
+			}
+
+			return geometryPrefab.m_Meshes.Any(mesh =>
+			{
+				if (mesh.m_Mesh is not RenderPrefab meshPrefab)
+				{
+					return false;
+				}
+
+				var vertexCount = Math.Floor(meshPrefab.vertexCount / 3000D);
+				var lodCount = meshPrefab.TryGet<LodProperties>(out var lodProperties) ? lodProperties.m_LodMeshes.Length : 0;
+
+				if (vertexCount <= 3)
+				{
+					return false;
+				}
+
+				if (vertexCount <= 12)
+				{
+					return lodCount < 1;
+				}
+
+				if (vertexCount <= 125)
+				{
+					return lodCount < 2;
+				}
+
+				return true;
+			});
+		}
+
 		private string GetAssetName(PrefabBase prefab)
 		{
 			_prefabUISystem.GetTitleAndDescription(_prefabSystem.GetEntity(prefab), out var titleId, out var _);
@@ -384,6 +427,26 @@ namespace FindIt.Systems
 			return GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name)
 				? name
 				: prefab.name.Replace('_', ' ').FormatWords();
+		}
+
+		private async void FillPdxModsData()
+		{
+			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Where(x => x.PdxModsId>0).GroupBy(x => x.PdxModsId))
+			{
+				var details = await PdxModsUtil.GetLocalModDetails(grp.Key);
+
+				if (details.Success)
+				{
+					var folder = details.Mod.LocalData?.FolderAbsolutePath ?? string.Empty;
+					var installDate = Directory.Exists(folder) ? Directory.GetCreationTime(folder) : (DateTime?)null;
+
+					foreach (var item in grp)
+					{
+						item.InstalledDate = installDate;
+						item.UpdatedDate = details.Mod.LatestUpdate;
+					}
+				}
+			}
 		}
 
 		private static void AddNumberToDuplicatePrefabNames()

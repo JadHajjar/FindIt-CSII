@@ -33,7 +33,7 @@ namespace FindIt.Domain.Options
 				},
 				new()
 				{
-					Id = -2009,
+					Id = DlcId.BaseGame.id,
 					Name = LocaleHelper.GetTooltip("BaseGame"),
 					Icon = "coui://uil/Colored/BaseGame.svg",
 				}

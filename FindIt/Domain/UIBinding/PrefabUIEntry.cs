@@ -9,12 +9,12 @@ namespace FindIt.Domain.UIBinding
 	public class PrefabUIEntry : IJsonWritable
 	{
 		private readonly PrefabIndexBase _prefab;
-		private readonly bool _placed;
+		private readonly int _placed;
 
 		public PrefabUIEntry(PrefabIndexBase prefab)
 		{
 			_prefab = prefab;
-			_placed = PrefabTrackingSystem.GetMostUsedCount(prefab) > 0;
+			_placed = PrefabTrackingSystem.GetMostUsedCount(prefab);
 		}
 
 		public void Write(IJsonWriter writer)
@@ -53,6 +53,9 @@ namespace FindIt.Domain.UIBinding
 
 			writer.PropertyName("placed");
 			writer.Write(_placed);
+
+			writer.PropertyName("hot");
+			writer.Write(_prefab.IsResourceIntensive);
 
 			writer.PropertyName("thumbnails");
 			if (_prefab.IsRandom && _prefab.RandomPrefabThumbnails != null)

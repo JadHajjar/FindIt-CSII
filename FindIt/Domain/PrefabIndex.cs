@@ -4,6 +4,7 @@ using FindIt.Domain.Enums;
 
 using Game.Prefabs;
 
+using System;
 using System.Collections.Generic;
 
 using Unity.Mathematics;
@@ -27,6 +28,8 @@ namespace FindIt.Domain
 		public List<string> Tags { get; set; }
 		public int UIOrder { get; set; }
 		public bool HasParking { get; set; }
+		public DateTime? InstalledDate { get; set; }
+		public DateTime? UpdatedDate { get; set; }
 
 		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{

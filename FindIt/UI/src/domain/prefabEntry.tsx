@@ -9,6 +9,7 @@ export interface PrefabEntry {
   themeThumbnail: string;
   favorited: boolean;
   random: boolean;
-  placed: boolean;
+  placed: number;
+  hot: boolean;
   pdxId: number;
 }

@@ -1,6 +1,7 @@
 ﻿using Colossal.IO.AssetDatabase;
 using Colossal.Serialization.Entities;
 
+using FindIt.Domain;
 using FindIt.Domain.Enums;
 using FindIt.Utilities;
 using FindIt.Utilities.PrefabCategoryProcessor;
@@ -98,6 +99,8 @@ namespace FindIt.Systems
 			var newPrefab = ScriptableObject.CreateInstance<StaticObjectPrefab>();
 
 			newPrefab.name = name;
+
+			newPrefab.AddComponent<FindItGenerated>();
 
 			var overrides = newPrefab.AddComponent<EditorAssetCategoryOverride>();
 			overrides.m_ExcludeCategories = new string[0];

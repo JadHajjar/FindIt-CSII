@@ -5,6 +5,8 @@
 		Name,
 		MostUsed,
 		LastUsed,
+		InstalledDate,
+		UpdatedDate,
 		UIOrder
 	}
 }

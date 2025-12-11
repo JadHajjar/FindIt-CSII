@@ -1,4 +1,5 @@
-﻿using Colossal.IO.AssetDatabase;
+﻿using Colossal.Core;
+using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Colossal.PSI.Environment;
 using Colossal.Reflection;
@@ -69,8 +70,8 @@ namespace FindIt
 			updateSystem.UpdateAt<AutoVehiclePropGeneratorSystem>(SystemUpdatePhase.MainLoop);
 			updateSystem.UpdateAt<AutoQuantityPropGeneratorSystem>(SystemUpdatePhase.MainLoop);
 
-			GameManager.instance.RegisterUpdater(RegisterAPIs);
-			GameManager.instance.RegisterUpdater(ClearGooee);
+			MainThreadDispatcher.RegisterUpdater(RegisterAPIs);
+			MainThreadDispatcher.RegisterUpdater(ClearGooee);
 		}
 
 		private void RegisterAPIs()

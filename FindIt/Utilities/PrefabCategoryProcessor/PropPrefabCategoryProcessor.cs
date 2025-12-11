@@ -141,7 +141,7 @@ namespace FindIt.Utilities.PrefabCategoryProcessor
 				return false;
 			}
 
-			if (prefab.builtin && prefab.name.StartsWith("NotreDame"))
+			if (prefab.isBuiltin && prefab.name.StartsWith("NotreDame"))
 			{
 				subCategory = PrefabSubCategory.Props_Misc;
 				return true;

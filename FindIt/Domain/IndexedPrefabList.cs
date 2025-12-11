@@ -1,6 +1,7 @@
 ﻿using FindIt.Domain.Enums;
 using FindIt.Systems;
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +76,8 @@ namespace FindIt.Domain
 					PrefabSorting.MostUsed => values.OrderBy(PrefabTrackingSystem.GetMostUsedCount).ThenByDescending(PrefabName),
 					PrefabSorting.LastUsed => values.OrderBy(PrefabTrackingSystem.GetLastUsedIndex).ThenByDescending(PrefabName),
 					PrefabSorting.UIOrder => values.OrderByDescending(PrefabGroupIndex).ThenByDescending(PrefabUIOrder).ThenByDescending(PrefabName),
+					PrefabSorting.UpdatedDate => values.OrderBy(UpdatedDate).ThenByDescending(PrefabName),
+					PrefabSorting.InstalledDate => values.OrderBy(InstalledDate).ThenByDescending(PrefabName),
 					_ => values.OrderByDescending(PrefabName),
 				};
 			}
@@ -85,6 +88,8 @@ namespace FindIt.Domain
 					PrefabSorting.MostUsed => values.OrderByDescending(PrefabTrackingSystem.GetMostUsedCount).ThenBy(PrefabName),
 					PrefabSorting.LastUsed => values.OrderByDescending(PrefabTrackingSystem.GetLastUsedIndex).ThenBy(PrefabName),
 					PrefabSorting.UIOrder => values.OrderBy(PrefabGroupIndex).ThenBy(PrefabUIOrder).ThenBy(PrefabName),
+					PrefabSorting.UpdatedDate => values.OrderByDescending(UpdatedDate).ThenBy(PrefabName),
+					PrefabSorting.InstalledDate => values.OrderByDescending(InstalledDate).ThenBy(PrefabName),
 					_ => values.OrderBy(PrefabName),
 				};
 			}
@@ -98,6 +103,16 @@ namespace FindIt.Domain
 		private static int PrefabUIOrder(PrefabIndex prefabIndex)
 		{
 			return prefabIndex.UIOrder;
+		}
+
+		private static DateTime InstalledDate(PrefabIndex prefabIndex)
+		{
+			return prefabIndex.InstalledDate ?? DateTime.MinValue;
+		}
+
+		private static DateTime UpdatedDate(PrefabIndex prefabIndex)
+		{
+			return prefabIndex.UpdatedDate ?? DateTime.MinValue;
 		}
 
 		private static string PrefabName(PrefabIndex prefabIndex)

@@ -113,13 +113,22 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           />
         )}
 
-        {props.prefab.placed && (
+        {props.prefab.placed > 0 && (
           <BasicButton
-            tooltip={translate("Tooltip.LABEL[FindIt.Locate]", "Locate")}
+            tooltip={translate("Tooltip.LABEL[FindIt.LocateCount]", "Locate all {0} instances placed on the map")?.replace(
+              "{0}",
+              props.prefab.placed.toString()
+            )}
             className={styles.placedMarker}
             onClick={() => trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)}
             src="Media/Game/Icons/MapMarker.svg"
           />
+        )}
+
+        {props.prefab.hot && (
+          <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.HotAsset]", "This asset might have a strong impact on performance")}>
+            <img src="assetdb://gameui/Media/Game/Notifications/BuildingOnFire.svg"></img>
+          </Tooltip>
         )}
 
         <BasicButton

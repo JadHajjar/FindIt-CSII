@@ -18,6 +18,7 @@ namespace FindIt.Domain
 		public string[] RandomPrefabThumbnails { get; set; }
 		public string ThemeThumbnail { get; set; }
 		public string[] PackThumbnails { get; set; }
+		public bool IsResourceIntensive { get; set; }
 
 		public PrefabIndexBase(PrefabBase prefabBase)
 		{
