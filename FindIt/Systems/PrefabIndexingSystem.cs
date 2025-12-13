@@ -300,7 +300,7 @@ namespace FindIt.Systems
 			prefabIndex.IsVanilla = prefab.isBuiltin || prefab.Has<FindItGenerated>();
 			prefabIndex.HasParking = prefabIndex.Category is PrefabCategory.Buildings or PrefabCategory.ServiceBuildings && HasParking(prefab);
 			prefabIndex.IsRandom = prefabIndex.SubCategory is not PrefabSubCategory.Networks_Pillars && EntityManager.HasComponent<PlaceholderObjectData>(entity);
-			prefabIndex.IsResourceIntensive = CheckIfResourceItensive(prefab);
+			prefabIndex.IsResourceIntensive = CheckIfResourceIntensive(prefab);
 
 			if (prefab.asset?.database == AssetDatabase<ParadoxMods>.instance)
 			{
@@ -384,9 +384,9 @@ namespace FindIt.Systems
 			//FindItUtil.UpdateFavoritesPack(prefabIndex);
 		}
 
-		private bool CheckIfResourceItensive(PrefabBase prefab)
+		private bool CheckIfResourceIntensive(PrefabBase prefab)
 		{
-			if (prefab is not ObjectGeometryPrefab geometryPrefab || prefab.Has<TreeObject>())
+			if (prefab is not ObjectGeometryPrefab geometryPrefab || geometryPrefab.m_Meshes is null|| prefab.Has<TreeObject>())
 			{
 				return false;
 			}

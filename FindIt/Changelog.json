@@ -1,6 +1,19 @@
 [
   {
     "Stable": true,
+    "Version": "1.5.1",
+    "Date": "2025-12-12",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Fixed incompatibility with static ploppable assets."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.5.0",
     "Date": "2025-12-11",
     "ChangeGroups": [
