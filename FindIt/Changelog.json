@@ -1,6 +1,46 @@
 [
   {
     "Stable": true,
+    "Version": "1.5.5",
+    "Date": "2026-01-17",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Added support for asset creators to hide their asset from Find It using the 'Exclude Categories'."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.5.3",
+    "Date": "2025-12-14",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Added support for searching by PDX Mods ID to find assets from a specific entry.",
+          "Updated the asset performance indicator logic."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
+    "Version": "1.5.2",
+    "Date": "2025-12-13",
+    "ChangeGroups": [
+      {
+        "Name": "Hotfix",
+        "Changes": [
+          "Fixed incompatibility with some assets."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.5.1",
     "Date": "2025-12-12",
     "ChangeGroups": [

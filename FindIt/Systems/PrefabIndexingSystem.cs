@@ -14,7 +14,6 @@ using Game.Common;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI;
-using Game.UI.Editor;
 using Game.UI.InGame;
 
 using System;
@@ -23,7 +22,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using Unity.Collections;
 using Unity.Entities;
@@ -224,21 +222,29 @@ namespace FindIt.Systems
 
 								if (prefab.TryGet<EditorAssetCategoryOverride>(out var overrides) && (overrides?.m_IncludeCategories?.Any() ?? false))
 								{
-									for (var ind = 0; ind < overrides.m_IncludeCategories.Length; ind++)
+									if (overrides?.m_ExcludeCategories?.Any(x => x.StartsWith("FindIt")) ?? false)
 									{
-										if (overrides.m_IncludeCategories[ind].StartsWith("FindIt/"))
+										continue;
+									}
+
+									if (overrides?.m_IncludeCategories?.Any() ?? false)
+									{
+										for (var ind = 0; ind < overrides.m_IncludeCategories.Length; ind++)
 										{
-											var split = overrides.m_IncludeCategories[ind].Split('/');
-
-											if (split.Length >= 3 && int.TryParse(split[1], out var categeory) && int.TryParse(split[2], out var subCategeory))
+											if (overrides.m_IncludeCategories[ind].StartsWith("FindIt/"))
 											{
-												prefabIndex.Category = (PrefabCategory)categeory;
-												prefabIndex.SubCategory = (PrefabSubCategory)subCategeory;
-											}
+												var split = overrides.m_IncludeCategories[ind].Split('/');
 
-											if (split.Length >= 4 && int.TryParse(split[3], out var pdxModsId))
-											{
-												prefabIndex.PdxModsId = pdxModsId;
+												if (split.Length >= 3 && int.TryParse(split[1], out var categeory) && int.TryParse(split[2], out var subCategeory))
+												{
+													prefabIndex.Category = (PrefabCategory)categeory;
+													prefabIndex.SubCategory = (PrefabSubCategory)subCategeory;
+												}
+
+												if (split.Length >= 4 && int.TryParse(split[3], out var pdxModsId))
+												{
+													prefabIndex.PdxModsId = pdxModsId;
+												}
 											}
 										}
 									}
@@ -386,7 +392,7 @@ namespace FindIt.Systems
 
 		private bool CheckIfResourceIntensive(PrefabBase prefab)
 		{
-			if (prefab is not ObjectGeometryPrefab geometryPrefab || geometryPrefab.m_Meshes is null|| prefab.Has<TreeObject>())
+			if (prefab is not ObjectGeometryPrefab geometryPrefab || geometryPrefab.m_Meshes is null || prefab.Has<TreeObject>() || prefab.isBuiltin)
 			{
 				return false;
 			}
@@ -401,22 +407,17 @@ namespace FindIt.Systems
 				var vertexCount = Math.Floor(meshPrefab.vertexCount / 3000D);
 				var lodCount = meshPrefab.TryGet<LodProperties>(out var lodProperties) ? lodProperties.m_LodMeshes.Length : 0;
 
-				if (vertexCount <= 3)
+				if (vertexCount <= 4)
 				{
 					return false;
 				}
 
-				if (vertexCount <= 12)
+				if (vertexCount <= 15)
 				{
 					return lodCount < 1;
 				}
 
-				if (vertexCount <= 125)
-				{
-					return lodCount < 2;
-				}
-
-				return true;
+				return lodCount < 2;
 			});
 		}
 
@@ -431,7 +432,7 @@ namespace FindIt.Systems
 
 		private async void FillPdxModsData()
 		{
-			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Where(x => x.PdxModsId>0).GroupBy(x => x.PdxModsId))
+			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Where(x => x.PdxModsId > 0).GroupBy(x => x.PdxModsId))
 			{
 				var details = await PdxModsUtil.GetLocalModDetails(grp.Key);
 
@@ -595,22 +596,22 @@ namespace FindIt.Systems
 				return true;
 			}
 
-			if (prefab.TryGet<ObjectSubLanes>(out var subLanes))
+			if (prefab.TryGet<ObjectSubLanes>(out var subLanes) && subLanes.m_SubLanes is not null)
 			{
 				foreach (var lane in subLanes.m_SubLanes)
 				{
-					if (lane.m_LanePrefab.Has<Game.Prefabs.ParkingLane>())
+					if (lane.m_LanePrefab.Has<ParkingLane>())
 					{
 						return true;
 					}
 				}
 			}
 
-			if (prefab.TryGet<ObjectSubObjects>(out var subObjects))
+			if (prefab.TryGet<ObjectSubObjects>(out var subObjects) && subObjects.m_SubObjects is not null)
 			{
 				foreach (var obj in subObjects.m_SubObjects)
 				{
-					if (HasParking(obj.m_Object))
+					if (obj.m_Object is not null && HasParking(obj.m_Object))
 					{
 						return true;
 					}
