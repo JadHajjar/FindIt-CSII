@@ -1,5 +1,33 @@
-.ToolbarIcon img {
-  width: 32rem;
-  height: 32rem;
-  filter: drop-shadow(0px 0px 2rem rgba(0, 0, 0, 0.6));
+.ToolbarIcon {
+  --iconSize: calc(0.75 * var(--toolbarToggleButtonSize));
+
+  img {
+    width: var(--iconSize);
+    height: var(--iconSize);
+    filter: drop-shadow(0px 0px 2rem rgba(0, 0, 0, 0.6));
+  }
+}
+
+:global(.legacy-interface) .ToolbarIcon {
+  --iconSize: 30rem;
+  position: relative;
+  width: 46rem;
+  height: 46rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50% 50%;
+  border-width: var(--stroke2);
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.05);
+  background: transparent;
+
+  &:hover {
+    background-color: var(--hoverColorNormal);
+  }
+
+  &:global(.selected) {
+    border-color: var(--selectedColor);
+    background-color: var(--selectedColor);
+  }
 }

@@ -7,6 +7,7 @@ import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaC
 import mod from "../../../mod.json";
 import PickerIconSrc from "images/PickerPicker.svg";
 import FindItIconSrc from "images/Magnifier.svg";
+import classNames from "classnames";
 
 const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const PickerActive$ = bindValue<boolean>(mod.id, "PickerActive");
@@ -14,7 +15,7 @@ const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel"); // Bindi
 
 // Getting the vanilla theme css for compatibility
 const ToolBarButtonTheme: Theme | any = getModule(
-  "game-ui/game/components/toolbar/components/feature-button/toolbar-feature-button.module.scss",
+  "game-ui/game/components/toolbar/components/feature-button/toolbar-feature-button-new.module.scss",
   "classes"
 );
 // Getting the vanilla theme css for compatibility
@@ -40,7 +41,7 @@ export const ToolbarIconComponent: ModuleRegistryExtend = (Component) => {
       <>
         <Button
           src={PickerIconSrc}
-          className={ToolBarButtonTheme.button + " " + style.ToolbarIcon}
+          className={classNames(ToolBarButtonTheme.button, style.ToolbarIcon, PickerActive && style.selected)}
           variant="icon"
           focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
           selected={PickerActive}
@@ -51,7 +52,7 @@ export const ToolbarIconComponent: ModuleRegistryExtend = (Component) => {
 
         <Button
           src={FindItIconSrc}
-          className={ToolBarButtonTheme.button + " " + style.ToolbarIcon}
+          className={classNames(ToolBarButtonTheme.button, style.ToolbarIcon, ShowFindItPanel || IsWindowLocked && style.selected)}
           variant="icon"
           focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
           selected={ShowFindItPanel || IsWindowLocked}

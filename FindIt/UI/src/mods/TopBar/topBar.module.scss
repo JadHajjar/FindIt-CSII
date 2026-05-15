@@ -66,6 +66,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(359deg);
   }
@@ -126,7 +127,7 @@
     flex: 1;
     text-align: right;
 
-    & > span {
+    &>span {
       background-color: rgba(255, 255, 255, 0.05);
       padding: 3rem 6rem;
       border-radius: 3rem;
@@ -154,7 +155,8 @@
 
   &.selected,
   &:active {
-    background-color: var(--accentColorDark-focused) !important;
+    background-image: linear-gradient(var(--gradientHighlightStart), var(--gradientHighlightEnd));
+    background-color: rgba(0, 0, 0, 0);
 
     img {
       filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5)) !important;
@@ -165,6 +167,11 @@
     width: 22rem;
     height: 22rem;
   }
+}
+
+:global(.legacy-interface) .buttonsSection button.selected {
+  background-image: none;
+  background-color: var(--accentColorDark-focused) !important;
 }
 
 .lowerButtonSection .buttonsSection {
@@ -196,7 +203,7 @@
   span {
     width: 80%;
     height: 4rem;
-    background-color: var(--accentColorDark-focused);
+    background-color: var(--gradientHighlightStart);
     border-radius: 2rem;
     position: absolute;
     top: 28rem;
@@ -243,15 +250,19 @@
 .categorySection button:nth-child(2) img {
   padding-top: 2rem;
 }
+
 .categorySection button:nth-child(3) img {
   padding-top: 4rem;
 }
+
 .categorySection button:nth-child(6) img {
   padding-bottom: 2rem;
 }
+
 .categorySection button:nth-child(7) img {
   padding-top: 4rem;
 }
+
 .categorySection button:nth-child(8) img {
   padding-top: 2rem;
 }
@@ -267,12 +278,25 @@
 
     &.selected,
     &:active {
-      background-color: var(--accentColorDark) !important;
+      background-image: linear-gradient(var(--gradientHighlightStart), var(--gradientHighlightEnd));
+      background-color: rgba(0, 0, 0, 0);
 
       img {
         filter: drop-shadow(0px 0px 1rem rgba(0, 0, 0, 0.5)) !important;
       }
     }
+  }
+}
+
+:global(.legacy-interface) .subCategoryContainer button {
+  &:hover {
+    background-color: var(--toolbarButtonColor-pressed);
+  }
+
+  &.selected,
+  &:active {
+    background-image: none;
+    background-color: var(--accentColorDark) !important;
   }
 }
 

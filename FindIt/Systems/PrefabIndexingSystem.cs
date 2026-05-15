@@ -195,6 +195,8 @@ namespace FindIt.Systems
 #endif
 						}
 
+						PrefabIndex prefabIndex = null;
+
 						try
 						{
 							if (roadBuilderDiscarded.HasValue && EntityManager.HasComponent(entity, roadBuilderDiscarded.Value))
@@ -209,7 +211,7 @@ namespace FindIt.Systems
 								FindItUtil.RemoveItem(oldId);
 							}
 
-							if (processor.TryCreatePrefabIndex(prefab, entity, out var prefabIndex))
+							if (processor.TryCreatePrefabIndex(prefab, entity, out prefabIndex))
 							{
 								if (full && prefab is ObjectGeometryPrefab geometryPrefab && geometryPrefab.m_Meshes?.FirstOrDefault()?.m_Mesh?.name is string meshName)
 								{
@@ -243,7 +245,7 @@ namespace FindIt.Systems
 
 												if (split.Length >= 4 && int.TryParse(split[3], out var pdxModsId))
 												{
-													prefabIndex.PdxModsId = pdxModsId;
+													prefabIndex.PdxModsId = pdxModsId.ToString();
 												}
 											}
 										}
@@ -259,7 +261,7 @@ namespace FindIt.Systems
 						}
 						catch (Exception ex)
 						{
-							throw new Exception("Prefab failed: " + prefab.name, ex);
+							Mod.Log.Error(ex, $"Prefab indexing failed for prefab '{prefab.name}'" + (string.IsNullOrEmpty(prefabIndex?.PdxModsId) ? "" : $" (Pdx Mods ID: {prefabIndex.PdxModsId})"));
 						}
 					}
 				}
@@ -432,11 +434,11 @@ namespace FindIt.Systems
 
 		private async void FillPdxModsData()
 		{
-			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Where(x => x.PdxModsId > 0).GroupBy(x => x.PdxModsId))
+			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Where(x => int.TryParse(x.PdxModsId, out var id) && id > 0).GroupBy(x => x.PdxModsId))
 			{
 				var details = await PdxModsUtil.GetLocalModDetails(grp.Key);
 
-				if (details.Success)
+				if (details?.Success == true)
 				{
 					var folder = details.Mod.LocalData?.FolderAbsolutePath ?? string.Empty;
 					var installDate = Directory.Exists(folder) ? Directory.GetCreationTime(folder) : (DateTime?)null;
@@ -444,7 +446,7 @@ namespace FindIt.Systems
 					foreach (var item in grp)
 					{
 						item.InstalledDate = installDate;
-						item.UpdatedDate = details.Mod.LatestUpdate;
+						item.UpdatedDate = details.Mod.UpdatedDate;
 					}
 				}
 			}

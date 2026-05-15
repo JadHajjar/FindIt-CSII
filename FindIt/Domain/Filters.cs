@@ -134,7 +134,7 @@ namespace FindIt.Domain
 		{
 			return CurrentSearch.SearchCheck(prefab.Name)
 				|| CurrentSearch.SearchCheck(prefab.PrefabName)
-				|| (prefab.PdxModsId >= 0 && prefab.PdxModsId.ToString() == CurrentSearch);
+				|| (prefab.PdxModsId == CurrentSearch);
 			//|| prefab.Tags.Any(DoTagSearch);
 		}
 
@@ -142,7 +142,7 @@ namespace FindIt.Domain
 		{
 			return prefab.Name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
 				|| prefab.PrefabName.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| (prefab.PdxModsId >= 0 && prefab.PdxModsId.ToString() == CurrentSearch);
+				|| (prefab.PdxModsId == CurrentSearch);
 			//|| prefab.Tags.Any(DoTagSearch);
 		}
 

@@ -10,7 +10,6 @@ namespace FindIt.Domain.Options.Picker
 {
     internal class ObjectFilterOption : IOptionSection
 	{
-		private readonly OptionsUISystem _optionsUISystem;
 		private readonly PickerToolSystem _pickerToolSystem;
 		private readonly Dictionary<PickerFlags, string> _styles;
 

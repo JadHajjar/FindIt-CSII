@@ -2,8 +2,9 @@
 using Colossal.PSI.PdxSdk;
 
 using PDX.SDK.Contracts;
-using PDX.SDK.Contracts.Service.Mods.Result;
+using PDX.SDK.Contracts.Service.Mods.Results;
 
+using System;
 using System.Threading.Tasks;
 
 namespace FindIt.Utilities
@@ -15,13 +16,25 @@ namespace FindIt.Utilities
 
 		static PdxModsUtil()
 		{
-			_pdxPlatform = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
-			_context = typeof(PdxSdkPlatform).GetField("m_SDKContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(_pdxPlatform) as IContext;
+			try
+			{
+				_pdxPlatform = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
+				_context = typeof(PdxSdkPlatform).GetField("m_SDKContext", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(_pdxPlatform) as IContext;
+			}
+			catch (Exception ex)
+			{
+				Mod.Log.Error(ex, "Failed to initialize PdxModsUtil");
+			}
 		}
 
-		public static Task<GetDetailsResult> GetLocalModDetails(int id)
+		public static async Task<IModDetailsResult> GetLocalModDetails(string id)
 		{
-			return _context.Mods.GetLocalModDetails(id);
+			if (_context == null)
+			{
+				return null;
+			}
+
+			return await _context.Mods.GetLocalModDetails(id);
 		}
 	}
 }
