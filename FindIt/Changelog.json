@@ -1,6 +1,20 @@
 [
   {
     "Stable": true,
+    "Version": "1.5.8",
+    "Date": "2026-06-11",
+    "ChangeGroups": [
+      {
+        "Name": "Changes",
+        "Changes": [
+          "Disables auto-prop generation for quantity props and vehicles when going into the Editor.",
+          "Added a check to prevent duplicate prefab auto-creation."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.5.7",
     "Date": "2026-04-30",
     "ChangeGroups": [

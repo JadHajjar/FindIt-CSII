@@ -43,7 +43,7 @@ namespace FindIt.Systems
 		{
 			base.OnGamePreload(purpose, mode);
 
-			if (!generatedProps)
+			if (!generatedProps && mode == GameMode.Game)
 			{
 				generatedProps = true;
 
@@ -96,6 +96,11 @@ namespace FindIt.Systems
 
 		private void CreatePrefab(string name, string typeName, int subCategory, ObjectGeometryPrefab original, ObjectMeshInfo mesh, Dictionary<string, string> localeDictionary)
 		{
+			if (_prefabSystem.TryGetPrefab(new PrefabID(nameof(StaticObjectPrefab), name), out _))
+			{
+				return;
+			}
+
 			var newPrefab = ScriptableObject.CreateInstance<StaticObjectPrefab>();
 
 			newPrefab.name = name;

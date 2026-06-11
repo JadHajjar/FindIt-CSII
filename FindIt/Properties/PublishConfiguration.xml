@@ -52,13 +52,13 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Screenshot Value="Properties/Screenshot_07.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.5.7" />
+  <ModVersion Value="1.5.8" />
   <GameVersion Value="1.5.*" />
   <ChangeLog>
-# v1.5.7
+# v1.5.8
 ## Changes
-* Improved the handling of faulty prefabs so they do not cause their whole category to fail.
-* Added the PDX Mods ID when logging a faulty prefab to more easily identify the asset causing the issue.
+* Disables auto-prop generation for quantity props and vehicles when going into the Editor.
+* Added a check to prevent duplicate prefab auto-creation.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />
