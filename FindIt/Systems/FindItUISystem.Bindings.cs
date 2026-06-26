@@ -105,10 +105,42 @@ namespace FindIt.Systems
 
 		private void ExpandedToggled()
 		{
+			RefreshPanelSize();
+
+			_optionsUISystem.RefreshOptions();
+		}
+
+		private void RefreshPanelSize()
+		{
 			_PanelWidth.Value = GridUtil.GetWidth();
 			_PanelHeight.Value = GridUtil.GetHeight();
 
 			UpdateCategoriesAndPrefabList();
+		}
+
+		private void SetPanelSize(ValueBindingHelper<float> binding, float value, Action<float> persist)
+		{
+			value = Math.Max(FindItSettings.MinPanelSize, Math.Min(FindItSettings.MaxPanelSize, value));
+
+			persist(value);
+			binding.Value = value;
+
+			Mod.Settings.ApplyAndSave();
+
+			RefreshPanelSize();
+		}
+
+		internal void SyncViewSizesFromSettings()
+		{
+			_RowSize.Value = Mod.Settings.RowSize;
+			_ColumnSize.Value = Mod.Settings.ColumnSize;
+			_ExpandedRowSize.Value = Mod.Settings.ExpandedRowSize;
+			_ExpandedColumnSize.Value = Mod.Settings.ExpandedColumnSize;
+			_RightRowSize.Value = Mod.Settings.RightRowSize;
+			_RightColumnSize.Value = Mod.Settings.RightColumnSize;
+
+			RefreshPanelSize();
+			_optionsUISystem.RefreshOptions();
 		}
 
 		private void OnSearchKeyPressed()

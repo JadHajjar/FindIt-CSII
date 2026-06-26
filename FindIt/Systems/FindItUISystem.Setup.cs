@@ -50,6 +50,12 @@ namespace FindIt.Systems
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
 		private ValueBindingHelper<float> _PanelHeight;
 		private ValueBindingHelper<float> _PanelWidth;
+		private ValueBindingHelper<float> _RowSize;
+		private ValueBindingHelper<float> _ColumnSize;
+		private ValueBindingHelper<float> _ExpandedRowSize;
+		private ValueBindingHelper<float> _ExpandedColumnSize;
+		private ValueBindingHelper<float> _RightRowSize;
+		private ValueBindingHelper<float> _RightColumnSize;
 		private ValueBindingHelper<string> _CurrentSearch;
 		private ValueBindingHelper<string> _ViewStyle;
 		private ValueBindingHelper<string> _AlignmentStyle;
@@ -83,6 +89,82 @@ namespace FindIt.Systems
 				Mod.Settings.ApplyAndSave();
 
 				ExpandedToggled();
+			}
+		}
+
+		// Panel size values mirrored from the (now hidden) settings into UI-layer
+		// bindings. Setting any of these clamps, persists, and refreshes the panel.
+		// They map to the three layout modes handled by GridUtil.
+		public float RowSize
+		{
+			get => _RowSize;
+			set => SetPanelSize(_RowSize, value, v => Mod.Settings.RowSize = v);
+		}
+		public float ColumnSize
+		{
+			get => _ColumnSize;
+			set => SetPanelSize(_ColumnSize, value, v => Mod.Settings.ColumnSize = v);
+		}
+		public float ExpandedRowSize
+		{
+			get => _ExpandedRowSize;
+			set => SetPanelSize(_ExpandedRowSize, value, v => Mod.Settings.ExpandedRowSize = v);
+		}
+		public float ExpandedColumnSize
+		{
+			get => _ExpandedColumnSize;
+			set => SetPanelSize(_ExpandedColumnSize, value, v => Mod.Settings.ExpandedColumnSize = v);
+		}
+		public float RightRowSize
+		{
+			get => _RightRowSize;
+			set => SetPanelSize(_RightRowSize, value, v => Mod.Settings.RightRowSize = v);
+		}
+		public float RightColumnSize
+		{
+			get => _RightColumnSize;
+			set => SetPanelSize(_RightColumnSize, value, v => Mod.Settings.RightColumnSize = v);
+		}
+
+		// Width is driven by the column size and height by the row size of the
+		// layout mode currently in effect (right-dock, expanded, or normal),
+		// mirroring the selection logic in GridUtil.GetWidth/GetHeight.
+		public float CurrentColumnSize
+		{
+			get => AlignmentStyle != "Center" ? RightColumnSize : IsExpanded ? ExpandedColumnSize : ColumnSize;
+			set
+			{
+				if (AlignmentStyle != "Center")
+				{
+					RightColumnSize = value;
+				}
+				else if (IsExpanded)
+				{
+					ExpandedColumnSize = value;
+				}
+				else
+				{
+					ColumnSize = value;
+				}
+			}
+		}
+		public float CurrentRowSize
+		{
+			get => AlignmentStyle != "Center" ? RightRowSize : IsExpanded ? ExpandedRowSize : RowSize;
+			set
+			{
+				if (AlignmentStyle != "Center")
+				{
+					RightRowSize = value;
+				}
+				else if (IsExpanded)
+				{
+					ExpandedRowSize = value;
+				}
+				else
+				{
+					RowSize = value;
+				}
 			}
 		}
 
@@ -127,6 +209,12 @@ namespace FindIt.Systems
 			_ActivePrefabId = CreateBinding("ActivePrefabId", 0);
 			_PanelHeight = CreateBinding("PanelHeight", 0f);
 			_PanelWidth = CreateBinding("PanelWidth", 0f);
+			_RowSize = CreateBinding("RowSize", Mod.Settings.RowSize);
+			_ColumnSize = CreateBinding("ColumnSize", Mod.Settings.ColumnSize);
+			_ExpandedRowSize = CreateBinding("ExpandedRowSize", Mod.Settings.ExpandedRowSize);
+			_ExpandedColumnSize = CreateBinding("ExpandedColumnSize", Mod.Settings.ExpandedColumnSize);
+			_RightRowSize = CreateBinding("RightRowSize", Mod.Settings.RightRowSize);
+			_RightColumnSize = CreateBinding("RightColumnSize", Mod.Settings.RightColumnSize);
 			_ScrollIndex = CreateBinding("ScrollIndex", 0D);
 			_MaxScrollIndex = CreateBinding("MaxScrollIndex", 0D);
 			_ColumnCount = CreateBinding("ColumnCount", 0D);

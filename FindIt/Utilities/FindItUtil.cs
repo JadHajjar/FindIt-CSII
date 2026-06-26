@@ -2,6 +2,7 @@
 
 using FindIt.Domain;
 using FindIt.Domain.Enums;
+using FindIt.Systems;
 
 using Game.Prefabs;
 
@@ -203,6 +204,23 @@ namespace FindIt.Utilities
 			}
 
 			SaveCustomPrefabData();
+		}
+
+		public static void ResetViewSizes()
+		{
+			Mod.Settings.RowSize = FindItSettings.DefaultRowSize;
+			Mod.Settings.ColumnSize = FindItSettings.DefaultColumnSize;
+			Mod.Settings.ExpandedRowSize = FindItSettings.DefaultExpandedRowSize;
+			Mod.Settings.ExpandedColumnSize = FindItSettings.DefaultExpandedColumnSize;
+			Mod.Settings.RightRowSize = FindItSettings.DefaultRightRowSize;
+			Mod.Settings.RightColumnSize = FindItSettings.DefaultRightColumnSize;
+
+			Mod.Settings.ApplyAndSave();
+
+			// If the in-game UI is live, push the reset values into its bindings
+			// and refresh the panel. In the main menu the system won't exist yet,
+			// and the bindings will pick up the saved values when it is created.
+			World.DefaultGameObjectInjectionWorld?.GetExistingSystemManaged<FindItUISystem>()?.SyncViewSizesFromSettings();
 		}
 
 		public static void SaveCustomPrefabData()

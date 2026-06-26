@@ -9,8 +9,8 @@ namespace FindIt
 {
     [FileLocation(nameof(FindIt))]
 	[SettingsUITabOrder(SETTINGS, KEYBINDINGS)]
-	[SettingsUIGroupOrder(BEHAVIOR, UIUX,DISPLAY, OTHER, ACTIONS, NAVIGATION)]
-	[SettingsUIShowGroupName(BEHAVIOR, UIUX,DISPLAY, OTHER, ACTIONS, NAVIGATION)]
+	[SettingsUIGroupOrder(BEHAVIOR, UIUX, OTHER, ACTIONS, NAVIGATION)]
+	[SettingsUIShowGroupName(BEHAVIOR, UIUX, OTHER, ACTIONS, NAVIGATION)]
 	[SettingsUIMouseAction(nameof(FindIt) + "Apply", "CustomUsage")]
 	public class FindItSettings : ModSetting
 	{
@@ -20,8 +20,22 @@ namespace FindIt
 		public const string NAVIGATION = "Navigation";
 		public const string BEHAVIOR = "Behavior";
 		public const string UIUX = "UIUX";
-		public const string DISPLAY = "Display";
 		public const string OTHER = "Other";
+
+		// Bounds for the panel size values. These are no longer shown in the
+		// settings UI; they are exposed through the mod's UI layer (see
+		// FindItUISystem) and adjusted via the in-panel Width/Height options.
+		public const float MinPanelSize = 0f;
+		public const float MaxPanelSize = 200f;
+
+		// Default panel sizes, shared by the property initializers below and the
+		// "Reset View Sizes" button.
+		public const float DefaultRowSize = 40f;
+		public const float DefaultColumnSize = 40f;
+		public const float DefaultExpandedRowSize = 80f;
+		public const float DefaultExpandedColumnSize = 80f;
+		public const float DefaultRightRowSize = 80f;
+		public const float DefaultRightColumnSize = 30f;
 
 		public FindItSettings(IMod mod) : base(mod)
 		{
@@ -41,6 +55,11 @@ namespace FindIt
 		[SettingsUIConfirmation]
 		[SettingsUISection(SETTINGS, OTHER)]
 		public bool ResetFavorites { set => FindItUtil.ResetFavorites(); }
+
+		[SettingsUIButton]
+		[SettingsUIConfirmation]
+		[SettingsUISection(SETTINGS, OTHER)]
+		public bool ResetViewSizes { set => FindItUtil.ResetViewSizes(); }
 
 		[SettingsUIKeyboardBinding(BindingKeyboard.F, nameof(SearchKeyBinding), ctrl: true)]
 		[SettingsUISection(KEYBINDINGS, ACTIONS)]
@@ -95,29 +114,26 @@ namespace FindIt
 		[SettingsUISection(SETTINGS, UIUX)]
 		public float ScrollSpeed { get; set; } = 0.6f;
 
-		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
-		[SettingsUISection(SETTINGS, DISPLAY)]
-		public float RowSize { get; set; } = 40f;
+		// Window sizes are hidden from the settings UI and instead exposed as
+		// bindings on the mod's UI layer (FindItUISystem), surfaced in-panel as
+		// the Width/Height IOptionSection entries. They remain persisted here.
+		[SettingsUIHidden]
+		public float RowSize { get; set; } = DefaultRowSize;
 
-		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
-		[SettingsUISection(SETTINGS, DISPLAY)]
-		public float ColumnSize { get; set; } = 40f;
+		[SettingsUIHidden]
+		public float ColumnSize { get; set; } = DefaultColumnSize;
 
-		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
-		[SettingsUISection(SETTINGS, DISPLAY)]
-		public float ExpandedRowSize { get; set; } = 80f;
+		[SettingsUIHidden]
+		public float ExpandedRowSize { get; set; } = DefaultExpandedRowSize;
 
-		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
-		[SettingsUISection(SETTINGS, DISPLAY)]
-		public float ExpandedColumnSize { get; set; } = 80f;
+		[SettingsUIHidden]
+		public float ExpandedColumnSize { get; set; } = DefaultExpandedColumnSize;
 
-		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
-		[SettingsUISection(SETTINGS, DISPLAY)]
-		public float RightRowSize { get; set; } = 80f;
+		[SettingsUIHidden]
+		public float RightRowSize { get; set; } = DefaultRightRowSize;
 
-		[SettingsUISlider(min = 0, max = 200, unit = Unit.kPercentage)]
-		[SettingsUISection(SETTINGS, DISPLAY)]
-		public float RightColumnSize { get; set; } = 30f;
+		[SettingsUIHidden]
+		public float RightColumnSize { get; set; } = DefaultRightColumnSize;
 
 		public override void SetDefaults()
 		{
