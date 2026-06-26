@@ -293,6 +293,7 @@ namespace FindIt.Systems
 		private void AddPrefab(PrefabBase prefab, Entity entity, PrefabIndex prefabIndex)
 		{
 			prefabIndex.Id = entity.Index;
+			prefabIndex.TypeHash = prefab.GetType().GetHashCode();
 			prefabIndex.PrefabName = prefab.name;
 			prefabIndex.Name = GetAssetName(prefab);
 			prefabIndex.Thumbnail ??= ImageSystem.GetThumbnail(prefab);

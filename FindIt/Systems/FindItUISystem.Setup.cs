@@ -7,6 +7,7 @@ using Game.Rendering;
 using Game.Tools;
 
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace FindIt.Systems
 {
@@ -18,6 +19,7 @@ namespace FindIt.Systems
 		private double scrollIndex;
 		private CancellationTokenSource searchTokenSource = new();
 		private CancellationTokenSource scrollTokenSource = new();
+		private TaskCompletionSource<PrefabBase> prefabSelectionTask = new();
 
 		private ToolSystem _toolSystem;
 		private PrefabSystem _prefabSystem;
@@ -38,6 +40,7 @@ namespace FindIt.Systems
 		private ValueBindingHelper<bool> _ClearSearchBar;
 		private ValueBindingHelper<bool> _ShowFindItPanel;
 		private ValueBindingHelper<bool> _IsExpanded;
+		private ValueBindingHelper<bool> _IsPrefabSelection;
 		private ValueBindingHelper<double> _ScrollIndex;
 		private ValueBindingHelper<double> _MaxScrollIndex;
 		private ValueBindingHelper<double> _ColumnCount;
@@ -51,12 +54,14 @@ namespace FindIt.Systems
 		private ValueBindingHelper<string> _ViewStyle;
 		private ValueBindingHelper<string> _AlignmentStyle;
 		private ValueBindingHelper<string> _PrefabCountBinding;
+		private ValueBindingHelper<string> _PrefabSelectionTitle;
 		private ValueBindingHelper<string[]> _AllThumbnails;
 		private ValueBindingHelper<CategoryUIEntry[]> _CategoryBinding;
 		private ValueBindingHelper<SubCategoryUIEntry[]> _SubCategoryBinding;
 		private ValueBindingHelper<PrefabUIEntry[]> _PrefabListBinding;
 
 		public bool IsExpanded => _IsExpanded;
+		public bool IsPrefabSelection => _IsPrefabSelection;
 		public string ViewStyle
 		{
 			get => _ViewStyle;
@@ -117,6 +122,7 @@ namespace FindIt.Systems
 			_ShowFindItPanel = CreateBinding("ShowFindItPanel", false);
 			_IsSearchLoading = CreateBinding("IsSearchLoading", false);
 			_IsWindowLocked = CreateBinding("IsWindowLocked", false);
+			_IsPrefabSelection = CreateBinding("IsPrefabSelection", false);
 			_IsExpanded = CreateBinding("IsExpanded", "SetIsExpanded", false, _ => ExpandedToggled());
 			_ActivePrefabId = CreateBinding("ActivePrefabId", 0);
 			_PanelHeight = CreateBinding("PanelHeight", 0f);
@@ -125,6 +131,7 @@ namespace FindIt.Systems
 			_MaxScrollIndex = CreateBinding("MaxScrollIndex", 0D);
 			_ColumnCount = CreateBinding("ColumnCount", 0D);
 			_RowCount = CreateBinding("RowCount", 0D);
+			_PrefabSelectionTitle = CreateBinding("PrefabSelectionTitle", string.Empty);
 			_CurrentSearch = CreateBinding("CurrentSearch", string.Empty);
 			_CategoryBinding = CreateBinding("CategoryList", new CategoryUIEntry[] { new(PrefabCategory.Any) });
 			_SubCategoryBinding = CreateBinding("SubCategoryList", new SubCategoryUIEntry[] { new(PrefabSubCategory.Any) });

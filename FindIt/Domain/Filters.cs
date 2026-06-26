@@ -17,6 +17,7 @@ namespace FindIt.Domain
 		public int LotWidthFilter { get; set; }
 		public int LotDepthFilter { get; set; }
 		public ThemePrefab SelectedTheme { get; set; }
+		public Type SelectedType { get; set; }
 		public OptionListHelper<AssetPackPrefab> SelectedAssetPacks { get; set; }
 		public BuildingCornerFilter SelectedBuildingCorner { get; set; }
 		public bool SelectedThemeNone { get; set; }
@@ -36,6 +37,11 @@ namespace FindIt.Domain
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
 		{
+			if (SelectedType is not null)
+			{
+				yield return DoTypeFilter;
+			}
+
 			if (HideAds)
 			{
 				yield return DoAdFilter;
@@ -149,6 +155,11 @@ namespace FindIt.Domain
 		private bool DoTagSearch(string tag)
 		{
 			return tag.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0;
+		}
+
+		private bool DoTypeFilter(PrefabIndex prefab)
+		{
+			return SelectedType.IsAssignableFrom(prefab.Prefab.GetType());
 		}
 
 		private bool DoDlcFilter(PrefabIndex prefab)

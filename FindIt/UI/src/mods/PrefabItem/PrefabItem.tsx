@@ -28,7 +28,10 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   const mouseOver = () => {
     const date = new Date();
 
-    setThumbnailIndex(Math.floor(date.getSeconds() * 10 + date.getMilliseconds() / 250) % props.prefab.thumbnails.length);
+    setThumbnailIndex(
+      Math.floor(date.getSeconds() * 10 + date.getMilliseconds() / 250) %
+        props.prefab.thumbnails.length,
+    );
   };
 
   function SetCurrentPrefab(id: number) {
@@ -46,7 +49,11 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   return (
     <>
       <Button
-        className={classNames(styles.gridItem, props.selected && styles.selected, props.prefab.favorited && styles.favorited)}
+        className={classNames(
+          styles.gridItem,
+          props.selected && styles.selected,
+          props.prefab.favorited && styles.favorited,
+        )}
         variant="icon"
         onSelect={() => SetCurrentPrefab(props.prefab.id)}
         style={{ width: props.width, height: props.width }}
@@ -71,7 +78,9 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
               onMouseMove={props.prefab.random ? mouseOver : undefined}
             />
           )}
-          {props.prefab.random && <img className={styles.shuffle} src={shuffle} />}
+          {props.prefab.random && (
+            <img className={styles.shuffle} src={shuffle} />
+          )}
         </div>
 
         <div className={styles.gridItemText}>
@@ -87,46 +96,69 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
 
   function renderRightSection() {
     return (
-      <div className={classNames(styles.rightSideContainer, styles.buttonsSection)}>
-        {props.showCategory && !props.noAssetImage && <img src={props.prefab.categoryThumbnail} />}
+      <div
+        className={classNames(styles.rightSideContainer, styles.buttonsSection)}
+      >
+        {props.showCategory && !props.noAssetImage && (
+          <img src={props.prefab.categoryThumbnail} />
+        )}
 
         {props.prefab.dlcThumbnail && <img src={props.prefab.dlcThumbnail} />}
 
-        {props.prefab.themeThumbnail && <img src={props.prefab.themeThumbnail} />}
+        {props.prefab.themeThumbnail && (
+          <img src={props.prefab.themeThumbnail} />
+        )}
 
-        {props.prefab.packThumbnails && props.prefab.packThumbnails.map((x) => <img src={x} />)}
+        {props.prefab.packThumbnails &&
+          props.prefab.packThumbnails.map((x) => <img src={x} />)}
       </div>
     );
   }
 
   function renderLeftSection(addDiv: boolean) {
     return (
-      <div className={classNames(styles.leftSideContainer, styles.buttonsSection)}>
-        {addDiv && (props.prefab.placed || props.prefab.pdxId > 0) && <div className={styles.seperator} />}
+      <div
+        className={classNames(styles.leftSideContainer, styles.buttonsSection)}
+      >
+        {addDiv && (props.prefab.placed || props.prefab.pdxId > 0) && (
+          <div className={styles.seperator} />
+        )}
 
         {props.prefab.pdxId > 0 && (
           <BasicButton
-            tooltip={translate("Tooltip.LABEL[FindIt.ViewOnPdxMods]", "View on PdxMods")}
+            tooltip={translate(
+              "Tooltip.LABEL[FindIt.ViewOnPdxMods]",
+              "View on PdxMods",
+            )}
             className={styles.pdxModsButton}
-            onClick={() => trigger(mod.id, "OnPdxModsButtonClicked", props.prefab.id)}
+            onClick={() =>
+              trigger(mod.id, "OnPdxModsButtonClicked", props.prefab.id)
+            }
             src="assetdb://gameui/Media/Glyphs/ParadoxModsCloud.svg"
           />
         )}
 
         {props.prefab.placed > 0 && (
           <BasicButton
-            tooltip={translate("Tooltip.LABEL[FindIt.LocateCount]", "Locate all {0} instances placed on the map")?.replace(
-              "{0}",
-              props.prefab.placed.toString()
-            )}
+            tooltip={translate(
+              "Tooltip.LABEL[FindIt.LocateCount]",
+              "Locate all {0} instances placed on the map",
+            )?.replace("{0}", props.prefab.placed.toString())}
             className={styles.placedMarker}
-            onClick={() => trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)}
+            onClick={() =>
+              trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)
+            }
             src="Media/Game/Icons/MapMarker.svg"
           />
         )}
 
         {props.prefab.hot && (
-          <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.HotAsset]", "This asset might have a strong impact on performance")}>
+          <Tooltip
+            tooltip={translate(
+              "Tooltip.LABEL[FindIt.HotAsset]",
+              "This asset might have a strong impact on performance",
+            )}
+          >
             <img src="assetdb://gameui/Media/Game/Notifications/BuildingOnFire.svg"></img>
           </Tooltip>
         )}
@@ -134,12 +166,22 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
         <BasicButton
           tooltip={
             props.prefab.favorited
-              ? translate("Tooltip.LABEL[FindIt.RemoveFavorite]", "Remove from favorites")
-              : translate("Tooltip.LABEL[FindIt.AddFavorite]", "Favorite this asset")
+              ? translate(
+                  "Tooltip.LABEL[FindIt.RemoveFavorite]",
+                  "Remove from favorites",
+                )
+              : translate(
+                  "Tooltip.LABEL[FindIt.AddFavorite]",
+                  "Favorite this asset",
+                )
           }
           className={styles.favoriteIcon}
           onClick={() => ToggleFavorited(props.prefab.id)}
-          src={props.prefab.favorited ? "coui://uil/Colored/StarFilled.svg" : "coui://uil/Colored/StarOutline.svg"}
+          src={
+            props.prefab.favorited
+              ? "coui://uil/Colored/StarFilled.svg"
+              : "coui://uil/Colored/StarOutline.svg"
+          }
         />
       </div>
     );

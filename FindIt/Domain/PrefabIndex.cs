@@ -30,6 +30,7 @@ namespace FindIt.Domain
 		public bool HasParking { get; set; }
 		public DateTime? InstalledDate { get; set; }
 		public DateTime? UpdatedDate { get; set; }
+		public int TypeHash { get; set; }
 
 		public PrefabIndex(PrefabBase prefabBase) : base(prefabBase)
 		{

@@ -3,6 +3,7 @@
     bottom: 137rem - 20rem;
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -13,6 +14,7 @@
     transform: translateY(10rem);
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -23,7 +25,7 @@
   left: 0;
   right: 0;
   top: 0;
-  bottom: calc(2 * var(--toolbarHeight) );
+  bottom: calc(2 * var(--toolbarHeight));
   pointer-events: none;
 
   animation: entry 0.3s ease-in-out;
@@ -83,7 +85,7 @@
     justify-content: flex-end;
   }
 
-  .topPanel > div {
+  .topPanel>div {
     width: 400rem;
     top: 0px;
     left: -410rem;
@@ -113,13 +115,21 @@
     justify-content: flex-end;
   }
 
-  .topPanel > div {
+  .topPanel>div {
     width: 400rem;
     top: 0px;
     right: -410rem;
     bottom: auto;
     left: auto;
   }
+}
+
+.prefabSelection {
+  top: 50%;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
 }
 
 .topPanel {
@@ -138,7 +148,7 @@
   border-bottom-right-radius: var(--panelRadius);
   background-color: var(--panelColorNormal);
   backdrop-filter: var(--panelBlur);
-  background-image: linear-gradient( var(--panelGradientStart) , var(--panelGradientEnd) );
+  background-image: linear-gradient(var(--panelGradientStart), var(--panelGradientEnd));
   color: rgba(255, 255, 255, 1);
   flex-grow: 1;
   position: relative;
@@ -167,15 +177,15 @@
   justify-content: flex-end;
 }
 
-.topPanel > div {
+.topPanel>div {
   position: absolute;
   width: 350rem;
   bottom: 10rem;
   right: 0;
 }
 
-.rightPanel > div:first-child,
-.topPanel > div > div {
+.rightPanel>div:first-child,
+.topPanel>div>div {
   pointer-events: auto;
   padding-bottom: 10rem;
   width: 100%;
@@ -188,7 +198,7 @@
   border-top-right-radius: var(--panelRadius);
 }
 
-.rightPanel > div:last-child {
+.rightPanel>div:last-child {
   flex-shrink: 1;
 }
 

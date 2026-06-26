@@ -25,6 +25,11 @@ namespace FindIt.Utilities
 
         internal static float GetWidth()
         {
+            if (_findItUISystem.IsPrefabSelection)
+            {
+				return 800;
+			}
+
             if (_findItUISystem.AlignmentStyle != "Center")
             {
                 return 150 + Mod.Settings.RightColumnSize * 8.5f;
@@ -57,8 +62,13 @@ namespace FindIt.Utilities
         }
 
         internal static float GetHeight()
-        {
-            return 100 + (_findItUISystem.AlignmentStyle != "Center" ? Mod.Settings.RightRowSize * 2.5f : _findItUISystem.IsExpanded ? Mod.Settings.ExpandedRowSize : Mod.Settings.RowSize) * 2.5f;
+		{
+			if (_findItUISystem.IsPrefabSelection)
+			{
+				return 400;
+			}
+
+			return 100 + (_findItUISystem.AlignmentStyle != "Center" ? Mod.Settings.RightRowSize * 2.5f : _findItUISystem.IsExpanded ? Mod.Settings.ExpandedRowSize : Mod.Settings.RowSize) * 2.5f;
         }
 
         internal static float GetScrollMultiplier()

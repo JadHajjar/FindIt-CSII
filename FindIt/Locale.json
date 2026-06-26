@@ -1,4 +1,5 @@
 {
+  "Tooltip.TITLE[FindIt.SelectPrefab]": "Select an asset",
   "Tooltip.LABEL[FindIt.RemoveAds]": "Hide \"Branding\" assets",
   "Tooltip.LABEL[FindIt.RemoveRandoms]": "Hide \"Random\" assets",
   "Tooltip.LABEL[FindIt.CustomAssets]": "Only show custom assets",

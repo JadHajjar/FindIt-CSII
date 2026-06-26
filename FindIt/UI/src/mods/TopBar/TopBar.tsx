@@ -34,13 +34,19 @@ export interface TopBarProps {
   toggleEnlarge: () => void;
 }
 
-const TextInput = getModule("game-ui/common/input/text/text-input.tsx", "TextInput");
+const TextInput = getModule(
+  "game-ui/common/input/text/text-input.tsx",
+  "TextInput",
+);
 
-const TextInputTheme: Theme | any = getModule("game-ui/editor/widgets/item/editor-item.module.scss", "classes");
+const TextInputTheme: Theme | any = getModule(
+  "game-ui/editor/widgets/item/editor-item.module.scss",
+  "classes",
+);
 
 const AssetCategoryTabTheme: Theme | any = getModule(
   "game-ui/game/components/asset-menu/asset-category-tab-bar/asset-category-tab-bar.module.scss",
-  "classes"
+  "classes",
 );
 
 // These establishes the binding with C# side.
@@ -49,13 +55,18 @@ const IsSearchLoading$ = bindValue<boolean>(mod.id, "IsSearchLoading");
 const ClearSearchBar$ = bindValue<boolean>(mod.id, "ClearSearchBar");
 const FocusSearchBar$ = bindValue<boolean>(mod.id, "FocusSearchBar");
 const AreFiltersSet$ = bindValue<boolean>(mod.id, "AreFiltersSet");
+const IsPrefabSelection$ = bindValue<boolean>(mod.id, "IsPrefabSelection");
 const CurrentCategory$ = bindValue<number>(mod.id, "CurrentCategory");
 const PrefabCount$ = bindValue<string>(mod.id, "PrefabCount");
 const CurrentSearch$ = bindValue<string>(mod.id, "CurrentSearch");
 const CurrentSubCategory$ = bindValue<number>(mod.id, "CurrentSubCategory");
 const CategoryList$ = bindValue<PrefabCategory[]>(mod.id, "CategoryList");
-const SubCategoryList$ = bindValue<PrefabSubCategory[]>(mod.id, "SubCategoryList");
+const SubCategoryList$ = bindValue<PrefabSubCategory[]>(
+  mod.id,
+  "SubCategoryList",
+);
 const AlignmentStyle$ = bindValue<string>(mod.id, "AlignmentStyle");
+const PrefabSelectionTitle$ = bindValue<string>(mod.id, "PrefabSelectionTitle");
 
 export const TopBarComponent = (props: TopBarProps) => {
   // These get the value of the bindings. Or they will when we have bindings.
@@ -66,11 +77,13 @@ export const TopBarComponent = (props: TopBarProps) => {
   const CategoryList = useValue(CategoryList$);
   const SubCategoryList = useValue(SubCategoryList$);
   const IsSearchLoading = useValue(IsSearchLoading$);
+  const IsPrefabSelection = useValue(IsPrefabSelection$);
   const AreFiltersSet = useValue(AreFiltersSet$);
   const CurrentSearch = useValue(CurrentSearch$);
   const ClearSearchBar = useValue(ClearSearchBar$);
   const FocusSearchBar = useValue(FocusSearchBar$);
   const AlignmentStyle = useValue(AlignmentStyle$);
+  const PrefabSelectionTitle = useValue(PrefabSelectionTitle$);
   const searchRef = useRef(null);
   // translation handling. Translates using locale keys that are defined in C# or fallback string here.
   const { translate } = useLocalization();
@@ -118,8 +131,15 @@ export const TopBarComponent = (props: TopBarProps) => {
             <BasicButton
               tooltip={element.toolTip}
               src={element.icon}
-              onClick={element.id == CurrentCategory ? undefined : () => setCurrentCategory(element.id)}
-              className={classNames(VanillaComponentResolver.instance.toolButtonTheme.button, element.id == CurrentCategory && styles.selected)}
+              onClick={
+                element.id == CurrentCategory
+                  ? undefined
+                  : () => setCurrentCategory(element.id)
+              }
+              className={classNames(
+                VanillaComponentResolver.instance.toolButtonTheme.button,
+                element.id == CurrentCategory && styles.selected,
+              )}
             >
               <span />
             </BasicButton>
@@ -130,11 +150,25 @@ export const TopBarComponent = (props: TopBarProps) => {
   }
 
   function RenderButtonSection(): JSX.Element {
+    if (IsPrefabSelection) {
+      return (
+        <div className={styles.buttonsSection}>
+          <div className={styles.itemCount}>
+            <span>{PrefabSelectionTitle}</span>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={styles.buttonsSection}>
         {AlignmentStyle === "Center" && (
           <BasicButton
-            tooltip={props.expanded ? translate("Tooltip.LABEL[FindIt.Shrink]", "Shrink") : translate("Tooltip.LABEL[FindIt.Expand]", "Expand")}
+            tooltip={
+              props.expanded
+                ? translate("Tooltip.LABEL[FindIt.Shrink]", "Shrink")
+                : translate("Tooltip.LABEL[FindIt.Expand]", "Expand")
+            }
             onClick={props.toggleEnlarge}
             mask={props.expanded ? shrink : expand}
             className={props.expanded && styles.selected}
@@ -142,7 +176,10 @@ export const TopBarComponent = (props: TopBarProps) => {
         )}
 
         <BasicButton
-          tooltip={translate("Tooltip.LABEL[FindIt.LockWindow]", "Lock Window Open")}
+          tooltip={translate(
+            "Tooltip.LABEL[FindIt.LockWindow]",
+            "Lock Window Open",
+          )}
           onClick={() => trigger(mod.id, "ToggleLock")}
           mask={!IsWindowLocked ? unlock : lock}
           className={IsWindowLocked && styles.selected}
@@ -165,7 +202,10 @@ export const TopBarComponent = (props: TopBarProps) => {
         <div className={styles.seperator} />
 
         <BasicButton
-          tooltip={translate("Tooltip.LABEL[FindIt.ClearFilter]", "Clear Filters")}
+          tooltip={translate(
+            "Tooltip.LABEL[FindIt.ClearFilter]",
+            "Clear Filters",
+          )}
           disabled={!AreFiltersSet}
           onClick={() => trigger(mod.id, "ClearFilters")}
           mask={filterX}
@@ -188,11 +228,33 @@ export const TopBarComponent = (props: TopBarProps) => {
 
   return (
     <>
-      <div className={classNames(props.large && styles.large, props.small && styles.small)}>
+      <div
+        className={classNames(
+          props.large && styles.large,
+          props.small && styles.small,
+        )}
+      >
         <div className={styles.topBar}>
-          <div className={classNames(styles.topBarSection, AlignmentStyle !== "Center" && styles.expandedSearchArea)}>
-            {IsSearchLoading && <img style={{ maskImage: "url(coui://uil/Standard/HalfCircleProgress.svg)" }} className={styles.loadingIcon}></img>}
-            {!IsSearchLoading && <img style={{ maskImage: `url(${find})` }} className={styles.searchIcon}></img>}
+          <div
+            className={classNames(
+              styles.topBarSection,
+              AlignmentStyle !== "Center" && styles.expandedSearchArea,
+            )}
+          >
+            {IsSearchLoading && (
+              <img
+                style={{
+                  maskImage: "url(coui://uil/Standard/HalfCircleProgress.svg)",
+                }}
+                className={styles.loadingIcon}
+              ></img>
+            )}
+            {!IsSearchLoading && (
+              <img
+                style={{ maskImage: `url(${find})` }}
+                className={styles.searchIcon}
+              ></img>
+            )}
             <div className={styles.searchArea}>
               <TextInput
                 ref={searchRef}
@@ -203,12 +265,18 @@ export const TopBarComponent = (props: TopBarProps) => {
                 className={classNames(TextInputTheme.input, styles.textBox)}
                 focusKey={FOCUS_DISABLED}
                 onChange={handleInputChange}
-                placeholder={translate("Editor.SEARCH_PLACEHOLDER", "Search...")}
+                placeholder={translate(
+                  "Editor.SEARCH_PLACEHOLDER",
+                  "Search...",
+                )}
               ></TextInput>
 
               {CurrentSearch.trim() !== "" && (
                 <Button
-                  className={classNames(VanillaComponentResolver.instance.assetGridTheme.item, styles.clearIcon)}
+                  className={classNames(
+                    VanillaComponentResolver.instance.assetGridTheme.item,
+                    styles.clearIcon,
+                  )}
                   variant="icon"
                   onSelect={() => {
                     setSearchText("");
@@ -223,9 +291,18 @@ export const TopBarComponent = (props: TopBarProps) => {
           </div>
 
           <div className={styles.topBarSection}>
-            <Tooltip tooltip={translate("Tooltip.LABEL[FindIt.ClosePanel]", "Close Panel")}>
+            <Tooltip
+              tooltip={translate(
+                "Tooltip.LABEL[FindIt.ClosePanel]",
+                "Close Panel",
+              )}
+            >
               <Button
-                className={VanillaComponentResolver.instance.assetGridTheme.item + " " + styles.closeIcon}
+                className={
+                  VanillaComponentResolver.instance.assetGridTheme.item +
+                  " " +
+                  styles.closeIcon
+                }
                 variant="icon"
                 onSelect={() => trigger(mod.id, "FindItCloseToggled")}
               >
@@ -235,28 +312,53 @@ export const TopBarComponent = (props: TopBarProps) => {
           </div>
         </div>
 
-        {AlignmentStyle !== "Center" && <div className={styles.lowerButtonSection}>{RenderButtonSection()}</div>}
-
-        <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>
-
-        <div className={classNames(AssetCategoryTabTheme.assetCategoryTabBar, styles.subCategoryContainer)}>
-          <div className={AssetCategoryTabTheme.items}>
-            {SubCategoryList.map((element) => (
-              <BasicButton
-                key={element.id}
-                tooltip={element.toolTip}
-                onClick={element.id == CurrentSubCategory ? undefined : () => setCurrentSubCategory(element.id)}
-                className={classNames(
-                  VanillaComponentResolver.instance.assetGridTheme.item,
-                  styles.tabButton,
-                  element.id == CurrentSubCategory && styles.selected
-                )}
-              >
-                <img src={element.icon} className={VanillaComponentResolver.instance.assetGridTheme.thumbnail + " " + styles.gridThumbnail}></img>
-              </BasicButton>
-            ))}
+        {AlignmentStyle !== "Center" && (
+          <div className={styles.lowerButtonSection}>
+            {RenderButtonSection()}
           </div>
-        </div>
+        )}
+
+        {!IsPrefabSelection && (
+          <>
+            <div className={styles.rowCategoryBar}>{RenderCategoryList()}</div>
+
+            <div
+              className={classNames(
+                AssetCategoryTabTheme.assetCategoryTabBar,
+                styles.subCategoryContainer,
+              )}
+            >
+              <div className={AssetCategoryTabTheme.items}>
+                {SubCategoryList.map((element) => (
+                  <BasicButton
+                    key={element.id}
+                    tooltip={element.toolTip}
+                    onClick={
+                      element.id == CurrentSubCategory
+                        ? undefined
+                        : () => setCurrentSubCategory(element.id)
+                    }
+                    className={classNames(
+                      VanillaComponentResolver.instance.assetGridTheme.item,
+                      styles.tabButton,
+                      element.id == CurrentSubCategory && styles.selected,
+                    )}
+                  >
+                    <img
+                      src={element.icon}
+                      className={
+                        VanillaComponentResolver.instance.assetGridTheme
+                          .thumbnail +
+                        " " +
+                        styles.gridThumbnail
+                      }
+                    ></img>
+                  </BasicButton>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

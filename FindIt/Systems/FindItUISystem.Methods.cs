@@ -1,9 +1,9 @@
-﻿using FindIt.Domain.UIBinding;
+﻿using FindIt.Domain.Enums;
+using FindIt.Domain.UIBinding;
 using FindIt.Utilities;
+
 using Game.Prefabs;
-using Game.SceneFlow;
 using Game.Tools;
-using Game.UI;
 
 using System;
 using System.Collections.Generic;
@@ -11,11 +11,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Unity.Entities;
-
 namespace FindIt.Systems
 {
-    internal partial class FindItUISystem : ExtendedUISystemBase
+	internal partial class FindItUISystem : ExtendedUISystemBase
 	{
 		internal void UpdateCategoriesAndPrefabList()
 		{
@@ -60,15 +58,27 @@ namespace FindIt.Systems
 
 		internal void TryActivatePrefabTool(int id)
 		{
-			// Activates a prefab using its index from PrefabIndexingSystem
-
-			if (FindItUtil.GetPrefabBase(id) is PrefabBase prefabBase && _toolSystem.activePrefab != prefabBase)
+			if (FindItUtil.GetPrefabBase(id) is not PrefabBase prefabBase || _toolSystem.activePrefab == prefabBase)
 			{
-				settingPrefab = true;
-				_toolSystem.ActivatePrefabTool(prefabBase);
-				_ActivePrefabId.Value = id;
-				settingPrefab = false;
+				return;
 			}
+
+			if (_IsPrefabSelection && prefabSelectionTask != null)
+			{
+				// Send the selected prefab back to the caller and close the panel if we're in prefab selection mode
+				prefabSelectionTask.SetResult(prefabBase);
+				prefabSelectionTask = null;
+
+				ToggleFindItPanel(false);
+
+				return;
+			}
+
+			// Activates a prefab using its index from PrefabIndexingSystem
+			settingPrefab = true;
+			_toolSystem.ActivatePrefabTool(prefabBase);
+			_ActivePrefabId.Value = id;
+			settingPrefab = false;
 		}
 
 		internal void ScrollTo(int id)
@@ -178,6 +188,37 @@ namespace FindIt.Systems
 		public void SetAllThumbnails(IEnumerable<string> thumbnails)
 		{
 			_AllThumbnails.Value = thumbnails.ToArray();
+		}
+
+		internal Task<PrefabBase> PickPrefab(Type prefabType, string title)
+		{
+			if (!FindItUtil.IsReady)
+			{
+				Mod.Log.Warn("PickPrefab called before FindIt finished indexing prefabs.");
+				return Task.FromResult<PrefabBase>(null);
+			}
+
+			_IsPrefabSelection.Value = true;
+
+			ToggleFindItPanel(true, false);
+
+			FindItUtil.Filters.SelectedType = prefabType;
+			FindItUtil.CurrentCategory = PrefabCategory.Any;
+			FindItUtil.CurrentSubCategory = PrefabSubCategory.Any;
+
+			scrollIndex = 0;
+
+			UpdateCategoriesAndPrefabList();
+
+			TriggerSearch();
+
+			_optionsUISystem.RefreshOptions();
+
+			_PrefabSelectionTitle.Value = LocaleHelper.Translate(title ?? "Tooltip.TITLE[FindIt.SelectPrefab]", "Select an asset");
+
+			prefabSelectionTask = new();
+
+			return prefabSelectionTask.Task;
 		}
 	}
 }

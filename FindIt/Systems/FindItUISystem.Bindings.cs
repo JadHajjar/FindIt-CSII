@@ -67,6 +67,12 @@ namespace FindIt.Systems
 
 			if (!visible)
 			{
+				// Reset prefab selection state when closing the panel
+				FindItUtil.Filters.SelectedType = null;
+				_IsPrefabSelection.Value = false;
+				prefabSelectionTask?.TrySetResult(null);
+				prefabSelectionTask = null;
+
 				return;
 			}
 

@@ -13,21 +13,35 @@ import classNames from "classnames";
 
 const PanelWidth$ = bindValue<number>(mod.id, "PanelWidth");
 const IsExpanded$ = bindValue<boolean>(mod.id, "IsExpanded");
+const IsPrefabSelection$ = bindValue<boolean>(mod.id, "IsPrefabSelection");
 const AlignmentStyle$ = bindValue<string>(mod.id, "AlignmentStyle");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const OptionsList$ = bindValue<OptionSection[]>(mod.id, "OptionsList");
 
-const GameMainScreneTheme: Theme | any = getModule("game-ui/game/components/game-main-screen.module.scss", "classes");
+const GameMainScreneTheme: Theme | any = getModule(
+  "game-ui/game/components/game-main-screen.module.scss",
+  "classes",
+);
 
-const PanelTheme: Theme | any = getModule("game-ui/common/panel/panel.module.scss", "classes");
+const PanelTheme: Theme | any = getModule(
+  "game-ui/common/panel/panel.module.scss",
+  "classes",
+);
 
-const AssetMenuTheme: Theme | any = getModule("game-ui/game/components/asset-menu/asset-menu.module.scss", "classes");
+const AssetMenuTheme: Theme | any = getModule(
+  "game-ui/game/components/asset-menu/asset-menu.module.scss",
+  "classes",
+);
 
-const DefaultMainTheme: Theme | any = getModule("game-ui/common/panel/themes/default.module.scss", "classes");
+const DefaultMainTheme: Theme | any = getModule(
+  "game-ui/common/panel/themes/default.module.scss",
+  "classes",
+);
 
 export const FindItMainContainerComponent = () => {
-  const isPhotoMode = useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
+  const isPhotoMode =
+    useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
   const { translate } = useLocalization();
 
   const containerRef = useRef(null);
@@ -39,15 +53,21 @@ export const FindItMainContainerComponent = () => {
   // These get the value of the bindings. Without C# side game ui will crash. Or they will when we have bindings.
   const ShowFindItPanel = useValue(ShowFindItPanel$);
   const IsWindowLocked = useValue(IsWindowLocked$);
+  const IsPrefabSelection = useValue(IsPrefabSelection$);
   const IsExpanded = useValue(IsExpanded$);
   const PanelWidth = useValue(PanelWidth$) + 15 + 20;
   const OptionsList = useValue(OptionsList$);
   const AlignmentStyle = useValue(AlignmentStyle$);
+  const Alignment = IsPrefabSelection ? "Center" : AlignmentStyle;
 
-  const optionsOverflow = () => AlignmentStyle !== "Center" || window.innerWidth < containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
+  const optionsOverflow = () =>
+    Alignment !== "Center" ||
+    window.innerWidth <
+      containerLeft + ((PanelWidth + 300) * window.innerHeight) / 1080;
 
   useEffect(() => {
-    var newLeft = (containerRef.current as any)?.getBoundingClientRect().left ?? 0;
+    var newLeft =
+      (containerRef.current as any)?.getBoundingClientRect().left ?? 0;
 
     if (newLeft !== 0) setContainerLeft(newLeft);
   });
@@ -73,16 +93,32 @@ export const FindItMainContainerComponent = () => {
   }
 
   return (
-    <div className={classNames(styles.findItMainContainer, styles["align" + AlignmentStyle])}>
+    <div
+      className={classNames(
+        styles.findItMainContainer,
+        styles["align" + Alignment],
+      )}
+    >
       <div className={styles.toolLayout}>
         <div
-          className={AlignmentStyle !== "Center" ? styles.toolMainColumn : GameMainScreneTheme.toolMainColumn}
-          style={AlignmentStyle === "Center" ? undefined : { width: PanelWidth + "rem" }}
+          className={
+            Alignment !== "Center"
+              ? styles.toolMainColumn
+              : GameMainScreneTheme.toolMainColumn
+          }
+          style={
+            Alignment === "Center" ? undefined : { width: PanelWidth + "rem" }
+          }
         >
           <div
-            className={GameMainScreneTheme.toolPanel}
+            className={classNames(
+              GameMainScreneTheme.toolPanel,
+              IsPrefabSelection && styles.prefabSelection,
+            )}
             ref={containerRef}
-            style={AlignmentStyle !== "Center" ? undefined : { width: PanelWidth + "rem" }}
+            style={
+              Alignment !== "Center" ? undefined : { width: PanelWidth + "rem" }
+            }
           >
             <div className={styles.toolContainer}>
               {(optionsOpen || sortingOpen) && optionsOverflow() && (
@@ -90,10 +126,20 @@ export const FindItMainContainerComponent = () => {
                   <div>
                     <div>
                       <div className={styles.title}>
-                        {optionsOpen ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters") : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
+                        {optionsOpen
+                          ? translate(
+                              "Tooltip.LABEL[FindIt.Filters]",
+                              "Filters",
+                            )
+                          : translate(
+                              "Tooltip.LABEL[FindIt.Sorting]",
+                              "Sorting",
+                            )}
                       </div>
                       <OptionsPanelComponent
-                        options={OptionsList.filter((x) => x.id < 0 !== optionsOpen)}
+                        options={OptionsList.filter(
+                          (x) => x.id < 0 !== optionsOpen,
+                        )}
                         OnChange={onOptionClicked}
                       ></OptionsPanelComponent>
                     </div>
@@ -110,20 +156,34 @@ export const FindItMainContainerComponent = () => {
                   toggleSortingOpen={toggleSortingOpen}
                   toggleOptionsOpen={toggleOptionsOpen}
                   toggleEnlarge={toggleEnlarge}
-                ></TopBarComponent>
+                />
               </div>
-              <div className={styles.content + " " + AssetMenuTheme.assetPanel}>
-                <PrefabSelectionComponent expanded={IsExpanded}></PrefabSelectionComponent>
+              <div
+                className={classNames(
+                  styles.content,
+                  AssetMenuTheme.assetPanel,
+                )}
+              >
+                <PrefabSelectionComponent
+                  expanded={IsExpanded}
+                ></PrefabSelectionComponent>
               </div>
             </div>
             {(optionsOpen || sortingOpen) && !optionsOverflow() && (
-              <div className={styles.rightPanel} style={{ left: PanelWidth + "rem" }}>
+              <div
+                className={styles.rightPanel}
+                style={{ left: PanelWidth + "rem" }}
+              >
                 <div>
                   <div className={styles.title}>
-                    {optionsOpen ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters") : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
+                    {optionsOpen
+                      ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters")
+                      : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
                   </div>
                   <OptionsPanelComponent
-                    options={OptionsList.filter((x) => x.id < 0 !== optionsOpen)}
+                    options={OptionsList.filter(
+                      (x) => x.id < 0 !== optionsOpen,
+                    )}
                     OnChange={onOptionClicked}
                   ></OptionsPanelComponent>
                 </div>

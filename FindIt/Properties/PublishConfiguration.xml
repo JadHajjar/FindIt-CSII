@@ -41,6 +41,46 @@ And thank you to **Baka-gourd** (NullPinter) for their help with focus.
 Find It should automatically support any mods that add or alter the vanilla assets.
 
 If you're having any issues, please report them on my discord as it's easier to help you that way.
+
+## For Mod Developers
+
+Find It exposes two APIs for other mods. No hard dependency is required — integration is done through reflection-based hooks that Find It calls automatically on startup.
+
+### Prefab Picker API
+Opens Find It's picker window filtered to a specific prefab type and returns what the user selected as a Task.
+
+Expose this method on your IMod class and Find It will call it on startup, handing you the picker delegate:
+
+```
+public static void SetFindItPrefabSelector(Func&lt;Type, string, Task&lt;PrefabBase&gt;&gt; selector)
+{
+    _findItSelector = selector;
+}
+```
+
+Then call it whenever you need the user to pick a prefab:
+
+```
+// Filtered to TreePrefab — title auto-generates as "Tree Prefab"
+PrefabBase picked = await _findItSelector(typeof(TreePrefab), null);
+
+// With a custom title
+PrefabBase picked = await _findItSelector(typeof(StaticObjectPrefab), "Select a Prop");
+
+// Returns null if the user dismisses the picker without selecting
+```
+
+### Custom Search API
+Override Find It's search logic with your own matching function.
+
+```
+public static Func&lt;string, bool&gt; GetFindItSearchMethod(string searchText)
+{
+    return name => name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+}
+```
+
+Full documentation and examples are available on the GitHub page.
 </LongDescription>
   <Thumbnail Value="Properties/Thumbnail.png" />
   <Screenshot Value="Properties/Screenshot_01.jpg" />
@@ -53,7 +93,7 @@ If you're having any issues, please report them on my discord as it's easier to 
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
   <ModVersion Value="1.5.8" />
-  <GameVersion Value="1.5.*" />
+  <GameVersion Value="1.6.*" />
   <ChangeLog>
 # v1.5.8
 ## Changes
