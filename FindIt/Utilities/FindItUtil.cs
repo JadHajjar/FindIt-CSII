@@ -67,6 +67,11 @@ namespace FindIt.Utilities
 			return _cachedSearch;
 		}
 
+		public static void ClearCachedSearch()
+		{
+			_cachedSearch = new();
+		}
+
 		public static List<PrefabIndex> GetUnfilteredPrefabs()
 		{
 			if (!IsReady)
@@ -291,7 +296,11 @@ namespace FindIt.Utilities
 				return;
 			}
 
-			var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].ToList();
+			// The loop below removes from this list, so it's a copy of OrderedList, the sorted
+			// cache the panel reads.
+			var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory]
+				.OrderedList
+				.ToList();
 			var index = 0;
 
 			while (index < prefabList.Count)

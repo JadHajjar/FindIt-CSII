@@ -104,7 +104,26 @@ namespace FindIt.Systems
 		{
 			_IsSearchLoading.Value = true;
 
-			Task.Run(DelayedSearch);
+			// A search would read the lists the index is still filling, from another thread.
+			// The index searches again when it's done.
+			if (FindItUtil.IsReady)
+			{
+				Task.Run(DelayedSearch);
+			}
+		}
+
+		internal void RefreshPanel()
+		{
+			// Fills the panel if the player opened it before the prefab index was done.
+
+			if (!_ShowFindItPanel)
+			{
+				return;
+			}
+
+			UpdateCategoriesAndPrefabList();
+
+			_optionsUISystem.RefreshOptions();
 		}
 
 		internal void ClearSearch()
@@ -115,6 +134,11 @@ namespace FindIt.Systems
 			_IsSearchLoading.Value = false;
 			_CurrentSearch.Value = string.Empty;
 			searchTokenSource?.Cancel();
+		}
+
+		internal void CancelSearch()
+		{
+			searchTokenSource.Cancel();
 		}
 
 		private async Task DelayedSearch()

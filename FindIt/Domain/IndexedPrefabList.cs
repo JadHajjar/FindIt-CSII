@@ -4,12 +4,18 @@ using FindIt.Systems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace FindIt.Domain
 {
 	public class IndexedPrefabList : IEnumerable<PrefabIndex>
 	{
+		// Sorts by the precomputed name sort keys, which gives the same order as comparing the
+		// names with the current culture.
+		private static readonly IComparer<SortKey> _sortKeyComparer =
+			Comparer<SortKey>.Create(SortKey.Compare);
+
 		private readonly Dictionary<int, PrefabIndex> _dictionary;
 		private List<PrefabIndex> _orderedList;
 
@@ -45,14 +51,16 @@ namespace FindIt.Domain
 			return _dictionary.TryGetValue(id, out prefabIndex);
 		}
 
+		// Enumerates in no particular order, so code that only filters doesn't sort the list first.
+		// OrderedList, and the conversion to a list, give the sorted order.
 		public IEnumerator<PrefabIndex> GetEnumerator()
 		{
-			return OrderedList.GetEnumerator();
+			return _dictionary.Values.GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return OrderedList.GetEnumerator();
+			return _dictionary.Values.GetEnumerator();
 		}
 
 		internal void Remove(PrefabIndex prefabIndex)
@@ -73,24 +81,24 @@ namespace FindIt.Domain
 			{
 				return Sorting switch
 				{
-					PrefabSorting.MostUsed => values.OrderBy(PrefabTrackingSystem.GetMostUsedCount).ThenByDescending(PrefabName),
-					PrefabSorting.LastUsed => values.OrderBy(PrefabTrackingSystem.GetLastUsedIndex).ThenByDescending(PrefabName),
-					PrefabSorting.UIOrder => values.OrderByDescending(PrefabGroupIndex).ThenByDescending(PrefabUIOrder).ThenByDescending(PrefabName),
-					PrefabSorting.UpdatedDate => values.OrderBy(UpdatedDate).ThenByDescending(PrefabName),
-					PrefabSorting.InstalledDate => values.OrderBy(InstalledDate).ThenByDescending(PrefabName),
-					_ => values.OrderByDescending(PrefabName),
+					PrefabSorting.MostUsed => values.OrderBy(PrefabTrackingSystem.GetMostUsedCount).ThenByDescending(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.LastUsed => values.OrderBy(PrefabTrackingSystem.GetLastUsedIndex).ThenByDescending(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.UIOrder => values.OrderByDescending(PrefabGroupIndex).ThenByDescending(PrefabUIOrder).ThenByDescending(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.UpdatedDate => values.OrderBy(UpdatedDate).ThenByDescending(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.InstalledDate => values.OrderBy(InstalledDate).ThenByDescending(PrefabNameSortKey, _sortKeyComparer),
+					_ => values.OrderByDescending(PrefabNameSortKey, _sortKeyComparer),
 				};
 			}
 			else
 			{
 				return Sorting switch
 				{
-					PrefabSorting.MostUsed => values.OrderByDescending(PrefabTrackingSystem.GetMostUsedCount).ThenBy(PrefabName),
-					PrefabSorting.LastUsed => values.OrderByDescending(PrefabTrackingSystem.GetLastUsedIndex).ThenBy(PrefabName),
-					PrefabSorting.UIOrder => values.OrderBy(PrefabGroupIndex).ThenBy(PrefabUIOrder).ThenBy(PrefabName),
-					PrefabSorting.UpdatedDate => values.OrderByDescending(UpdatedDate).ThenBy(PrefabName),
-					PrefabSorting.InstalledDate => values.OrderByDescending(InstalledDate).ThenBy(PrefabName),
-					_ => values.OrderBy(PrefabName),
+					PrefabSorting.MostUsed => values.OrderByDescending(PrefabTrackingSystem.GetMostUsedCount).ThenBy(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.LastUsed => values.OrderByDescending(PrefabTrackingSystem.GetLastUsedIndex).ThenBy(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.UIOrder => values.OrderBy(PrefabGroupIndex).ThenBy(PrefabUIOrder).ThenBy(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.UpdatedDate => values.OrderByDescending(UpdatedDate).ThenBy(PrefabNameSortKey, _sortKeyComparer),
+					PrefabSorting.InstalledDate => values.OrderByDescending(InstalledDate).ThenBy(PrefabNameSortKey, _sortKeyComparer),
+					_ => values.OrderBy(PrefabNameSortKey, _sortKeyComparer),
 				};
 			}
 		}
@@ -115,9 +123,9 @@ namespace FindIt.Domain
 			return prefabIndex.UpdatedDate ?? DateTime.MinValue;
 		}
 
-		private static string PrefabName(PrefabIndex prefabIndex)
+		private static SortKey PrefabNameSortKey(PrefabIndex prefabIndex)
 		{
-			return prefabIndex.Name;
+			return prefabIndex.NameSortKey;
 		}
 
 		public static implicit operator List<PrefabIndex>(IndexedPrefabList prefabs)
