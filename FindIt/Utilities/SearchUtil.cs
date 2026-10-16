@@ -3,6 +3,7 @@ using Game.Prefabs;
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -226,9 +227,34 @@ namespace FindIt.Utilities
 
         public static string FormatWords(this string str, bool forceUpper = false)
         {
-            str = Regex.Replace(Regex.Replace(str,
-                @"([a-z])([A-Z])", x => $"{x.Groups[1].Value} {x.Groups[2].Value}"),
-                @"(\b)(?<!')([a-z])", x => $"{x.Groups[1].Value}{x.Groups[2].Value.ToUpper()}");
+            // Splits camelCase words, then capitalizes every word that doesn't follow an
+            // apostrophe, so "smallClinic joe's diner" becomes "Small Clinic Joe's Diner".
+            // This runs on every unlocalized prefab name at load, which is why it loops over the
+            // chars by hand.
+            // The first loop adds at most one space per char, so twice the length always fits.
+            var chars = new char[str.Length * 2];
+            var length = 0;
+
+            for (var i = 0; i < str.Length; i++)
+            {
+                if (i > 0 && str[i - 1] is >= 'a' and <= 'z' && str[i] is >= 'A' and <= 'Z')
+                {
+                    chars[length++] = ' ';
+                }
+
+                chars[length++] = str[i];
+            }
+
+            for (var i = 0; i < length; i++)
+            {
+                if (chars[i] is >= 'a' and <= 'z'
+                    && (i is 0 || (!IsWordChar(chars[i - 1]) && chars[i - 1] is not '\'')))
+                {
+                    chars[i] = char.ToUpper(chars[i]);
+                }
+            }
+
+            str = new string(chars, 0, length);
 
             if (forceUpper)
             {
@@ -236,6 +262,15 @@ namespace FindIt.Utilities
             }
 
             return str;
+        }
+
+        private static bool IsWordChar(char c)
+        {
+            // The characters a regex \b treats as part of a word.
+            return char.IsLetterOrDigit(c)
+                || c is '\u200D' or '\u200C'
+                || char.GetUnicodeCategory(c)
+                    is UnicodeCategory.NonSpacingMark or UnicodeCategory.ConnectorPunctuation;
         }
     }
 }
