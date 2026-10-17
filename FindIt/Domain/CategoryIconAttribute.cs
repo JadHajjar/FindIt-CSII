@@ -33,8 +33,6 @@ namespace FindIt.Domain
 			return crnAttribute ?? throw new ArgumentException($"Enum value {enumValue} is missing CategoryIconAttribute");
 		}
 
-		// Caches the attribute per enum value, since looking it up uses reflection and indexing
-		// reads it for every prefab.
 		private static class Cache<TEnum> where TEnum : struct, Enum
 		{
 			public static readonly Dictionary<TEnum, CategoryIconAttribute> Attributes = new();

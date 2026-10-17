@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,17 +33,9 @@ namespace FindIt.Systems
 {
 	public partial class PrefabIndexingSystem : GameSystemBase
 	{
-		// In game, the index always gets at least this many milliseconds per frame, so it still
-		// finishes at high frame rates.
-		// This plus a game frame shorter than itself keeps the frame rate above 50.
 		private const long MinFrameBudgetMilliseconds = 10;
-		// Milliseconds per frame the index gets while the loading screen is up, since nobody sees
-		// the frame rate then.
-		// Giving it less per frame wouldn't shorten the loading screen, which stays up about as
-		// long as the total work behind it.
-		// Giving it more would slow the screen down: the texture streaming it waits on advances
-		// once a frame.
-		// It's also the most the index ever gets in game.
+		// The loading screen waits for texture streaming, which advances once per frame.
+		// A larger budget would make it longer.
 		private const long LoadingFrameBudgetMilliseconds = 150;
 
 		private PrefabSystem _prefabSystem;
@@ -55,16 +48,10 @@ namespace FindIt.Systems
 		private static Dictionary<Entity, ZoneTypeFilter> _zoneTypeCache;
 		private readonly Dictionary<PrefabBase, bool> _hasParkingCache = new();
 		private readonly List<IPrefabCategoryProcessor> _prefabCategoryProcessors = new();
-		// Matches the prefabs the game created, updated, or deleted this frame.
-		// A partial index visits them, and OnUpdate checks the query instead of RequireForUpdate,
-		// because the system has to run every frame while a full index is in progress.
 		private EntityQuery _changedPrefabsQuery;
-		// The full index in progress, which OnUpdate advances a bit every frame.
-		// Null when none is running.
 		private IEnumerator _fullIndex;
-		// Prefabs the index added or renamed since it last paused.
-		// A worker thread computes their name sort keys next.
 		private List<PrefabIndex> _pendingSortKeys = new();
+		private Task _sortKeysTask = Task.CompletedTask;
 
 		protected override void OnCreate()
 		{
@@ -123,7 +110,6 @@ namespace FindIt.Systems
 
 			Enabled = false;
 
-			// Throws away an index the previous load didn't finish.
 			_fullIndex = null;
 		}
 
@@ -138,8 +124,6 @@ namespace FindIt.Systems
 
 			if (GameManager.instance.gameMode is GameMode.Game or GameMode.Editor)
 			{
-				// OnUpdate runs the full index a bit at a time, and it keeps running behind the
-				// loading screen.
 				FindItUtil.IsReady = false;
 
 				_fullIndex = RunIndex(true);
@@ -155,12 +139,9 @@ namespace FindIt.Systems
 				_fullIndex = null;
 			}
 
-			// Also runs during a full index.
-			// Created, Updated, and Deleted only last one frame, and the full index may already
-			// have gone past these prefabs' processor.
+			// Created, Updated, and Deleted last one frame, so this can't wait for the full index.
 			if (!_changedPrefabsQuery.IsEmptyIgnoreFilter)
 			{
-				// A partial index never pauses, so a single MoveNext runs it to the end.
 				RunIndex(false).MoveNext();
 			}
 		}
@@ -173,8 +154,6 @@ namespace FindIt.Systems
 			var frames = 1;
 			var frameBudget = GetFrameBudgetMilliseconds(TimeSpan.Zero);
 
-			// Each index starts with an empty cache, as prefabs may have changed since the last.
-			// A partial index between two frames of a full one keeps the full index's cache.
 			if (full || _fullIndex is null)
 			{
 				_hasParkingCache.Clear();
@@ -183,9 +162,6 @@ namespace FindIt.Systems
 			if (full)
 			{
 				FindItUtil.CategorizedPrefabs.Clear();
-				// The panel would otherwise show the last index's search results, and let the
-				// player pick from them, until the search that ends this index replaces them.
-				// A search still running from before the load would write them back.
 				_finditUISystem.CancelSearch();
 				FindItUtil.ClearCachedSearch();
 				_pendingSortKeys.Clear();
@@ -204,7 +180,6 @@ namespace FindIt.Systems
 					.Concat(CleanupBrandPrefabs());
 			}
 
-			// Each step yields after one item, where a full index can stop until the next frame.
 			foreach (var _ in steps)
 			{
 				if (full && frameStopWatch.ElapsedMilliseconds >= frameBudget)
@@ -227,22 +202,25 @@ namespace FindIt.Systems
 
 			if (full)
 			{
-				// Quick enough to run all at once.
 				FillPdxModsData();
+
+				while (!_sortKeysTask.IsCompleted)
+				{
+					workTime += frameStopWatch.Elapsed;
+
+					yield return null;
+
+					frames++;
+					frameStopWatch.Restart();
+				}
 			}
 
-			// A partial index during a full one leaves IsReady false until the full one ends.
 			if (full || _fullIndex is null)
 			{
 				FindItUtil.IsReady = true;
 
 				if (full)
 				{
-					// The picker's options, like the panel, stay empty if the player opened them
-					// before the index was ready.
-					// The picker refreshes first, since its options don't read the index.
-					// The catch logs a failure, so the search below and the rest of the frame's
-					// update still run.
 					try
 					{
 						_pickerUISystem.RefreshOptions();
@@ -261,7 +239,6 @@ namespace FindIt.Systems
 
 			workTime += frameStopWatch.Elapsed;
 
-			// A partial index runs in one frame, so only a full one logs its frames and work time.
 			var frameInfo = full
 				? $" over {frames} frames ({workTime.TotalSeconds:0.000}s of work)"
 				: string.Empty;
@@ -278,20 +255,18 @@ namespace FindIt.Systems
 			}
 
 			var prefabs = _pendingSortKeys;
+			var compareInfo = CultureInfo.CurrentCulture.CompareInfo;
 
-			// A new list, since the worker thread still reads the old one.
 			_pendingSortKeys = new();
 
-			// Task.Run carries the caller's culture over, so the keys sort as they would on the
-			// main thread.
-			Task.Run(() =>
+			// A renamed prefab's new key must land after its old one, so the batches run in order.
+			_sortKeysTask = _sortKeysTask.ContinueWith(_ =>
 			{
 				foreach (var prefab in prefabs)
 				{
-					// Reading the key computes and keeps it.
-					_ = prefab.NameSortKey;
+					prefab.NameSortKey = compareInfo.GetSortKey(prefab.Name);
 				}
-			});
+			}, TaskScheduler.Default);
 		}
 
 		private long GetFrameBudgetMilliseconds(TimeSpan lastSlice)
@@ -301,9 +276,6 @@ namespace FindIt.Systems
 				return LoadingFrameBudgetMilliseconds;
 			}
 
-			// Gives the index as much time as the game itself took last frame, which roughly halves
-			// the frame rate.
-			// The last frame's time includes the index's own share, so this subtracts it.
 			var lastFrame = UnityEngine.Time.unscaledDeltaTime * 1000;
 			var gameFrame = (long)(lastFrame - lastSlice.TotalMilliseconds);
 			var budget = Math.Max(gameFrame, MinFrameBudgetMilliseconds);
@@ -358,20 +330,15 @@ namespace FindIt.Systems
 					}
 				}
 
-				// GetEntityQuery caches the query, so full and partial indexes share it.
-				// Matches gives each query a mask, and nothing checks a world's limit of 1024.
-				// The cache keeps that to two masks per processor, one per HideRandomAssets value.
 				var query = GetEntityQuery(queries);
 
 				if (full)
 				{
-					// ToArray copies the entities out of the Temp allocation, which only lasts the
-					// frame, since a full index walks them over several frames.
+					// Temp allocations only last one frame.
 					entities = query.ToEntityArray(Allocator.Temp).ToArray();
 				}
 				else
 				{
-					// This keeps a partial's cost to the changes, whatever the playset's size.
 					entities = _changedPrefabsQuery.ToEntityArray(Allocator.Temp)
 						.Where(query.Matches)
 						.ToArray();
@@ -400,14 +367,7 @@ namespace FindIt.Systems
 
 			try
 			{
-				// When UpdatePrefab gives a prefab a new entity, or RemovePrefab drops it, the game
-				// marks the old entity Deleted, and it stays until the end of the frame.
-				// This removes its entry, which would otherwise stay under an id the game reuses.
-				// It comes before TryGetPrefab, which fails for a removed prefab.
-				// When RemovePrefab runs later in the frame than this system's update, the game
-				// destroys the entity before the next update, so its entry stays.
-				// Road Builder tags the new entity of a road it deletes, and that entity still
-				// matches the roads processor's query, so the check keeps deleted roads out too.
+				// TryGetPrefab fails for a removed prefab, so this check comes first.
 				if (EntityManager.HasComponent<Deleted>(entity) || (roadBuilderDiscarded.HasValue && EntityManager.HasComponent(entity, roadBuilderDiscarded.Value)))
 				{
 					FindItUtil.RemoveItem(entity);
@@ -415,9 +375,6 @@ namespace FindIt.Systems
 					return;
 				}
 
-				// Unity's name getter is a native call that makes a new string each time, so this
-				// reads the name once and passes it on.
-				// It throws on a destroyed prefab, so the catch below doesn't read it again.
 				if (!_prefabSystem.TryGetPrefab<PrefabBase>(entity, out prefab)
 					|| (prefabName = prefab?.name) is null)
 				{
@@ -439,10 +396,6 @@ namespace FindIt.Systems
 
 				if (processor.TryCreatePrefabIndex(prefab, entity, out prefabIndex))
 				{
-					// Only a processor that takes the prefab replaces its old entry.
-					// Several processors' queries can match one prefab, and one that rejects the
-					// prefab would otherwise find the entry another just added and remove it.
-					// Find may also return this entity's own entry, which the full index added.
 					if (!full && EntityManager.HasComponent<Created>(entity) && FindItUtil.Find(prefab, false, out var oldId) && oldId != entity.Index)
 					{
 						FindItUtil.RemoveItem(oldId);
@@ -579,6 +532,16 @@ namespace FindIt.Systems
 				prefabIndex.LotSize = buildingData.m_LotSize;
 			}
 
+			if (_fullIndex is null)
+			{
+				prefabIndex.NameSortKey = CultureInfo.CurrentCulture.CompareInfo
+					.GetSortKey(prefabIndex.Name);
+			}
+			else
+			{
+				_pendingSortKeys.Add(prefabIndex);
+			}
+
 			if (!Mod.Settings.HideBrandsFromAny || prefabIndex.SubCategory is not PrefabSubCategory.Props_Branding)
 			{
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
@@ -599,8 +562,6 @@ namespace FindIt.Systems
 
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory][prefabIndex.Id] = prefabIndex;
 			}
-
-			_pendingSortKeys.Add(prefabIndex);
 
 			//FindItUtil.UpdateFavoritesPack(prefabIndex);
 		}
@@ -641,6 +602,7 @@ namespace FindIt.Systems
 			_prefabUISystem.GetTitleAndDescription(entity, out var titleId, out var _);
 
 			return GameManager.instance.localizationManager.activeDictionary.TryGetValue(titleId, out var name)
+				&& name is not null
 				? name
 				: prefabName.Replace('_', ' ').FormatWords();
 		}
@@ -670,7 +632,6 @@ namespace FindIt.Systems
 			var groups = new Dictionary<string, List<PrefabIndex>>();
 			var anyList = FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any];
 
-			// Copies the list, since a partial index can change it between two steps.
 			foreach (var prefab in anyList.ToArray())
 			{
 				if (!groups.TryGetValue(prefab.Name, out var group))
@@ -707,8 +668,6 @@ namespace FindIt.Systems
 		{
 			var brands = new HashSet<string>(FindItUtil.CategorizedPrefabs[PrefabCategory.Props][PrefabSubCategory.Props_Branding].Select(x => x.PrefabName));
 
-			// Copies the keys, since between two steps a partial index can add or remove a
-			// favorites subcategory, and resetting the favorites replaces their category.
 			foreach (var category in FindItUtil.CategorizedPrefabs.Keys.ToArray())
 			{
 				if (category is PrefabCategory.Any)
@@ -834,7 +793,6 @@ namespace FindIt.Systems
 
 		private bool HasParking(PrefabBase prefab)
 		{
-			// Buildings share a lot of sub-objects, so this checks each prefab only once per index.
 			if (!_hasParkingCache.TryGetValue(prefab, out var hasParking))
 			{
 				_hasParkingCache[prefab] = hasParking = FindParking(prefab);

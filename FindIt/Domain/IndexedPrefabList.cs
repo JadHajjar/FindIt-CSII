@@ -11,8 +11,6 @@ namespace FindIt.Domain
 {
 	public class IndexedPrefabList : IEnumerable<PrefabIndex>
 	{
-		// Sorts by the precomputed name sort keys, which gives the same order as comparing the
-		// names with the current culture.
 		private static readonly IComparer<SortKey> _sortKeyComparer =
 			Comparer<SortKey>.Create(SortKey.Compare);
 
@@ -51,8 +49,6 @@ namespace FindIt.Domain
 			return _dictionary.TryGetValue(id, out prefabIndex);
 		}
 
-		// Enumerates in no particular order, so code that only filters doesn't sort the list first.
-		// OrderedList, and the conversion to a list, give the sorted order.
 		public IEnumerator<PrefabIndex> GetEnumerator()
 		{
 			return _dictionary.Values.GetEnumerator();

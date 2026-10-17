@@ -296,8 +296,6 @@ namespace FindIt.Utilities
 				return;
 			}
 
-			// The loop below removes from this list, so it's a copy of OrderedList, the sorted
-			// cache the panel reads.
 			var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory]
 				.OrderedList
 				.ToList();

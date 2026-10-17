@@ -227,11 +227,6 @@ namespace FindIt.Utilities
 
         public static string FormatWords(this string str, bool forceUpper = false)
         {
-            // Splits camelCase words, then capitalizes every word that doesn't follow an
-            // apostrophe, so "smallClinic joe's diner" becomes "Small Clinic Joe's Diner".
-            // This runs on every unlocalized prefab name at load, which is why it loops over the
-            // chars by hand.
-            // The first loop adds at most one space per char, so twice the length always fits.
             var chars = new char[str.Length * 2];
             var length = 0;
 
