@@ -1,6 +1,7 @@
 ﻿using FindIt.Domain.Enums;
 using FindIt.Domain.UIBinding;
 using FindIt.Utilities;
+
 using Game.Input;
 using Game.Prefabs;
 using Game.Rendering;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FindIt.Systems
 {
-    internal partial class FindItUISystem : ExtendedUISystemBase
+	internal partial class FindItUISystem : ExtendedUISystemBase
 	{
 		private bool filterCompleted;
 		private bool scrollCompleted;
@@ -46,6 +47,7 @@ namespace FindIt.Systems
 		private ValueBindingHelper<double> _ColumnCount;
 		private ValueBindingHelper<double> _RowCount;
 		private ValueBindingHelper<int> _ActivePrefabId;
+		private ValueBindingHelper<int[]> _SelectedPrefabIds;
 		private ValueBindingHelper<int> _CurrentCategoryBinding;
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
 		private ValueBindingHelper<float> _PanelHeight;
@@ -207,6 +209,7 @@ namespace FindIt.Systems
 			_IsPrefabSelection = CreateBinding("IsPrefabSelection", false);
 			_IsExpanded = CreateBinding("IsExpanded", "SetIsExpanded", false, _ => ExpandedToggled());
 			_ActivePrefabId = CreateBinding("ActivePrefabId", 0);
+			_SelectedPrefabIds = CreateBinding("SelectedPrefabIds", new int[0]);
 			_PanelHeight = CreateBinding("PanelHeight", 0f);
 			_PanelWidth = CreateBinding("PanelWidth", 0f);
 			_RowSize = CreateBinding("RowSize", Mod.Settings.RowSize);
@@ -237,7 +240,7 @@ namespace FindIt.Systems
 			CreateTrigger<double>("SetScrollIndex", SetScrollIndex);
 			CreateTrigger("FindItCloseToggled", () => ToggleFindItPanel(false));
 			CreateTrigger("FindItIconToggled", FindItIconClicked);
-			CreateTrigger<int>("SetCurrentPrefab", TryActivatePrefabTool);
+			CreateTrigger<int>("SetCurrentPrefab", OnPrefabClicked);
 			CreateTrigger<int>("ToggleFavorited", FindItUtil.ToggleFavorited);
 			CreateTrigger("ToggleLock", ToggleLock);
 			CreateTrigger("OnSearchFocused", () => _FocusSearchBar.Value = false);

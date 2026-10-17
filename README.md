@@ -82,3 +82,26 @@ public static Func<string, bool> GetFindItSearchMethod(string searchText)
 ```
 
 Find It calls this method on every search and uses your predicate to filter results by both display name and internal prefab name.
+
+---
+
+### Prefab Multi-Selection API
+
+Lets the active tool receive several prefabs at once. When a tool implements this contract, **Ctrl+click** toggles a prefab in/out of the selection and **Shift+click** selects a range; Find It highlights the whole set and keeps it in sync with the tool.
+
+**How to opt in:** Expose all three public methods on your tool (a `ToolBaseSystem`). Find It discovers them by reflection — no dependency on Find It and no shared assembly:
+
+```csharp
+public void SelectPrefab(PrefabBase prefab);      // add one to the selection
+public void DeselectPrefab(PrefabBase prefab);    // remove one from the selection
+public List<PrefabBase> GetSelectedPrefabs();     // current selection
+```
+
+All three are required — a lone select method is ignored. After every change Find It re-reads `GetSelectedPrefabs()`, so your tool stays the single source of truth and may silently reject prefabs it can't handle. No separate "clear" method is needed: Find It clears by removing each selected prefab.
+
+A tool that already has `SelectTreePrefab` / `UnselectTreePrefab` / `GetSelectedPrefabs` just adds two aliases:
+
+```csharp
+public void SelectPrefab(PrefabBase prefab) => SelectTreePrefab(prefab);
+public void DeselectPrefab(PrefabBase prefab) => UnselectTreePrefab(prefab);
+```

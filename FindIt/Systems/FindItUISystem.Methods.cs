@@ -79,6 +79,9 @@ namespace FindIt.Systems
 			_toolSystem.ActivatePrefabTool(prefabBase);
 			_ActivePrefabId.Value = id;
 			settingPrefab = false;
+
+			_rangeAnchorId = id;
+			RefreshSelectionBinding();
 		}
 
 		internal void ScrollTo(int id)
@@ -167,18 +170,23 @@ namespace FindIt.Systems
 			if (prefab == null)
 			{
 				_ActivePrefabId.Value = 0;
-
-				return;
 			}
-
-			if (_prefabSystem.TryGetEntity(prefab, out var entity))
+			else if (_prefabSystem.TryGetEntity(prefab, out var entity))
 			{
 				_ActivePrefabId.Value = entity.Index;
 			}
+
+			// Mirror whatever the (possibly multi-select) tool now reports as selected.
+			RefreshSelectionBinding();
 		}
 
 		private void OnToolChanged(ToolBaseSystem tool)
 		{
+			// Detect/cache whether the newly active tool supports prefab multi-selection,
+			// then reflect its current selection in the UI.
+			CacheMultiSelectSupport(tool);
+			RefreshSelectionBinding();
+
 			if ((!settingPrefab && tool == _defaultToolSystem) || tool.toolID is "RoadBuilderTool" or "MoveItTool" or "Terrain Tool" or "Zone Tool")
 			{
 				ToggleFindItPanel(false);

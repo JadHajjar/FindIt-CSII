@@ -127,7 +127,7 @@
     flex: 1;
     text-align: right;
 
-    &>span {
+    & > span {
       background-color: rgba(255, 255, 255, 0.05);
       padding: 3rem 6rem;
       border-radius: 3rem;
@@ -155,7 +155,10 @@
 
   &.selected,
   &:active {
-    background-image: linear-gradient(var(--gradientHighlightStart), var(--gradientHighlightEnd));
+    background-image: linear-gradient(
+      var(--gradientHighlightStart),
+      var(--gradientHighlightEnd)
+    );
     background-color: rgba(0, 0, 0, 0);
 
     img {
@@ -208,7 +211,9 @@
     position: absolute;
     top: 28rem;
     opacity: 0;
-    transition: top 0.2s, opacity 0.3s;
+    transition:
+      top 0.2s,
+      opacity 0.3s;
   }
 
   &.selected {
@@ -243,7 +248,9 @@
     width: 24rem;
     height: 24rem;
 
-    transition: width 0.4s, height 0.4s;
+    transition:
+      width 0.4s,
+      height 0.4s;
   }
 }
 
@@ -278,7 +285,10 @@
 
     &.selected,
     &:active {
-      background-image: linear-gradient(var(--gradientHighlightStart), var(--gradientHighlightEnd));
+      background-image: linear-gradient(
+        var(--gradientHighlightStart),
+        var(--gradientHighlightEnd)
+      );
       background-color: rgba(0, 0, 0, 0);
 
       img {
