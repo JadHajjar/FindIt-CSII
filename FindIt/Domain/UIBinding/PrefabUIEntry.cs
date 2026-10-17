@@ -2,12 +2,6 @@
 
 using FindIt.Systems;
 
-using Game.Prefabs;
-using Game.UI;
-
-using System;
-using System.Linq;
-
 using Unity.Entities;
 
 namespace FindIt.Domain.UIBinding
@@ -64,32 +58,16 @@ namespace FindIt.Domain.UIBinding
 			writer.Write(_prefab.IsResourceIntensive);
 
 			writer.PropertyName("thumbnails");
-			if (_prefab.IsRandom && _prefab.RandomPrefabBases != null)
+			if (_prefab.IsRandom && _prefab.RandomPrefabThumbnails != null)
 			{
-				writer.Write(_prefab.RandomPrefabBases
-					.Select(x => x is null ? null : GetThumbnail(x))
-					.ToArray());
+				writer.Write(_prefab.RandomPrefabThumbnails);
 			}
 			else
 			{
-				writer.Write(new[] { GetThumbnail(_prefab.Prefab) });
+				writer.Write(new[] { _prefab.Thumbnail });
 			}
 
 			writer.TypeEnd();
-		}
-
-		private string GetThumbnail(PrefabBase prefab)
-		{
-			try
-			{
-				return ImageSystem.GetThumbnail(prefab);
-			}
-			catch (Exception ex)
-			{
-				Mod.Log.Error(ex, $"Failed to get the thumbnail of prefab '{_prefab.PrefabName}'");
-
-				return _prefab.FallbackThumbnail;
-			}
 		}
 	}
 }

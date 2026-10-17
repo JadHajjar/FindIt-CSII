@@ -12,12 +12,14 @@ namespace FindIt.Domain
 		public string Name { get; set; }
 		public SortKey NameSortKey { get; set; }
 		public string PdxModsId { get; set; }
+		public string Thumbnail { get; set; }
 		public string FallbackThumbnail { get; set; }
 		public string DlcThumbnail { get; set; }
 		public string CategoryThumbnail { get; set; }
 		public bool IsFavorited { get; set; }
 		public bool IsRandom { get; set; }
 		public PrefabBase[] RandomPrefabBases { get; set; }
+		public string[] RandomPrefabThumbnails { get; set; }
 		public string ThemeThumbnail { get; set; }
 		public string[] PackThumbnails { get; set; }
 		public bool IsResourceIntensive { get; set; }
