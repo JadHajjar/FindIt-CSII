@@ -58,6 +58,7 @@ namespace FindIt
 			updateSystem.UpdateAfter<PrefabIndexingSystem>(SystemUpdatePhase.PrefabUpdate);
 			updateSystem.UpdateAt<FindItUISystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<OptionsUISystem>(SystemUpdatePhase.UIUpdate);
+			updateSystem.UpdateAt<CreatorPropertiesUISystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<PickerToolSystem>(SystemUpdatePhase.ToolUpdate);
 			updateSystem.UpdateAt<PickerUISystem>(SystemUpdatePhase.UIUpdate);
 			updateSystem.UpdateAt<PrefabTrackingSystem>(SystemUpdatePhase.PrefabUpdate);

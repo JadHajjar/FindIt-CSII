@@ -439,6 +439,25 @@ namespace FindIt.Systems
 						}
 					}
 
+					if (!full)
+					{
+						FindItUtil.RemoveFromCategories(entity.Index);
+					}
+
+					if (prefab.TryGet<FindItProperties>(out var properties))
+					{
+						if (properties.m_HideFromFindIt)
+						{
+							return;
+						}
+
+						if (FindItUtil.TryParseSubCategory(properties.m_SubCategory, out var subCategory))
+						{
+							prefabIndex.SubCategory = subCategory;
+							prefabIndex.Category = FindItUtil.GetCategory(subCategory);
+						}
+					}
+
 					AddPrefab(prefab, prefabName, entity, prefabIndex);
 				}
 				else

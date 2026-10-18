@@ -10,6 +10,8 @@ namespace FindIt.Domain
 	public class FindItProperties : ComponentBase
 	{
 		public string[] m_Tags;
+		public string m_SubCategory;
+		public bool m_HideFromFindIt;
 
 		public override void GetArchetypeComponents(HashSet<ComponentType> components)
 		{

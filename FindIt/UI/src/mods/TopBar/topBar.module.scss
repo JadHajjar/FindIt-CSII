@@ -86,6 +86,22 @@
 .closeIcon img {
   height: 24rem;
   width: 24rem;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+// Without the asset grid theme the button has no hover state of its own
+.closeIcon {
+  border-radius: 4rem;
+  transition: background-color 0.15s;
+}
+
+.closeIcon:hover {
+  background-color: rgba(200, 200, 200, 0.15);
+}
+
+.closeIcon:hover img {
+  opacity: 1;
 }
 
 .clearIcon {

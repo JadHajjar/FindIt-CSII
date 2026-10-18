@@ -1,4 +1,5 @@
 ﻿using Game.Prefabs;
+using Game.UI.Widgets;
 
 using System.Collections.Generic;
 
@@ -6,7 +7,7 @@ using Unity.Entities;
 
 namespace FindIt.Domain
 {
-	[ComponentMenu("FindIt/", true)]
+	[HideInEditor]
 	internal class FindItGenerated : ComponentBase
 	{
 		public override void GetArchetypeComponents(HashSet<ComponentType> components)

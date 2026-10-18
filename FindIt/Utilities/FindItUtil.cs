@@ -243,6 +243,37 @@ namespace FindIt.Utilities
 				.ToArray();
 		}
 
+		public static bool TryParseSubCategory(string name, out PrefabSubCategory subCategory)
+		{
+			subCategory = default;
+
+			return !string.IsNullOrWhiteSpace(name)
+				&& !char.IsDigit(name.Trim()[0])
+				&& Enum.TryParse(name.Trim(), true, out subCategory)
+				&& Enum.IsDefined(typeof(PrefabSubCategory), subCategory)
+				&& (int)subCategory > 0
+				&& (int)subCategory % 100 != 0;
+		}
+
+		public static PrefabCategory GetCategory(PrefabSubCategory subCategory)
+		{
+			return (PrefabCategory)((int)subCategory / 100 * 100);
+		}
+
+		public static void RemoveFromCategories(int id)
+		{
+			foreach (var category in CategorizedPrefabs.Values)
+			{
+				foreach (var list in category.Values)
+				{
+					if (list.TryGetValue(id, out var prefabIndex))
+					{
+						list.Remove(prefabIndex);
+					}
+				}
+			}
+		}
+
 		public static string[] GetCreatorTags(PrefabBase prefab)
 		{
 			var tags = new List<string>();

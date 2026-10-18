@@ -110,13 +110,25 @@ public void DeselectPrefab(PrefabBase prefab) => UnselectTreePrefab(prefab);
 
 ## For Asset Creators
 
-### Asset Tags
+### Find It Properties
 
-You can ship your assets with tags so players can find them with a `#tag` search. Players can't remove these tags, and Find It doesn't save them, they always come from your asset.
+Open your asset in the editor and click the **Find It Properties** button (the tag icon) in the editor toolbar. It edits the asset you have selected in the inspector, and you can choose where the data is saved:
 
-Spaces in tags are replaced with dashes, so `white label` becomes `white-label`.
+- **Standard:** saved in the `FindItProperties` component. Every option is available, but if the asset is edited and saved again without Find It enabled, these properties will be lost.
+- **More Compatibility:** saved as `#` entries in the `Editor Asset Category Override` exclude list. Only tags and the category are available, but they're kept even if the asset is edited without Find It. The category is saved as a `FindIt/<category>/<sub-category>` entry in the include list.
 
-There are two ways to add tags, and you can use both:
+Switching between the two moves your tags and category over. Switching to More Compatibility removes the `FindItProperties` component, along with its hide setting.
 
-- **FindItProperties component:** add the `FindItProperties` component (under the `FindIt/` menu) to your prefab and fill in its `Tags` list.
-- **Editor Asset Category Override:** add entries starting with `#` to the component's exclude list, for example `#white-label` or `#statue`. Find It treats each of them as a tag. This works without the asset depending on Find It's component.
+You can also edit the `FindItProperties` component (under the `FindIt/` menu) or the exclude list directly in the inspector.
+
+### Tags
+
+Tags let players find your assets with a `#tag` search. Players can't remove them, and Find It doesn't save them, they always come from your asset. Spaces in tags are replaced with dashes, so `white label` becomes `white-label`.
+
+### Category
+
+Places the asset in a specific Find It sub-category instead of the one Find It picks automatically. In the component, `Sub Category` is the sub-category's name, for example `Props_Fences` or `Buildings_Specialized`. Leave it empty to keep the automatic category.
+
+### Hide from Find It
+
+Keeps the asset out of Find It completely.

@@ -306,11 +306,8 @@ export const TopBarComponent = (props: TopBarProps) => {
               )}
             >
               <Button
-                className={
-                  VanillaComponentResolver.instance.assetGridTheme.item +
-                  " " +
-                  styles.closeIcon
-                }
+                // Not themed as an asset grid item, that theme draws its own background behind the icon
+                className={styles.closeIcon}
                 variant="icon"
                 onSelect={() => trigger(mod.id, "FindItCloseToggled")}
               >
