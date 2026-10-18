@@ -496,19 +496,16 @@ namespace FindIt.Utilities
 				return;
 			}
 
-			var prefabList = CategorizedPrefabs[CurrentCategory][CurrentSubCategory]
-				.OrderedList
-				.ToList();
-			var index = 0;
+			var prefabs = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].OrderedList;
+			var prefabList = new List<PrefabIndex>();
 
-			while (index < prefabList.Count)
+			foreach (var prefab in prefabs)
 			{
 				if (token.IsCancellationRequested)
 				{
 					return;
 				}
 
-				var prefab = prefabList[index];
 				var allFiltersPass = true;
 
 				for (var i = 0; i < filterList.Count; i++)
@@ -523,11 +520,7 @@ namespace FindIt.Utilities
 
 				if (allFiltersPass)
 				{
-					index++;
-				}
-				else
-				{
-					prefabList.RemoveAt(index);
+					prefabList.Add(prefab);
 				}
 			}
 

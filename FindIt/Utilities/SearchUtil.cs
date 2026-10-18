@@ -177,32 +177,70 @@ namespace FindIt.Utilities
 
         public static string GetAbbreviation(this string S)
         {
+            // Search calls this for every prefab name, so it reads the characters one by one
+            // rather than matching a regex.
             var SB = new StringBuilder();
-            foreach (var item in S.GetWords(true))
+            var i = 0;
+
+            while (i < S.Length)
             {
-                SB.Append(item.All(char.IsDigit) ? item : item[0].ToString());
+                if (!IsWordChar(S[i]))
+                {
+                    i++;
+                    continue;
+                }
+
+                var start = i;
+                var isNumber = true;
+
+                while (i < S.Length && IsWordChar(S[i]))
+                {
+                    isNumber &= char.IsDigit(S[i]);
+                    i++;
+                }
+
+                if (isNumber)
+                {
+                    SB.Append(S, start, i - start);
+                }
+                else
+                {
+                    SB.Append(S[start]);
+                }
+
+                // A word keeps its apostrophe ending: "Morgan's" adds one letter.
+                if (i + 1 < S.Length && S[i] is '\'' && IsWordChar(S[i + 1]))
+                {
+                    i++;
+
+                    while (i < S.Length && IsWordChar(S[i]))
+                    {
+                        i++;
+                    }
+                }
             }
 
-            if (Regex.IsMatch(SB.ToString(), "^[A-z]+[0-9]+$"))
+            // Letters followed by a number, as in "ab12", become "ab 12".
+            var letters = 0;
+
+            while (letters < SB.Length && SB[letters] is >= 'A' and <= 'z')
             {
-                var match = Regex.Match(SB.ToString(), "^([A-z]+)([0-9]+)$");
-                return $"{match.Groups[1]} {match.Groups[2]}";
+                letters++;
+            }
+
+            var digits = letters;
+
+            while (digits < SB.Length && SB[digits] is >= '0' and <= '9')
+            {
+                digits++;
+            }
+
+            if (letters > 0 && digits > letters && digits == SB.Length)
+            {
+                SB.Insert(letters, ' ');
             }
 
             return SB.ToString();
-        }
-
-        public static IEnumerable<string> GetWords(this string text, bool includeNumbers = false)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                yield break;
-            }
-
-            foreach (Match match in Regex.Matches(text, $@"\b{(includeNumbers ? "" : "(?![0-9])")}(\w+)(?:'\w+)?\b"))
-            {
-                yield return match.Groups[1].Value;
-            }
         }
 
         public static string Where(this string text, Func<char, bool> Test)
@@ -222,7 +260,17 @@ namespace FindIt.Utilities
 
         public static string RemoveDoubleSpaces(this string text)
         {
-            return Regex.Replace(text, @" {2,}", " ")?.Trim() ?? string.Empty;
+            var builder = new StringBuilder(text.Length);
+
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (text[i] is not ' ' || i is 0 || text[i - 1] is not ' ')
+                {
+                    builder.Append(text[i]);
+                }
+            }
+
+            return builder.ToString().Trim();
         }
 
         public static string FormatWords(this string str, bool forceUpper = false)
