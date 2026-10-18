@@ -100,7 +100,7 @@ namespace FindIt.Utilities
                 return true;
             }
 
-            if (searchTerm.Lowercase.SpellCheck(lowercase.Substring(0, Math.Min(lowercase.Length, searchTerm.Text.Length + 1))) <= (int)Math.Ceiling((searchTerm.Text.Length - 3) / 5M))
+            if (searchTerm.Lowercase.SpellCheck(lowercase, searchTerm.Text.Length + 1) <= (int)Math.Ceiling((searchTerm.Text.Length - 3) / 5M))
             {
                 return true;
             }
@@ -110,59 +110,70 @@ namespace FindIt.Utilities
                 return true;
             }
 
-            if (searchTerm.Text.IndexOf(' ') >= 0
-                && searchTerm.Words.All(x => lowercase.IndexOf(x, StringComparison.Ordinal) >= 0))
+            if (searchTerm.Text.IndexOf(' ') < 0)
             {
-                return true;
+                return false;
             }
 
-            return false;
-        }
-
-        public static int SpellCheck(this string s1, string s2, bool caseCheck = true)
-        {
-            s1 = s1.RemoveDoubleSpaces();
-            s2 = s2.RemoveDoubleSpaces();
-
-            if (!caseCheck)
+            // LINQ's All would allocate a delegate and an enumerator on every call, so this checks
+            // the words in a loop.
+            foreach (var word in searchTerm.Words)
             {
-                s1 = s1.ToLower();
-                s2 = s2.ToLower();
-            }
-
-            // Levenshtein Algorithm
-            var n = s1.Length;
-            var m = s2.Length;
-            var d = new int[n + 1, m + 1];
-
-            if (n == 0)
-            {
-                return m;
-            }
-
-            if (m == 0)
-            {
-                return n;
-            }
-
-            for (var i = 0; i <= n; d[i, 0] = i++)
-            { }
-
-            for (var j = 0; j <= m; d[0, j] = j++)
-            { }
-
-            for (var i = 1; i <= n; i++)
-            {
-                for (var j = 1; j <= m; j++)
+                if (lowercase.IndexOf(word, StringComparison.Ordinal) < 0)
                 {
-                    var cost = s2[j - 1] == s1[i - 1] ? 0 : 1;
-
-                    d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-                         d[i - 1, j - 1] + cost);
+                    return false;
                 }
             }
 
-            return d[n, m];
+            return true;
+        }
+
+        // Search calls this for every prefab, so it reads the name without copying it and keeps
+        // one row of distances instead of the whole table.
+        // The search text is already trimmed and single-spaced.
+        public static int SpellCheck(this string text, string name, int length)
+        {
+            var start = 0;
+            var end = Math.Min(name.Length, length);
+
+            while (start < end && char.IsWhiteSpace(name[start]))
+            {
+                start++;
+            }
+
+            while (end > start && char.IsWhiteSpace(name[end - 1]))
+            {
+                end--;
+            }
+
+            // Levenshtein Algorithm
+            var distances = new int[text.Length + 1];
+
+            for (var i = 0; i <= text.Length; distances[i] = i++)
+            { }
+
+            for (var j = start; j < end; j++)
+            {
+                if (name[j] is ' ' && name[j - 1] is ' ')
+                {
+                    continue;
+                }
+
+                var diagonal = distances[0];
+
+                distances[0] = diagonal + 1;
+
+                for (var i = 1; i <= text.Length; i++)
+                {
+                    var above = distances[i];
+
+                    distances[i] = Math.Min(Math.Min(above + 1, distances[i - 1] + 1),
+                        diagonal + (text[i - 1] == name[j] ? 0 : 1));
+                    diagonal = above;
+                }
+            }
+
+            return distances[text.Length];
         }
 
         public static bool AbbreviationCheck(this SearchTerm searchTerm, string lowercase, string abbreviation = null)
@@ -271,21 +282,6 @@ namespace FindIt.Utilities
             }
 
             return builder.ToString();
-        }
-
-        public static string RemoveDoubleSpaces(this string text)
-        {
-            var builder = new StringBuilder(text.Length);
-
-            for (var i = 0; i < text.Length; i++)
-            {
-                if (text[i] is not ' ' || i is 0 || text[i - 1] is not ' ')
-                {
-                    builder.Append(text[i]);
-                }
-            }
-
-            return builder.ToString().Trim();
         }
 
         public static string FormatWords(this string str, bool forceUpper = false)
