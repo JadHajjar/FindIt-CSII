@@ -3,6 +3,7 @@
 .gridItem {
   @include _base.lightButton(false, true);
 
+  padding: 8rem;
   color: var(--menuTitleNormal);
   backdrop-filter: none;
   border-radius: 4rem;
@@ -326,6 +327,40 @@
 .gridItem:hover .favoriteIcon,
 .favorited .favoriteIcon {
   opacity: 1 !important;
+}
+
+.tagIcon {
+  transition: background-color 0.2s, color 0.2s, margin-top 0.2s, opacity 0.3s !important;
+  opacity: 0 !important;
+}
+
+.gridItem:hover .tagIcon,
+.tagged .tagIcon {
+  opacity: 1 !important;
+}
+
+.GridNoText .gridItem:not(:hover):not(.favorited) .favoriteIcon + .tagIcon,
+.GridWithText .gridItem:not(:hover):not(.favorited) .favoriteIcon + .tagIcon {
+  margin-top: -22rem !important;
+}
+
+.GridSmall .gridItem:not(:hover):not(.favorited) .favoriteIcon + .tagIcon {
+  margin-top: -18rem !important;
+}
+
+.tagFill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0px 0px 1.5rem rgba(0, 0, 0, 0.5));
+
+  img {
+    background-color: var(--gradientHighlightStart);
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    filter: none !important;
+  }
 }
 
 .gridThumbnail {

@@ -45,7 +45,11 @@ $laneButtonSize: 64rem;
 
 @mixin baseButton($hasText: true, $coloredImage: false) {
   pointer-events: auto;
-  padding: 8rem;
+  @if $hasText {
+    padding: 8rem;
+  } @else {
+    padding: 0;
+  }
   border-radius: 4rem;
   border: none;
   transition: background-color 0.15s, color 0.15s;

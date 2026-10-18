@@ -196,6 +196,166 @@ namespace FindIt.Utilities
 		//	}
 		//}
 
+		public static List<string> GetTags(string prefab)
+		{
+			return customPrefabsData.TryGetValue(prefab, out var data) && data.Tags is not null
+				? new List<string>(data.Tags)
+				: new List<string>();
+		}
+
+		public static string[] GetAllTags()
+		{
+			var counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+			foreach (var data in customPrefabsData.Values)
+			{
+				if (data.Tags is null)
+				{
+					continue;
+				}
+
+				foreach (var tag in data.Tags)
+				{
+					counts[tag] = counts.TryGetValue(tag, out var count) ? count + 1 : 1;
+				}
+			}
+
+			if (CategorizedPrefabs.TryGetValue(PrefabCategory.Any, out var any) && any.TryGetValue(PrefabSubCategory.Any, out var prefabs))
+			{
+				foreach (var prefab in prefabs)
+				{
+					if (prefab.CreatorTags is null)
+					{
+						continue;
+					}
+
+					foreach (var tag in prefab.CreatorTags)
+					{
+						counts[tag] = counts.TryGetValue(tag, out var count) ? count + 1 : 1;
+					}
+				}
+			}
+
+			return counts
+				.OrderByDescending(x => x.Value)
+				.ThenBy(x => x.Key, StringComparer.OrdinalIgnoreCase)
+				.Select(x => x.Key)
+				.ToArray();
+		}
+
+		public static string[] GetCreatorTags(PrefabBase prefab)
+		{
+			var tags = new List<string>();
+
+			if (prefab.TryGet<FindItProperties>(out var properties) && properties.m_Tags is not null)
+			{
+				foreach (var tag in properties.m_Tags)
+				{
+					AddCreatorTag(tags, tag);
+				}
+			}
+
+			if (prefab.TryGet<EditorAssetCategoryOverride>(out var overrides) && overrides.m_ExcludeCategories is not null)
+			{
+				foreach (var category in overrides.m_ExcludeCategories)
+				{
+					if (category is not null && category.StartsWith("#"))
+					{
+						AddCreatorTag(tags, category);
+					}
+				}
+			}
+
+			return tags.Count == 0 ? Array.Empty<string>() : tags.ToArray();
+		}
+
+		private static void AddCreatorTag(List<string> tags, string tag)
+		{
+			tag = NormalizeTag(tag);
+
+			if (tag.Length > 0 && !tags.Contains(tag, StringComparer.OrdinalIgnoreCase))
+			{
+				tags.Add(tag);
+			}
+		}
+
+		public static string NormalizeTag(string tag)
+		{
+			return string.IsNullOrWhiteSpace(tag)
+				? string.Empty
+				: string.Join("-", tag.Trim().TrimStart('#').Split((char[])null, StringSplitOptions.RemoveEmptyEntries));
+		}
+
+		public static bool AddTag(int id, string tag)
+		{
+			tag = NormalizeTag(tag);
+
+			if (tag.Length == 0
+				|| GetPrefabIndex(id) is not PrefabIndex prefabIndex
+				|| (prefabIndex.CreatorTags?.Contains(tag, StringComparer.OrdinalIgnoreCase) ?? false))
+			{
+				return false;
+			}
+
+			tag = GetAllTags().FirstOrDefault(x => string.Equals(x, tag, StringComparison.OrdinalIgnoreCase)) ?? tag;
+
+			if (!customPrefabsData.TryGetValue(prefabIndex.PrefabName, out var data))
+			{
+				customPrefabsData[prefabIndex.PrefabName] = data = new CustomPrefabData();
+			}
+
+			data.Tags ??= new();
+
+			if (data.Tags.Any(x => string.Equals(x, tag, StringComparison.OrdinalIgnoreCase)))
+			{
+				return false;
+			}
+
+			data.Tags.Add(tag);
+			data.Tags.Sort(StringComparer.OrdinalIgnoreCase);
+
+			prefabIndex.Tags = new List<string>(data.Tags);
+
+			SaveCustomPrefabData();
+
+			return true;
+		}
+
+		public static bool RemoveTag(int id, string tag)
+		{
+			if (GetPrefabIndex(id) is not PrefabIndex prefabIndex
+				|| !customPrefabsData.TryGetValue(prefabIndex.PrefabName, out var data)
+				|| data.Tags is null
+				|| data.Tags.RemoveAll(x => string.Equals(x, tag, StringComparison.OrdinalIgnoreCase)) == 0)
+			{
+				return false;
+			}
+
+			prefabIndex.Tags = new List<string>(data.Tags);
+
+			SaveCustomPrefabData();
+
+			return true;
+		}
+
+		public static void ResetTags()
+		{
+			foreach (var item in customPrefabsData.Values)
+			{
+				item.Tags?.Clear();
+			}
+
+			if (CategorizedPrefabs.TryGetValue(PrefabCategory.Any, out var any) && any.TryGetValue(PrefabSubCategory.Any, out var prefabs))
+			{
+				foreach (var item in prefabs)
+				{
+					item.Tags = new();
+				}
+			}
+
+			SaveCustomPrefabData();
+		}
+
 		public static void ResetFavorites()
 		{
 			CategorizedPrefabs[PrefabCategory.Favorite] = new()
@@ -253,6 +413,15 @@ namespace FindIt.Utilities
 			try
 			{
 				customPrefabsData = JSON.MakeInto<Dictionary<string, CustomPrefabData>>(JSON.Load(File.ReadAllText(path))) ?? new();
+
+				foreach (var data in customPrefabsData.Values)
+				{
+					data.Tags = data.Tags?
+						.Select(NormalizeTag)
+						.Where(x => x.Length > 0)
+						.Distinct(StringComparer.OrdinalIgnoreCase)
+						.ToList() ?? new();
+				}
 			}
 			catch (Exception ex)
 			{

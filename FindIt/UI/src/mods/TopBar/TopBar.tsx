@@ -238,7 +238,8 @@ export const TopBarComponent = (props: TopBarProps) => {
           <div
             className={classNames(
               styles.topBarSection,
-              AlignmentStyle !== "Center" && styles.expandedSearchArea,
+              styles.expandedSearchArea,
+              AlignmentStyle === "Center" && styles.centerSearchArea,
             )}
           >
             {IsSearchLoading && (
@@ -255,37 +256,44 @@ export const TopBarComponent = (props: TopBarProps) => {
                 className={styles.searchIcon}
               ></img>
             )}
-            <div className={styles.searchArea}>
-              <TextInput
-                ref={searchRef}
-                multiline={1}
-                value={CurrentSearch}
-                disabled={false}
-                type="text"
-                className={classNames(TextInputTheme.input, styles.textBox)}
-                focusKey={FOCUS_DISABLED}
-                onChange={handleInputChange}
-                placeholder={translate(
-                  "Editor.SEARCH_PLACEHOLDER",
-                  "Search...",
-                )}
-              ></TextInput>
-
-              {CurrentSearch.trim() !== "" && (
-                <Button
-                  className={classNames(
-                    VanillaComponentResolver.instance.assetGridTheme.item,
-                    styles.clearIcon,
+            <Tooltip
+              tooltip={translate(
+                "Tooltip.LABEL[FindIt.SearchTooltip]",
+                'Search by name, PDX Mods ID or tag.\nAdd #tags to only show assets that have all of them.\nExample: "#park #bench modern" shows assets tagged park and bench that match "modern".',
+              )
+                ?.split("\n")
+                .map((line) => <div key={line}>{line}</div>)}
+            >
+              <div className={styles.searchArea}>
+                <TextInput
+                  ref={searchRef}
+                  multiline={1}
+                  value={CurrentSearch}
+                  disabled={false}
+                  type="text"
+                  className={classNames(TextInputTheme.input, styles.textBox)}
+                  focusKey={FOCUS_DISABLED}
+                  onChange={handleInputChange}
+                  placeholder={translate(
+                    "Editor.SEARCH_PLACEHOLDER",
+                    "Search...",
                   )}
-                  variant="icon"
-                  onSelect={() => {
-                    setSearchText("");
-                  }}
-                >
-                  <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
-                </Button>
-              )}
-            </div>
+                ></TextInput>
+
+                {CurrentSearch.trim() !== "" && (
+                  <Button
+                    // Not themed as an asset grid item, that theme draws its own background behind the icon
+                    className={styles.clearIcon}
+                    variant="icon"
+                    onSelect={() => {
+                      setSearchText("");
+                    }}
+                  >
+                    <img src="coui://uil/Standard/ArrowLeftClear.svg"></img>
+                  </Button>
+                )}
+              </div>
+            </Tooltip>
 
             {AlignmentStyle === "Center" && RenderButtonSection()}
           </div>

@@ -59,6 +59,11 @@ namespace FindIt
 		[SettingsUIButton]
 		[SettingsUIConfirmation]
 		[SettingsUISection(SETTINGS, OTHER)]
+		public bool ResetTags { set => FindItUtil.ResetTags(); }
+
+		[SettingsUIButton]
+		[SettingsUIConfirmation]
+		[SettingsUISection(SETTINGS, OTHER)]
 		public bool ResetViewSizes { set => FindItUtil.ResetViewSizes(); }
 
 		[SettingsUIKeyboardBinding(BindingKeyboard.F, nameof(SearchKeyBinding), ctrl: true)]

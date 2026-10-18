@@ -7,6 +7,7 @@ import { PrefabSelectionComponent } from "mods/PrefabSelection/PrefabSelection";
 import { useState, useRef, useEffect } from "react";
 import styles from "./mainContainer.module.scss";
 import { OptionsPanelComponent } from "mods/OptionsPanel/OptionsPanel";
+import { TagEditorComponent } from "mods/TagEditor/TagEditor";
 import { OptionSection } from "domain/ContentViewType";
 import { useLocalization } from "cs2/l10n";
 import classNames from "classnames";
@@ -18,6 +19,7 @@ const AlignmentStyle$ = bindValue<string>(mod.id, "AlignmentStyle");
 const ShowFindItPanel$ = bindValue<boolean>(mod.id, "ShowFindItPanel");
 const IsWindowLocked$ = bindValue<boolean>(mod.id, "IsWindowLocked");
 const OptionsList$ = bindValue<OptionSection[]>(mod.id, "OptionsList");
+const TagEditorPrefabId$ = bindValue<number>(mod.id, "TagEditorPrefabId");
 
 const GameMainScreneTheme: Theme | any = getModule(
   "game-ui/game/components/game-main-screen.module.scss",
@@ -59,6 +61,16 @@ export const FindItMainContainerComponent = () => {
   const OptionsList = useValue(OptionsList$);
   const AlignmentStyle = useValue(AlignmentStyle$);
   const Alignment = IsPrefabSelection ? "Center" : AlignmentStyle;
+  const TagEditorPrefabId = useValue(TagEditorPrefabId$);
+  const tagEditorOpen = TagEditorPrefabId !== 0;
+  const sidePanelOpen = optionsOpen || sortingOpen || tagEditorOpen;
+
+  useEffect(() => {
+    if (!tagEditorOpen) return;
+
+    setOptionsOpen(false);
+    setSortingOpen(false);
+  }, [TagEditorPrefabId]);
 
   const optionsOverflow = () =>
     Alignment !== "Center" ||
@@ -81,11 +93,31 @@ export const FindItMainContainerComponent = () => {
   function toggleSortingOpen(): void {
     setSortingOpen(!sortingOpen);
     setOptionsOpen(false);
+    if (tagEditorOpen) trigger(mod.id, "CloseTagEditor");
   }
 
   function toggleOptionsOpen(): void {
     setOptionsOpen(!optionsOpen);
     setSortingOpen(false);
+    if (tagEditorOpen) trigger(mod.id, "CloseTagEditor");
+  }
+
+  function renderSidePanelContent(): JSX.Element {
+    if (tagEditorOpen) return <TagEditorComponent />;
+
+    return (
+      <>
+        <div className={styles.title}>
+          {optionsOpen
+            ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters")
+            : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
+        </div>
+        <OptionsPanelComponent
+          options={OptionsList.filter((x) => x.id < 0 !== optionsOpen)}
+          OnChange={onOptionClicked}
+        ></OptionsPanelComponent>
+      </>
+    );
   }
 
   function toggleEnlarge(): void {
@@ -121,28 +153,10 @@ export const FindItMainContainerComponent = () => {
             }
           >
             <div className={styles.toolContainer}>
-              {(optionsOpen || sortingOpen) && optionsOverflow() && (
+              {sidePanelOpen && optionsOverflow() && (
                 <div className={styles.topPanel}>
                   <div>
-                    <div>
-                      <div className={styles.title}>
-                        {optionsOpen
-                          ? translate(
-                              "Tooltip.LABEL[FindIt.Filters]",
-                              "Filters",
-                            )
-                          : translate(
-                              "Tooltip.LABEL[FindIt.Sorting]",
-                              "Sorting",
-                            )}
-                      </div>
-                      <OptionsPanelComponent
-                        options={OptionsList.filter(
-                          (x) => x.id < 0 !== optionsOpen,
-                        )}
-                        OnChange={onOptionClicked}
-                      ></OptionsPanelComponent>
-                    </div>
+                    <div>{renderSidePanelContent()}</div>
                   </div>
                 </div>
               )}
@@ -169,24 +183,12 @@ export const FindItMainContainerComponent = () => {
                 ></PrefabSelectionComponent>
               </div>
             </div>
-            {(optionsOpen || sortingOpen) && !optionsOverflow() && (
+            {sidePanelOpen && !optionsOverflow() && (
               <div
                 className={styles.rightPanel}
                 style={{ left: PanelWidth + "rem" }}
               >
-                <div>
-                  <div className={styles.title}>
-                    {optionsOpen
-                      ? translate("Tooltip.LABEL[FindIt.Filters]", "Filters")
-                      : translate("Tooltip.LABEL[FindIt.Sorting]", "Sorting")}
-                  </div>
-                  <OptionsPanelComponent
-                    options={OptionsList.filter(
-                      (x) => x.id < 0 !== optionsOpen,
-                    )}
-                    OnChange={onOptionClicked}
-                  ></OptionsPanelComponent>
-                </div>
+                <div>{renderSidePanelContent()}</div>
               </div>
             )}
           </div>

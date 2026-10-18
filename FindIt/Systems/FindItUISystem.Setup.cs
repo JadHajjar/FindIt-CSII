@@ -48,6 +48,7 @@ namespace FindIt.Systems
 		private ValueBindingHelper<double> _RowCount;
 		private ValueBindingHelper<int> _ActivePrefabId;
 		private ValueBindingHelper<int[]> _SelectedPrefabIds;
+		private ValueBindingHelper<int> _TagEditorPrefabId;
 		private ValueBindingHelper<int> _CurrentCategoryBinding;
 		private ValueBindingHelper<int> _CurrentSubCategoryBinding;
 		private ValueBindingHelper<float> _PanelHeight;
@@ -63,6 +64,10 @@ namespace FindIt.Systems
 		private ValueBindingHelper<string> _AlignmentStyle;
 		private ValueBindingHelper<string> _PrefabCountBinding;
 		private ValueBindingHelper<string> _PrefabSelectionTitle;
+		private ValueBindingHelper<string> _TagEditorPrefabName;
+		private ValueBindingHelper<string[]> _TagEditorTags;
+		private ValueBindingHelper<string[]> _TagEditorCreatorTags;
+		private ValueBindingHelper<string[]> _AllTags;
 		private ValueBindingHelper<string[]> _AllThumbnails;
 		private ValueBindingHelper<CategoryUIEntry[]> _CategoryBinding;
 		private ValueBindingHelper<SubCategoryUIEntry[]> _SubCategoryBinding;
@@ -231,6 +236,11 @@ namespace FindIt.Systems
 			_ViewStyle = CreateBinding("ViewStyle", Mod.Settings.DefaultViewStyle);
 			_AlignmentStyle = CreateBinding("AlignmentStyle", Mod.Settings.DefaultAlignmentStyle);
 			_AllThumbnails = CreateBinding("AllThumbnails", new string[0]);
+			_TagEditorPrefabId = CreateBinding("TagEditorPrefabId", 0);
+			_TagEditorPrefabName = CreateBinding("TagEditorPrefabName", string.Empty);
+			_TagEditorTags = CreateBinding("TagEditorTags", new string[0]);
+			_TagEditorCreatorTags = CreateBinding("TagEditorCreatorTags", new string[0]);
+			_AllTags = CreateBinding("AllTags", new string[0]);
 
 			CreateBinding("NoAssetImage", () => Mod.Settings.NoAssetImage);
 
@@ -242,6 +252,10 @@ namespace FindIt.Systems
 			CreateTrigger("FindItIconToggled", FindItIconClicked);
 			CreateTrigger<int>("SetCurrentPrefab", OnPrefabClicked);
 			CreateTrigger<int>("ToggleFavorited", FindItUtil.ToggleFavorited);
+			CreateTrigger<int>("OpenTagEditor", OpenTagEditor);
+			CreateTrigger("CloseTagEditor", CloseTagEditor);
+			CreateTrigger<string>("AddTag", AddTag);
+			CreateTrigger<string>("RemoveTag", RemoveTag);
 			CreateTrigger("ToggleLock", ToggleLock);
 			CreateTrigger("OnSearchFocused", () => _FocusSearchBar.Value = false);
 			CreateTrigger("OnSearchCleared", () => _ClearSearchBar.Value = false);

@@ -8,6 +8,8 @@ export interface PrefabEntry {
   packThumbnails: string[];
   themeThumbnail: string;
   favorited: boolean;
+  tags: string[];
+  creatorTags: string[];
   random: boolean;
   placed: number;
   hot: boolean;

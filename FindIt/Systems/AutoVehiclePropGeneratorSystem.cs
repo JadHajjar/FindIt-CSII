@@ -57,7 +57,7 @@ namespace FindIt.Systems
 
 		private void GenerateProps()
 		{
-			var vehicleEntities = SystemAPI.QueryBuilder().WithAll<VehicleData>().Build().ToEntityArray(Allocator.Temp);
+			var vehicleEntities = GetEntityQuery(ComponentType.ReadOnly<VehicleData>()).ToEntityArray(Allocator.Temp);
 			var localeDictionary = new Dictionary<string, string>();
 
 			for (var i = 0; i < vehicleEntities.Length; i++)

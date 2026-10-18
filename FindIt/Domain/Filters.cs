@@ -32,7 +32,6 @@ namespace FindIt.Domain
 		public ValueSign LotWidthSign { get; set; } = ValueSign.Equal;
 		public ValueSign LotDepthSign { get; set; } = ValueSign.Equal;
 		public ValueSign BuildingLevelSign { get; set; } = ValueSign.Equal;
-
 		public static Func<string, Func<PrefabIndex, bool>> GetCustomSearchFunction { get; set; }
 
 		public IEnumerable<Func<PrefabIndex, bool>> GetFilterList()
@@ -129,32 +128,122 @@ namespace FindIt.Domain
 
 			if (!string.IsNullOrWhiteSpace(CurrentSearch))
 			{
-				if (GetCustomSearchFunction is null)
-					yield return Mod.Settings.StrictSearch ? DoStrictSearchFilter : DoSearchFilter;
-				else
-					yield return GetCustomSearchFunction(CurrentSearch);
+				ParseSearch(CurrentSearch, out var searchText, out var tagTerms);
+
+				if (tagTerms.Length > 0)
+				{
+					yield return prefab => DoTagTermsFilter(prefab, tagTerms);
+				}
+
+				if (searchText.Length > 0)
+				{
+					if (GetCustomSearchFunction is not null)
+						yield return GetCustomSearchFunction(searchText);
+					else if (Mod.Settings.StrictSearch)
+						yield return prefab => DoStrictSearchFilter(prefab, searchText);
+					else
+						yield return prefab => DoSearchFilter(prefab, searchText);
+				}
 			}
 		}
 
-		private bool DoSearchFilter(PrefabIndex prefab)
+		private static void ParseSearch(string search, out string searchText, out string[] tagTerms)
 		{
-			return CurrentSearch.SearchCheck(prefab.Name)
-				|| CurrentSearch.SearchCheck(prefab.PrefabName)
-				|| (prefab.PdxModsId == CurrentSearch);
-			//|| prefab.Tags.Any(DoTagSearch);
+			var words = new List<string>();
+			var tags = new List<string>();
+
+			foreach (var token in search.Split((char[])null, StringSplitOptions.RemoveEmptyEntries))
+			{
+				if (token[0] == '#')
+				{
+					var term = token.Substring(1);
+
+					if (!tags.Contains(term, StringComparer.OrdinalIgnoreCase))
+					{
+						tags.Add(term);
+					}
+				}
+				else
+				{
+					words.Add(token);
+				}
+			}
+
+			searchText = string.Join(" ", words);
+			tagTerms = tags.ToArray();
 		}
 
-		private bool DoStrictSearchFilter(PrefabIndex prefab)
+		private static bool DoSearchFilter(PrefabIndex prefab, string searchText)
 		{
-			return prefab.Name.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| prefab.PrefabName.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| (prefab.PdxModsId == CurrentSearch);
-			//|| prefab.Tags.Any(DoTagSearch);
+			return searchText.SearchCheck(prefab.Name)
+				|| searchText.SearchCheck(prefab.PrefabName)
+				|| (prefab.PdxModsId == searchText)
+				|| DoTagSearch(prefab, searchText, false);
 		}
 
-		private bool DoTagSearch(string tag)
+		private static bool DoStrictSearchFilter(PrefabIndex prefab, string searchText)
 		{
-			return tag.IndexOf(CurrentSearch, StringComparison.InvariantCultureIgnoreCase) >= 0;
+			return prefab.Name.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) >= 0
+				|| prefab.PrefabName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) >= 0
+				|| (prefab.PdxModsId == searchText)
+				|| DoTagSearch(prefab, searchText, true);
+		}
+
+		private static bool DoTagSearch(PrefabIndex prefab, string searchText, bool strict)
+		{
+			return TagSearchMatches(prefab.Tags, searchText, strict)
+				|| TagSearchMatches(prefab.CreatorTags, searchText, strict);
+		}
+
+		private static bool TagSearchMatches(IList<string> tags, string searchText, bool strict)
+		{
+			if (tags is null)
+			{
+				return false;
+			}
+
+			for (var i = 0; i < tags.Count; i++)
+			{
+				if (strict
+					? tags[i].IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) >= 0
+					: searchText.SearchCheck(tags[i]))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private static bool DoTagTermsFilter(PrefabIndex prefab, string[] tagTerms)
+		{
+			for (var i = 0; i < tagTerms.Length; i++)
+			{
+				if (!HasTagStartingWith(prefab.Tags, tagTerms[i]) && !HasTagStartingWith(prefab.CreatorTags, tagTerms[i]))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		private static bool HasTagStartingWith(IList<string> tags, string tagTerm)
+		{
+			if (tags is null)
+			{
+				return false;
+			}
+
+			for (var i = 0; i < tags.Count; i++)
+			{
+				if (tags[i].StartsWith(tagTerm, StringComparison.InvariantCultureIgnoreCase))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		private bool DoTypeFilter(PrefabIndex prefab)

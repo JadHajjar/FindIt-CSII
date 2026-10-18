@@ -44,6 +44,10 @@
   }
 }
 
+.centerSearchArea .searchArea {
+  min-width: 225rem;
+}
+
 .searchArea {
   position: relative;
   margin: 0 8rem;
@@ -98,6 +102,13 @@
 .clearIcon img {
   height: 24rem;
   width: 24rem;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+// Without the asset grid theme the button has no hover state of its own
+.clearIcon:hover img {
+  opacity: 1;
 }
 
 .textBox {
@@ -218,6 +229,7 @@
 
   &.selected {
     margin-bottom: 0 !important;
+    padding-top: 0 !important;
     padding-bottom: 8rem !important;
     height: 36rem;
     border-bottom-left-radius: 0;

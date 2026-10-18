@@ -26,6 +26,7 @@ namespace FindIt.Domain
 		public AssetPackPrefab[] AssetPacks { get; set; }
 		public int[] RandomPrefabs { get; set; }
 		public List<string> Tags { get; set; }
+		public string[] CreatorTags { get; set; }
 		public int UIOrder { get; set; }
 		public bool HasParking { get; set; }
 		public DateTime? InstalledDate { get; set; }

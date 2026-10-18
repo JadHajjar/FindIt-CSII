@@ -45,6 +45,19 @@ namespace FindIt.Domain.UIBinding
 			writer.PropertyName("favorited");
 			writer.Write(_prefab.IsFavorited);
 
+			writer.PropertyName("tags");
+			var tags = (_prefab as PrefabIndex)?.Tags;
+			writer.ArrayBegin(tags?.Count ?? 0);
+			for (var i = 0; i < (tags?.Count ?? 0); i++)
+			{
+				writer.Write(tags[i]);
+			}
+
+			writer.ArrayEnd();
+
+			writer.PropertyName("creatorTags");
+			writer.Write((_prefab as PrefabIndex)?.CreatorTags ?? new string[0]);
+
 			writer.PropertyName("random");
 			writer.Write(_prefab.IsRandom);
 

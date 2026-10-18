@@ -469,7 +469,8 @@ namespace FindIt.Systems
 			prefabIndex.AssetPacks ??= prefab.GetComponent<AssetPackItem>()?.m_Packs?.Where(x => x is not null).ToArray() ?? new AssetPackPrefab[0];
 			prefabIndex.ThemeThumbnail ??= prefabIndex.Theme is null ? null : ImageSystem.GetThumbnail(prefabIndex.Theme);
 			prefabIndex.PackThumbnails ??= prefabIndex.AssetPacks.Select(ImageSystem.GetThumbnail).ToArray();
-			prefabIndex.Tags ??= new();
+			prefabIndex.Tags = FindItUtil.GetTags(prefabName);
+			prefabIndex.CreatorTags = FindItUtil.GetCreatorTags(prefab);
 			prefabIndex.UIOrder = prefab.TryGet<UIObject>(out var uIObject) ? uIObject.m_Priority : int.MaxValue;
 			prefabIndex.IsVanilla = prefab.isBuiltin || prefab.Has<FindItGenerated>();
 			prefabIndex.HasParking = prefabIndex.Category is PrefabCategory.Buildings or PrefabCategory.ServiceBuildings && HasParking(prefab);

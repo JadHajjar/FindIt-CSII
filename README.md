@@ -105,3 +105,18 @@ A tool that already has `SelectTreePrefab` / `UnselectTreePrefab` / `GetSelected
 public void SelectPrefab(PrefabBase prefab) => SelectTreePrefab(prefab);
 public void DeselectPrefab(PrefabBase prefab) => UnselectTreePrefab(prefab);
 ```
+
+---
+
+## For Asset Creators
+
+### Asset Tags
+
+You can ship your assets with tags so players can find them with a `#tag` search. Players can't remove these tags, and Find It doesn't save them, they always come from your asset.
+
+Spaces in tags are replaced with dashes, so `white label` becomes `white-label`.
+
+There are two ways to add tags, and you can use both:
+
+- **FindItProperties component:** add the `FindItProperties` component (under the `FindIt/` menu) to your prefab and fill in its `Tags` list.
+- **Editor Asset Category Override:** add entries starting with `#` to the component's exclude list, for example `#white-label` or `#statue`. Find It treats each of them as a tag. This works without the asset depending on Find It's component.

@@ -1,0 +1,164 @@
+@use "../../base.scss" as _base;
+
+.tagEditor {
+  display: flex;
+  flex-direction: column;
+  padding: 0 12rem;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  color: var(--accentColorNormal);
+  text-transform: uppercase;
+  font-size: 12rem;
+  text-align: center;
+  margin: 5rem;
+}
+
+.closeButton {
+  @include _base.transparentButton(false);
+
+  position: absolute;
+  right: -8rem;
+  top: 2rem;
+  width: 22rem;
+  height: 22rem;
+  padding: 4rem;
+
+  img {
+    width: 14rem;
+    height: 14rem;
+    margin: 0;
+  }
+}
+
+.prefabName {
+  color: var(--menuText1Normal);
+  font-size: 14rem;
+  font-weight: bold;
+  margin-bottom: 6rem;
+  coh-font-fit-mode: shrink;
+  white-space: nowrap;
+}
+
+.subtitle {
+  color: var(--textColorDim);
+  font-size: 12rem;
+  margin: 8rem 0 4rem 0;
+}
+
+.hint {
+  color: var(--textColorDim);
+  font-size: 12rem;
+  margin: 2rem 0;
+}
+
+.chipList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  max-height: 160rem;
+  overflow-y: auto;
+}
+
+.chip {
+  @include _base.blackButton();
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  height: 24rem;
+  margin: 2rem;
+  padding: 0 8rem;
+  font-size: 13rem;
+  color: var(--menuText1Normal);
+  white-space: nowrap;
+
+  &.assigned {
+    padding: 0 2rem 0 8rem;
+    background-color: var(--accentColorNormal);
+    color: rgba(255, 255, 255, 1);
+
+    &:hover {
+      background-color: var(--accentColorNormal);
+    }
+  }
+
+  &.create {
+    font-style: italic;
+  }
+
+  &.creator {
+    padding: 0 8rem 0 6rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 1);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    img {
+      width: 10rem;
+      height: 10rem;
+      margin-right: 4rem;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.removeButton {
+  @include _base.transparentButton(false);
+
+  width: 18rem;
+  height: 18rem;
+  padding: 3rem;
+  margin-left: 4rem;
+
+  img {
+    width: 10rem;
+    height: 10rem;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 1) !important;
+  }
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8rem;
+}
+
+.textBox {
+  flex: 1;
+  width: auto;
+  padding: 4rem 8rem 3rem 8rem;
+  line-height: 19rem;
+  font-size: 14rem;
+  border-width: 2.5rem;
+  border-radius: 5rem;
+}
+
+.addButton {
+  @include _base.blackButton(false);
+
+  width: 28rem;
+  height: 28rem;
+  padding: 6rem;
+  margin-left: 4rem;
+
+  img {
+    width: 14rem;
+    height: 14rem;
+    margin: 0;
+  }
+}

@@ -1,12 +1,13 @@
 import { Button, Tooltip } from "cs2/ui";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
-import { PropsWithChildren } from "react";
+import { MouseEvent, PropsWithChildren } from "react";
 
 type _Props = {
   tooltip?: string | null;
   selected?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  onMouseDown?: (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
   mask?: string;
   src?: string;
   className?: string;
@@ -20,6 +21,7 @@ export const BasicButton = (props: PropsWithChildren<_Props>) => {
         variant="icon"
         className={props.className}
         onClick={props.onClick}
+        onMouseDown={props.onMouseDown}
         selected={props.selected}
         disabled={props.disabled}
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
@@ -34,6 +36,7 @@ export const BasicButton = (props: PropsWithChildren<_Props>) => {
     <Button
       className={props.className}
       onClick={props.onClick}
+      onMouseDown={props.onMouseDown}
       selected={props.selected}
       disabled={props.disabled}
       focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}

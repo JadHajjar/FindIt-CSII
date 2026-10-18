@@ -70,6 +70,7 @@ namespace FindIt.Systems
 				// Reset prefab selection state when closing the panel
 				FindItUtil.Filters.SelectedType = null;
 				_IsPrefabSelection.Value = false;
+				_TagEditorPrefabId.Value = 0;
 				prefabSelectionTask?.TrySetResult(null);
 				prefabSelectionTask = null;
 

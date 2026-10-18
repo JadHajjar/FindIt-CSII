@@ -9,6 +9,10 @@ import { PrefabEntry } from "domain/prefabEntry";
 import classNames from "classnames";
 import { BasicButton } from "mods/BasicButton/BasicButton";
 import shuffle from "images/findit_shuffle.svg";
+import star from "images/findit_star.svg";
+import starFilled from "images/findit_starFilled.svg";
+import tag from "images/findit_tag.svg";
+import tagFilled from "images/findit_tagFilled.svg";
 
 export interface PrefabButtonProps {
   noAssetImage: any;
@@ -24,6 +28,13 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
   const [favoriteFlip, setFavorited] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [thumbnailIndex, setThumbnailIndex] = useState(0);
+  const creatorTags = props.prefab.creatorTags ?? [];
+  const allTags = creatorTags.concat(
+    (props.prefab.tags ?? []).filter(
+      (x) => !creatorTags.some((y) => y.toLowerCase() === x.toLowerCase()),
+    ),
+  );
+  const tagPressTime = useRef(0);
 
   const mouseOver = () => {
     const date = new Date();
@@ -53,9 +64,13 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           styles.gridItem,
           props.selected && styles.selected,
           props.prefab.favorited && styles.favorited,
+          allTags.length && styles.tagged,
         )}
         variant="icon"
-        onSelect={() => SetCurrentPrefab(props.prefab.id)}
+        onSelect={() => {
+          if (Date.now() - tagPressTime.current > 500)
+            SetCurrentPrefab(props.prefab.id);
+        }}
         style={{ width: props.width, height: props.width }}
         focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
         onMouseMove={props.prefab.random ? mouseOver : undefined}
@@ -179,10 +194,31 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
           onClick={() => ToggleFavorited(props.prefab.id)}
           src={
             props.prefab.favorited
-              ? "coui://uil/Colored/StarFilled.svg"
-              : "coui://uil/Colored/StarOutline.svg"
+              ? starFilled
+              : star
           }
         />
+
+        <BasicButton
+          tooltip={
+            allTags.length
+              ? `${translate("Tooltip.LABEL[FindIt.Tags]", "Tags")}: ${allTags.join(", ")}`
+              : translate("Tooltip.LABEL[FindIt.EditTags]", "Edit tags")
+          }
+          className={styles.tagIcon}
+          onMouseDown={(e) => {
+            tagPressTime.current = Date.now();
+            e.stopPropagation();
+          }}
+          onClick={() => trigger(mod.id, "OpenTagEditor", props.prefab.id)}
+          src={allTags.length ? undefined : tag}
+        >
+          {allTags.length ? (
+            <span className={styles.tagFill}>
+              <img style={{ maskImage: `url(${tagFilled})` }} />
+            </span>
+          ) : undefined}
+        </BasicButton>
       </div>
     );
   }
