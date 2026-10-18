@@ -1,9 +1,11 @@
-﻿using FindIt.Domain.Enums;
+﻿using FindIt.Domain;
+using FindIt.Domain.Enums;
 using FindIt.Domain.UIBinding;
 using FindIt.Utilities;
 
 using Game.Prefabs;
 using Game.Tools;
+using Game.UI;
 
 using System;
 using System.Collections.Generic;
@@ -50,10 +52,39 @@ namespace FindIt.Systems
 
 			for (var i = startIndex; i < maxIndex && i < list.Count; i++)
 			{
-				uiEntries.Add(new PrefabUIEntry(list[i]));
+				var prefab = list[i];
+
+				if (prefab.IsRandom && prefab.RandomPrefabBases != null)
+				{
+					prefab.RandomPrefabThumbnails ??= prefab.RandomPrefabBases
+						.Select(x => x is null ? null : GetThumbnail(prefab, x))
+						.ToArray();
+				}
+				else
+				{
+					prefab.Thumbnail ??= GetThumbnail(prefab, prefab.Prefab);
+				}
+
+				uiEntries.Add(new PrefabUIEntry(prefab));
 			}
 
 			return uiEntries.ToArray();
+		}
+
+		private string GetThumbnail(PrefabIndexBase prefabIndex, PrefabBase prefab)
+		{
+			try
+			{
+				return ImageSystem.GetThumbnail(prefab);
+			}
+			catch (Exception ex)
+			{
+				Mod.Log.Error(
+					ex,
+					$"Failed to get the thumbnail of prefab '{prefabIndex.PrefabName}'");
+
+				return prefabIndex.FallbackThumbnail;
+			}
 		}
 
 		internal void TryActivatePrefabTool(int id)
@@ -104,7 +135,22 @@ namespace FindIt.Systems
 		{
 			_IsSearchLoading.Value = true;
 
-			Task.Run(DelayedSearch);
+			if (FindItUtil.IsReady)
+			{
+				Task.Run(DelayedSearch);
+			}
+		}
+
+		internal void RefreshPanel()
+		{
+			if (!_ShowFindItPanel)
+			{
+				return;
+			}
+
+			UpdateCategoriesAndPrefabList();
+
+			_optionsUISystem.RefreshOptions();
 		}
 
 		internal void ClearSearch()
@@ -115,6 +161,11 @@ namespace FindIt.Systems
 			_IsSearchLoading.Value = false;
 			_CurrentSearch.Value = string.Empty;
 			searchTokenSource?.Cancel();
+		}
+
+		internal void CancelSearch()
+		{
+			searchTokenSource.Cancel();
 		}
 
 		private async Task DelayedSearch()

@@ -1,5 +1,7 @@
 ﻿using Game.Prefabs;
 
+using System.Globalization;
+
 namespace FindIt.Domain
 {
 	public class PrefabIndexBase
@@ -8,6 +10,7 @@ namespace FindIt.Domain
 		public int Id { get; set; }
 		public string PrefabName { get; set; }
 		public string Name { get; set; }
+		public SortKey NameSortKey { get; set; }
 		public string PdxModsId { get; set; }
 		public string Thumbnail { get; set; }
 		public string FallbackThumbnail { get; set; }
@@ -15,6 +18,7 @@ namespace FindIt.Domain
 		public string CategoryThumbnail { get; set; }
 		public bool IsFavorited { get; set; }
 		public bool IsRandom { get; set; }
+		public PrefabBase[] RandomPrefabBases { get; set; }
 		public string[] RandomPrefabThumbnails { get; set; }
 		public string ThemeThumbnail { get; set; }
 		public string[] PackThumbnails { get; set; }
