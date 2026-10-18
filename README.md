@@ -112,7 +112,7 @@ public void DeselectPrefab(PrefabBase prefab) => UnselectTreePrefab(prefab);
 
 ### Find It Properties
 
-Open your asset in the editor and click the **Find It Properties** button (the tag icon) in the editor toolbar. It edits the asset you have selected in the inspector, and you can choose where the data is saved:
+Open your asset in the editor and click the **Find It Properties** button (the tag icon) in the editor's bottom bar, next to the advisor button. It edits the asset you have selected in the inspector, and you can choose where the data is saved:
 
 - **Standard:** saved in the `FindItProperties` component. Every option is available, but if the asset is edited and saved again without Find It enabled, these properties will be lost.
 - **More Compatibility:** saved as `#` entries in the `Editor Asset Category Override` exclude list. Only tags and the category are available, but they're kept even if the asset is edited without Find It. The category is saved as a `FindIt/<category>/<sub-category>` entry in the include list.

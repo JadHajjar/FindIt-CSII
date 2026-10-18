@@ -8,6 +8,7 @@ import { ToolbarIconComponent } from "mods/ToolbarIcon/ToolbarIcon";
 import { RemoveVanillaAssetMenuComponent } from "mods/RemoveVanillaAssetMenu/RemoveVanillaAssetMenu";
 import { FindItMainContainerComponent } from "mods/MainContainer/MainContainer";
 import { CreatorPropertiesComponent } from "mods/CreatorProperties/CreatorProperties";
+import { BottomBarExtension } from "mods/CreatorProperties/CreatorPropertiesButton";
 import { RightClickMenuComponent } from "mods/RightClickMenu/RightClickMenu";
 import { WrapToolOptionsPanel } from "mods/WrapToolOptionsPanel/WrapToolOptionsPanel";
 import { RemoveVanillaRightToolbar } from "mods/RemoveVanillaAssetMenu/RemoveVanillaRightToolbar";
@@ -34,6 +35,7 @@ const register: ModRegistrar = (moduleRegistry) => {
   moduleRegistry.append("Game", FindItMainContainerComponent);
   moduleRegistry.append("Editor", FindItMainContainerComponent);
   moduleRegistry.append("Editor", CreatorPropertiesComponent);
+  moduleRegistry.extend("game-ui/editor/components/bottom-bar/bottom-bar.tsx", "BottomBar", BottomBarExtension);
 
   //moduleRegistry.append("Game", RightClickMenuComponent);
 };

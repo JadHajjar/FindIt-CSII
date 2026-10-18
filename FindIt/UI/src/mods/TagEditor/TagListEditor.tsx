@@ -29,6 +29,9 @@ type _Props = {
   onAdd: (tag: string) => void;
   onRemove: (tag: string) => void;
   onEscape?: () => void;
+  subtitleClassName?: string;
+  hintClassName?: string;
+  chipListClassName?: string;
 };
 
 export const TagListEditor = (props: _Props) => {
@@ -95,9 +98,9 @@ export const TagListEditor = (props: _Props) => {
 
   return (
     <>
-      <div className={styles.chipList}>
+      <div className={classNames(styles.chipList, props.chipListClassName)}>
         {tags.length === 0 && lockedTags.length === 0 && (
-          <span className={styles.hint}>
+          <span className={props.hintClassName ?? styles.hint}>
             {translate(
               "Tooltip.LABEL[FindIt.NoTags]",
               "This asset has no tags yet.",
@@ -161,13 +164,13 @@ export const TagListEditor = (props: _Props) => {
 
       {(suggestions.length > 0 || canCreate) && (
         <>
-          <div className={styles.subtitle}>
+          <div className={props.subtitleClassName ?? styles.subtitle}>
             {translate(
               "Tooltip.LABEL[FindIt.PreviousTags]",
               "Previously used tags",
             )}
           </div>
-          <div className={styles.chipList}>
+          <div className={classNames(styles.chipList, props.chipListClassName)}>
             {canCreate && (
               <Button
                 variant="flat"

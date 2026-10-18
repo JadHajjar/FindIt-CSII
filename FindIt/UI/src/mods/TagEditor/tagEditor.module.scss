@@ -27,7 +27,8 @@
 
   position: absolute;
   right: -8rem;
-  top: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
   width: 22rem;
   height: 22rem;
   padding: 4rem;
@@ -142,7 +143,7 @@
   flex: 1;
   width: auto;
   padding: 4rem 8rem 3rem 8rem;
-  line-height: 19rem;
+  line-height: 20rem;
   font-size: 14rem;
   border-width: 2.5rem;
   border-radius: 5rem;
@@ -151,14 +152,19 @@
 .addButton {
   @include _base.blackButton(false);
 
-  width: 28rem;
-  height: 28rem;
-  padding: 6rem;
-  margin-left: 4rem;
+  width: 32rem;
+  height: 32rem;
+  padding: 8rem;
+  margin-left: 6rem;
 
   img {
     width: 14rem;
     height: 14rem;
     margin: 0;
+  }
+
+  &[disabled] img,
+  &.disabled img {
+    background-color: rgba(255, 255, 255, 0.3) !important;
   }
 }

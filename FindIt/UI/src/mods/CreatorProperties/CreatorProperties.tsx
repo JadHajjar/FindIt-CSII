@@ -13,6 +13,7 @@ import { PrefabSubCategory } from "domain/subCategory";
 import { VanillaComponentResolver } from "mods/VanillaComponentResolver/VanillaComponentResolver";
 
 const IsOpen$ = bindValue<boolean>(mod.id, "CreatorIsOpen");
+const ShowInfo$ = bindValue<boolean>(mod.id, "CreatorShowInfo");
 const PrefabName$ = bindValue<string>(mod.id, "CreatorPrefabName");
 const UseComponent$ = bindValue<boolean>(mod.id, "CreatorUseComponent");
 const Tags$ = bindValue<string[]>(mod.id, "CreatorTags");
@@ -30,6 +31,7 @@ const categoryOf = (id: number) => Math.floor(id / 100) * 100;
 export const CreatorPropertiesComponent = () => {
   const { translate } = useLocalization();
   const IsOpen = useValue(IsOpen$);
+  const ShowInfo = useValue(ShowInfo$);
   const PrefabName = useValue(PrefabName$);
   const UseComponent = useValue(UseComponent$);
   const Tags = useValue(Tags$);
@@ -44,7 +46,47 @@ export const CreatorPropertiesComponent = () => {
     setSelectedCategory(SubCategory ? categoryOf(SubCategory) : 0);
   }, [SubCategory, PrefabName]);
 
-  if (!IsOpen) return null;
+  if (!IsOpen) {
+    if (!ShowInfo) return null;
+
+    const dismiss = () => trigger(mod.id, "CreatorDismissInfo");
+
+    return (
+      <div className={styles.container}>
+        <div className={styles.panel}>
+          <div className={tagStyles.header}>
+            <div className={styles.title}>
+              {translate(
+                "Tooltip.LABEL[FindIt.CreatorProperties]",
+                "Find It Properties",
+              )}
+            </div>
+            <BasicButton
+              className={tagStyles.closeButton}
+              onClick={dismiss}
+              mask="Media/Glyphs/Close.svg"
+            />
+          </div>
+
+          <div className={styles.info}>
+            {translate(
+              "Tooltip.LABEL[FindIt.CreatorNoAsset]",
+              "Select the asset you're editing first, in the scene or the hierarchy, then click this button again to edit its Find It properties.",
+            )}
+          </div>
+
+          <Button
+            variant="flat"
+            focusKey={VanillaComponentResolver.instance.FOCUS_DISABLED}
+            className={styles.doneButton}
+            onSelect={dismiss}
+          >
+            {translate("Tooltip.LABEL[FindIt.CreatorOk]", "OK")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const close = () => trigger(mod.id, "CreatorClose");
 
@@ -52,7 +94,7 @@ export const CreatorPropertiesComponent = () => {
     <div className={styles.container}>
       <div className={styles.panel}>
         <div className={tagStyles.header}>
-          <div className={tagStyles.title}>
+          <div className={styles.title}>
             {translate(
               "Tooltip.LABEL[FindIt.CreatorProperties]",
               "Find It Properties",
@@ -65,7 +107,7 @@ export const CreatorPropertiesComponent = () => {
           />
         </div>
 
-        <div className={tagStyles.prefabName}>{PrefabName}</div>
+        <div className={styles.prefabName}>{PrefabName}</div>
 
         <div className={styles.modeToggle}>
           <Button
@@ -89,7 +131,7 @@ export const CreatorPropertiesComponent = () => {
           </Button>
         </div>
 
-        <div className={tagStyles.hint}>
+        <div className={styles.hint}>
           {UseComponent
             ? translate(
                 "Tooltip.LABEL[FindIt.CreatorStandardHint]",
@@ -101,7 +143,7 @@ export const CreatorPropertiesComponent = () => {
               )}
         </div>
 
-        <div className={tagStyles.subtitle}>
+        <div className={styles.section}>
           {translate("Tooltip.LABEL[FindIt.Tags]", "Tags")}
         </div>
         <TagListEditor
@@ -111,9 +153,12 @@ export const CreatorPropertiesComponent = () => {
           onAdd={(tag) => trigger(mod.id, "CreatorAddTag", tag)}
           onRemove={(tag) => trigger(mod.id, "CreatorRemoveTag", tag)}
           onEscape={close}
+          subtitleClassName={styles.subsection}
+          hintClassName={styles.chipHint}
+          chipListClassName={styles.chipList}
         />
 
-        <div className={tagStyles.subtitle}>
+        <div className={styles.section}>
           {translate("Tooltip.LABEL[FindIt.CreatorCategory]", "Category")}
         </div>
         <div className={styles.iconRow}>

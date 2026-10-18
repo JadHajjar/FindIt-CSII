@@ -1,6 +1,4 @@
-﻿using Colossal.Serialization.Entities;
-
-using FindIt.Domain;
+﻿using FindIt.Domain;
 using FindIt.Domain.Enums;
 using FindIt.Domain.UIBinding;
 using FindIt.Utilities;
@@ -24,12 +22,12 @@ namespace FindIt.Systems
 		private InspectorPanelSystem _inspectorPanelSystem;
 		private EditorToolUISystem _editorToolUISystem;
 		private FindItOptionsUISystem _optionsUISystem;
-		private CreatorPropertiesEditorTool _editorTool;
 		private ToolSystem _toolSystem;
 		private PrefabBase _prefab;
 		private Entity _selectedEntity;
 
 		private ValueBindingHelper<bool> _IsOpen;
+		private ValueBindingHelper<bool> _ShowInfo;
 		private ValueBindingHelper<string> _PrefabName;
 		private ValueBindingHelper<bool> _UseComponent;
 		private ValueBindingHelper<string[]> _Tags;
@@ -54,6 +52,7 @@ namespace FindIt.Systems
 			_optionsUISystem = World.GetOrCreateSystemManaged<FindItOptionsUISystem>();
 
 			_IsOpen = CreateBinding("CreatorIsOpen", false);
+			_ShowInfo = CreateBinding("CreatorShowInfo", false);
 			_PrefabName = CreateBinding("CreatorPrefabName", string.Empty);
 			_UseComponent = CreateBinding("CreatorUseComponent", true);
 			_Tags = CreateBinding("CreatorTags", new string[0]);
@@ -63,6 +62,8 @@ namespace FindIt.Systems
 			_Categories = CreateBinding("CreatorCategories", new CategoryUIEntry[0]);
 			_SubCategories = CreateBinding("CreatorSubCategories", new SubCategoryUIEntry[0]);
 
+			CreateTrigger("CreatorToggle", Toggle);
+			CreateTrigger("CreatorDismissInfo", () => _ShowInfo.Value = false);
 			CreateTrigger("CreatorClose", ReturnToAsset);
 			CreateTrigger<bool>("CreatorSetUseComponent", SetUseComponent);
 			CreateTrigger<string>("CreatorAddTag", AddTag);
@@ -71,27 +72,37 @@ namespace FindIt.Systems
 			CreateTrigger<bool>("CreatorSetHideFromFindIt", SetHideFromFindIt);
 		}
 
-		protected override void OnGamePreload(Purpose purpose, GameMode mode)
-		{
-			base.OnGamePreload(purpose, mode);
-
-			if (mode != GameMode.Editor || _editorToolUISystem.tools is null || _editorToolUISystem.tools.Any(x => x?.id == CreatorPropertiesEditorTool.ToolId))
-			{
-				return;
-			}
-
-			_editorTool ??= new CreatorPropertiesEditorTool(World, this);
-			_editorToolUISystem.tools = _editorToolUISystem.tools.Append(_editorTool).ToArray();
-		}
-
 		protected override void OnUpdate()
 		{
-			if (_editorTool is not null)
+			if (IsOpen)
 			{
-				_editorTool.disabled = !IsOpen && _inspectorPanelSystem.selectedObject is not PrefabBase;
+				if (_inspectorPanelSystem.selectedObject is not PrefabBase selectedPrefab)
+				{
+					Close();
+				}
+				else if (selectedPrefab != _prefab)
+				{
+					Open();
+				}
 			}
 
 			base.OnUpdate();
+		}
+
+		private void Toggle()
+		{
+			if (IsOpen)
+			{
+				Close();
+			}
+			else if (_inspectorPanelSystem.selectedObject is PrefabBase)
+			{
+				Open();
+			}
+			else
+			{
+				_ShowInfo.Value = true;
+			}
 		}
 
 		internal void Open()
@@ -115,6 +126,7 @@ namespace FindIt.Systems
 				.Select(x => new SubCategoryUIEntry(x))
 				.ToArray();
 			_IsOpen.Value = true;
+			_ShowInfo.Value = false;
 
 			Refresh();
 		}
@@ -124,7 +136,7 @@ namespace FindIt.Systems
 			var prefab = _prefab;
 			var selectedEntity = _selectedEntity;
 
-			_editorToolUISystem.activeTool = null;
+			Close();
 
 			if (prefab is null)
 			{
@@ -141,7 +153,7 @@ namespace FindIt.Systems
 			}
 		}
 
-		internal void Close()
+		private void Close()
 		{
 			_prefab = null;
 			_IsOpen.Value = false;

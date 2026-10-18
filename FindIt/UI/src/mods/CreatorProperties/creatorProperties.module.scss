@@ -11,31 +11,34 @@
 
 .panel {
   pointer-events: auto;
-  padding: 0 0 12rem 0;
+  padding: 4rem 16rem 16rem 16rem;
   max-height: 640rem;
   overflow-y: auto;
-  background-color: var(--panelColorNormal);
-  background-image: linear-gradient(var(--panelGradientStart), var(--panelGradientEnd));
+  background-color: rgba(49, 49, 49, 0.8);
   backdrop-filter: var(--panelBlur);
-  color: var(--textColorDim);
-  border-radius: var(--panelRadius);
+  color: rgba(255, 255, 255, 1);
+  border-top-left-radius: var(--panelRadius);
+  border-top-right-radius: var(--panelRadius);
+  border-bottom-left-radius: var(--panelRadius);
+  border-bottom-right-radius: var(--panelRadius);
 
-  & > * {
-    margin-left: 12rem;
-    margin-right: 12rem;
+  button:active,
+  .modeToggle > button:active {
+    background-color: var(--accentColorNormal) !important;
   }
 }
 
 .modeToggle {
   display: flex;
   flex-direction: row;
-  margin-bottom: 6rem;
+  margin-top: 10rem;
 
   & > button {
     @include _base.blackButton();
 
-    flex: 1;
-    height: 28rem;
+    flex: 0 0 50%;
+    width: 50%;
+    height: 30rem;
     padding: 0 8rem;
     font-size: 13rem;
     border-radius: 0;
@@ -63,7 +66,11 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 2rem;
+  margin: 0 -2rem;
+}
+
+.chipList {
+  margin: 0 -2rem;
 }
 
 .iconButton {
@@ -89,11 +96,69 @@
   color: var(--menuText1Normal);
 }
 
+.title {
+  color: var(--accentColorNormal);
+  text-transform: uppercase;
+  font-size: 13rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 12rem 0 10rem 0;
+}
+
+.prefabName {
+  color: rgba(255, 255, 255, 1);
+  font-size: 16rem;
+  font-weight: bold;
+  coh-font-fit-mode: shrink;
+  white-space: nowrap;
+}
+
+.section {
+  color: rgba(255, 255, 255, 1);
+  font-size: 14rem;
+  font-weight: bold;
+  margin-top: 20rem;
+  margin-bottom: 8rem;
+}
+
+.subsection {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12rem;
+  font-weight: bold;
+  margin: 12rem 0 6rem 0;
+}
+
+.hint,
+.chipHint {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12rem;
+  line-height: 17rem;
+}
+
+.hint {
+  margin-top: 8rem;
+}
+
+.chipHint {
+  margin: 2rem;
+}
+
+.info {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14rem;
+  line-height: 20rem;
+  margin-top: 2rem;
+}
+
+.bottomBarButton {
+  display: flex;
+}
+
 .doneButton {
   @include _base.blackButton();
 
-  margin-top: 12rem;
-  height: 32rem;
+  margin-top: 20rem;
+  height: 34rem;
   padding: 0 12rem;
   font-size: 14rem;
   color: rgba(255, 255, 255, 1);
@@ -108,8 +173,8 @@
   @include _base.transparentButton();
 
   justify-content: flex-start;
-  margin-top: 10rem;
-  padding: 4rem;
+  margin-top: 16rem;
+  padding: 4rem 0;
   font-size: 13rem;
   color: var(--menuText1Normal);
 }
