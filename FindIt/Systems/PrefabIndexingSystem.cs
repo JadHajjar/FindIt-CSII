@@ -264,9 +264,18 @@ namespace FindIt.Systems
 			{
 				foreach (var prefab in prefabs)
 				{
-					prefab.NameSortKey = compareInfo.GetSortKey(prefab.Name);
+					SetNameKeys(prefab, compareInfo);
 				}
 			}, TaskScheduler.Default);
+		}
+
+		private static void SetNameKeys(PrefabIndex prefabIndex, CompareInfo compareInfo)
+		{
+			prefabIndex.NameSortKey = compareInfo.GetSortKey(prefabIndex.Name);
+			prefabIndex.NameLower = prefabIndex.Name.ToLowerInvariant();
+			prefabIndex.NameAbbreviation = prefabIndex.Name.GetSearchAbbreviation();
+			prefabIndex.PrefabNameLower = prefabIndex.PrefabName.ToLowerInvariant();
+			prefabIndex.PrefabNameAbbreviation = prefabIndex.PrefabName.GetSearchAbbreviation();
 		}
 
 		private long GetFrameBudgetMilliseconds(TimeSpan lastSlice)
@@ -554,8 +563,7 @@ namespace FindIt.Systems
 
 			if (_fullIndex is null)
 			{
-				prefabIndex.NameSortKey = CultureInfo.CurrentCulture.CompareInfo
-					.GetSortKey(prefabIndex.Name);
+				SetNameKeys(prefabIndex, CultureInfo.CurrentCulture.CompareInfo);
 			}
 			else
 			{

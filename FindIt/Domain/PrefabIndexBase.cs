@@ -9,7 +9,11 @@ namespace FindIt.Domain
 		public PrefabBase Prefab { get; }
 		public int Id { get; set; }
 		public string PrefabName { get; set; }
+		public string PrefabNameLower { get; set; }
+		public string PrefabNameAbbreviation { get; set; }
 		public string Name { get; set; }
+		public string NameLower { get; set; }
+		public string NameAbbreviation { get; set; }
 		public SortKey NameSortKey { get; set; }
 		public string PdxModsId { get; set; }
 		public string Thumbnail { get; set; }

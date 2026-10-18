@@ -1,4 +1,7 @@
 ﻿using Colossal.Entities;
+
+using FindIt.Domain;
+
 using Game.Prefabs;
 
 using System;
@@ -72,41 +75,45 @@ namespace FindIt.Utilities
             return false;
         }
 
-        public static bool SearchCheck(this string searchTerm, string termToBeSearched, bool caseCheck = false)
+        public static bool SearchCheck(
+            this SearchTerm searchTerm,
+            string termToBeSearched,
+            string lowercase = null,
+            string abbreviation = null)
         {
-            if (string.IsNullOrWhiteSpace(searchTerm) && string.IsNullOrWhiteSpace(termToBeSearched))
+            if (string.IsNullOrWhiteSpace(searchTerm.Text) && string.IsNullOrWhiteSpace(termToBeSearched))
             {
                 return true;
             }
 
-            if (string.IsNullOrWhiteSpace(searchTerm) || string.IsNullOrWhiteSpace(termToBeSearched))
+            if (string.IsNullOrWhiteSpace(searchTerm.Text) || string.IsNullOrWhiteSpace(termToBeSearched))
             {
                 return false;
             }
 
-            if (termToBeSearched.IndexOf(searchTerm, caseCheck ? StringComparison.CurrentCulture : StringComparison.InvariantCultureIgnoreCase) >= 0)
+            // Search calls this for every prefab, and comparing lowercase strings ordinally is much
+            // faster than a culture-aware comparison.
+            lowercase ??= termToBeSearched.ToLowerInvariant();
+
+            if (lowercase.IndexOf(searchTerm.Lowercase, StringComparison.Ordinal) >= 0)
             {
                 return true;
             }
 
-            if (searchTerm.SpellCheck(termToBeSearched.Substring(0, Math.Min(termToBeSearched.Length, searchTerm.Length + 1)), caseCheck) <= (int)Math.Ceiling((searchTerm.Length - 3) / 5M))
+            if (searchTerm.Lowercase.SpellCheck(lowercase.Substring(0, Math.Min(lowercase.Length, searchTerm.Text.Length + 1))) <= (int)Math.Ceiling((searchTerm.Text.Length - 3) / 5M))
             {
                 return true;
             }
 
-            if (searchTerm.AbbreviationCheck(termToBeSearched))
+            if (searchTerm.AbbreviationCheck(lowercase, abbreviation))
             {
                 return true;
             }
 
-            if (searchTerm.Contains(' '))
+            if (searchTerm.Text.IndexOf(' ') >= 0
+                && searchTerm.Words.All(x => lowercase.IndexOf(x, StringComparison.Ordinal) >= 0))
             {
-                var terms = searchTerm.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (terms.All(x => termToBeSearched.IndexOf(x, caseCheck ? StringComparison.CurrentCulture : StringComparison.InvariantCultureIgnoreCase) >= 0))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
@@ -158,27 +165,35 @@ namespace FindIt.Utilities
             return d[n, m];
         }
 
-        public static bool AbbreviationCheck(this string string1, string string2)
+        public static bool AbbreviationCheck(this SearchTerm searchTerm, string lowercase, string abbreviation = null)
         {
-            if (string.IsNullOrWhiteSpace(string1) || string.IsNullOrWhiteSpace(string1))
+            if (string.IsNullOrWhiteSpace(searchTerm.Text))
             {
                 return false;
             }
 
-            string1 = string1.ToLower().Replace("'s ", " ");
-            string2 = string2.ToLower().Replace("'s ", " ");
+            abbreviation ??= lowercase.GetSearchAbbreviation();
 
-            var abbreviation2 = string2.GetAbbreviation();
-            var abbreviation1 = string1.GetAbbreviation();
+            if (abbreviation.Length > 2 && abbreviation.StartsWith(searchTerm.WithoutSpaces, StringComparison.Ordinal))
+            {
+                return true;
+            }
 
-            return abbreviation2.StartsWith(string1.Where(x => x != ' ')) && abbreviation2.Length > 2
-                || abbreviation1.StartsWith(string2.Where(x => x != ' ')) && abbreviation1.Length > 2;
+            return searchTerm.Abbreviation.Length > 2
+                && searchTerm.Abbreviation.StartsWith(
+                    lowercase.Replace("'s ", " ").Where(x => x != ' '),
+                    StringComparison.Ordinal);
+        }
+
+        public static string GetSearchAbbreviation(this string text)
+        {
+            return text.ToLowerInvariant().Replace("'s ", " ").GetAbbreviation();
         }
 
         public static string GetAbbreviation(this string S)
         {
-            // Search calls this for every prefab name, so it reads the characters one by one
-            // rather than matching a regex.
+            // Indexing calls this for every prefab name, and search for every tag, so it reads the
+            // characters one by one rather than matching a regex.
             var SB = new StringBuilder();
             var i = 0;
 
