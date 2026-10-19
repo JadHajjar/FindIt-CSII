@@ -196,6 +196,8 @@
   "Options.WARNING[FindIt.FindIt.Mod.FindItSettings.ResetViewSizes]": "Are you sure you want to reset all view sizes to their defaults?",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "嚴格搜尋",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "使用嚴格的文字搜尋，而非考慮拼字錯誤的近似搜尋。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Match Letter Variants",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Matches letters that can be written more than one way, so \"strasse\" finds \"Straße\" and \"oeuvre\" finds \"Œuvre\". Searches take about five times longer: with 200,000 assets, about 4 seconds instead of under one.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "從「任何」區域隱藏「品牌」資產",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "將品牌道具從「任何」類別中隱藏，這樣它們只會在您進入「品牌與廣告牌」子類別時顯示。需要重新載入您的存檔以套用更改。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速流暢的捲動",
