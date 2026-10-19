@@ -196,6 +196,8 @@
   "Options.WARNING[FindIt.FindIt.Mod.FindItSettings.ResetViewSizes]": "Are you sure you want to reset all view sizes to their defaults?",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Genaue Suche",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Verwendet eine strikte Textsuche, anstatt eine ungefähre Suche zu verwenden, die Schreibfehler berücksichtigt.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Match Letter Variants",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Matches letters that can be written more than one way, so \"strasse\" finds \"Straße\" and \"oeuvre\" finds \"Œuvre\". Searches take about five times longer: with 200,000 assets, about 4 seconds instead of under one.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "„Branding“-Assets im Abschnitt „Alle“ ausblenden",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Blendet markenspezifische Requisiten aus den „Alle“-Kategorien aus, sodass sie nur angezeigt werden, wenn du speziell in der Unterkategorie „Branding & Billboards“ bist. Ein erneutes Laden deines Spielstands ist erforderlich, um die Änderungen anzuwenden.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Schnell & gleichmäßig Scrollen",
