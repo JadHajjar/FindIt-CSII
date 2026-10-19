@@ -1,4 +1,5 @@
-﻿using FindIt.Domain.Enums;
+﻿using FindIt.Domain;
+using FindIt.Domain.Enums;
 using FindIt.Domain.UIBinding;
 using FindIt.Utilities;
 
@@ -7,6 +8,7 @@ using Game.Prefabs;
 using Game.Rendering;
 using Game.Tools;
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,12 +16,12 @@ namespace FindIt.Systems
 {
 	internal partial class FindItUISystem : ExtendedUISystemBase
 	{
-		private bool filterCompleted;
 		private bool scrollCompleted;
 		private bool settingPrefab;
 		private double scrollIndex;
 		private CancellationTokenSource searchTokenSource = new();
 		private CancellationTokenSource scrollTokenSource = new();
+		private Task<List<PrefabIndex>> searchTask;
 		private TaskCompletionSource<PrefabBase> prefabSelectionTask = new();
 
 		private ToolSystem _toolSystem;
@@ -273,13 +275,24 @@ namespace FindIt.Systems
 			_arrowRightBinding.shouldBeEnabled =
 			_arrowDownBinding.shouldBeEnabled = _ShowFindItPanel || _IsWindowLocked;
 
-			if (filterCompleted)
+			// A full index cancels the search and clears the results on this thread.
+			// A worker's write could come after that, so this thread stores the result.
+			if (searchTask is { IsCompleted: true } task)
 			{
-				filterCompleted = false;
-				scrollIndex = 0;
+				searchTask = null;
 
-				_IsSearchLoading.Value = false;
-				_PrefabListBinding.Value = GetDisplayedPrefabs();
+				if (!searchTokenSource.IsCancellationRequested)
+				{
+					if (task.Result is { } prefabs)
+					{
+						FindItUtil.SetCachedSearch(prefabs);
+					}
+
+					scrollIndex = 0;
+
+					_IsSearchLoading.Value = false;
+					_PrefabListBinding.Value = GetDisplayedPrefabs();
+				}
 			}
 
 			if (scrollCompleted)

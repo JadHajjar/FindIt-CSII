@@ -67,6 +67,11 @@ namespace FindIt.Utilities
 			return _cachedSearch;
 		}
 
+		public static void SetCachedSearch(List<PrefabIndex> prefabs)
+		{
+			_cachedSearch = prefabs;
+		}
+
 		public static void ClearCachedSearch()
 		{
 			_cachedSearch = new();
@@ -487,13 +492,13 @@ namespace FindIt.Utilities
 			return true;
 		}
 
-		public static void ProcessSearch(CancellationToken token)
+		public static List<PrefabIndex> ProcessSearch(CancellationToken token)
 		{
 			var filterList = Filters.GetFilterList().ToList();
 
 			if (filterList.Count == 0)
 			{
-				return;
+				return null;
 			}
 
 			var prefabs = CategorizedPrefabs[CurrentCategory][CurrentSubCategory].OrderedList;
@@ -503,7 +508,7 @@ namespace FindIt.Utilities
 			{
 				if (token.IsCancellationRequested)
 				{
-					return;
+					return null;
 				}
 
 				var allFiltersPass = true;
@@ -524,12 +529,7 @@ namespace FindIt.Utilities
 				}
 			}
 
-			if (token.IsCancellationRequested)
-			{
-				return;
-			}
-
-			_cachedSearch = prefabList;
+			return prefabList;
 		}
 
 		public static void RemoveItem(Entity entity)

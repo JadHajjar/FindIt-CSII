@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FindIt.Systems
@@ -137,7 +138,12 @@ namespace FindIt.Systems
 
 			if (FindItUtil.IsReady)
 			{
-				Task.Run(DelayedSearch);
+				searchTokenSource.Cancel();
+				searchTokenSource = new();
+
+				var token = searchTokenSource.Token;
+
+				searchTask = Task.Run(() => DelayedSearch(token));
 			}
 		}
 
@@ -157,7 +163,6 @@ namespace FindIt.Systems
 		{
 			_ClearSearchBar.Value = true;
 			FindItUtil.Filters.CurrentSearch = string.Empty;
-			filterCompleted = false;
 			_IsSearchLoading.Value = false;
 			_CurrentSearch.Value = string.Empty;
 			searchTokenSource?.Cancel();
@@ -168,39 +173,28 @@ namespace FindIt.Systems
 			searchTokenSource.Cancel();
 		}
 
-		private async Task DelayedSearch()
+		private async Task<List<PrefabIndex>> DelayedSearch(CancellationToken token)
 		{
 			// Asyncronously proesses the search method with a 250ms delay
 			// the Cancellation Token is used to stop any ongoing searches if a new one is requested
 			// and is used to disregard outdated results
 
-			searchTokenSource.Cancel();
-			searchTokenSource = new();
-
-			var token = searchTokenSource.Token;
-
 			await Task.Delay(250);
 
 			if (token.IsCancellationRequested)
 			{
-				return;
+				return null;
 			}
 
 			try
 			{
-				FindItUtil.ProcessSearch(token);
-
-				if (!token.IsCancellationRequested)
-				{
-					// toggle the filterCompleted to signal to the OnUpdate method
-					// that search has concluded and results are ready
-
-					filterCompleted = true;
-				}
+				return FindItUtil.ProcessSearch(token);
 			}
 			catch (Exception ex)
 			{
 				Mod.Log.Error(ex, "Search Failed");
+
+				return new();
 			}
 		}
 
