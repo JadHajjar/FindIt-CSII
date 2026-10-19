@@ -110,6 +110,9 @@ namespace FindIt
 		public bool StrictSearch { get; set; }
 
 		[SettingsUISection(SETTINGS, UIUX)]
+		public bool LinguisticSearch { get; set; }
+
+		[SettingsUISection(SETTINGS, UIUX)]
 		public bool NoAssetImage { get; set; }
 
 		[SettingsUISection(SETTINGS, UIUX)]

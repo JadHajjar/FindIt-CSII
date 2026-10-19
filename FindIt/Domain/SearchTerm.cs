@@ -13,11 +13,17 @@ namespace FindIt.Domain
 		public string Abbreviation { get; }
 		public string[] Words { get; }
 
+		// Mono matches ß with ss only in lowercase text, and only when ignoring case.
+		public StringComparison Comparison { get; }
+
 		public SearchTerm(string text)
 		{
 			Text = text;
 			Lowercase = text.ToLowerInvariant();
 			Words = Lowercase.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			Comparison = Mod.Settings.LinguisticSearch
+				? StringComparison.InvariantCultureIgnoreCase
+				: StringComparison.Ordinal;
 
 			var abbreviationText = Lowercase.Replace("'s ", " ");
 

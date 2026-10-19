@@ -91,11 +91,9 @@ namespace FindIt.Utilities
                 return false;
             }
 
-            // Search calls this for every prefab, and comparing lowercase strings ordinally is much
-            // faster than a culture-aware comparison.
             lowercase ??= termToBeSearched.ToLowerInvariant();
 
-            if (lowercase.IndexOf(searchTerm.Lowercase, StringComparison.Ordinal) >= 0)
+            if (lowercase.IndexOf(searchTerm.Lowercase, searchTerm.Comparison) >= 0)
             {
                 return true;
             }
@@ -119,7 +117,7 @@ namespace FindIt.Utilities
             // the words in a loop.
             foreach (var word in searchTerm.Words)
             {
-                if (lowercase.IndexOf(word, StringComparison.Ordinal) < 0)
+                if (lowercase.IndexOf(word, searchTerm.Comparison) < 0)
                 {
                     return false;
                 }

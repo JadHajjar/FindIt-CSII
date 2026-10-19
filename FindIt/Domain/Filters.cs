@@ -187,8 +187,8 @@ namespace FindIt.Domain
 		{
 			var lowercase = searchTerm.Lowercase;
 
-			return prefab.NameLower.IndexOf(lowercase, StringComparison.Ordinal) >= 0
-				|| prefab.PrefabNameLower.IndexOf(lowercase, StringComparison.Ordinal) >= 0
+			return prefab.NameLower.IndexOf(lowercase, searchTerm.Comparison) >= 0
+				|| prefab.PrefabNameLower.IndexOf(lowercase, searchTerm.Comparison) >= 0
 				|| (prefab.PdxModsId == searchTerm.Text)
 				|| DoTagSearch(prefab, searchTerm, true);
 		}
@@ -209,7 +209,7 @@ namespace FindIt.Domain
 			for (var i = 0; i < tags.Count; i++)
 			{
 				if (strict
-					? tags[i].ToLowerInvariant().IndexOf(searchTerm.Lowercase, StringComparison.Ordinal) >= 0
+					? tags[i].ToLowerInvariant().IndexOf(searchTerm.Lowercase, searchTerm.Comparison) >= 0
 					: searchTerm.SearchCheck(tags[i]))
 				{
 					return true;
