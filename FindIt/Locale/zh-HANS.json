@@ -196,6 +196,8 @@
   "Options.WARNING[FindIt.FindIt.Mod.FindItSettings.ResetViewSizes]": "确定要将所有视图尺寸重置为默认值吗？",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "精确搜索",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "使用严格的文本搜索，而不考虑拼写错误时使用近似的搜索。",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Match Letter Variants",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Matches letters that can be written more than one way, so \"strasse\" finds \"Straße\" and \"oeuvre\" finds \"Œuvre\". Searches take about five times longer: with 200,000 assets, about 4 seconds instead of under one.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "在“任何”部分隐藏“品牌”资产",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "隐藏“任何”类别中的广告牌资产，这样它们只会在“品牌与广告牌”类别中显示。需要重新加载存档才能应用更改。",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "快速和平滑的滚动",
