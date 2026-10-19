@@ -196,6 +196,8 @@
   "Options.WARNING[FindIt.FindIt.Mod.FindItSettings.ResetViewSizes]": "Are you sure you want to reset all view sizes to their defaults?",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Recherche stricte",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Utilise une recherche de texte stricte au lieu d'utiliser une recherche approximative qui prend en compte les erreurs d'orthographe.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Match Letter Variants",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Matches letters that can be written more than one way, so \"strasse\" finds \"Straße\" and \"oeuvre\" finds \"Œuvre\". Searches take about five times longer: with 200,000 assets, about 4 seconds instead of under one.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Masquer les assets de \"Marques\" de la section \"Tous\" (Any)",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Masque les accessoires de marque de la catégorie 'Tous' afin qu'ils ne s'affichent que si vous êtes spécifiquement dans la sous-catégorie 'Marques et Panneau d'affichage'. Nécessite le rechargement de votre sauvegarde pour appliquer les modifications.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Défilement Rapide & Lisse",
