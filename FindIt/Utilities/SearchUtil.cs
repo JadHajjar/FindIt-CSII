@@ -1,4 +1,7 @@
 ﻿using Colossal.Entities;
+
+using FindIt.Domain;
+
 using Game.Prefabs;
 
 using System;
@@ -72,137 +75,196 @@ namespace FindIt.Utilities
             return false;
         }
 
-        public static bool SearchCheck(this string searchTerm, string termToBeSearched, bool caseCheck = false)
+        public static bool SearchCheck(
+            this SearchTerm searchTerm,
+            string termToBeSearched,
+            string lowercase = null,
+            string abbreviation = null)
         {
-            if (string.IsNullOrWhiteSpace(searchTerm) && string.IsNullOrWhiteSpace(termToBeSearched))
+            if (string.IsNullOrWhiteSpace(searchTerm.Text) && string.IsNullOrWhiteSpace(termToBeSearched))
             {
                 return true;
             }
 
-            if (string.IsNullOrWhiteSpace(searchTerm) || string.IsNullOrWhiteSpace(termToBeSearched))
+            if (string.IsNullOrWhiteSpace(searchTerm.Text) || string.IsNullOrWhiteSpace(termToBeSearched))
             {
                 return false;
             }
 
-            if (termToBeSearched.IndexOf(searchTerm, caseCheck ? StringComparison.CurrentCulture : StringComparison.InvariantCultureIgnoreCase) >= 0)
+            lowercase ??= termToBeSearched.ToLowerInvariant();
+
+            if (lowercase.IndexOf(searchTerm.Lowercase, searchTerm.Comparison) >= 0)
             {
                 return true;
             }
 
-            if (searchTerm.SpellCheck(termToBeSearched.Substring(0, Math.Min(termToBeSearched.Length, searchTerm.Length + 1)), caseCheck) <= (int)Math.Ceiling((searchTerm.Length - 3) / 5M))
+            if (searchTerm.Lowercase.SpellCheck(lowercase, searchTerm.Text.Length + 1) <= (int)Math.Ceiling((searchTerm.Text.Length - 3) / 5M))
             {
                 return true;
             }
 
-            if (searchTerm.AbbreviationCheck(termToBeSearched))
+            if (searchTerm.AbbreviationCheck(lowercase, abbreviation))
             {
                 return true;
             }
 
-            if (searchTerm.Contains(' '))
+            if (searchTerm.Text.IndexOf(' ') < 0)
             {
-                var terms = searchTerm.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                return false;
+            }
 
-                if (terms.All(x => termToBeSearched.IndexOf(x, caseCheck ? StringComparison.CurrentCulture : StringComparison.InvariantCultureIgnoreCase) >= 0))
+            // LINQ's All would allocate a delegate and an enumerator on every call, so this checks
+            // the words in a loop.
+            foreach (var word in searchTerm.Words)
+            {
+                if (lowercase.IndexOf(word, searchTerm.Comparison) < 0)
                 {
-                    return true;
+                    return false;
                 }
             }
 
-            return false;
+            return true;
         }
 
-        public static int SpellCheck(this string s1, string s2, bool caseCheck = true)
+        // Search calls this for every prefab, so it reads the name without copying it and keeps
+        // one row of distances instead of the whole table.
+        // The search text is already trimmed and single-spaced.
+        public static int SpellCheck(this string text, string name, int length)
         {
-            s1 = s1.RemoveDoubleSpaces();
-            s2 = s2.RemoveDoubleSpaces();
+            var start = 0;
+            var end = Math.Min(name.Length, length);
 
-            if (!caseCheck)
+            while (start < end && char.IsWhiteSpace(name[start]))
             {
-                s1 = s1.ToLower();
-                s2 = s2.ToLower();
+                start++;
+            }
+
+            while (end > start && char.IsWhiteSpace(name[end - 1]))
+            {
+                end--;
             }
 
             // Levenshtein Algorithm
-            var n = s1.Length;
-            var m = s2.Length;
-            var d = new int[n + 1, m + 1];
+            var distances = new int[text.Length + 1];
 
-            if (n == 0)
-            {
-                return m;
-            }
-
-            if (m == 0)
-            {
-                return n;
-            }
-
-            for (var i = 0; i <= n; d[i, 0] = i++)
+            for (var i = 0; i <= text.Length; distances[i] = i++)
             { }
 
-            for (var j = 0; j <= m; d[0, j] = j++)
-            { }
-
-            for (var i = 1; i <= n; i++)
+            for (var j = start; j < end; j++)
             {
-                for (var j = 1; j <= m; j++)
+                if (name[j] is ' ' && name[j - 1] is ' ')
                 {
-                    var cost = s2[j - 1] == s1[i - 1] ? 0 : 1;
+                    continue;
+                }
 
-                    d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-                         d[i - 1, j - 1] + cost);
+                var diagonal = distances[0];
+
+                distances[0] = diagonal + 1;
+
+                for (var i = 1; i <= text.Length; i++)
+                {
+                    var above = distances[i];
+
+                    distances[i] = Math.Min(Math.Min(above + 1, distances[i - 1] + 1),
+                        diagonal + (text[i - 1] == name[j] ? 0 : 1));
+                    diagonal = above;
                 }
             }
 
-            return d[n, m];
+            return distances[text.Length];
         }
 
-        public static bool AbbreviationCheck(this string string1, string string2)
+        public static bool AbbreviationCheck(this SearchTerm searchTerm, string lowercase, string abbreviation = null)
         {
-            if (string.IsNullOrWhiteSpace(string1) || string.IsNullOrWhiteSpace(string1))
+            if (string.IsNullOrWhiteSpace(searchTerm.Text))
             {
                 return false;
             }
 
-            string1 = string1.ToLower().Replace("'s ", " ");
-            string2 = string2.ToLower().Replace("'s ", " ");
+            abbreviation ??= lowercase.GetSearchAbbreviation();
 
-            var abbreviation2 = string2.GetAbbreviation();
-            var abbreviation1 = string1.GetAbbreviation();
+            if (abbreviation.Length > 2 && abbreviation.StartsWith(searchTerm.WithoutSpaces, StringComparison.Ordinal))
+            {
+                return true;
+            }
 
-            return abbreviation2.StartsWith(string1.Where(x => x != ' ')) && abbreviation2.Length > 2
-                || abbreviation1.StartsWith(string2.Where(x => x != ' ')) && abbreviation1.Length > 2;
+            return searchTerm.Abbreviation.Length > 2
+                && searchTerm.Abbreviation.StartsWith(
+                    lowercase.Replace("'s ", " ").Where(x => x != ' '),
+                    StringComparison.Ordinal);
+        }
+
+        public static string GetSearchAbbreviation(this string text)
+        {
+            return text.ToLowerInvariant().Replace("'s ", " ").GetAbbreviation();
         }
 
         public static string GetAbbreviation(this string S)
         {
+            // Indexing calls this for every prefab name, and search for every tag, so it reads the
+            // characters one by one rather than matching a regex.
             var SB = new StringBuilder();
-            foreach (var item in S.GetWords(true))
+            var i = 0;
+
+            while (i < S.Length)
             {
-                SB.Append(item.All(char.IsDigit) ? item : item[0].ToString());
+                if (!IsWordChar(S[i]))
+                {
+                    i++;
+                    continue;
+                }
+
+                var start = i;
+                var isNumber = true;
+
+                while (i < S.Length && IsWordChar(S[i]))
+                {
+                    isNumber &= char.IsDigit(S[i]);
+                    i++;
+                }
+
+                if (isNumber)
+                {
+                    SB.Append(S, start, i - start);
+                }
+                else
+                {
+                    SB.Append(S[start]);
+                }
+
+                // A word keeps its apostrophe ending: "Morgan's" adds one letter.
+                if (i + 1 < S.Length && S[i] is '\'' && IsWordChar(S[i + 1]))
+                {
+                    i++;
+
+                    while (i < S.Length && IsWordChar(S[i]))
+                    {
+                        i++;
+                    }
+                }
             }
 
-            if (Regex.IsMatch(SB.ToString(), "^[A-z]+[0-9]+$"))
+            // Letters followed by a number, as in "ab12", become "ab 12".
+            var letters = 0;
+
+            while (letters < SB.Length && SB[letters] is >= 'A' and <= 'z')
             {
-                var match = Regex.Match(SB.ToString(), "^([A-z]+)([0-9]+)$");
-                return $"{match.Groups[1]} {match.Groups[2]}";
+                letters++;
+            }
+
+            var digits = letters;
+
+            while (digits < SB.Length && SB[digits] is >= '0' and <= '9')
+            {
+                digits++;
+            }
+
+            if (letters > 0 && digits > letters && digits == SB.Length)
+            {
+                SB.Insert(letters, ' ');
             }
 
             return SB.ToString();
-        }
-
-        public static IEnumerable<string> GetWords(this string text, bool includeNumbers = false)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                yield break;
-            }
-
-            foreach (Match match in Regex.Matches(text, $@"\b{(includeNumbers ? "" : "(?![0-9])")}(\w+)(?:'\w+)?\b"))
-            {
-                yield return match.Groups[1].Value;
-            }
         }
 
         public static string Where(this string text, Func<char, bool> Test)
@@ -218,11 +280,6 @@ namespace FindIt.Utilities
             }
 
             return builder.ToString();
-        }
-
-        public static string RemoveDoubleSpaces(this string text)
-        {
-            return Regex.Replace(text, @" {2,}", " ")?.Trim() ?? string.Empty;
         }
 
         public static string FormatWords(this string str, bool forceUpper = false)

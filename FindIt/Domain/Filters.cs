@@ -137,12 +137,14 @@ namespace FindIt.Domain
 
 				if (searchText.Length > 0)
 				{
+					var searchTerm = new SearchTerm(searchText);
+
 					if (GetCustomSearchFunction is not null)
 						yield return GetCustomSearchFunction(searchText);
 					else if (Mod.Settings.StrictSearch)
-						yield return prefab => DoStrictSearchFilter(prefab, searchText);
+						yield return prefab => DoStrictSearchFilter(prefab, searchTerm);
 					else
-						yield return prefab => DoSearchFilter(prefab, searchText);
+						yield return prefab => DoSearchFilter(prefab, searchTerm);
 				}
 			}
 		}
@@ -173,29 +175,31 @@ namespace FindIt.Domain
 			tagTerms = tags.ToArray();
 		}
 
-		private static bool DoSearchFilter(PrefabIndex prefab, string searchText)
+		private static bool DoSearchFilter(PrefabIndex prefab, SearchTerm searchTerm)
 		{
-			return searchText.SearchCheck(prefab.Name)
-				|| searchText.SearchCheck(prefab.PrefabName)
-				|| (prefab.PdxModsId == searchText)
-				|| DoTagSearch(prefab, searchText, false);
+			return searchTerm.SearchCheck(prefab.Name, prefab.NameLower, prefab.NameAbbreviation)
+				|| searchTerm.SearchCheck(prefab.PrefabName, prefab.PrefabNameLower, prefab.PrefabNameAbbreviation)
+				|| (prefab.PdxModsId == searchTerm.Text)
+				|| DoTagSearch(prefab, searchTerm, false);
 		}
 
-		private static bool DoStrictSearchFilter(PrefabIndex prefab, string searchText)
+		private static bool DoStrictSearchFilter(PrefabIndex prefab, SearchTerm searchTerm)
 		{
-			return prefab.Name.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| prefab.PrefabName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) >= 0
-				|| (prefab.PdxModsId == searchText)
-				|| DoTagSearch(prefab, searchText, true);
+			var lowercase = searchTerm.Lowercase;
+
+			return prefab.NameLower.IndexOf(lowercase, searchTerm.Comparison) >= 0
+				|| prefab.PrefabNameLower.IndexOf(lowercase, searchTerm.Comparison) >= 0
+				|| (prefab.PdxModsId == searchTerm.Text)
+				|| DoTagSearch(prefab, searchTerm, true);
 		}
 
-		private static bool DoTagSearch(PrefabIndex prefab, string searchText, bool strict)
+		private static bool DoTagSearch(PrefabIndex prefab, SearchTerm searchTerm, bool strict)
 		{
-			return TagSearchMatches(prefab.Tags, searchText, strict)
-				|| TagSearchMatches(prefab.CreatorTags, searchText, strict);
+			return TagSearchMatches(prefab.Tags, searchTerm, strict)
+				|| TagSearchMatches(prefab.CreatorTags, searchTerm, strict);
 		}
 
-		private static bool TagSearchMatches(IList<string> tags, string searchText, bool strict)
+		private static bool TagSearchMatches(IList<string> tags, SearchTerm searchTerm, bool strict)
 		{
 			if (tags is null)
 			{
@@ -205,8 +209,8 @@ namespace FindIt.Domain
 			for (var i = 0; i < tags.Count; i++)
 			{
 				if (strict
-					? tags[i].IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) >= 0
-					: searchText.SearchCheck(tags[i]))
+					? tags[i].ToLowerInvariant().IndexOf(searchTerm.Lowercase, searchTerm.Comparison) >= 0
+					: searchTerm.SearchCheck(tags[i]))
 				{
 					return true;
 				}

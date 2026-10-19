@@ -194,6 +194,8 @@
   "Options.WARNING[FindIt.FindIt.Mod.FindItSettings.ResetViewSizes]": "Are you sure you want to reset all view sizes to their defaults?",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Strict Search",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "Uses strict text search instead of using approximate search that takes in consideration spelling mistakes.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Match Letter Variants",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Matches letters that can be written more than one way, so \"strasse\" finds \"Straße\" and \"oeuvre\" finds \"Œuvre\". Searches take about five times longer: with 200,000 assets, about 4 seconds instead of under one.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hide \"Branding\" assets from the \"Any\" section",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "Hides branded props from the 'Any' categories so they will only show if you are specifically in the 'Branding & Billboards' sub-category. Requires re-loading your save to apply the changes.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "Fast & Smooth Scroll",

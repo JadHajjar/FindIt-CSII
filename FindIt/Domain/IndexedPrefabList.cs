@@ -16,6 +16,7 @@ namespace FindIt.Domain
 
 		private readonly Dictionary<int, PrefabIndex> _dictionary;
 		private List<PrefabIndex> _orderedList;
+		private int _version;
 
 		public static PrefabSorting Sorting { get; set; }
 		public static bool SortingDescending { get; set; }
@@ -27,15 +28,19 @@ namespace FindIt.Domain
 
 		public int Count => _dictionary.Count;
 
-		public List<PrefabIndex> OrderedList => _orderedList ??= Sort(_dictionary.Values).ToList();
+		public List<PrefabIndex> OrderedList => _orderedList ?? SortValues();
 
 		public PrefabIndex this[int index]
 		{
 			get => _dictionary[index];
 			set
 			{
-				_dictionary[index] = value;
-				_orderedList = null;
+				lock (_dictionary)
+				{
+					_dictionary[index] = value;
+
+					ResetOrder();
+				}
 			}
 		}
 
@@ -61,14 +66,47 @@ namespace FindIt.Domain
 
 		internal void Remove(PrefabIndex prefabIndex)
 		{
-			_dictionary.Remove(prefabIndex.Id);
+			lock (_dictionary)
+			{
+				_dictionary.Remove(prefabIndex.Id);
 
-			ResetOrder();
+				ResetOrder();
+			}
 		}
 
 		internal void ResetOrder()
 		{
-			_orderedList = null;
+			lock (_dictionary)
+			{
+				_orderedList = null;
+				_version++;
+			}
+		}
+
+		// A search sorts on a worker while a partial index writes on the main thread.
+		// The sort holds the lock only to copy and to cache, so a partial index never waits on it.
+		private List<PrefabIndex> SortValues()
+		{
+			PrefabIndex[] values;
+			int version;
+
+			lock (_dictionary)
+			{
+				values = _dictionary.Values.ToArray();
+				version = _version;
+			}
+
+			var orderedList = Sort(values).ToList();
+
+			lock (_dictionary)
+			{
+				if (version == _version)
+				{
+					_orderedList = orderedList;
+				}
+			}
+
+			return orderedList;
 		}
 
 		private IEnumerable<PrefabIndex> Sort(IEnumerable<PrefabIndex> values)
