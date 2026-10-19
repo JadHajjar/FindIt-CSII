@@ -196,6 +196,8 @@
   "Options.WARNING[FindIt.FindIt.Mod.FindItSettings.ResetViewSizes]": "Are you sure you want to reset all view sizes to their defaults?",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "엄격한 검색",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.StrictSearch]": "맞춤법 오류를 고려한 대략적인 검색 대신 엄격한 글자 검색을 사용합니다.",
+  "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Match Letter Variants",
+  "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.LinguisticSearch]": "Matches letters that can be written more than one way, so \"strasse\" finds \"Straße\" and \"oeuvre\" finds \"Œuvre\". Searches take about five times longer: with 200,000 assets, about 4 seconds instead of under one.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "\"전체\" 카테고리 탭에서 \"광고\" 에셋 숨기기",
   "Options.OPTION_DESCRIPTION[FindIt.FindIt.Mod.FindItSettings.HideBrandsFromAny]": "'브랜드 및 광고판'이 하위 카테고리에 속한 경우에만 표시되도록 '전체' 카테고리에서 광고 프롭을 숨깁니다. 변경 사항을 적용하려면 저장된 게임을 다시 불러와야 합니다.",
   "Options.OPTION[FindIt.FindIt.Mod.FindItSettings.SmoothScroll]": "빠르고 부드러운 스크롤",
