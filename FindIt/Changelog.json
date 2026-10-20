@@ -1,6 +1,64 @@
 [
   {
     "Stable": true,
+    "Version": "1.6.0",
+    "Date": "2026-10-18",
+    "Tagline": "Custom Tags! And optimizations are brought to you thanks to Morgan · Toverux.",
+    "ChangeGroups": [
+      {
+        "Name": "Tags",
+        "Changes": [
+          "Added custom tags support on any asset to easily group the or find them more easily.",
+          "Searching has been upgraded to also matches your custom tags.",
+          "Added tag-specific search by adding '#' in the search bar. This makes it only show assets with all of those tags, for example '#park #bench modern'.",
+          "Adding tags opens a dedicated panel that shows all existing tags and allows you to search through them.",
+          "Asset creators can ship pre-defined tags with their assets."
+        ]
+      },
+      {
+        "Name": "New Features",
+        "Changes": [
+          "Moved the panel Width and Height options into the in-game Sorting panel.",
+          "Added support for multi-selection of assets in the list using Ctrl+click and Shift+click. (This requires to be supported in other mods' tools)",
+          "Added a 'Reset View Sizes' button in the settings.",
+          "Added a confirmation before resetting your favorites.",
+          "Updated some sub-category icons for a more cohesive style."
+        ]
+      },
+      {
+        "Name": "Performance",
+        "Changes": [
+          "Assets are now indexed over several frames, so loading a city no longer freezes the game, especially with large asset libraries.",
+          "Searching is now several times faster, especially with large asset libraries.",
+          "Opening the Find It panel is now nearly instant, even with large asset libraries.",
+          "Improved the overall speed of indexing and sorting assets, and lists are now sorted in the background so opening a category no longer stutters."
+        ]
+      },
+      {
+        "Name": "For Mod Developers & Asset Creators",
+        "Changes": [
+          "Added a Multi-Selection API that lets FindIt connect with your mod's tool to select several assets at once.",
+          "Added a Prefab Selection API that lets other mods open Find It to select an asset of a specific type.",
+          "Asset creators can now ship tags with their assets, using the new 'FindItProperties' component or '#' entries in the 'Editor Asset Category Override' exclude list. Players can't remove these tags.",
+          "The 'FindItProperties' component can also set an asset's Find It category, or hide it from Find It.",
+          "Added a 'Find It Properties' button to the editor's bottom bar to edit these properties on the selected asset.",
+          "Read more about the new APIs and Find It Properties in the FindIt github repository."
+        ]
+      },
+      {
+        "Name": "Bugfixes",
+        "Changes": [
+          "Fixed removed or replaced assets sometimes staying in the list.",
+          "Fixed the panel sometimes showing search results from before a reload.",
+          "Fixed searches sometimes failing or showing outdated results when assets were added or changed during the search.",
+          "Fixed a failed search leaving the loading spinner running forever over the previous results.",
+          "Fixed the 'No Pack' filter not showing as selected when it was selected."
+        ]
+      }
+    ]
+  },
+  {
+    "Stable": true,
     "Version": "1.5.8",
     "Date": "2026-06-11",
     "ChangeGroups": [

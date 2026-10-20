@@ -12,7 +12,7 @@ namespace FindIt.Domain
 	public class IndexedPrefabList : IEnumerable<PrefabIndex>
 	{
 		private static readonly IComparer<SortKey> _sortKeyComparer =
-			Comparer<SortKey>.Create(SortKey.Compare);
+			Comparer<SortKey>.Create(CompareSortKeys);
 
 		private readonly Dictionary<int, PrefabIndex> _dictionary;
 		private List<PrefabIndex> _orderedList;
@@ -158,6 +158,16 @@ namespace FindIt.Domain
 		private static DateTime UpdatedDate(PrefabIndex prefabIndex)
 		{
 			return prefabIndex.UpdatedDate ?? DateTime.MinValue;
+		}
+
+		private static int CompareSortKeys(SortKey x, SortKey y)
+		{
+			if (x is null)
+			{
+				return y is null ? 0 : 1;
+			}
+
+			return y is null ? -1 : SortKey.Compare(x, y);
 		}
 
 		private static SortKey PrefabNameSortKey(PrefabIndex prefabIndex)

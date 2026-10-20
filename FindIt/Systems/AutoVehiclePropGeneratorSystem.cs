@@ -132,6 +132,11 @@ namespace FindIt.Systems
 					newPrefab.AddComponentFrom(contentPrerequisite);
 				}
 
+				if (original.TryGet<ObjectSubObjects>(out var subObjects))
+				{
+					newPrefab.AddComponentFrom(subObjects);
+				}
+
 				if (original is WatercraftPrefab)
 				{
 					newPrefab.AddComponent<FloatingObject>().m_AllowDryland = true;

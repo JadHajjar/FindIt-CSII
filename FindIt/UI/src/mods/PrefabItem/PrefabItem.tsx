@@ -12,6 +12,7 @@ import shuffle from "images/findit_shuffle.svg";
 import star from "images/findit_star.svg";
 import starFilled from "images/findit_starFilled.svg";
 import tag from "images/findit_tag.svg";
+import placed from "images/findit_placed.svg";
 import tagFilled from "images/findit_tagFilled.svg";
 
 export interface PrefabButtonProps {
@@ -163,7 +164,7 @@ export const PrefabItemComponent = (props: PrefabButtonProps) => {
             onClick={() =>
               trigger(mod.id, "OnLocateButtonClicked", props.prefab.id)
             }
-            src="Media/Game/Icons/MapMarker.svg"
+            src={placed}
           />
         )}
 

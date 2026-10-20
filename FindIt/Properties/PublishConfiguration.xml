@@ -13,14 +13,12 @@ Use **Ctrl+P** to enable the Picker tool, or click on the picker icon in your to
 
 Use **Ctrl+R** to select a random asset from the list, or click on the random button in the Find It panel.
 
+Add **#tags** to your search to only show assets with all of those tags, for example `#park #bench modern`.
 
-Huge thanks to **YenYang** for their help on the UI.
 
-Special thanks to **Algernon** for their contribution and allowing me to take on this project
+Huge thanks to **YenYang** for their help on the UI and **Algernon** for their contribution and allowing me to take on this project
 
-Thank you to **Chameleon** for providing the Icons.
-
-And thank you to **Baka-gourd** (NullPinter) for their help with focus.
+And thank you to **Chameleon** for providing the icons, to **Morgan · Toverux** for their help with the optimizations, and to **Baka-gourd** (NullPinter) for their help with focus.
 
 
 ## Features
@@ -31,11 +29,9 @@ And thank you to **Baka-gourd** (NullPinter) for their help with focus.
 * Panel stays open while placing assets, no jumping between different tabs.
 * Tool options like Tree Controller and Line Tool are fully supported and can be used while the panel is open.
 * Favorite your most used assets.
+* Add your own tags to any asset, and quickly reuse the tags you've used before.
+* Search by tag, and combine several #tags with text to narrow down results.
 * Integrated Picker
-
-## Planned Features
-* Custom tagging, add your own tags to assets. Will also come with cross compatibility with Skyve.
-* Asset information when hovering over an item.
 
 ## Notes
 Find It should automatically support any mods that add or alter the vanilla assets.
@@ -44,7 +40,7 @@ If you're having any issues, please report them on my discord as it's easier to 
 
 ## For Mod Developers
 
-Find It exposes two APIs for other mods. No hard dependency is required — integration is done through reflection-based hooks that Find It calls automatically on startup.
+Find It exposes three APIs for other mods. No hard dependency is required — integration is done through reflection-based hooks that Find It calls automatically on startup.
 
 ### Prefab Picker API
 Opens Find It's picker window filtered to a specific prefab type and returns what the user selected as a Task.
@@ -79,6 +75,30 @@ public static Func&lt;string, bool&gt; GetFindItSearchMethod(string searchText)
     return name => name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
 }
 ```
+
+### Prefab Multi-Selection API
+Lets the active tool receive several prefabs at once: **Ctrl+click** toggles a prefab and **Shift+click** selects a range.
+
+Expose these three public methods on your tool:
+
+```
+public void SelectPrefab(PrefabBase prefab);
+public void DeselectPrefab(PrefabBase prefab);
+public List&lt;PrefabBase&gt; GetSelectedPrefabs();
+```
+
+## For Asset Creators
+
+Select your asset in the editor and click the **Find It Properties** button (the tag icon) in the editor's bottom bar to set:
+
+* **Tags** that players can find with a #tag search. Players can't remove them, and Find It doesn't save them.
+* **Category** to place the asset in a specific Find It sub-category.
+* **Hide from Find It** to keep the asset out of Find It completely.
+
+You can choose where they're saved:
+
+* **Standard:** in the FindItProperties component, with every option available. If the asset is edited and saved again without Find It enabled, these properties will be lost.
+* **More Compatibility:** as # entries in the Editor Asset Category Override component. Only tags and the category are available, but they're kept even if the asset is edited without Find It.
 
 Full documentation and examples are available on the GitHub page.
 </LongDescription>

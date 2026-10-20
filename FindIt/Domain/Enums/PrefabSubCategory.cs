@@ -26,7 +26,7 @@ namespace FindIt.Domain.Enums
 		Buildings_Specialized,
 		[CategoryIcon("coui://uil/Colored/ServiceBuilding.svg")]
 		Buildings_Services,
-		[CategoryIcon("coui://uil/Colored/HouseAlternative.svg")]
+		[CategoryIcon("Media/Game/Icons/ZoneAgricultureArea.svg")]
 		Buildings_Miscellaneous,
 
 		[Obsolete("Use PrefabCategory", true)]
@@ -55,7 +55,7 @@ namespace FindIt.Domain.Enums
 		ServiceBuildings_Landscaping,
 		[CategoryIcon("Media/Game/Icons/ParksAndRecreation.svg")]
 		ServiceBuildings_Parks,
-		[CategoryIcon("coui://uil/Standard/StarAll.svg")]
+		[CategoryIcon("Media/Game/Icons/City.svg")]
 		ServiceBuildings_Misc,
 
 		[Obsolete("Use PrefabCategory", true)]
@@ -121,13 +121,13 @@ namespace FindIt.Domain.Enums
 
 		[Obsolete("Use PrefabCategory", true)]
 		Vehicles = PrefabCategory.Vehicles,
-		[CategoryIcon("coui://uil/Colored/GenericVehicle.svg")]
+		[CategoryIcon("coui://findit/GenericVehicle.svg")]
 		Vehicles_Residential,
-		[CategoryIcon("coui://uil/Colored/Motorbike.svg")]
+		[CategoryIcon("Media/Game/Icons/Motorbike.svg")]
 		Vehicles_Bikes,
-		[CategoryIcon("coui://uil/Colored/DeliveryVan.svg")]
+		[CategoryIcon("Media/Game/Icons/DeliveryVan.svg")]
 		Vehicles_Industrial,
-		[CategoryIcon("coui://uil/Colored/ServiceVehicles.svg")]
+		[CategoryIcon("coui://findit/PoliceCar.svg")]
 		Vehicles_Services,
 		[CategoryIcon("Media/Game/Icons/Bus.svg")]
 		Vehicles_Bus,
@@ -137,7 +137,7 @@ namespace FindIt.Domain.Enums
 		Vehicles_Ship,
 		[CategoryIcon("Media/Game/Icons/Airplane.svg")]
 		Vehicles_Plane,
-		[CategoryIcon("coui://uil/Colored/GenericVehicles.svg")]
+		[CategoryIcon("Media/Game/Icons/MiningExcavator.svg")]
 		Vehicles_Misc,
 	}
 }

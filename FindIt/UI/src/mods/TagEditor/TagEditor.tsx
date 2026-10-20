@@ -46,6 +46,15 @@ export const TagEditorComponent = () => {
         onRemove={(tag) => trigger(mod.id, "RemoveTag", tag)}
         onEscape={() => trigger(mod.id, "CloseTagEditor")}
       />
+
+      <div className={styles.searchHint}>
+        {translate(
+          "Tooltip.LABEL[FindIt.TagSearchHint]",
+          "Type #tag in the search bar to only show assets with that tag.\nCombine several tags with text, for example: #park #bench modern",
+        )
+          ?.split("\n")
+          .map((line) => <div key={line}>{line}</div>)}
+      </div>
     </div>
   );
 };

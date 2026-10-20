@@ -52,6 +52,7 @@ namespace FindIt.Systems
 		private IEnumerator _fullIndex;
 		private List<PrefabIndex> _pendingSortKeys = new();
 		private Task _sortKeysTask = Task.CompletedTask;
+		private volatile bool _sortKeysUpdated;
 
 		protected override void OnCreate()
 		{
@@ -134,6 +135,13 @@ namespace FindIt.Systems
 
 		protected override void OnUpdate()
 		{
+			if (_sortKeysUpdated && _fullIndex is null)
+			{
+				_sortKeysUpdated = false;
+
+				FindItUtil.SetSorting();
+			}
+
 			if (_fullIndex is not null && !_fullIndex.MoveNext())
 			{
 				_fullIndex = null;
@@ -268,6 +276,8 @@ namespace FindIt.Systems
 				{
 					SetNameKeys(prefab, compareInfo);
 				}
+
+				_sortKeysUpdated = true;
 			}, TaskScheduler.Default);
 		}
 
