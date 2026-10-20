@@ -233,6 +233,8 @@ namespace FindIt.Systems
 				}
 
 				_finditUISystem.TriggerSearch();
+
+				SortListsInBackground();
 			}
 
 			stopWatch.Stop();
@@ -267,6 +269,27 @@ namespace FindIt.Systems
 					SetNameKeys(prefab, compareInfo);
 				}
 			}, TaskScheduler.Default);
+		}
+
+		// A list sorts on its first view, which drops frames on a large playset.
+		// Favoriting a prefab can add a list, so the lists are copied on the main thread.
+		private static void SortListsInBackground()
+		{
+			// Opening the panel resets the lists under these sorts.
+			if (IndexedPrefabList.IsSortedByUsage)
+			{
+				return;
+			}
+
+			var lists = FindItUtil.CategorizedPrefabs.Values.SelectMany(x => x.Values).ToList();
+
+			Task.Run(() =>
+			{
+				foreach (var list in lists)
+				{
+					_ = list.OrderedList;
+				}
+			});
 		}
 
 		private static void SetNameKeys(PrefabIndex prefabIndex, CompareInfo compareInfo)

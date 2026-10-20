@@ -5,7 +5,6 @@ using FindIt.Domain.UIBinding;
 using FindIt.Systems;
 using FindIt.Utilities;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FindIt.Domain.Options
 {
@@ -13,6 +12,9 @@ namespace FindIt.Domain.Options
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 		private List<OptionItemUIEntry> _dlcs = new();
+		private List<DlcId> _dlcIds = new();
+		private IndexedPrefabList _scannedPrefabs;
+		private int _scannedVersion;
 
 		public int Id { get; } = 100;
 
@@ -39,24 +41,37 @@ namespace FindIt.Domain.Options
 				}
 			};
 
-			foreach (var item in FindItUtil.GetUnfilteredPrefabs())
+			foreach (var dlcId in _dlcIds)
 			{
-				if (item.DlcId.id >= 0 && !dlcs.Any(x => x.Id == item.DlcId.id))
-				{
-					var name = PlatformManager.instance.GetDlcName(item.DlcId);
+				var name = PlatformManager.instance.GetDlcName(dlcId);
 
-					dlcs.Add(new OptionItemUIEntry
-					{
-						Id = item.DlcId.id,
-						Name = LocaleHelper.Translate($"Common.DLC_TITLE[{name}]", LocaleHelper.Translate($"Assets.NAME[{name}]", name)),
-						Icon = $"Media/DLC/{name}.svg",
-					});
-				}
+				dlcs.Add(new OptionItemUIEntry
+				{
+					Id = dlcId.id,
+					Name = LocaleHelper.Translate($"Common.DLC_TITLE[{name}]", LocaleHelper.Translate($"Assets.NAME[{name}]", name)),
+					Icon = $"Media/DLC/{name}.svg",
+				});
 			}
 
 			dlcs.Sort((x, y) => Comparer<int>.Default.Compare(x.Id, y.Id));
 
 			return dlcs;
+		}
+
+		private List<DlcId> GetDlcIds()
+		{
+			var list = new List<DlcId>();
+			var ids = new HashSet<int>();
+
+			foreach (var item in FindItUtil.GetUnfilteredPrefabs())
+			{
+				if (item.DlcId.id >= 0 && ids.Add(item.DlcId.id))
+				{
+					list.Add(item.DlcId);
+				}
+			}
+
+			return list;
 		}
 
 		public OptionSectionUIEntry AsUIEntry()
@@ -80,6 +95,11 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
+			if (FindItUtil.HasUnfilteredPrefabsChanged(ref _scannedPrefabs, ref _scannedVersion))
+			{
+				_dlcIds = GetDlcIds();
+			}
+
 			_dlcs = GetDlcs();
 
 			return _dlcs.Count > 2;
