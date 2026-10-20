@@ -13,6 +13,8 @@ namespace FindIt.Domain.Options
 	{
 		private readonly OptionsUISystem _optionsUISystem;
 		private List<ThemePrefab> _themeList = new();
+		private IndexedPrefabList _scannedPrefabs;
+		private int _scannedVersion;
 
 		public int Id { get; } = 95;
 
@@ -62,7 +64,10 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			_themeList = GetThemePrefabs();
+			if (FindItUtil.HasUnfilteredPrefabsChanged(ref _scannedPrefabs, ref _scannedVersion))
+			{
+				_themeList = GetThemePrefabs();
+			}
 
 			return _themeList.Count > 0;
 		}
@@ -102,10 +107,11 @@ namespace FindIt.Domain.Options
 		private List<ThemePrefab> GetThemePrefabs()
 		{
 			var list = new List<ThemePrefab>();
+			var themes = new HashSet<ThemePrefab>();
 
 			foreach (var prefab in FindItUtil.GetUnfilteredPrefabs())
 			{
-				if (prefab.Theme != null && !list.Contains(prefab.Theme))
+				if (prefab.Theme != null && themes.Add(prefab.Theme))
 				{
 					list.Add(prefab.Theme);
 				}

@@ -1,4 +1,5 @@
-﻿using FindIt.Domain.Enums;
+﻿using FindIt.Domain;
+using FindIt.Domain.Enums;
 using FindIt.Utilities;
 using System;
 using System.Diagnostics;
@@ -80,7 +81,12 @@ namespace FindIt.Systems
 			_PanelWidth.Value = GridUtil.GetWidth();
 			_PanelHeight.Value = GridUtil.GetHeight();
 
-			FindItUtil.SetSorting();
+			// The usage these sorts read changes while the panel is closed.
+			// The index resets the lists it changes.
+			if (IndexedPrefabList.IsSortedByUsage)
+			{
+				FindItUtil.SetSorting();
+			}
 
 			UpdateCategoriesAndPrefabList();
 

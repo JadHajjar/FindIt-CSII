@@ -87,6 +87,22 @@ namespace FindIt.Utilities
 			return CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
 		}
 
+		// The filter options read every prefab of the list, which takes frames on a large playset.
+		public static bool HasUnfilteredPrefabsChanged(ref IndexedPrefabList prefabs, ref int version)
+		{
+			var current = CategorizedPrefabs[CurrentCategory][CurrentSubCategory];
+
+			if (current == prefabs && current.Version == version)
+			{
+				return false;
+			}
+
+			prefabs = current;
+			version = current.Version;
+
+			return true;
+		}
+
 		public static PrefabBase GetPrefabBase(int id)
 		{
 			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))

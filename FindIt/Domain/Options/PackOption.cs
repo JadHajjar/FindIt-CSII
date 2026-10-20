@@ -14,13 +14,21 @@ namespace FindIt.Domain.Options
     internal class PackOption : IOptionSection
 	{
 		private readonly OptionsUISystem _optionsUISystem;
+		private readonly AssetPackPrefab _noPack;
 		private List<AssetPackPrefab> _packList = new();
+		private IndexedPrefabList _scannedPrefabs;
+		private int _scannedVersion;
 
 		public int Id { get; } = 94;
 
 		public PackOption(OptionsUISystem optionsUISystem)
 		{
 			_optionsUISystem = optionsUISystem;
+
+			// The game's world holds this section, so an asset unload keeps the placeholder.
+			_noPack = ScriptableObject.CreateInstance<AssetPackPrefab>();
+			_noPack.name = "FindIt_NoPack";
+			_noPack.AddComponent<UIObject>().m_Icon = "coui://findit/noPack.svg";
 
 			FindItUtil.Filters.SelectedAssetPacks = new(_packList, null, true);
 		}
@@ -59,7 +67,10 @@ namespace FindIt.Domain.Options
 
 		public bool IsVisible()
 		{
-			_packList = GetPackPrefabs();
+			if (FindItUtil.HasUnfilteredPrefabsChanged(ref _scannedPrefabs, ref _scannedVersion))
+			{
+				_packList = GetPackPrefabs();
+			}
 
 			return _packList.Count > 1;
 		}
@@ -84,19 +95,15 @@ namespace FindIt.Domain.Options
 		private List<AssetPackPrefab> GetPackPrefabs()
 		{
 			var list = new List<AssetPackPrefab>();
+			var packs = new HashSet<AssetPackPrefab>();
 
-			var none = ScriptableObject.CreateInstance<AssetPackPrefab>();
-			var uiObject = ScriptableObject.CreateInstance<UIObject>();
-			none.name = "FindIt_NoPack";
-			none.AddComponent<UIObject>().m_Icon = "coui://findit/noPack.svg";
-
-			list.Add(none);
+			list.Add(_noPack);
 
 			foreach (var item in FindItUtil.GetUnfilteredPrefabs())
 			{
 				foreach (var pack in item.AssetPacks)
 				{
-					if (!list.Contains(pack))
+					if (packs.Add(pack))
 					{
 						list.Add(pack);
 					}

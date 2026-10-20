@@ -20,6 +20,7 @@ namespace FindIt.Domain
 
 		public static PrefabSorting Sorting { get; set; }
 		public static bool SortingDescending { get; set; }
+		public static bool IsSortedByUsage => Sorting is PrefabSorting.MostUsed or PrefabSorting.LastUsed;
 
 		public IndexedPrefabList()
 		{
@@ -27,6 +28,8 @@ namespace FindIt.Domain
 		}
 
 		public int Count => _dictionary.Count;
+
+		public int Version => _version;
 
 		public List<PrefabIndex> OrderedList => _orderedList ?? SortValues();
 
