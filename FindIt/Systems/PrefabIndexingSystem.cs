@@ -356,6 +356,18 @@ namespace FindIt.Systems
 					yield return null;
 				}
 			}
+
+			if (!full)
+			{
+				// An updated prefab's new entity copies fields from its old entry, so removals wait for all processors.
+				foreach (var entity in _changedPrefabsQuery.ToEntityArray(Allocator.Temp))
+				{
+					if (EntityManager.HasComponent<Deleted>(entity))
+					{
+						FindItUtil.RemoveItem(entity);
+					}
+				}
+			}
 		}
 
 		private bool TryGetEntities(
@@ -384,8 +396,10 @@ namespace FindIt.Systems
 				}
 				else
 				{
+					// IndexEntities removes deleted entities' entries once all processors have run.
 					entities = _changedPrefabsQuery.ToEntityArray(Allocator.Temp)
 						.Where(query.Matches)
+						.Where(x => !EntityManager.HasComponent<Deleted>(x))
 						.ToArray();
 				}
 
@@ -412,8 +426,14 @@ namespace FindIt.Systems
 
 			try
 			{
-				// TryGetPrefab fails for a removed prefab, so this check comes first.
-				if (EntityManager.HasComponent<Deleted>(entity) || (roadBuilderDiscarded.HasValue && EntityManager.HasComponent(entity, roadBuilderDiscarded.Value)))
+				// TryGetPrefab still resolves an updated prefab's old entity, so these checks come first.
+				// The partial index later in this frame needs a deleted prefab's entry, and removes it itself.
+				if (EntityManager.HasComponent<Deleted>(entity))
+				{
+					return;
+				}
+
+				if (roadBuilderDiscarded.HasValue && EntityManager.HasComponent(entity, roadBuilderDiscarded.Value))
 				{
 					FindItUtil.RemoveItem(entity);
 
@@ -441,9 +461,13 @@ namespace FindIt.Systems
 
 				if (processor.TryCreatePrefabIndex(prefab, entity, out prefabIndex))
 				{
-					if (!full && EntityManager.HasComponent<Created>(entity) && FindItUtil.FindByName(prefab, false, out var oldId) && oldId != entity.Index)
+					var oldIndex = full || !EntityManager.HasComponent<Created>(entity)
+						? null
+						: FindItUtil.FindByName(prefab);
+
+					if (oldIndex is not null && oldIndex.Id != entity.Index)
 					{
-						FindItUtil.RemoveItem(oldId);
+						FindItUtil.RemoveItem(oldIndex.Id);
 					}
 
 					if (full
@@ -500,7 +524,7 @@ namespace FindIt.Systems
 						}
 					}
 
-					AddPrefab(prefab, prefabName, entity, prefabIndex);
+					AddPrefab(prefab, prefabName, entity, prefabIndex, oldIndex);
 				}
 				else
 				{
@@ -517,12 +541,26 @@ namespace FindIt.Systems
 			PrefabBase prefab,
 			string prefabName,
 			Entity entity,
-			PrefabIndex prefabIndex)
+			PrefabIndex prefabIndex,
+			PrefabIndex oldIndex)
 		{
 			prefabIndex.Id = entity.Index;
 			prefabIndex.TypeHash = prefab.GetType().GetHashCode();
 			prefabIndex.PrefabName = prefabName;
 			prefabIndex.Name = GetAssetName(entity, prefabName);
+
+			// Only a full index marks unique meshes and numbers duplicates, so a partial one keeps the old entry's.
+			if (oldIndex?.PrefabName == prefabName)
+			{
+				prefabIndex.IsUniqueMesh = oldIndex.IsUniqueMesh;
+
+				if (oldIndex.UnnumberedName == prefabIndex.Name)
+				{
+					prefabIndex.Name = oldIndex.Name;
+					prefabIndex.UnnumberedName = oldIndex.UnnumberedName;
+				}
+			}
+
 			prefabIndex.IsFavorited = FindItUtil.IsFavorited(prefabName);
 			prefabIndex.FallbackThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
 			prefabIndex.CategoryThumbnail ??= CategoryIconAttribute.GetAttribute(prefabIndex.SubCategory).Icon;
@@ -731,13 +769,36 @@ namespace FindIt.Systems
 
 				for (var i = 0; i < group.Count; i++)
 				{
-					group[i].Name = $"{group[i].Name} {(i + 1).ToString(format)}";
+					var prefab = GetCurrentEntry(group[i]);
 
-					_pendingSortKeys.Add(group[i]);
+					prefab.UnnumberedName = prefab.Name;
+					prefab.Name = $"{prefab.Name} {(i + 1).ToString(format)}";
+
+					_pendingSortKeys.Add(prefab);
 
 					yield return null;
 				}
 			}
+		}
+
+		// UpdatePrefab gives a prefab a new entity.
+		// A partial index during the duplicate numbering can then swap in a new entry.
+		private static PrefabIndex GetCurrentEntry(PrefabIndex prefabIndex)
+		{
+			if (FindItUtil.GetPrefabIndex(prefabIndex.Id) == prefabIndex)
+			{
+				return prefabIndex;
+			}
+
+			foreach (var item in FindItUtil.AllPrefabs.Values)
+			{
+				if (item.PrefabName == prefabIndex.PrefabName && item.Name == prefabIndex.Name)
+				{
+					return item;
+				}
+			}
+
+			return prefabIndex;
 		}
 
 		private IEnumerable<object> CleanupBrandPrefabs()

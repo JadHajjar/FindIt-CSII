@@ -525,18 +525,16 @@ namespace FindIt.Utilities
 				|| AssetMap.ContainsKey(prefab.name)
 				|| !prefabSystem.TryGetEntity(prefab, out var entity))
 			{
-				return FindByName(prefab, setCategory, out id);
+				return SelectFound(FindByName(prefab), setCategory, out id);
 			}
 
 			return SelectFound(GetPrefabIndex(entity.Index), setCategory, out id);
 		}
 
 		// Scans the whole index, but finds an entry whose prefab has moved to a new entity since.
-		public static bool FindByName(PrefabBase prefab, bool setCategory, out int id)
+		public static PrefabIndex FindByName(PrefabBase prefab)
 		{
-			var prefabIndex = (prefab is MovingObjectPrefab ? FindByName($"Prop_{prefab.name}") : null) ?? FindByName(prefab.name);
-
-			return SelectFound(prefabIndex, setCategory, out id);
+			return (prefab is MovingObjectPrefab ? FindByName($"Prop_{prefab.name}") : null) ?? FindByName(prefab.name);
 		}
 
 		private static bool SelectFound(PrefabIndex prefabIndex, bool setCategory, out int id)
