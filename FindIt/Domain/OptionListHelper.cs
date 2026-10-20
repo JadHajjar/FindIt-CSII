@@ -34,20 +34,20 @@ namespace FindIt.Domain
 		{
 			foreach (var item in values)
 			{
-				if (!_selectedValues.Contains(item))
+				if (_selectedValues.Contains(item))
 				{
-					return false;
+					return true;
 				}
 			}
 
-			return true;
+			return false;
 		}
 
 		public bool ContainsAll(IEnumerable<T> values)
 		{
-			foreach (var item in _selectedValues)
+			foreach (var item in values)
 			{
-				if (!values.Contains(item))
+				if (!_selectedValues.Contains(item))
 				{
 					return false;
 				}

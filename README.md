@@ -30,7 +30,7 @@ If you're having any issues, please report them on my discord as it's easier to 
 
 ## For Mod Developers
 
-Find It exposes two APIs that other mods can integrate with. No hard dependency on Find It is required — integration is done through reflection-based hooks that Find It calls automatically on startup.
+Find It exposes three APIs that other mods can integrate with. No hard dependency on Find It is required — integration is done through reflection-based hooks that Find It calls automatically on startup.
 
 ### Prefab Picker API
 
@@ -115,7 +115,7 @@ public void DeselectPrefab(PrefabBase prefab) => UnselectTreePrefab(prefab);
 Open your asset in the editor and click the **Find It Properties** button (the tag icon) in the editor's bottom bar, next to the advisor button. It edits the asset you have selected in the inspector, and you can choose where the data is saved:
 
 - **Standard:** saved in the `FindItProperties` component. Every option is available, but if the asset is edited and saved again without Find It enabled, these properties will be lost.
-- **More Compatibility:** saved as `#` entries in the `Editor Asset Category Override` exclude list. Only tags and the category are available, but they're kept even if the asset is edited without Find It. The category is saved as a `FindIt/<category>/<sub-category>` entry in the include list.
+- **More Compatibility:** saved as `#` entries in the `Editor Asset Category Override` exclude list. Only tags and the category are available, but they're kept even if the asset is edited without Find It. The category is saved as a `FindIt/<category>/<sub-category>` entry in the include list, using the numbers of the [`PrefabCategory`](FindIt/Domain/Enums/PrefabCategory.cs) and [`PrefabSubCategory`](FindIt/Domain/Enums/PrefabSubCategory.cs) values rather than their names. Each category is a multiple of 100 and its sub-categories count up from it, so `Props_Fences` is `FindIt/500/507`.
 
 Switching between the two moves your tags and category over. Switching to More Compatibility removes the `FindItProperties` component, along with its hide setting.
 

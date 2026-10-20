@@ -45,9 +45,19 @@ namespace FindIt.Utilities.PrefabCategoryProcessor
             };
         }
 
+        internal static bool Accepts(PrefabBase prefab, Entity entity, EntityManager entityManager)
+        {
+            if (prefab is not StaticObjectPrefab || entityManager.IsBrandEntity(entity) || prefab.name.StartsWith("Billboard") || prefab.name.StartsWith("Sign") || prefab.name.StartsWith("GasStation") || prefab.name.StartsWith("Poster"))
+            {
+                return false;
+            }
+
+            return prefab.name == "Ore Extractor Placeholder" || !entityManager.IsDecal(entity);
+        }
+
         public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
         {
-            if (prefab is not StaticObjectPrefab || _entityManager.IsBrandEntity(entity) || prefab.name.StartsWith("Billboard") || prefab.name.StartsWith("Sign") || prefab.name.StartsWith("GasStation") || prefab.name.StartsWith("Poster"))
+            if (!Accepts(prefab, entity, _entityManager))
             {
                 prefabIndex = null;
                 return false;
@@ -62,12 +72,6 @@ namespace FindIt.Utilities.PrefabCategoryProcessor
                 };
 
                 return true;
-            }
-
-            if (_entityManager.IsDecal(entity))
-            {
-                prefabIndex = null;
-                return false;
             }
 
             prefabIndex = new PrefabIndex(prefab)

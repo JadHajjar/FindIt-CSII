@@ -51,6 +51,11 @@ namespace FindIt.Systems
 			RefreshTagEditor();
 
 			_PrefabListBinding.Value = GetDisplayedPrefabs();
+
+			if (FindItUtil.Filters.GetFilterList().Any())
+			{
+				TriggerSearch(false);
+			}
 		}
 
 		private void RefreshTagEditor()

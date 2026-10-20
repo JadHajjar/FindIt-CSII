@@ -69,11 +69,8 @@ namespace FindIt.Systems
 			if (!visible)
 			{
 				// Reset prefab selection state when closing the panel
-				FindItUtil.Filters.SelectedType = null;
-				_IsPrefabSelection.Value = false;
 				_TagEditorPrefabId.Value = 0;
-				prefabSelectionTask?.TrySetResult(null);
-				prefabSelectionTask = null;
+				EndPrefabSelection(null);
 
 				return;
 			}
@@ -268,14 +265,7 @@ namespace FindIt.Systems
 				return;
 			}
 
-			if (lastFindId != id)
-			{
-				lastFindIndex = 0;
-			}
-			else
-			{
-				lastFindIndex = lastFindIndex == entities.Count - 1 ? 0 : (lastFindIndex + 1);
-			}
+			lastFindIndex = lastFindId == id ? (lastFindIndex + 1) % entities.Count : 0;
 
 			lastFindId = id;
 

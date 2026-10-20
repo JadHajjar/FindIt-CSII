@@ -52,7 +52,12 @@
           "Fixed the panel sometimes showing search results from before a reload.",
           "Fixed searches sometimes failing or showing outdated results when assets were added or changed during the search.",
           "Fixed a failed search leaving the loading spinner running forever over the previous results.",
-          "Fixed the 'No Pack' filter not showing as selected when it was selected."
+          "Fixed the 'No Pack' filter not showing as selected when it was selected.",
+          "Fixed a crash when un-favoriting the last asset of a sub-category while viewing it in Favorites.",
+          "Fixed branding assets not being selectable or favoritable when 'Hide brands from Any' is enabled.",
+          "Fixed some props appearing twice, in two different sub-categories.",
+          "Fixed the asset pack filter hiding assets that belong to several packs.",
+          "Fixed the picker leaving objects highlighted when closed without picking anything."
         ]
       }
     ]

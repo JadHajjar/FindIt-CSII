@@ -114,7 +114,7 @@ namespace FindIt.Systems
 
 			_prefab = prefab;
 			_selectedEntity = _toolSystem.selected;
-			_UseComponent.Value = prefab.Has<FindItProperties>() || !GetExcludeTags(prefab).Any();
+			_UseComponent.Value = prefab.Has<FindItProperties>() || (!GetExcludeTags(prefab).Any() && GetFindItInclude(prefab) is null);
 			_PrefabName.Value = _optionsUISystem.GetAssetName(prefab);
 			_Categories.Value = FindItUtil.GetCategories()
 				.Where(x => x is not PrefabCategory.Any and not PrefabCategory.Favorite)

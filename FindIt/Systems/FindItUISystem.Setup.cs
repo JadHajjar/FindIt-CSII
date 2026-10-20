@@ -18,6 +18,8 @@ namespace FindIt.Systems
 	{
 		private bool scrollCompleted;
 		private bool settingPrefab;
+		private bool resetScrollAfterSearch = true;
+		private int scrollToAfterSearch;
 		private double scrollIndex;
 		private CancellationTokenSource searchTokenSource = new();
 		private CancellationTokenSource scrollTokenSource = new();
@@ -253,7 +255,7 @@ namespace FindIt.Systems
 			CreateTrigger("FindItCloseToggled", () => ToggleFindItPanel(false));
 			CreateTrigger("FindItIconToggled", FindItIconClicked);
 			CreateTrigger<int>("SetCurrentPrefab", OnPrefabClicked);
-			CreateTrigger<int>("ToggleFavorited", FindItUtil.ToggleFavorited);
+			CreateTrigger<int>("ToggleFavorited", OnToggleFavorited);
 			CreateTrigger<int>("OpenTagEditor", OpenTagEditor);
 			CreateTrigger("CloseTagEditor", CloseTagEditor);
 			CreateTrigger<string>("AddTag", AddTag);
@@ -269,11 +271,13 @@ namespace FindIt.Systems
 
 		protected override void OnUpdate()
 		{
+			var navigationKeysEnabled = (_ShowFindItPanel || _IsWindowLocked) && !_IsPrefabSelection;
+
 			_randomKeyBinding.shouldBeEnabled =
 			_arrowLeftBinding.shouldBeEnabled =
 			_arrowUpBinding.shouldBeEnabled =
 			_arrowRightBinding.shouldBeEnabled =
-			_arrowDownBinding.shouldBeEnabled = _ShowFindItPanel || _IsWindowLocked;
+			_arrowDownBinding.shouldBeEnabled = navigationKeysEnabled;
 
 			// A full index cancels the search and clears the results on this thread.
 			// A worker's write could come after that, so this thread stores the result.
@@ -288,7 +292,18 @@ namespace FindIt.Systems
 						FindItUtil.SetCachedSearch(prefabs);
 					}
 
-					scrollIndex = 0;
+					if (scrollToAfterSearch != 0)
+					{
+						var id = scrollToAfterSearch;
+
+						scrollToAfterSearch = 0;
+
+						ScrollTo(id);
+					}
+					else if (resetScrollAfterSearch)
+					{
+						scrollIndex = 0;
+					}
 
 					_IsSearchLoading.Value = false;
 					_PrefabListBinding.Value = GetDisplayedPrefabs();
@@ -307,7 +322,7 @@ namespace FindIt.Systems
 				OnSearchKeyPressed();
 			}
 
-			if (_ShowFindItPanel || _IsWindowLocked)
+			if (navigationKeysEnabled)
 			{
 				if (_randomKeyBinding.WasPerformedThisFrame())
 				{

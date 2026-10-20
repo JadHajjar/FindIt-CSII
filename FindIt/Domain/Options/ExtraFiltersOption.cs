@@ -127,6 +127,8 @@ namespace FindIt.Domain.Options
 			FindItUtil.Filters.HideRandoms = false;
 			FindItUtil.Filters.OnlyPlaced = false;
 			FindItUtil.Filters.UniqueMesh = false;
+			FindItUtil.Filters.WithParking = false;
+			FindItUtil.Filters.WithoutParking = false;
 		}
 
 		public bool IsDefault()
@@ -135,7 +137,9 @@ namespace FindIt.Domain.Options
 				&& !FindItUtil.Filters.HideRandoms
 				&& !FindItUtil.Filters.HideVanilla
 				&& !FindItUtil.Filters.OnlyPlaced
-				&& !FindItUtil.Filters.UniqueMesh;
+				&& !FindItUtil.Filters.UniqueMesh
+				&& !FindItUtil.Filters.WithParking
+				&& !FindItUtil.Filters.WithoutParking;
 		}
 	}
 }

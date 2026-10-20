@@ -47,7 +47,7 @@ namespace FindIt.Utilities.PrefabCategoryProcessor
 
         public bool TryCreatePrefabIndex(PrefabBase prefab, Entity entity, out PrefabIndex prefabIndex)
         {
-            if (TryGetSubCategory(prefab, entity, _entityManager, out var subCategory))
+            if (!IsIndexedByOtherProcessor(prefab, entity) && TryGetSubCategory(prefab, entity, _entityManager, out var subCategory))
 			{
 				prefabIndex = new PrefabIndex(prefab)
 				{
@@ -60,6 +60,18 @@ namespace FindIt.Utilities.PrefabCategoryProcessor
 
             prefabIndex = null;
             return false;
+        }
+
+        private bool IsIndexedByOtherProcessor(PrefabBase prefab, Entity entity)
+        {
+            if (_entityManager.HasComponent<UtilityObjectData>(entity))
+            {
+                return _entityManager.HasBuffer<SubLane>(entity) && !_entityManager.HasBuffer<PlaceholderObjectElement>(entity);
+            }
+
+            return !_entityManager.HasComponent<PlaceableObjectData>(entity)
+                && !_entityManager.HasComponent<BrandObjectData>(entity)
+                && MiscPropsPrefabCategoryProcessor.Accepts(prefab, entity, _entityManager);
         }
 
         public static bool TryGetSubCategory(PrefabBase prefab, Entity entity, EntityManager entityManager, out PrefabSubCategory subCategory)

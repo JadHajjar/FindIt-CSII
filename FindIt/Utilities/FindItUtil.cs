@@ -22,6 +22,7 @@ namespace FindIt.Utilities
 		private static Dictionary<string, CustomPrefabData> customPrefabsData = new();
 
 		public static Dictionary<PrefabCategory, Dictionary<PrefabSubCategory, IndexedPrefabList>> CategorizedPrefabs { get; } = new();
+		public static Dictionary<int, PrefabIndex> AllPrefabs { get; } = new();
 		public static Dictionary<string, string> AssetMap { get; } = new();
 		public static PrefabCategory CurrentCategory { get; set; } = PrefabCategory.Any;
 		public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
@@ -105,7 +106,7 @@ namespace FindIt.Utilities
 
 		public static PrefabBase GetPrefabBase(int id)
 		{
-			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
+			if (AllPrefabs.TryGetValue(id, out var prefabIndex))
 			{
 				return prefabIndex.Prefab;
 			}
@@ -115,7 +116,7 @@ namespace FindIt.Utilities
 
 		public static PrefabIndex GetPrefabIndex(int id)
 		{
-			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
+			if (AllPrefabs.TryGetValue(id, out var prefabIndex))
 			{
 				return prefabIndex;
 			}
@@ -144,7 +145,7 @@ namespace FindIt.Utilities
 
 		public static void ToggleFavorited(int id)
 		{
-			if (!CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(id, out var prefabIndex))
+			if (!AllPrefabs.TryGetValue(id, out var prefabIndex))
 			{
 				return;
 			}
@@ -176,14 +177,9 @@ namespace FindIt.Utilities
 
 			if (!prefabIndex.IsFavorited)
 			{
-				if (CategorizedPrefabs[PrefabCategory.Favorite].ContainsKey(prefabIndex.SubCategory))
+				if (CategorizedPrefabs[PrefabCategory.Favorite].TryGetValue(prefabIndex.SubCategory, out var subCategoryList))
 				{
-					CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory].Remove(prefabIndex);
-
-					if (CategorizedPrefabs[PrefabCategory.Favorite][prefabIndex.SubCategory].Count == 0)
-					{
-						CategorizedPrefabs[PrefabCategory.Favorite].Remove(prefabIndex.SubCategory);
-					}
+					subCategoryList.Remove(prefabIndex);
 				}
 
 				CategorizedPrefabs[PrefabCategory.Favorite][PrefabSubCategory.Any].Remove(prefabIndex);
@@ -241,19 +237,16 @@ namespace FindIt.Utilities
 				}
 			}
 
-			if (CategorizedPrefabs.TryGetValue(PrefabCategory.Any, out var any) && any.TryGetValue(PrefabSubCategory.Any, out var prefabs))
+			foreach (var prefab in AllPrefabs.Values)
 			{
-				foreach (var prefab in prefabs)
+				if (prefab.CreatorTags is null)
 				{
-					if (prefab.CreatorTags is null)
-					{
-						continue;
-					}
+					continue;
+				}
 
-					foreach (var tag in prefab.CreatorTags)
-					{
-						counts[tag] = counts.TryGetValue(tag, out var count) ? count + 1 : 1;
-					}
+				foreach (var tag in prefab.CreatorTags)
+				{
+					counts[tag] = counts.TryGetValue(tag, out var count) ? count + 1 : 1;
 				}
 			}
 
@@ -271,7 +264,12 @@ namespace FindIt.Utilities
 			return !string.IsNullOrWhiteSpace(name)
 				&& !char.IsDigit(name.Trim()[0])
 				&& Enum.TryParse(name.Trim(), true, out subCategory)
-				&& Enum.IsDefined(typeof(PrefabSubCategory), subCategory)
+				&& IsValidSubCategory(subCategory);
+		}
+
+		public static bool IsValidSubCategory(PrefabSubCategory subCategory)
+		{
+			return Enum.IsDefined(typeof(PrefabSubCategory), subCategory)
 				&& (int)subCategory > 0
 				&& (int)subCategory % 100 != 0;
 		}
@@ -397,12 +395,9 @@ namespace FindIt.Utilities
 				item.Tags?.Clear();
 			}
 
-			if (CategorizedPrefabs.TryGetValue(PrefabCategory.Any, out var any) && any.TryGetValue(PrefabSubCategory.Any, out var prefabs))
+			foreach (var item in AllPrefabs.Values)
 			{
-				foreach (var item in prefabs)
-				{
-					item.Tags = new();
-				}
+				item.Tags = new();
 			}
 
 			SaveCustomPrefabData();
@@ -410,10 +405,21 @@ namespace FindIt.Utilities
 
 		public static void ResetFavorites()
 		{
-			CategorizedPrefabs[PrefabCategory.Favorite] = new()
+			if (CategorizedPrefabs.TryGetValue(PrefabCategory.Favorite, out var favorites))
 			{
-				[PrefabSubCategory.Any] = new()
-			};
+				foreach (var list in favorites.Values)
+				{
+					foreach (var item in list.ToArray())
+					{
+						list.Remove(item);
+					}
+				}
+			}
+
+			foreach (var item in AllPrefabs.Values)
+			{
+				item.IsFavorited = false;
+			}
 
 			foreach (var item in customPrefabsData.Values)
 			{
@@ -421,6 +427,8 @@ namespace FindIt.Utilities
 			}
 
 			SaveCustomPrefabData();
+
+			World.DefaultGameObjectInjectionWorld?.GetExistingSystemManaged<FindItUISystem>()?.OnFavoritesChanged();
 		}
 
 		public static void ResetViewSizes()
@@ -443,8 +451,25 @@ namespace FindIt.Utilities
 		public static void SaveCustomPrefabData()
 		{
 			var path = Path.Combine(FolderUtil.ContentFolder, "CustomPrefabData.json");
+			var tempPath = path + ".tmp";
 
-			File.WriteAllText(path, JSON.Dump(customPrefabsData));
+			try
+			{
+				File.WriteAllText(tempPath, JSON.Dump(customPrefabsData));
+
+				if (File.Exists(path))
+				{
+					File.Replace(tempPath, path, null);
+				}
+				else
+				{
+					File.Move(tempPath, path);
+				}
+			}
+			catch (Exception ex)
+			{
+				Mod.Log.Error(ex, "Failed to save custom prefab data");
+			}
 		}
 
 		public static void LoadCustomPrefabData()
@@ -478,19 +503,21 @@ namespace FindIt.Utilities
 			catch (Exception ex)
 			{
 				Mod.Log.Error(ex, "Failed to load custom prefab data");
+
+				try
+				{
+					File.Copy(path, path + ".bak", true);
+				}
+				catch (Exception copyEx)
+				{
+					Mod.Log.Error(copyEx, "Failed to back up the unreadable custom prefab data");
+				}
 			}
 		}
 
 		public static bool Find(PrefabBase prefab, bool setCategory, out int id)
 		{
-			var name = prefab is MovingObjectPrefab ? $"Prop_{prefab.name}" : prefab.name;
-
-			if (AssetMap.TryGetValue(name, out var newName))
-			{
-				name = newName;
-			}
-
-			var prefabIndex = CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].FirstOrDefault(x => name == x.PrefabName);
+			var prefabIndex = (prefab is MovingObjectPrefab ? FindByName($"Prop_{prefab.name}") : null) ?? FindByName(prefab.name);
 
 			if (prefabIndex is null)
 			{
@@ -506,6 +533,16 @@ namespace FindIt.Utilities
 
 			id = prefabIndex.Id;
 			return true;
+		}
+
+		private static PrefabIndex FindByName(string name)
+		{
+			if (AssetMap.TryGetValue(name, out var newName))
+			{
+				name = newName;
+			}
+
+			return AllPrefabs.Values.FirstOrDefault(x => name == x.PrefabName);
 		}
 
 		public static List<PrefabIndex> ProcessSearch(CancellationToken token)
@@ -555,15 +592,9 @@ namespace FindIt.Utilities
 
 		public static void RemoveItem(int index)
 		{
-			if (CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].TryGetValue(index, out var prefabIndex))
+			if (AllPrefabs.Remove(index))
 			{
-				if (IsFavorited(prefabIndex.PrefabName))
-				{
-					ToggleFavorited(index);
-				}
-
-				CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Remove(prefabIndex);
-				CategorizedPrefabs[prefabIndex.Category][prefabIndex.SubCategory].Remove(prefabIndex);
+				RemoveFromCategories(index);
 			}
 		}
 	}

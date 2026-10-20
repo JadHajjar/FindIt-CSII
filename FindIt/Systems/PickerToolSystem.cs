@@ -113,8 +113,10 @@ namespace FindIt.Systems
 
 			_applyAction.shouldBeEnabled = false;
 
-			EntityManager.RemoveComponent<Highlighted>(_highlightedQuery);
+			HoveredPrefab = null;
+
 			EntityManager.AddComponent<BatchesUpdated>(_highlightedQuery);
+			EntityManager.RemoveComponent<Highlighted>(_highlightedQuery);
 		}
 
 		protected override JobHandle OnUpdate(JobHandle inputDeps)
@@ -123,6 +125,8 @@ namespace FindIt.Systems
 			var raycastHit = GetRaycastResult(out var entity, out RaycastHit hit);
 			var entities = _highlightedQuery.ToEntityArray(Allocator.Temp);
 			var barrier = _toolOutputBarrier.CreateCommandBuffer();
+
+			HoveredPrefab = null;
 
 			if (raycastHit && IsValidPrefab(ref entity)
 				&& EntityManager.TryGetComponent<PrefabRef>(entity, out var prefabRef)
@@ -151,7 +155,7 @@ namespace FindIt.Systems
 					}
 					else
 					{
-						m_ToolSystem.ActivatePrefabTool(prefab);
+						m_ToolSystem.ActivatePrefabTool(FindItUtil.Find(prefab, false, out var id) ? FindItUtil.GetPrefabBase(id) : prefab);
 					}
 
 					picked = true;
@@ -223,6 +227,12 @@ namespace FindIt.Systems
 			if (!Flags.HasFlag(PickerFlags.SubObjects) && !isOwner)
 			{
 				entity = owner.m_Owner;
+			}
+
+			if (Flags.HasFlag(PickerFlags.Networks)
+				&& (EntityManager.HasComponent<Game.Net.Edge>(entity) || EntityManager.HasComponent<Game.Net.Node>(entity) || EntityManager.HasComponent<Game.Net.Lane>(entity)))
+			{
+				return true;
 			}
 
 			var isBuilding = EntityManager.HasComponent<Building>(entity);

@@ -90,7 +90,7 @@ namespace FindIt.Systems
 
 		internal void TryActivatePrefabTool(int id)
 		{
-			if (FindItUtil.GetPrefabBase(id) is not PrefabBase prefabBase || _toolSystem.activePrefab == prefabBase)
+			if (FindItUtil.GetPrefabBase(id) is not PrefabBase prefabBase)
 			{
 				return;
 			}
@@ -98,11 +98,15 @@ namespace FindIt.Systems
 			if (_IsPrefabSelection && prefabSelectionTask != null)
 			{
 				// Send the selected prefab back to the caller and close the panel if we're in prefab selection mode
-				prefabSelectionTask.SetResult(prefabBase);
-				prefabSelectionTask = null;
+				EndPrefabSelection(prefabBase);
 
 				ToggleFindItPanel(false);
 
+				return;
+			}
+
+			if (_toolSystem.activePrefab == prefabBase)
+			{
 				return;
 			}
 
@@ -120,6 +124,13 @@ namespace FindIt.Systems
 		{
 			// Scrolls to a specific prefab using its index from PrefabIndexingSystem
 
+			if (searchTask is not null && !searchTokenSource.IsCancellationRequested)
+			{
+				scrollToAfterSearch = id;
+
+				return;
+			}
+
 			var list = FindItUtil.GetFilteredPrefabs();
 			var index = list.FindIndex(x => x.Id == id);
 
@@ -132,8 +143,11 @@ namespace FindIt.Systems
 			}
 		}
 
-		internal void TriggerSearch()
+		internal void TriggerSearch(bool resetScroll = true)
 		{
+			resetScrollAfterSearch = resetScroll;
+			scrollToAfterSearch = 0;
+
 			_IsSearchLoading.Value = true;
 
 			if (FindItUtil.IsReady)
@@ -163,9 +177,50 @@ namespace FindIt.Systems
 		{
 			_ClearSearchBar.Value = true;
 			FindItUtil.Filters.CurrentSearch = string.Empty;
-			_IsSearchLoading.Value = false;
 			_CurrentSearch.Value = string.Empty;
-			searchTokenSource?.Cancel();
+
+			if (FindItUtil.Filters.GetFilterList().Any())
+			{
+				TriggerSearch();
+			}
+			else
+			{
+				_IsSearchLoading.Value = false;
+				searchTokenSource.Cancel();
+			}
+		}
+
+		internal void OnFavoritesChanged()
+		{
+			if (!FindItUtil.IsReady)
+			{
+				return;
+			}
+
+			if (FindItUtil.CurrentCategory is PrefabCategory.Favorite
+				&& FindItUtil.CurrentSubCategory is not PrefabSubCategory.Any
+				&& !(FindItUtil.CategorizedPrefabs.TryGetValue(PrefabCategory.Favorite, out var favorites)
+					&& favorites.TryGetValue(FindItUtil.CurrentSubCategory, out var list)
+					&& list.Count > 0))
+			{
+				FindItUtil.CurrentSubCategory = PrefabSubCategory.Any;
+
+				RefreshCategoryAndSubCategory();
+			}
+
+			UpdateCategoriesAndPrefabList();
+
+			if (FindItUtil.CurrentCategory is PrefabCategory.Favorite && FindItUtil.Filters.GetFilterList().Any())
+			{
+				TriggerSearch(false);
+			}
+		}
+
+		private void OnToggleFavorited(int id)
+		{
+			FindItUtil.ToggleFavorited(id);
+
+			OnFavoritesChanged();
 		}
 
 		internal void CancelSearch()
@@ -251,6 +306,8 @@ namespace FindIt.Systems
 				return Task.FromResult<PrefabBase>(null);
 			}
 
+			EndPrefabSelection(null);
+
 			_IsPrefabSelection.Value = true;
 
 			ToggleFindItPanel(true, false);
@@ -261,6 +318,7 @@ namespace FindIt.Systems
 
 			scrollIndex = 0;
 
+			RefreshCategoryAndSubCategory();
 			UpdateCategoriesAndPrefabList();
 
 			TriggerSearch();
@@ -272,6 +330,26 @@ namespace FindIt.Systems
 			prefabSelectionTask = new();
 
 			return prefabSelectionTask.Task;
+		}
+
+		private void EndPrefabSelection(PrefabBase result)
+		{
+			var task = prefabSelectionTask;
+			var wasSelecting = _IsPrefabSelection.Value;
+
+			prefabSelectionTask = null;
+
+			FindItUtil.Filters.SelectedType = null;
+			_IsPrefabSelection.Value = false;
+
+			if (wasSelecting && _ShowFindItPanel && _IsWindowLocked)
+			{
+				RefreshPanelSize();
+				_optionsUISystem.RefreshOptions();
+				TriggerSearch();
+			}
+
+			task?.TrySetResult(result);
 		}
 	}
 }

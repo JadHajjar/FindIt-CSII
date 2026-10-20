@@ -170,6 +170,7 @@ namespace FindIt.Systems
 			if (full)
 			{
 				FindItUtil.CategorizedPrefabs.Clear();
+				FindItUtil.AllPrefabs.Clear();
 				_finditUISystem.CancelSearch();
 				FindItUtil.ClearCachedSearch();
 				_pendingSortKeys.Clear();
@@ -221,6 +222,8 @@ namespace FindIt.Systems
 					frames++;
 					frameStopWatch.Restart();
 				}
+
+				_sortKeysUpdated = false;
 			}
 
 			if (full || _fullIndex is null)
@@ -254,7 +257,7 @@ namespace FindIt.Systems
 				: string.Empty;
 
 			Mod.Log.Info($"{(full ? "Full" : "Partial")} Prefab Indexing completed in {stopWatch.Elapsed.TotalSeconds:0.000}s{frameInfo}");
-			Mod.Log.Info($"Indexed Prefabs Count: {FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Count}");
+			Mod.Log.Info($"Indexed Prefabs Count: {FindItUtil.AllPrefabs.Count}");
 		}
 
 		private void ComputeSortKeysInBackground()
@@ -451,39 +454,36 @@ namespace FindIt.Systems
 						prefabIndex.IsUniqueMesh = true;
 					}
 
-					if (prefab.TryGet<EditorAssetCategoryOverride>(out var overrides) && (overrides?.m_IncludeCategories?.Any() ?? false))
+					if (!full)
 					{
-						if (overrides?.m_ExcludeCategories?.Any(x => x.StartsWith("FindIt")) ?? false)
+						FindItUtil.RemoveItem(entity);
+					}
+
+					if (prefab.TryGet<EditorAssetCategoryOverride>(out var overrides) && overrides is not null)
+					{
+						if (overrides.m_ExcludeCategories?.Any(x => x is not null && x.StartsWith("FindIt")) ?? false)
 						{
 							return;
 						}
 
-						if (overrides?.m_IncludeCategories?.Any() ?? false)
+						for (var ind = 0; ind < (overrides.m_IncludeCategories?.Length ?? 0); ind++)
 						{
-							for (var ind = 0; ind < overrides.m_IncludeCategories.Length; ind++)
+							if (overrides.m_IncludeCategories[ind]?.StartsWith("FindIt/") ?? false)
 							{
-								if (overrides.m_IncludeCategories[ind].StartsWith("FindIt/"))
+								var split = overrides.m_IncludeCategories[ind].Split('/');
+
+								if (split.Length >= 3 && int.TryParse(split[2], out var subCategeory) && FindItUtil.IsValidSubCategory((PrefabSubCategory)subCategeory))
 								{
-									var split = overrides.m_IncludeCategories[ind].Split('/');
+									prefabIndex.SubCategory = (PrefabSubCategory)subCategeory;
+									prefabIndex.Category = FindItUtil.GetCategory(prefabIndex.SubCategory);
+								}
 
-									if (split.Length >= 3 && int.TryParse(split[1], out var categeory) && int.TryParse(split[2], out var subCategeory))
-									{
-										prefabIndex.Category = (PrefabCategory)categeory;
-										prefabIndex.SubCategory = (PrefabSubCategory)subCategeory;
-									}
-
-									if (split.Length >= 4 && int.TryParse(split[3], out var pdxModsId))
-									{
-										prefabIndex.PdxModsId = pdxModsId.ToString();
-									}
+								if (split.Length >= 4 && int.TryParse(split[3], out var pdxModsId))
+								{
+									prefabIndex.PdxModsId = pdxModsId.ToString();
 								}
 							}
 						}
-					}
-
-					if (!full)
-					{
-						FindItUtil.RemoveFromCategories(entity.Index);
 					}
 
 					if (prefab.TryGet<FindItProperties>(out var properties))
@@ -603,6 +603,8 @@ namespace FindIt.Systems
 				_pendingSortKeys.Add(prefabIndex);
 			}
 
+			FindItUtil.AllPrefabs[prefabIndex.Id] = prefabIndex;
+
 			if (!Mod.Settings.HideBrandsFromAny || prefabIndex.SubCategory is not PrefabSubCategory.Props_Branding)
 			{
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
@@ -670,30 +672,43 @@ namespace FindIt.Systems
 
 		private async void FillPdxModsData()
 		{
-			foreach (var grp in FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any].Where(x => int.TryParse(x.PdxModsId, out var id) && id > 0).GroupBy(x => x.PdxModsId))
+			try
 			{
-				var details = await PdxModsUtil.GetLocalModDetails(grp.Key);
+				var groups = FindItUtil.AllPrefabs.Values.Where(x => int.TryParse(x.PdxModsId, out var id) && id > 0).GroupBy(x => x.PdxModsId).ToList();
 
-				if (details?.Success == true)
+				foreach (var grp in groups)
 				{
-					var folder = details.Mod.LocalData?.FolderAbsolutePath ?? string.Empty;
-					var installDate = Directory.Exists(folder) ? Directory.GetCreationTime(folder) : (DateTime?)null;
+					var details = await PdxModsUtil.GetLocalModDetails(grp.Key);
 
-					foreach (var item in grp)
+					if (details?.Success == true)
 					{
-						item.InstalledDate = installDate;
-						item.UpdatedDate = details.Mod.UpdatedDate;
+						var folder = details.Mod.LocalData?.FolderAbsolutePath ?? string.Empty;
+						var installDate = Directory.Exists(folder) ? Directory.GetCreationTime(folder) : (DateTime?)null;
+
+						foreach (var item in grp)
+						{
+							item.InstalledDate = installDate;
+							item.UpdatedDate = details.Mod.UpdatedDate;
+						}
 					}
 				}
+
+				if (IndexedPrefabList.Sorting is PrefabSorting.InstalledDate or PrefabSorting.UpdatedDate)
+				{
+					FindItUtil.SetSorting();
+					_finditUISystem.TriggerSearch(false);
+				}
+			}
+			catch (Exception ex)
+			{
+				Mod.Log.Error(ex, "Failed to load the Paradox Mods dates");
 			}
 		}
 
 		private IEnumerable<object> AddNumberToDuplicatePrefabNames()
 		{
 			var groups = new Dictionary<string, List<PrefabIndex>>();
-			var anyList = FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any];
-
-			foreach (var prefab in anyList.ToArray())
+			foreach (var prefab in FindItUtil.AllPrefabs.Values.ToArray())
 			{
 				if (!groups.TryGetValue(prefab.Name, out var group))
 				{
