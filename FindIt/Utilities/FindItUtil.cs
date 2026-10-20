@@ -517,8 +517,30 @@ namespace FindIt.Utilities
 
 		public static bool Find(PrefabBase prefab, bool setCategory, out int id)
 		{
+			var prefabSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>();
+
+			// The index's ids are the prefabs' entity indexes, but a prefab indexed under another
+			// name is the prop generated from it, which has an entity of its own.
+			if (prefab is MovingObjectPrefab
+				|| AssetMap.ContainsKey(prefab.name)
+				|| !prefabSystem.TryGetEntity(prefab, out var entity))
+			{
+				return FindByName(prefab, setCategory, out id);
+			}
+
+			return SelectFound(GetPrefabIndex(entity.Index), setCategory, out id);
+		}
+
+		// Scans the whole index, but finds an entry whose prefab has moved to a new entity since.
+		public static bool FindByName(PrefabBase prefab, bool setCategory, out int id)
+		{
 			var prefabIndex = (prefab is MovingObjectPrefab ? FindByName($"Prop_{prefab.name}") : null) ?? FindByName(prefab.name);
 
+			return SelectFound(prefabIndex, setCategory, out id);
+		}
+
+		private static bool SelectFound(PrefabIndex prefabIndex, bool setCategory, out int id)
+		{
 			if (prefabIndex is null)
 			{
 				id = 0;
