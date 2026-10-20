@@ -56,6 +56,7 @@
   "Tooltip.LABEL[FindIt.RemoveFavorite]": "從我的最愛移除",
   "Tooltip.LABEL[FindIt.AddFavorite]": "收藏此資產",
   "Tooltip.LABEL[FindIt.EditTags]": "Edit tags",
+  "Tooltip.LABEL[FindIt.TagSearchHint]": "Type #tag in the search bar to only show assets with that tag.\nCombine several tags with text, for example: #park #bench modern",
   "Tooltip.LABEL[FindIt.SearchTooltip]": "Search by name, PDX Mods ID or tag.\nAdd #tags to only show assets that have all of them.\nExample: \"#park #bench modern\" shows assets tagged park and bench that match \"modern\".",
   "Tooltip.LABEL[FindIt.Tags]": "Tags",
   "Tooltip.LABEL[FindIt.NoTags]": "This asset has no tags yet.",
