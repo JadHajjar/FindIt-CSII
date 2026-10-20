@@ -31,6 +31,7 @@ namespace FindIt.Systems
 		private FindItOptionsUISystem _optionsUISystem;
 		private DefaultToolSystem _defaultToolSystem;
 		private CameraUpdateSystem _cameraUpdateSystem;
+		private PrefabTrackingSystem _prefabTrackingSystem;
 
 		private ProxyAction _searchKeyBinding;
 		private ProxyAction _randomKeyBinding;
@@ -189,6 +190,7 @@ namespace FindIt.Systems
 			_optionsUISystem = World.GetOrCreateSystemManaged<FindItOptionsUISystem>();
 			_defaultToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>();
 			_cameraUpdateSystem = World.GetOrCreateSystemManaged<CameraUpdateSystem>();
+			_prefabTrackingSystem = World.GetOrCreateSystemManaged<PrefabTrackingSystem>();
 
 			// ToolSystem toolSystem = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged<ToolSystem>(); // I don't know why vanilla game did this.
 			_toolSystem.EventPrefabChanged += OnPrefabChanged;

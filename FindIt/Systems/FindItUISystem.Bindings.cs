@@ -13,7 +13,7 @@ namespace FindIt.Systems
     internal partial class FindItUISystem : ExtendedUISystemBase
 	{
 		private int lastFindId;
-		private int lastFindIndex;
+		private Entity lastFoundEntity;
 
 		private void FindItIconClicked()
 		{
@@ -65,6 +65,7 @@ namespace FindIt.Systems
 			}
 
 			_ShowFindItPanel.Value = visible;
+			_prefabTrackingSystem.Enabled = visible;
 
 			if (!visible)
 			{
@@ -77,6 +78,9 @@ namespace FindIt.Systems
 
 			_PanelWidth.Value = GridUtil.GetWidth();
 			_PanelHeight.Value = GridUtil.GetHeight();
+
+			// The "Most used" sort reads the counts, so they're counted before the lists sort.
+			_prefabTrackingSystem.CountPlacedPrefabs();
 
 			// The usage these sorts read changes while the panel is closed.
 			// The index resets the lists it changes.
@@ -258,18 +262,18 @@ namespace FindIt.Systems
 
 		private void OnLocateButtonClicked(int id)
 		{
-			var entities = PrefabTrackingSystem.GetPlacedEntities(id);
+			var previous = lastFindId == id ? lastFoundEntity : Entity.Null;
+			var entity = _prefabTrackingSystem.GetNextPlacedEntity(id, previous);
 
-			if (entities.Count == 0)
+			if (entity == Entity.Null)
 			{
 				return;
 			}
 
-			lastFindIndex = lastFindId == id ? (lastFindIndex + 1) % entities.Count : 0;
-
 			lastFindId = id;
+			lastFoundEntity = entity;
 
-			JumpTo(entities[lastFindIndex]);
+			JumpTo(entity);
 		}
 
 		private void OnPdxModsButtonClicked(int id)

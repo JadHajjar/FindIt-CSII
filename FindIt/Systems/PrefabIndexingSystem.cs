@@ -441,7 +441,7 @@ namespace FindIt.Systems
 
 				if (processor.TryCreatePrefabIndex(prefab, entity, out prefabIndex))
 				{
-					if (!full && EntityManager.HasComponent<Created>(entity) && FindItUtil.Find(prefab, false, out var oldId) && oldId != entity.Index)
+					if (!full && EntityManager.HasComponent<Created>(entity) && FindItUtil.FindByName(prefab, false, out var oldId) && oldId != entity.Index)
 					{
 						FindItUtil.RemoveItem(oldId);
 					}
