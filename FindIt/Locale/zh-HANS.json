@@ -56,6 +56,7 @@
   "Tooltip.LABEL[FindIt.RemoveFavorite]": "从收藏中移除",
   "Tooltip.LABEL[FindIt.AddFavorite]": "收藏该资产",
   "Tooltip.LABEL[FindIt.EditTags]": "编辑标签",
+  "Tooltip.LABEL[FindIt.TagSearchHint]": "Type #tag in the search bar to only show assets with that tag.\nCombine several tags with text, for example: #park #bench modern",
   "Tooltip.LABEL[FindIt.SearchTooltip]": "按名称、PDX Mods ID 或标签进行搜索。\n添加 #标签，即可仅显示同时包含这些标签的资产。\n示例：“#park #bench modern”将显示带有“park”和“bench”标签，且符合“modern”条件的资产。",
   "Tooltip.LABEL[FindIt.Tags]": "标签",
   "Tooltip.LABEL[FindIt.NoTags]": "此资产还没有标签。",
