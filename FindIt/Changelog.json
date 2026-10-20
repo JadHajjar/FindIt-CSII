@@ -19,7 +19,7 @@
         "Name": "New Features",
         "Changes": [
           "Moved the panel Width and Height options into the in-game Sorting panel.",
-          "Added support for multi-selection of assets in the list using Ctrl+click and Shift+click. (This requires to be supported in other mods' tools)",
+          "Added support for multi-selection of assets in the list using Ctrl+click and Shift+click. (This requires other mods' tools to support it)",
           "Added a 'Reset View Sizes' button in the settings.",
           "Added a confirmation before resetting your favorites.",
           "Updated some sub-category icons for a more cohesive style."
