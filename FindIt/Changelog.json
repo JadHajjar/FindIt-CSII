@@ -22,16 +22,21 @@
           "Added support for multi-selection of assets in the list using Ctrl+click and Shift+click. (This requires other mods' tools to support it)",
           "Added a 'Reset View Sizes' button in the settings.",
           "Added a confirmation before resetting your favorites.",
-          "Updated some sub-category icons for a more cohesive style."
+          "Updated some sub-category icons for a more cohesive style.",
+          "Pressing Escape now closes the Find It panel, unless the window is locked.",
+          "Added a 'Match Letter Variants' option in the settings, so e.g. 'strasse' finds 'Straße' and 'oeuvre' finds 'Œuvre'. Searches used to do this, but it's now off by default because it makes searching about five times slower."
         ]
       },
       {
         "Name": "Performance",
         "Changes": [
-          "Assets are now indexed over several frames, so loading a city no longer freezes the game, especially with large asset libraries.",
-          "Searching is now several times faster, especially with large asset libraries.",
-          "Opening the Find It panel is now nearly instant, even with large asset libraries.",
-          "Improved the overall speed of indexing and sorting assets, and lists are now sorted in the background so opening a category no longer stutters."
+          "Loading a city no longer freezes the game while Find It indexes assets, which is now over 10 times faster. The loading screen is about 20% shorter with the base game's + DLCs assets.",
+          "Searching is now about 20 times faster, and about 60 times faster with very large asset libraries.",
+          "Opening the Find It panel is now nearly instant, even with very large asset libraries.",
+          "Improved the speed of sorting assets, and lists are now sorted in the background so opening a category no longer stutters with large asset libraries.",
+          "Assets that other mods create or change in game (ex. a Road Builder road), no longer make the game hitch for up to half a second.",
+          "Large cities no longer stutter once a minute, even with Find It closed: placed objects are now counted about 30 times faster, and only while the panel is open.",
+          "Sorting by recently selected is now more than twice as fast."
         ]
       },
       {
@@ -57,7 +62,16 @@
           "Fixed branding assets not being selectable or favoritable when 'Hide brands from Any' is enabled.",
           "Fixed some props appearing twice, in two different sub-categories.",
           "Fixed the asset pack filter hiding assets that belong to several packs.",
-          "Fixed the picker leaving objects highlighted when closed without picking anything."
+          "Fixed the picker leaving objects highlighted when closed without picking anything.",
+          "Fixed assets missing from Find It when their thumbnail can't be loaded. They now show with their category's icon.",
+          "Fixed assets with the same name swapping their numbers ('Extra Garage 1', 'Extra Garage 2') between loads.",
+          "Fixed assets losing their number ('Extra Garage 2' becoming 'Extra Garage') or leaving the 'Unique Mesh' filter when another mod or the editor updates them.",
+          "Fixed the 'Locate' button skipping or repeating some placed objects, and sometimes jumping to the preview of the asset you're placing or to one just deleted.",
+          "Fixed the placed objects count and sorting by most used being up to a minute out of date when opening the panel.",
+          "Fixed using an asset sometimes counting as using another asset with the same name.",
+          "Fixed a crash when loading a save after selecting a Favorites sub-category that has no assets in that save.",
+          "Fixed the building corner filter starting with no corner selected instead of 'All', which also made switching categories slower.",
+          "Fixed Find It throwing an error every frame on the main menu when another mod failed to load, which could keep other mods from working properly."
         ]
       }
     ]
