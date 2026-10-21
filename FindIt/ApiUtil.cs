@@ -69,6 +69,10 @@ namespace FindIt
 		{
 			foreach (var item in GameManager.instance.modManager)
 			{
+				// A mod that failed to load stays in this list, and its types may not load.
+				if (item.state is not ModManager.ModInfo.State.Loaded)
+					continue;
+
 				var modType = item.asset.assembly?.GetTypesDerivedFrom<IMod>().FirstOrDefault();
 
 				if (modType == null)
