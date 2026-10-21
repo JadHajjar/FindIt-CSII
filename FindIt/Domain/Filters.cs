@@ -19,6 +19,7 @@ namespace FindIt.Domain
 		public ThemePrefab SelectedTheme { get; set; }
 		public Type SelectedType { get; set; }
 		public OptionListHelper<AssetPackPrefab> SelectedAssetPacks { get; set; }
+		public AssetPackPrefab NoAssetPack { get; set; }
 		public BuildingCornerFilter SelectedBuildingCorner { get; set; } = BuildingCornerFilter.Any;
 		public bool SelectedThemeNone { get; set; }
 		public bool HideAds { get; set; }
@@ -116,7 +117,7 @@ namespace FindIt.Domain
 
 			if (SelectedAssetPacks != null && !SelectedAssetPacks.IsDefault())
 			{
-				if (SelectedAssetPacks.SelectedValues.Any(x => x.name == "FindIt_NoPack"))
+				if (SelectedAssetPacks.Contains(NoAssetPack))
 				{
 					yield return DoNoAssetPackFilter;
 				}

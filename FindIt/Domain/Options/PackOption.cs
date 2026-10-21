@@ -31,6 +31,7 @@ namespace FindIt.Domain.Options
 			_noPack.AddComponent<UIObject>().m_Icon = "coui://findit/noPack.svg";
 
 			FindItUtil.Filters.SelectedAssetPacks = new(_packList, null, true);
+			FindItUtil.Filters.NoAssetPack = _noPack;
 		}
 
 		public OptionSectionUIEntry AsUIEntry()
@@ -117,7 +118,7 @@ namespace FindIt.Domain.Options
 
 		private int GetOrder(AssetPackPrefab pack)
 		{
-			if (pack.name == "FindIt_NoPack")
+			if (pack == _noPack)
 			{
 				return 0;
 			}
