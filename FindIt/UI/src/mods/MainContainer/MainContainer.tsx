@@ -1,5 +1,6 @@
 import { useValue, bindValue, trigger } from "cs2/api";
-import { game, Theme } from "cs2/bindings";
+import { game, selectedInfo, Theme, tool } from "cs2/bindings";
+import { InputActionConsumer } from "cs2/input";
 import { getModule } from "cs2/modding";
 import mod from "../../../mod.json";
 import { TopBarComponent } from "mods/TopBar/TopBar";
@@ -41,9 +42,13 @@ const DefaultMainTheme: Theme | any = getModule(
   "classes",
 );
 
+const BackActions = { Back: () => trigger(mod.id, "FindItCloseToggled") };
+
 export const FindItMainContainerComponent = () => {
-  const isPhotoMode =
-    useValue(game.activeGamePanel$)?.__Type == game.GamePanelType.PhotoMode;
+  const activeGamePanel = useValue(game.activeGamePanel$);
+  const isPhotoMode = activeGamePanel?.__Type == game.GamePanelType.PhotoMode;
+  const activeToolId = useValue(tool.activeTool$).id;
+  const hasSelection = useValue(selectedInfo.activeSelection$);
   const { translate } = useLocalization();
 
   const containerRef = useRef(null);
@@ -124,6 +129,16 @@ export const FindItMainContainerComponent = () => {
     trigger(mod.id, "SetIsExpanded", !IsExpanded);
   }
 
+  // Escape is the game's Back action, and claiming Back keeps Escape from opening the pause menu.
+  // So the panel claims it only when it would close and the game has nothing to close first.
+  // While a tool is active, the game's Back drops the tool, which closes the panel.
+  // The last consumer attached gets Escape, so this one mounts when it claims Back rather than changing its actions.
+  const closesOnBack =
+    !IsWindowLocked &&
+    activeToolId === tool.DEFAULT_TOOL &&
+    activeGamePanel === null &&
+    !hasSelection;
+
   return (
     <div
       className={classNames(
@@ -131,6 +146,9 @@ export const FindItMainContainerComponent = () => {
         styles["align" + Alignment],
       )}
     >
+      {closesOnBack && (
+        <InputActionConsumer actions={BackActions} ignoreFocusState={true} />
+      )}
       <div className={styles.toolLayout}>
         <div
           className={
