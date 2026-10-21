@@ -78,11 +78,12 @@ namespace FindIt.Systems
 
 					var newPrefabName = $"Prop_{prefab.name}_{item.m_RequireState}";
 
-					CreatePrefab(newPrefabName, $" {GetName(item.m_RequireState)} Prop", (int)GetCategory(prefab, quantityEntities[i]), prefab, item, localeDictionary);
+					if (CreatePrefab(newPrefabName, $" {GetName(item.m_RequireState)} Prop", (int)GetCategory(prefab, quantityEntities[i]), prefab, item, localeDictionary))
+					{
+						prefabs.Add(item.m_Mesh.name);
 
-					prefabs.Add(item.m_Mesh.name);
-
-					FindItUtil.AssetMap[prefab.name] = newPrefabName;
+						FindItUtil.AssetMap[prefab.name] = newPrefabName;
+					}
 				}
 			}
 
@@ -94,11 +95,11 @@ namespace FindIt.Systems
 			Mod.Log.InfoFormat("Generated Quantity Prop Assets ({0})", prefabs.Count);
 		}
 
-		private void CreatePrefab(string name, string typeName, int subCategory, ObjectGeometryPrefab original, ObjectMeshInfo mesh, Dictionary<string, string> localeDictionary)
+		private bool CreatePrefab(string name, string typeName, int subCategory, ObjectGeometryPrefab original, ObjectMeshInfo mesh, Dictionary<string, string> localeDictionary)
 		{
 			if (_prefabSystem.TryGetPrefab(new PrefabID(nameof(StaticObjectPrefab), name), out _))
 			{
-				return;
+				return false;
 			}
 
 			var newPrefab = ScriptableObject.CreateInstance<StaticObjectPrefab>();
@@ -159,6 +160,8 @@ namespace FindIt.Systems
 			}
 
 			_prefabSystem.AddPrefab(newPrefab);
+
+			return true;
 		}
 
 		private object GetName(ObjectState state)

@@ -23,7 +23,8 @@ namespace FindIt.Utilities
 
 		public static Dictionary<PrefabCategory, Dictionary<PrefabSubCategory, IndexedPrefabList>> CategorizedPrefabs { get; } = new();
 		public static Dictionary<int, PrefabIndex> AllPrefabs { get; } = new();
-		public static Dictionary<string, string> AssetMap { get; } = new();
+		public static Dictionary<string, string> AssetMap { get; } = new(); // Maps auto-generated FindIt prefab names with their original prefab
+		public static Dictionary<string, string> ObsoleteAssetMap { get; } = new(); // Maps indexed prefabs' obsolete identifiers for fallback
 		public static PrefabCategory CurrentCategory { get; set; } = PrefabCategory.Any;
 		public static PrefabSubCategory CurrentSubCategory { get; set; } = PrefabSubCategory.Any;
 		public static bool IsReady { get; set; }
@@ -558,6 +559,11 @@ namespace FindIt.Utilities
 		private static PrefabIndex FindByName(string name)
 		{
 			if (AssetMap.TryGetValue(name, out var newName))
+			{
+				name = newName;
+			}
+
+			if (ObsoleteAssetMap.TryGetValue(name, out  newName))
 			{
 				name = newName;
 			}

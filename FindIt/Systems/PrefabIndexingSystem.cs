@@ -646,6 +646,19 @@ namespace FindIt.Systems
 
 			FindItUtil.AllPrefabs[prefabIndex.Id] = prefabIndex;
 
+			if (prefab.TryGet<ObsoleteIdentifiers>(out var obsoleteIdentifiers) && obsoleteIdentifiers.m_PrefabIdentifiers is not null)
+			{
+				foreach (var identifier in obsoleteIdentifiers.m_PrefabIdentifiers)
+				{
+					if (!string.IsNullOrEmpty(identifier.m_Name)
+						&& identifier.m_Name != prefabName
+						&& !FindItUtil.ObsoleteAssetMap.ContainsKey(identifier.m_Name))
+					{
+						FindItUtil.ObsoleteAssetMap[identifier.m_Name] = prefabName;
+					}
+				}
+			}
+
 			if (!Mod.Settings.HideBrandsFromAny || prefabIndex.SubCategory is not PrefabSubCategory.Props_Branding)
 			{
 				FindItUtil.CategorizedPrefabs[PrefabCategory.Any][PrefabSubCategory.Any][prefabIndex.Id] = prefabIndex;
