@@ -563,7 +563,7 @@ namespace FindIt.Utilities
 				name = newName;
 			}
 
-			if (ObsoleteAssetMap.TryGetValue(name, out  newName))
+			if (ObsoleteAssetMap.TryGetValue(name, out newName))
 			{
 				name = newName;
 			}

@@ -616,10 +616,24 @@ namespace FindIt.Systems
 			if (prefab.TryGet<ContentPrerequisite>(out var contentPrerequisites)
 				&& contentPrerequisites.m_ContentPrerequisite.TryGet<DlcRequirement>(out var dlcRequirements))
 			{
-				prefabIndex.AssetPacks = new AssetPackPrefab[0];
-				prefabIndex.PackThumbnails = new string[0];
 				prefabIndex.DlcId = dlcRequirements.m_Dlc;
 				prefabIndex.DlcThumbnail = $"Media/DLC/{PlatformManager.instance.GetDlcName(dlcRequirements.m_Dlc)}.svg";
+
+				var packs = new List<AssetPackPrefab>();
+				var packThumbnails = new List<string>();
+
+				for (var i = 0; i < prefabIndex.AssetPacks.Length; i++)
+				{
+					if (!string.Equals(prefabIndex.PackThumbnails[i], prefabIndex.DlcThumbnail, StringComparison.OrdinalIgnoreCase))
+					{
+						packs.Add(prefabIndex.AssetPacks[i]);
+						packThumbnails.Add(prefabIndex.PackThumbnails[i]);
+					}
+				}
+
+				// Only include asset packs that are different from the DLC icon
+				prefabIndex.AssetPacks = packs.ToArray();
+				prefabIndex.PackThumbnails = packThumbnails.ToArray();
 			}
 			else if (prefabIndex.IsVanilla)
 			{
