@@ -197,22 +197,29 @@ namespace FindIt.Systems
 				return;
 			}
 
-			if (FindItUtil.CurrentCategory is PrefabCategory.Favorite
-				&& FindItUtil.CurrentSubCategory is not PrefabSubCategory.Any
-				&& !(FindItUtil.CategorizedPrefabs.TryGetValue(PrefabCategory.Favorite, out var favorites)
-					&& favorites.TryGetValue(FindItUtil.CurrentSubCategory, out var list)
-					&& list.Count > 0))
-			{
-				FindItUtil.CurrentSubCategory = PrefabSubCategory.Any;
-
-				RefreshCategoryAndSubCategory();
-			}
+			ResetEmptySubCategory();
 
 			UpdateCategoriesAndPrefabList();
 
 			if (FindItUtil.CurrentCategory is PrefabCategory.Favorite && FindItUtil.Filters.GetFilterList().Any())
 			{
 				TriggerSearch(false);
+			}
+		}
+
+		// An index pass or a change to the favorites can empty or remove the selected subcategory's
+		// list, and an empty subcategory has no tab.
+		internal void ResetEmptySubCategory()
+		{
+			var subCategories = FindItUtil.CategorizedPrefabs[FindItUtil.CurrentCategory];
+
+			if (FindItUtil.CurrentSubCategory is not PrefabSubCategory.Any
+				&& !(subCategories.TryGetValue(FindItUtil.CurrentSubCategory, out var list)
+					&& list.Count > 0))
+			{
+				FindItUtil.CurrentSubCategory = PrefabSubCategory.Any;
+
+				RefreshCategoryAndSubCategory();
 			}
 		}
 

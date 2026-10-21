@@ -230,6 +230,9 @@ namespace FindIt.Systems
 			{
 				FindItUtil.IsReady = true;
 
+				// The refresh and the search below read the selected subcategory's list.
+				_finditUISystem.ResetEmptySubCategory();
+
 				if (full)
 				{
 					try
