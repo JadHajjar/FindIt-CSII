@@ -19,7 +19,7 @@ namespace FindIt.Domain
 		public ThemePrefab SelectedTheme { get; set; }
 		public Type SelectedType { get; set; }
 		public OptionListHelper<AssetPackPrefab> SelectedAssetPacks { get; set; }
-		public BuildingCornerFilter SelectedBuildingCorner { get; set; }
+		public BuildingCornerFilter SelectedBuildingCorner { get; set; } = BuildingCornerFilter.Any;
 		public bool SelectedThemeNone { get; set; }
 		public bool HideAds { get; set; }
 		public bool HideRandoms { get; set; }
