@@ -72,7 +72,7 @@ Override Find It's search logic with your own matching function.
 ```
 public static Func&lt;string, bool&gt; GetFindItSearchMethod(string searchText)
 {
-    return name => name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+    return name =&gt; name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
 }
 ```
 
@@ -112,13 +112,65 @@ Full documentation and examples are available on the GitHub page.
   <Screenshot Value="Properties/Screenshot_07.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/find-it.1655827" />
-  <ModVersion Value="1.5.8" />
+  <ModVersion Value="2.0" />
   <GameVersion Value="1.6.*" />
   <ChangeLog>
-# v1.5.8
-## Changes
-* Disables auto-prop generation for quantity props and vehicles when going into the Editor.
-* Added a check to prevent duplicate prefab auto-creation.
+*Custom Tags! And optimizations brought to you thanks to Morgan · Toverux.*
+
+## Custom Tags
+* Added custom tags support on any asset to easily group the or find them more easily.
+* Searching has been upgraded to also matches your custom tags.
+* Added tag-specific search by adding '#' in the search bar. This makes it only show assets with all of those tags, for example '#park #bench modern'.
+* Adding tags opens a dedicated panel that shows all existing tags and allows you to search through them.
+* Asset creators can ship pre-defined tags with their assets.
+
+## New Features
+* Added support for multi-selection of assets in the list using Ctrl+click and Shift+click. (This requires other mods' tools to support it)
+* Added a 'Reset View Sizes' button in the settings.
+* Moved the panel Width and Height options into the in-game Sorting panel instead of the mod settings.
+* Updated some sub-category icons for a more cohesive style.
+* Pressing Escape now closes the Find It panel, unless the window is locked.
+* Added a 'Match Letter Variants' option in the settings, so 'oeuvre' finds 'Œuvre'. Though this makes search slower.
+* Added a confirmation before resetting your favorites.
+
+## Performance Improvements
+* Loading a city no longer freezes the game while Find It indexes assets, which is now over 10 times faster. The loading screen is about 20% shorter with the base game's + DLCs assets.
+* Searching is now about 20 times faster, and about 60 times faster with very large asset libraries.
+* Opening the Find It panel is now nearly instant, even with very large asset libraries.
+* Improved the speed of sorting assets, and lists are now sorted in the background so opening a category no longer stutters with large asset libraries.
+* Assets that other mods create or change in game (ex. a Road Builder road), no longer make the game hitch for up to half a second.
+* Large cities no longer stutter once a minute, even with Find It closed: placed objects are now counted about 30 times faster, and only while the panel is open.
+* Sorting by recently selected is now more than twice as fast.
+
+## For Mod Developers &amp; Asset Creators
+* Added a Multi-Selection API that lets FindIt connect with your mod's tool to select several assets at once.
+* Added a Prefab Selection API that lets other mods open Find It to select an asset of a specific type.
+* Asset creators can now ship tags with their assets, using the new 'FindItProperties' component or the 'EditorAssetCategoryOverride' exclude list. Players can't remove these tags.
+* The 'FindItProperties' component can also set an asset's Find It category, or hide it from Find It.
+* Added a 'Find It Properties' button to the editor's bottom bar to edit these properties on the selected asset.
+* Read more about the new APIs and Find It Properties in the FindIt github repository.
+
+## Bugfixes: Search &amp; Asset List
+* Fixed removed or replaced assets sometimes staying in the list.
+* Fixed the panel sometimes showing search results from before a reload.
+* Fixed searches sometimes failing or showing outdated results when assets were added or changed during the search.
+* Fixed a failed search leaving the loading spinner running forever over the previous results.
+* Fixed the 'No Pack' filter not showing as selected when it was selected.
+* Fixed the asset pack filter hiding assets that belong to several packs.
+* Fixed the building corner filter starting with no corner selected instead of 'All', which also made switching categories slower.
+* Fixed some props appearing twice, in two different sub-categories.
+* Fixed assets missing from Find It when their thumbnail can't be loaded. They now show with their category's icon.
+* Fixed assets with the same name swapping their numbers ('Extra Garage 1', 'Extra Garage 2') between loads.
+
+## Bugfixes: Favorites, Tools &amp; Stability
+* Fixed a crash when un-favoriting the last asset of a sub-category while viewing it in Favorites.
+* Fixed a crash when loading a save after selecting a Favorites sub-category that has no assets in that save.
+* Fixed branding assets not being selectable or favoritable when 'Hide brands from Any' is enabled.
+* Fixed the picker leaving objects highlighted when closed without picking anything.
+* Fixed the 'Locate' button skipping or repeating some placed objects, and sometimes jumping to the preview of the asset you're placing or to one just deleted.
+* Fixed the placed objects count and sorting by most used being up to a minute out of date when opening the panel.
+* Fixed using an asset sometimes counting as using another asset with the same name.
+* Fixed Find It throwing an error every frame on the main menu when another mod failed to load, which could keep other mods from working properly.
 </ChangeLog>
   <ExternalLink Type="discord" Url="https://discord.gg/E4k8ZEtRxd" />
   <ExternalLink Type="github" Url="https://github.com/JadHajjar/FindIt-CSII" />

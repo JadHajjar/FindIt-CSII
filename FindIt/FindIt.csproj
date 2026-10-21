@@ -5,11 +5,11 @@
 		<LangVersion>9</LangVersion>
 		<TargetFramework>net48</TargetFramework>
 		<Configurations>Debug;Release</Configurations>
-		<Version>1.5.8</Version>
+		<Version>2.0</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<Company>T. D. W.</Company>
-		<Copyright>@2024 MIT license</Copyright>
+		<Copyright>@2026 MIT license</Copyright>
 		<Product>Find It</Product>
 		
 		<!--The folder where Game.dll is located. Set it only if the game is not installed in the default location, otherwise keep it empty-->
