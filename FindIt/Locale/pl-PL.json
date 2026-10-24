@@ -72,7 +72,7 @@
   "Tooltip.LABEL[FindIt.CreatorStandard]": "Standardowe",
   "Tooltip.LABEL[FindIt.CreatorCompatibility]": "Większa zgodność",
   "Tooltip.LABEL[FindIt.CreatorStandardHint]": "Saved in the FindItProperties component, with every option available. If the asset is edited and saved again without Find It enabled, these properties will be lost.",
-  "Tooltip.LABEL[FindIt.CreatorCompatibilityHint]": "Saved as '#' entries in the Editor Asset Category Override exclude list. Only tags and the category are available, but they're kept even if the asset is edited without Find It.",
+  "Tooltip.LABEL[FindIt.CreatorCompatibilityHint]": "Zapisano jako wpis „#” na liście wykluczeń Editor Asset Category Override. Dostępne są tylko tagi i kategoria, ale zostaną one zachowane nawet po późniejszej edycji obiektu bez Find It.",
   "Tooltip.LABEL[FindIt.CreatorCategory]": "Kategoria",
   "Tooltip.LABEL[FindIt.CreatorAutomatic]": "Automatyczna",
   "Tooltip.LABEL[FindIt.CreatorHideFromFindIt]": "Ukryj ten obiekt w Find It",
